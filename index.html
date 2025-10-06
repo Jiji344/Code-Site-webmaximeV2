@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio de Monsieur Crocodeal - Photographe professionnel spécialisé en portrait, mariage, paysage et photographie de rue. Découvrez mes créations.">
+    <meta name="keywords" content="photographe, portrait, mariage, paysage, photographie de rue, macro, shooting photo, photographe professionnel">
+    <meta name="author" content="Monsieur Crocodeal">
+    <meta property="og:title" content="Monsieur Crocodeal - Photographe Professionnel">
+    <meta property="og:description" content="Portfolio de photographe spécialisé en portrait, lifestyle et événements. Des histoires lumineuses capturées avec élégance.">
+    <meta property="og:type" content="website">
+    
+    <title>Monsieur Crocodeal - Photographe Professionnel | Portfolio</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📷</text></svg>">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header avec effet Liquid Glass -->
+    <header class="header" id="header">
+        <nav class="nav container" aria-label="Navigation principale">
+            <a href="#accueil" class="nav-logo" aria-label="Retour à l'accueil">
+                <span class="logo-icon">📷</span>
+                Monsieur Crocodeal
+            </a>
+            
+            <div class="nav-menu" id="nav-menu">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#accueil" class="nav-link">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#portfolio" class="nav-link">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#a-propos" class="nav-link">À propos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#contact" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+                <button class="nav-close" id="nav-close" aria-label="Fermer le menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            
+            <button class="nav-toggle" id="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Section Hero -->
+        <section class="hero" id="accueil">
+            <div class="hero-background"></div>
+            <div class="hero-content container">
+                <h1 class="hero-title">Monsieur Crocodeal</h1>
+                <p class="hero-subtitle">Photographe Professionnel</p>
+                <p class="hero-description">Capturer l'essence de chaque moment avec passion et créativité</p>
+                <a href="#portfolio" class="cta-button" aria-label="Découvrir mon portfolio">
+                    Découvrir mon travail
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- Section Portfolio -->
+        <section class="portfolio" id="portfolio">
+            <div class="container">
+                <h2 class="section-title">Mon Portfolio</h2>
+                <p class="section-description">
+                    Mon approche unique combine technique maîtrisée et vision artistique pour créer des images qui racontent une histoire et capturent l'émotion de chaque instant.
+                </p>
+                
+                <div class="portfolio-grid">
+                    <!-- Mariage -->
+                    <article class="portfolio-category">
+                        <div class="category-header">
+                            <h3 class="category-title">Portrait</h3>
+                            <p class="category-description">Séances individuelles et corporate</p>
+                        </div>
+                        <div class="category-images">
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80" alt="Portrait professionnel en lumière naturelle" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&q=80" alt="Portrait féminin en studio" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80" alt="Portrait masculin professionnel" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Mariage -->
+                    <article class="portfolio-category">
+                        <div class="category-header">
+                            <h3 class="category-title">Mariage</h3>
+                            <p class="category-description">Cérémonies et réceptions</p>
+                        </div>
+                        <div class="category-images">
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80" alt="Cérémonie de mariage romantique" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80" alt="Réception de mariage élégante" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1525258330754-f8d4c7a38f1d?w=800&q=80" alt="Moment émouvant lors d'un événement" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Photo de rue -->
+                    <article class="portfolio-category">
+                        <div class="category-header">
+                            <h3 class="category-title">Photo de Rue</h3>
+                            <p class="category-description">Scènes urbaines et moments spontanés</p>
+                        </div>
+                        <div class="category-images">
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&q=80" alt="Scène de rue urbaine captivante" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&q=80" alt="Architecture urbaine et vie quotidienne" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1514565131-fce0801e5785?w=800&q=80" alt="Moment de vie urbaine authentique" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Paysage -->
+                    <article class="portfolio-category">
+                        <div class="category-header">
+                            <h3 class="category-title">Paysage</h3>
+                            <p class="category-description">Nature et vues panoramiques</p>
+                        </div>
+                        <div class="category-images">
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80" alt="Paysage montagneux majestueux au lever du soleil" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80" alt="Forêt luxuriante et lumière naturelle" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&q=80" alt="Coucher de soleil spectaculaire sur l'océan" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Macro -->
+                    <article class="portfolio-category">
+                        <div class="category-header">
+                            <h3 class="category-title">Macro</h3>
+                            <p class="category-description">Détails et gros plans artistiques</p>
+                        </div>
+                        <div class="category-images">
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1490682143684-14369e18dce8?w=800&q=80" alt="Gros plan d'une fleur avec gouttes de rosée" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80" alt="Détails macro d'un insecte sur une feuille" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=800&q=80" alt="Texture naturelle en gros plan" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Lifestyle -->
+                    <article class="portfolio-category">
+                        <div class="category-header">
+                            <h3 class="category-title">Lifestyle</h3>
+                            <p class="category-description">Moments de vie authentiques</p>
+                        </div>
+                        <div class="category-images">
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=800&q=80" alt="Scène de vie lifestyle naturelle" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1490376840453-5f616fbebe9b?w=800&q=80" alt="Moment lifestyle en plein air" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="image-card">
+                                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80" alt="Portrait lifestyle spontané" loading="lazy" width="400" height="600">
+                                <div class="image-overlay">
+                                    <button class="image-expand" aria-label="Agrandir l'image">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="15 3 21 3 21 9"></polyline>
+                                            <polyline points="9 21 3 21 3 15"></polyline>
+                                            <line x1="21" y1="3" x2="14" y2="10"></line>
+                                            <line x1="3" y1="21" x2="10" y2="14"></line>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section À propos -->
+        <section class="about" id="a-propos">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-image">
+                        <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=800&q=80" alt="Portrait de Monsieur Crocodeal, photographe professionnel" width="500" height="500">
+                        <div class="about-image-decoration" aria-hidden="true"></div>
+                    </div>
+                    <div class="about-text">
+                        <h2 class="section-title">À Propos</h2>
+                        
+                        <div class="about-section">
+                            <h3 class="about-subtitle">Mon Histoire</h3>
+                            <p>
+                                Passionné par la photographie depuis plus de 10 ans, j'ai transformé ma passion en profession pour partager ma vision unique du monde. Chaque cliché est une opportunité de raconter une histoire, de capturer une émotion, de figer un instant précieux dans le temps.
+                            </p>
+                        </div>
+
+                        <div class="about-section">
+                            <h3 class="about-subtitle">Mon Approche</h3>
+                            <p>
+                                Mon approche unique combine technique maîtrisée et vision artistique pour créer des images qui racontent une histoire et capturent l'émotion de chaque instant. Je crois fermement que la meilleure photographie est celle qui révèle l'authenticité et la beauté naturelle de chaque sujet.
+                            </p>
+                        </div>
+
+                        <div class="about-section">
+                            <h3 class="about-subtitle">Ma Vision</h3>
+                            <p>
+                                Que ce soit pour un portrait, un mariage, ou une séance lifestyle, je m'engage à créer des images intemporelles qui vous ressemblent. Mon objectif est de capturer l'essence de chaque moment avec élégance et créativité, en créant des souvenirs qui dureront toute une vie.
+                            </p>
+                        </div>
+
+                        <div class="about-skills">
+                            <div class="skill-item">
+                                <span class="skill-icon" aria-hidden="true">📸</span>
+                                <span>Portrait</span>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-icon" aria-hidden="true">💍</span>
+                                <span>Mariage</span>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-icon" aria-hidden="true">🌆</span>
+                                <span>Urbain</span>
+                            </div>
+                            <div class="skill-item">
+                                <span class="skill-icon" aria-hidden="true">🏔️</span>
+                                <span>Nature</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Contact -->
+        <section class="contact" id="contact">
+            <div class="container">
+                <h2 class="section-title">Contact</h2>
+                <p class="section-description">
+                    Vous avez un projet en tête ? N'hésitez pas à me contacter pour discuter de vos besoins.
+                </p>
+
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <div class="contact-card">
+                            <div class="contact-icon" aria-hidden="true">📞</div>
+                            <h3 class="contact-card-title">Téléphone</h3>
+                            <a href="tel:+33123456789" class="contact-link">+33 1 23 45 67 89</a>
+                        </div>
+
+                        <div class="contact-card">
+                            <div class="contact-icon" aria-hidden="true">📧</div>
+                            <h3 class="contact-card-title">Email</h3>
+                            <a href="mailto:contact@monsieurcrocodeal.fr" class="contact-link">contact@monsieurcrocodeal.fr</a>
+                        </div>
+
+                        <div class="contact-card">
+                            <div class="contact-icon" aria-hidden="true">📍</div>
+                            <h3 class="contact-card-title">Localisation</h3>
+                            <p class="contact-text">Montpellier, France</p>
+                        </div>
+                    </div>
+
+                    <form class="contact-form" id="contact-form" action="#" method="post" aria-label="Formulaire de contact">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Votre nom</label>
+                            <input type="text" id="name" name="name" class="form-input" placeholder="Jean Dupont" required aria-required="true">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">Votre email</label>
+                            <input type="email" id="email" name="email" class="form-input" placeholder="jean.dupont@exemple.fr" required aria-required="true">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject" class="form-label">Sujet</label>
+                            <input type="text" id="subject" name="subject" class="form-input" placeholder="Demande de devis" required aria-required="true">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message" class="form-label">Votre message</label>
+                            <textarea id="message" name="message" class="form-input form-textarea" placeholder="Décrivez votre projet..." rows="5" required aria-required="true"></textarea>
+                        </div>
+
+                        <button type="submit" class="form-button">
+                            Envoyer le message
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p class="footer-copyright">© 2025 Monsieur Crocodeal. Tous droits réservés.</p>
+                </div>
+                
+                <nav class="footer-social" aria-label="Réseaux sociaux">
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Suivez-moi sur Instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                        <span>Instagram</span>
+                    </a>
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Suivez-moi sur Facebook">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                        <span>Facebook</span>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Suivez-moi sur LinkedIn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                        <span>LinkedIn</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal pour agrandir les images -->
+    <div class="image-modal" id="image-modal" role="dialog" aria-modal="true" aria-label="Image agrandie">
+        <button class="modal-close" id="modal-close" aria-label="Fermer l'image">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <img src="" alt="" class="modal-image" id="modal-image">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,45 @@
+# Fichiers système
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Éditeurs et IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Fichiers temporaires
+*.tmp
+*.temp
+*.cache
+
+# Dossiers de build (si ajoutés plus tard)
+dist/
+build/
+.cache/
+
+# Environnement
+.env
+.env.local
+.env.*.local
+
+# Dépendances (si Node.js est ajouté plus tard)
+node_modules/
+package-lock.json
+yarn.lock
+

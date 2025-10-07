@@ -318,9 +318,145 @@ ul {
     z-index: -1;
 }
 
+.hero-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    align-items: center;
+    min-height: calc(100vh - 5rem);
+}
+
 .hero-content {
-    text-align: center;
+    text-align: left;
     z-index: 1;
+}
+
+.hero-sphere {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.sphere {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: #000000;
+    border: 5px solid #33373d;
+    box-shadow: 
+        0 0 40px rgba(74, 144, 226, 0.6),
+        0 0 80px rgba(74, 144, 226, 0.4),
+        0 0 120px rgba(74, 144, 226, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 0px;
+}
+
+/* Animations de mise au point */
+@keyframes focus1 {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+@keyframes focus2 {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.95); opacity: 0.9; }
+}
+
+@keyframes focus3 {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.08); opacity: 0.7; }
+}
+
+.circle-1 {
+    width: 170px;
+    height: 170px;
+    box-shadow: 
+        inset 0 0 50px rgba(100, 110, 230, 0.3),
+        0 0 30px rgba(100, 110, 230, 0.4),
+        0 0 50px rgba(100, 110, 230, 0.3),
+        0 0 70px rgba(100, 110, 230, 0.2);
+    animation: focus1 4s ease-in-out infinite;
+}
+
+.circle-2 {
+    width: 145px;
+    height: 145px;
+    box-shadow: inset 0 0 45px rgba(74, 144, 226, 0.4);
+    animation: focus2 5s ease-in-out infinite 0.5s;
+}
+
+.circle-3 {
+    width: 100px;
+    height: 100px;
+    background: transparent;
+    animation: focus1 6s ease-in-out infinite 1s;
+}
+
+.circle-4 {
+    width: 75px;
+    height: 75px;
+    box-shadow: inset 0 0 35px rgba(110, 100, 235, 0.4);
+    animation: focus3 4.5s ease-in-out infinite 1.5s;
+}
+
+.circle-5 {
+    width: 42px;
+    height: 42px;
+    background: #000000;
+}
+
+.circle-6 {
+    width: 155px;
+    height: 155px;
+    box-shadow: inset 0 0 42px rgba(85, 120, 228, 0.35);
+    animation: focus2 5.5s ease-in-out infinite 0.8s;
+}
+
+.circle-7 {
+    width: 120px;
+    height: 120px;
+    background: transparent;
+    animation: focus3 4.8s ease-in-out infinite 2s;
+}
+
+.circle-8 {
+    width: 88px;
+    height: 88px;
+    box-shadow: inset 0 0 32px rgba(105, 105, 232, 0.4);
+    animation: focus1 5.2s ease-in-out infinite 1.2s;
+}
+
+.circle-9 {
+    width: 58px;
+    height: 58px;
+    background: transparent;
+    animation: focus2 4.3s ease-in-out infinite 0.3s;
+}
+
+/* Reflet de lentille */
+.lens-reflection {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(
+        ellipse at 35% 30%,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.2) 15%,
+        rgba(255, 255, 255, 0.05) 30%,
+        transparent 50%
+    );
+    pointer-events: none;
+    z-index: 10;
 }
 
 .hero-title {
@@ -935,6 +1071,26 @@ ul {
     .category-title {
         font-size: 2.25rem;
     }
+    
+    /* Hero Tablette */
+    .hero-container {
+        gap: var(--spacing-md);
+    }
+    
+    .sphere {
+        width: 220px;
+        height: 220px;
+    }
+    
+    .circle-1 { width: 150px; height: 150px; }
+    .circle-2 { width: 125px; height: 125px; }
+    .circle-3 { width: 85px; height: 85px; }
+    .circle-4 { width: 65px; height: 65px; }
+    .circle-5 { width: 35px; height: 35px; }
+    .circle-6 { width: 135px; height: 135px; }
+    .circle-7 { width: 105px; height: 105px; }
+    .circle-8 { width: 75px; height: 75px; }
+    .circle-9 { width: 50px; height: 50px; }
 
     /* Portfolio responsive */
     .portfolio-category:nth-child(1),
@@ -1059,6 +1215,21 @@ ul {
     }
 
     /* Hero Mobile */
+    .hero {
+        padding-bottom: var(--spacing-xl);
+    }
+    
+    .hero-container {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+        text-align: center;
+        margin-top: 6rem;
+    }
+    
+    .hero-content {
+        text-align: center;
+    }
+    
     .hero-title {
         font-size: 2.5rem;
     }
@@ -1070,6 +1241,22 @@ ul {
     .hero-description {
         font-size: 1rem;
     }
+    
+    .sphere {
+        width: 200px;
+        height: 200px;
+        border: 3px solid #33373d;
+    }
+    
+    .circle-1 { width: 140px; height: 140px; }
+    .circle-2 { width: 120px; height: 120px; }
+    .circle-3 { width: 85px; height: 85px; }
+    .circle-4 { width: 65px; height: 65px; }
+    .circle-5 { width: 35px; height: 35px; }
+    .circle-6 { width: 130px; height: 130px; }
+    .circle-7 { width: 100px; height: 100px; }
+    .circle-8 { width: 75px; height: 75px; }
+    .circle-9 { width: 50px; height: 50px; }
 
     .cta-button {
         padding: 0.875rem 2rem;
@@ -1131,6 +1318,22 @@ ul {
     .section-title {
         font-size: 2rem;
     }
+    
+    .sphere {
+        width: 160px;
+        height: 160px;
+        border: 3px solid #33373d;
+    }
+    
+    .circle-1 { width: 110px; height: 110px; }
+    .circle-2 { width: 90px; height: 90px; }
+    .circle-3 { width: 65px; height: 65px; }
+    .circle-4 { width: 50px; height: 50px; }
+    .circle-5 { width: 28px; height: 28px; }
+    .circle-6 { width: 100px; height: 100px; }
+    .circle-7 { width: 80px; height: 80px; }
+    .circle-8 { width: 55px; height: 55px; }
+    .circle-9 { width: 40px; height: 40px; }
 
     .category-images {
         gap: var(--spacing-xs);

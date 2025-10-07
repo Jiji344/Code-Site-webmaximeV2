@@ -25,11 +25,25 @@ if (navClose) {
 
 // Fermer le menu quand on clique sur un lien
 navLinks.forEach(link => {
-    link.addEventListener('click', () => {
+    link.addEventListener('click', (e) => {
         navMenu.classList.remove('show-menu');
         navToggle.setAttribute('aria-expanded', 'false');
+        // Enlever le focus après le clic pour éviter que l'effet hover reste
+        setTimeout(() => {
+            e.target.blur();
+        }, 100);
     });
 });
+
+// Enlever le focus du bouton Contact après clic
+const contactLink = document.querySelector('.nav-link-contact');
+if (contactLink) {
+    contactLink.addEventListener('click', (e) => {
+        setTimeout(() => {
+            e.target.blur();
+        }, 100);
+    });
+}
 
 // Fermer le menu avec Escape
 document.addEventListener('keydown', (e) => {

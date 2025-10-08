@@ -17,6 +17,16 @@
     
     <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Three.js -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+        }
+    }
+    </script>
 </head>
 <body>
     <!-- Header avec effet Liquid Glass -->
@@ -90,6 +100,7 @@
                         <div class="circle circle-8"></div>
                         <div class="circle circle-9"></div>
                         <div class="lens-reflection"></div>
+                        <div id="camera-3d-container"></div>
                     </div>
                 </div>
             </div>
@@ -415,17 +426,17 @@
                         <div class="about-section">
                             <h3 class="about-subtitle">Mon Histoire</h3>
                             <p>
-                                Chaque passion a son point de départ, son histoire, sa pertinence. La mienne fut une rencontre avec le Nikon de mon père, où l'histoire d'amour est née des premières heures de manipulation, d'un objet qui regroupait tout ce que j'aimais, la créativité, la technique, la précision, tout ceci résumé dans un boîtier aux possibilités infinies et où l'image restera gravée à jamais pour celui qui a la chance de l'obtenir, ce chanceux, je veux en être un, j'en suis devenu un.
+                                Ma passion pour la photographie a commencé très tôt, le jour où j'ai pris en main le Nikon de mon père. Dès les premières manipulations, j'ai compris que cet appareil réunissait tout ce que j'aimais : la créativité, la technique et la précision. C'est à ce moment-là qu'est née une véritable histoire d'amour avec l'image, cette capacité unique de figer un instant pour l'éternité.
                             </p>
                             <p>
-                                Passé chez Sony en abandonnant Nikon en 2022, j'ai encore pu découvrir les possibilités immenses qu'elle m'offre, en amenant mon plaisir à son paroxysme, et ainsi, votre plaisir le plus grand à faire appel à mes services.
+                                En 2022, j'ai quitté Nikon pour rejoindre l'univers Sony, découvrant de nouvelles possibilités qui m'ont permis de repousser mes limites et d'exprimer pleinement ma vision. Chaque séance est pour moi l'occasion d'aller plus loin, de ressentir encore plus intensément le plaisir de photographier et de le partager avec vous.
                             </p>
                         </div>
 
                         <div class="about-section">
                             <h3 class="about-subtitle">Ma Passion</h3>
                             <p>
-                                Depuis maintenant 7 ans, j'exerce ce qui me rend le plus heureux, le plus fier, et, je l'espère, le plus créatif, pour vos moments de gloires ou de déboires, pour le plus beau jour de votre vie ou pour une nuit, vous serez la photo, je serais le cadre.
+                                Depuis 7 ans, j'exerce ce métier avec passion, fierté et un engagement total. Que ce soit pour célébrer vos plus grands moments ou pour capturer la beauté d'un instant plus discret, je mets toute mon énergie et ma créativité à votre service. Vous serez l'image, et je serai le cadre qui la sublime.
                             </p>
                         </div>
 
@@ -563,6 +574,9 @@
     </div>
 
     <script src="script.js"></script>
+    
+    <!-- Script 3D pour les caméras -->
+    <script type="module" src="camera3d.js"></script>
 </body>
 </html>
 

@@ -460,6 +460,22 @@ ul {
     z-index: 10;
 }
 
+/* Conteneur 3D pour les caméras */
+#camera-3d-container {
+    position: absolute;
+    width: 250%;
+    height: 250%;
+    top: -75%;
+    left: -75%;
+    pointer-events: none;
+    z-index: 11;
+}
+
+#camera-3d-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
 .hero-title {
     font-size: 4.5rem;
     font-weight: 700;

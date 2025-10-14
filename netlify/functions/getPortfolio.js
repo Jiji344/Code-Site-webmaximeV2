@@ -1,8 +1,6 @@
-// getPortfolio.js
-const axios = require('axios');  // Utilisation de Axios pour faire des requêtes HTTP
+const axios = require('axios');  // Utilisation d'Axios pour faire des requêtes HTTP
 
-// Récupérer le token GitHub depuis les variables d'environnement de Netlify
-const { GITHUB_TOKEN } = process.env;  // Le token doit être défini dans les variables d'environnement sur Netlify
+const { GITHUB_TOKEN } = process.env;  // Récupérer le token GitHub depuis les variables d'environnement de Netlify
 
 exports.handler = async (event, context) => {
     const section = event.queryStringParameters.section;  // On récupère la section demandée (portrait, mariage, etc.)

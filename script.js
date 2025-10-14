@@ -204,7 +204,7 @@ sectionsPortfolio.forEach(section => {
             data.forEach(file => {
                 fetch(file.download_url, {
                     headers: {
-                        'Authorization': `token ${token}`  // Authentifier la requête avec le token pour récupérer le fichier Markdown
+                        'Authorization': `token ${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}`  // Authentifier la requête avec le token pour récupérer le fichier Markdown
                     }
                 })
                 .then(response => response.text())

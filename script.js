@@ -188,53 +188,70 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 /* ===== RÉCUPÉRER LES IMAGES DU PORTFOLIO VIA GITHUB (NETLIFY CMS) ===== */
+const token = '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';  // Ton token GitHub personnel
 const sectionsPortfolio = ['portrait', 'mariage', 'paysage', 'macro', 'immobilier', 'lifestyle'];
 
 sectionsPortfolio.forEach(section => {
-    fetch(`https://api.github.com/repos/Jiji344/Code-Site-webmaximeV2/contents/content/portfolio/${section}`)
-        .then(response => response.json())
-        .then(data => {
+    fetch(`https://api.github.com/repos/Jiji344/Code-Site-webmaximeV2/contents/content/portfolio/${section}`, {
+        headers: {
+            'Authorization': `token ${token}`  // Authentifier la requête avec le token
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Vérifier si 'data' est bien un tableau avant d'appliquer 'forEach'
+        if (Array.isArray(data)) {
             data.forEach(file => {
-                fetch(file.download_url)  // Récupérer chaque fichier Markdown
-                    .then(response => response.text())
-                    .then(markdown => {
-                        const metadata = parseMarkdown(markdown);  // Extraire les métadonnées
-                        const image = metadata.image;  // Le chemin de l'image
-                        const title = metadata.title;  // Le titre de l'image
-                        const description = metadata.description;  // La description de l'image
+                fetch(file.download_url, {
+                    headers: {
+                        'Authorization': `token ${token}`  // Authentifier la requête avec le token pour récupérer le fichier Markdown
+                    }
+                })
+                .then(response => response.text())
+                .then(markdown => {
+                    const metadata = parseMarkdown(markdown);  // Extraire les métadonnées
+                    const image = metadata.image;  // Le chemin de l'image
+                    const title = metadata.title;  // Le titre de l'image
+                    const description = metadata.description;  // La description de l'image
 
-                        // Ajouter dynamiquement l'image à la grille du portfolio
-                        const portfolioGrid = document.getElementById('portfolio-grid');
-                        const imageElement = document.createElement('div');
-                        imageElement.classList.add('portfolio-item');
-                        imageElement.innerHTML = `
-                            <div class="image-card">
-                                <img src="${image}" alt="${title}">
-                                <div class="image-overlay">
-                                    <button class="image-expand" aria-label="Agrandir l'image">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <polyline points="15 3 21 3 21 9"></polyline>
-                                            <polyline points="9 21 3 21 3 15"></polyline>
-                                            <line x1="21" y1="3" x2="14" y2="10"></line>
-                                            <line x1="3" y1="21" x2="10" y2="14"></line>
-                                        </svg>
-                                    </button>
-                                </div>
+                    const portfolioGrid = document.getElementById('portfolio-grid');
+                    const imageElement = document.createElement('div');
+                    imageElement.classList.add('portfolio-item');
+                    imageElement.innerHTML = `
+                        <div class="image-card">
+                            <img src="${image}" alt="${title}">
+                            <div class="image-overlay">
+                                <button class="image-expand" aria-label="Agrandir l'image">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <polyline points="9 21 3 21 3 15"></polyline>
+                                        <line x1="21" y1="3" x2="14" y2="10"></line>
+                                        <line x1="3" y1="21" x2="10" y2="14"></line>
+                                    </svg>
+                                </button>
                             </div>
-                            <h3>${title}</h3>
-                            <p>${description}</p>
-                        `;
-                        portfolioGrid.appendChild(imageElement);  // Ajouter l'élément à la grille
-                    });
+                        </div>
+                        <h3>${title}</h3>
+                        <p>${description}</p>
+                    `;
+                    portfolioGrid.appendChild(imageElement);
+                })
+                .catch(error => console.error('Erreur lors de la récupération du fichier Markdown :', error));
             });
-        });
+        } else {
+            console.error('Erreur: La réponse de l\'API ne contient pas un tableau.');
+        }
+    })
+    .catch(error => {
+        console.error('Erreur lors de la récupération des fichiers Markdown :', error);
+    });
 });
 
 // Fonction pour extraire les métadonnées du fichier Markdown
 function parseMarkdown(markdown) {
     const metadata = {};
-    metadata.title = markdown.match(/title: "(.*)"/)[1];  // Extraire le titre
-    metadata.description = markdown.match(/description: "(.*)"/)[1];  // Extraire la description
-    metadata.image = markdown.match(/image: "(.*)"/)[1];  // Extraire le chemin de l'image
+    metadata.title = markdown.match(/title: "(.*)"/)[1];
+    metadata.description = markdown.match(/description: "(.*)"/)[1];
+    metadata.image = markdown.match(/image: "(.*)"/)[1];
     return metadata;
 }

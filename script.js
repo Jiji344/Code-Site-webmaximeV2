@@ -191,7 +191,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 const sectionsPortfolio = ['portrait', 'mariage', 'paysage', 'macro', 'immobilier', 'lifestyle'];
 
 sectionsPortfolio.forEach(section => {
-    fetch(`https://api.github.com/repos/Jiji344/Code-Site-webmaximeV2/content/portfolio/${section}`)
+    fetch(`https://api.github.com/repos/Jiji344/Code-Site-webmaximeV2/contents/content/portfolio/${section}`)
         .then(response => response.json())
         .then(data => {
             data.forEach(file => {

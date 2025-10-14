@@ -1,0 +1,73 @@
+backend:
+  name: git-gateway
+  branch: main  # Assure-toi que c'est bien la branche principale de ton dépôt GitHub
+
+media_folder: "static/img"  # Dossier où les images téléchargées seront stockées sur Netlify
+public_folder: "/img"  # Dossier public pour afficher les images dans ton site
+
+collections:
+  - name: "portrait"  # Section Portrait
+    label: "Portrait"
+    folder: "content/portfolio/portrait"  # Dossier pour les portraits
+    create: true  # Permet de créer de nouvelles photos dans cette section
+    slug: "{{slug}}"  # Utilisation du nom de la photo dans l'URL
+    fields:
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Titre", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Date", name: "date", widget: "datetime" }
+
+  - name: "mariage"  # Section Mariage
+    label: "Mariage"
+    folder: "content/portfolio/mariage"  # Dossier pour les photos de mariage
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Titre", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Date", name: "date", widget: "datetime" }
+
+  - name: "paysage"  # Section Paysage
+    label: "Paysage"
+    folder: "content/portfolio/paysage"  # Dossier pour les photos de paysage
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Titre", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Date", name: "date", widget: "datetime" }
+
+  - name: "macro"  # Section Macro
+    label: "Macro"
+    folder: "content/portfolio/macro"  # Dossier pour les photos en macro
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Titre", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Date", name: "date", widget: "datetime" }
+
+  - name: "immobilier"  # Section Immobilier
+    label: "Immobilier"
+    folder: "content/portfolio/immobilier"  # Dossier pour les photos immobilières
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Titre", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Date", name: "date", widget: "datetime" }
+
+  - name: "lifestyle"  # Section Lifestyle
+    label: "Lifestyle"
+    folder: "content/portfolio/lifestyle"  # Dossier pour les photos lifestyle
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Titre", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Date", name: "date", widget: "datetime" }

@@ -1,102 +1,20 @@
 backend:
-  name: git-gateway
-  branch: main
+  name: auth0
+  base_url: https://photographemonsieurcrocodeal.netlify.app
+  auth0_domain: dev-j2cdt4oghbqmjsj1.us.auth0.com
+  auth0_client_id: L2TYsr7qdKVBmqzmQA1eF6zbVyaRGEuN
 
-media_folder: "assets/Photos"
-public_folder: "/assets/Photos"
+media_folder: "static/img"  # Dossier où les images téléchargées seront stockées (sur Netlify).
+public_folder: "/img"  # Le chemin relatif pour afficher les images sur le site (ex. /img/photo.jpg).
 
 collections:
-  # Portfolio - Portrait
-  - name: "portfolio-portrait"
-    label: "Portfolio - Portrait"
-    folder: "content/portfolio/portrait"
-    create: true
-    slug: "{{slug}}"
+  - name: "portfolio"  # Nom de la collection, ici 'portfolio' pour ton site photo.
+    label: "Portfolio"  # Label qui apparaitra dans l'interface de Netlify CMS.
+    folder: "content/portfolio"  # Dossier où les fichiers photo seront stockés (créé sur GitHub).
+    create: true  # Permet de créer de nouvelles entrées pour chaque nouvelle photo.
+    slug: "{{slug}}"  # Structure des URLs générées (par défaut : titre de la photo).
     fields:
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Alt text", name: "alt", widget: "string" }
-      - { label: "Ordre", name: "order", widget: "number", default: 0 }
-
-  # Portfolio - Mariage
-  - name: "portfolio-mariage"
-    label: "Portfolio - Mariage"
-    folder: "content/portfolio/mariage"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Alt text", name: "alt", widget: "string" }
-      - { label: "Ordre", name: "order", widget: "number", default: 0 }
-
-  # Portfolio - Immobilier
-  - name: "portfolio-immobilier"
-    label: "Portfolio - Immobilier"
-    folder: "content/portfolio/immobilier"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Alt text", name: "alt", widget: "string" }
-      - { label: "Ordre", name: "order", widget: "number", default: 0 }
-
-  # Portfolio - Paysage
-  - name: "portfolio-paysage"
-    label: "Portfolio - Paysage"
-    folder: "content/portfolio/paysage"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Alt text", name: "alt", widget: "string" }
-      - { label: "Ordre", name: "order", widget: "number", default: 0 }
-
-  # Portfolio - Macro
-  - name: "portfolio-macro"
-    label: "Portfolio - Macro"
-    folder: "content/portfolio/macro"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Alt text", name: "alt", widget: "string" }
-      - { label: "Ordre", name: "order", widget: "number", default: 0 }
-
-  # Portfolio - Lifestyle
-  - name: "portfolio-lifestyle"
-    label: "Portfolio - Lifestyle"
-    folder: "content/portfolio/lifestyle"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Alt text", name: "alt", widget: "string" }
-      - { label: "Ordre", name: "order", widget: "number", default: 0 }
-
-  # Informations du site
-  - name: "site-info"
-    label: "Informations du site"
-    files:
-      - label: "À Propos"
-        name: "about"
-        file: "content/about.yml"
-        fields:
-          - { label: "Photo À propos", name: "photo", widget: "image" }
-          - { label: "Histoire - Paragraphe 1", name: "histoire_p1", widget: "text" }
-          - { label: "Histoire - Paragraphe 2", name: "histoire_p2", widget: "text" }
-          - { label: "Passion", name: "passion", widget: "text" }
-      
-      - label: "Contact"
-        name: "contact"
-        file: "content/contact.yml"
-        fields:
-          - { label: "Téléphone", name: "phone", widget: "string" }
-          - { label: "Email", name: "email", widget: "string" }
-          - { label: "Localisation", name: "location", widget: "string" }
-
-      - label: "Hero"
-        name: "hero"
-        file: "content/hero.yml"
-        fields:
-          - { label: "Titre", name: "title", widget: "string" }
-          - { label: "Sous-titre", name: "subtitle", widget: "string" }
-          - { label: "Description", name: "description", widget: "text" }
+      - { label: "Image", name: "image", widget: "image" }  # Champ pour uploader l'image.
+      - { label: "Titre", name: "title", widget: "string" }  # Titre de la photo.
+      - { label: "Description", name: "description", widget: "text" }  # Description de la photo.
+      - { label: "Date", name: "date", widget: "datetime" }  # Date de la prise de la photo.

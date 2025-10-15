@@ -129,49 +129,57 @@ class CMSContentLoader {
             return;
         }
 
-        // Remplacer les images
-        imagesContainer.innerHTML = '';
-        images.forEach((item, index) => {
+        // Ajouter les images du CMS (sans supprimer les images statiques)
+        images.forEach((item) => {
+            // Créer la structure complète comme les images statiques
+            const imageCard = document.createElement('div');
+            imageCard.className = 'image-card';
+            
+            // Créer l'image
             const imgElement = document.createElement('img');
             imgElement.src = item.image;
             imgElement.alt = item.title || item.description || '';
             imgElement.loading = 'lazy';
-            imgElement.className = 'portfolio-image';
+            imgElement.width = 400;
+            imgElement.height = 600;
             
-            // Ajouter l'événement de clic pour la modal
-            imgElement.addEventListener('click', () => {
-                this.openImageModal(item.image, item.title || '');
+            // Créer l'overlay avec le bouton d'agrandissement
+            const overlay = document.createElement('div');
+            overlay.className = 'image-overlay';
+            
+            const expandButton = document.createElement('button');
+            expandButton.className = 'image-expand';
+            expandButton.setAttribute('aria-label', 'Agrandir l\'image');
+            expandButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <polyline points="9 21 3 21 3 15"></polyline>
+                    <line x1="21" y1="3" x2="14" y2="10"></line>
+                    <line x1="3" y1="21" x2="10" y2="14"></line>
+                </svg>
+            `;
+            
+            // Événement pour ouvrir la modal (utilise la modal existante du site)
+            expandButton.addEventListener('click', () => {
+                const modal = document.getElementById('image-modal');
+                const modalImg = document.getElementById('modal-image');
+                if (modal && modalImg) {
+                    modalImg.src = item.image;
+                    modalImg.alt = item.title || item.description || '';
+                    modal.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }
             });
             
-            imagesContainer.appendChild(imgElement);
+            overlay.appendChild(expandButton);
+            imageCard.appendChild(imgElement);
+            imageCard.appendChild(overlay);
+            
+            // Ajouter au conteneur
+            imagesContainer.appendChild(imageCard);
         });
     }
 
-    openImageModal(imageSrc, title) {
-        // Créer la modal pour l'image
-        const modal = document.createElement('div');
-        modal.className = 'image-modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <span class="modal-close">&times;</span>
-                <img src="${imageSrc}" alt="${title}" class="modal-image">
-                <div class="modal-caption">${title}</div>
-            </div>
-        `;
-        
-        document.body.appendChild(modal);
-        
-        // Événements pour fermer la modal
-        modal.querySelector('.modal-close').addEventListener('click', () => {
-            document.body.removeChild(modal);
-        });
-        
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                document.body.removeChild(modal);
-            }
-        });
-    }
 }
 
 // Initialiser le loader CMS

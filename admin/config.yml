@@ -3,7 +3,7 @@ backend:
   branch: main
 
 media_folder: "static/img"  # Dossier où les images téléchargées seront stockées (sur Netlify).
-public_folder: "/img"  # Le chemin relatif pour afficher les images sur le site (ex. /img/photo.jpg).
+public_folder: "/static/img"  # Le chemin relatif pour afficher les images sur le site (ex. /static/img/photo.jpg).
 
 collections:
   - name: "portfolio"  # Nom de la collection, ici 'portfolio' pour ton site photo.

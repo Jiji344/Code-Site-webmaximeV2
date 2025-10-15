@@ -1,5 +1,5 @@
 ---
-image: /img/untitled-design-7-.png
+image: /img/image.jpg
 title: fufule
 description: test
 category: Portrait

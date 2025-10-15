@@ -1,47 +1,28 @@
-# Configuration Auth0 + Netlify pour Decap CMS
+# Configuration Git Gateway + Netlify Identity pour Decap CMS
 
 ## ✅ Configuration CMS terminée
 
 Le fichier `admin/config.yml` a été mis à jour avec :
-- `auth0_domain: dev-j2cdt4oghbqmjsj1.us.auth0.com`
-- `auth0_client_id: L2TYsr7qdKVBmqzmQA1eF6zbVyaRGEuN`
+- `backend: git-gateway`
+- `branch: main`
 
-## 🔧 Variables d'environnement à ajouter sur Netlify
+## 🔧 Configuration Netlify Identity
 
 ### 1. Va sur Netlify Dashboard
-- **Site settings** → **Environment variables**
+- **Site settings** → **Identity**
 
-### 2. Ajoute ces variables :
-```
-AUTH0_DOMAIN = dev-j2cdt4oghbqmjsj1.us.auth0.com
-AUTH0_CLIENT_ID = L2TYsr7qdKVBmqzmQA1eF6zbVyaRGEuN
-AUTH0_CLIENT_SECRET = [copie depuis Auth0]
-```
+### 2. Active Identity :
+- Clique sur **"Enable Identity"** (si pas déjà fait)
 
-### 3. Pour obtenir le Client Secret :
-- Va sur Auth0 → **Applications** → **Monsieur Crocodeal CMS** → **Settings**
-- Copie le **Client Secret** (clique sur l'icône œil)
+### 3. Active Git Gateway :
+- Va dans **"Git Gateway"** (sous Identity)
+- Clique sur **"Enable Git Gateway"**
+- Autorise l'accès à ton repository GitHub
 
-## 🔧 Configuration Auth0
-
-### 1. Va sur Auth0 Dashboard
-- **Applications** → **Monsieur Crocodeal CMS** → **Settings**
-
-### 2. Configure ces URLs :
-- **Allowed Callback URLs** : 
-  ```
-  https://photographemonsieurcrocodeal.netlify.app/admin
-  ```
-- **Allowed Logout URLs** : 
-  ```
-  https://photographemonsieurcrocodeal.netlify.app/admin
-  ```
-- **Allowed Web Origins** : 
-  ```
-  https://photographemonsieurcrocodeal.netlify.app
-  ```
-
-### 3. Sauvegarde les changements
+### 4. Gère les utilisateurs :
+- Va dans **"Users"** (sous Identity)
+- Clique sur **"Invite users"** pour ajouter des utilisateurs
+- Ou utilise l'utilisateur existant : `johan.darmon@gmail.com`
 
 ## 🚀 Test final
 
@@ -51,7 +32,7 @@ AUTH0_CLIENT_SECRET = [copie depuis Auth0]
 
 ## 📋 Résumé des étapes
 
-✅ **Config.yml** : Mis à jour avec Auth0
-🔄 **Variables Netlify** : À ajouter manuellement
-🔄 **Auth0 URLs** : À configurer manuellement
+✅ **Config.yml** : Mis à jour avec git-gateway
+✅ **Utilisateur créé** : `johan.darmon@gmail.com`
+🔄 **Git Gateway** : À activer sur Netlify
 🔄 **Test** : À faire après déploiement

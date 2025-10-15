@@ -1,8 +1,6 @@
 backend:
-  name: auth0
-  base_url: https://photographemonsieurcrocodeal.netlify.app
-  auth0_domain: dev-j2cdt4oghbqmjsj1.us.auth0.com
-  auth0_client_id: L2TYsr7qdKVBmqzmQA1eF6zbVyaRGEuN
+  name: git-gateway
+  branch: main
 
 media_folder: "static/img"  # Dossier où les images téléchargées seront stockées (sur Netlify).
 public_folder: "/img"  # Le chemin relatif pour afficher les images sur le site (ex. /img/photo.jpg).

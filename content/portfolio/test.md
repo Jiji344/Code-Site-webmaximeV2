@@ -1,5 +1,5 @@
 ---
-image: /static/img/untitled-design-7-.png
+image: ./static/img/image.jpg
 title: test
 description: test
 category: Portrait

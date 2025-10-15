@@ -6,14 +6,19 @@ media_folder: "static/img"  # Dossier où les images téléchargées seront stoc
 public_folder: "/static/img"  # Le chemin relatif pour afficher les images sur le site (ex. /static/img/photo.jpg).
 
 collections:
-  - name: "portfolio"  # Nom de la collection, ici 'portfolio' pour ton site photo.
-    label: "Portfolio"  # Label qui apparaitra dans l'interface de Netlify CMS.
-    folder: "content/portfolio"  # Dossier où les fichiers photo seront stockés (créé sur GitHub).
-    create: true  # Permet de créer de nouvelles entrées pour chaque nouvelle photo.
-    slug: "{{year}}-{{month}}-{{day}}-{{hour}}-{{minute}}-{{second}}"  # Utiliser la date/heure comme slug unique.
+  - name: "portfolio-batch"
+    label: "Portfolio - Upload Multiple"
+    folder: "content/portfolio"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{hour}}-{{minute}}-{{second}}"
     fields:
-      - { label: "Image", name: "image", widget: "image" }  # Champ pour uploader l'image.
-      - { label: "Titre", name: "title", widget: "string" }  # Titre de la photo.
-      - { label: "Description", name: "description", widget: "text" }  # Description de la photo.
-      - { label: "Catégorie", name: "category", widget: "select", options: ["Portrait", "Mariage", "Immobilier", "Paysage", "Macro", "Lifestyle"] }  # Catégorie de la photo.
-      - { label: "Date", name: "date", widget: "datetime" }  # Date de la prise de la photo.
+      - { label: "Catégorie", name: "category", widget: "select", options: ["Portrait", "Mariage", "Immobilier", "Paysage", "Macro", "Lifestyle"], required: true }
+      - label: "Photos"
+        name: "photos"
+        widget: "list"
+        summary: "{{fields.title}}"
+        fields:
+          - { label: "Image", name: "image", widget: "image", required: true }
+          - { label: "Titre", name: "title", widget: "string", required: false }
+          - { label: "Description", name: "description", widget: "text", required: false }
+      - { label: "Date d'ajout", name: "date", widget: "datetime" }

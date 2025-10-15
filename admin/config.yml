@@ -1,73 +1,18 @@
 backend:
   name: git-gateway
-  branch: main  # Assure-toi que c'est bien la branche principale de ton dépôt GitHub
+  branch: main  # Remplace par 'master' si tu utilises 'master' comme branche principale.
 
-media_folder: "static/img"  # Dossier où les images téléchargées seront stockées sur Netlify
-public_folder: "/img"  # Dossier public pour afficher les images dans ton site
+media_folder: "static/img"  # Dossier où les images téléchargées seront stockées (sur Netlify).
+public_folder: "/img"  # Le chemin relatif pour afficher les images sur le site (ex. /img/photo.jpg).
 
 collections:
-  - name: "portrait"  # Section Portrait
-    label: "Portrait"
-    folder: "content/portfolio/portrait"  # Dossier pour les portraits
-    create: true  # Permet de créer de nouvelles photos dans cette section
-    slug: "{{slug}}"  # Utilisation du nom de la photo dans l'URL
+  - name: "portfolio"  # Nom de la collection, ici 'portfolio' pour ton site photo.
+    label: "Portfolio"  # Label qui apparaitra dans l'interface de Netlify CMS.
+    folder: "content/portfolio"  # Dossier où les fichiers photo seront stockés (créé sur GitHub).
+    create: true  # Permet de créer de nouvelles entrées pour chaque nouvelle photo.
+    slug: "{{slug}}"  # Structure des URLs générées (par défaut : titre de la photo).
     fields:
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Titre", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "text" }
-      - { label: "Date", name: "date", widget: "datetime" }
-
-  - name: "mariage"  # Section Mariage
-    label: "Mariage"
-    folder: "content/portfolio/mariage"  # Dossier pour les photos de mariage
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Titre", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "text" }
-      - { label: "Date", name: "date", widget: "datetime" }
-
-  - name: "paysage"  # Section Paysage
-    label: "Paysage"
-    folder: "content/portfolio/paysage"  # Dossier pour les photos de paysage
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Titre", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "text" }
-      - { label: "Date", name: "date", widget: "datetime" }
-
-  - name: "macro"  # Section Macro
-    label: "Macro"
-    folder: "content/portfolio/macro"  # Dossier pour les photos en macro
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Titre", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "text" }
-      - { label: "Date", name: "date", widget: "datetime" }
-
-  - name: "immobilier"  # Section Immobilier
-    label: "Immobilier"
-    folder: "content/portfolio/immobilier"  # Dossier pour les photos immobilières
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Titre", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "text" }
-      - { label: "Date", name: "date", widget: "datetime" }
-
-  - name: "lifestyle"  # Section Lifestyle
-    label: "Lifestyle"
-    folder: "content/portfolio/lifestyle"  # Dossier pour les photos lifestyle
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Titre", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "text" }
-      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Image", name: "image", widget: "image" }  # Champ pour uploader l'image.
+      - { label: "Titre", name: "title", widget: "string" }  # Titre de la photo.
+      - { label: "Description", name: "description", widget: "text" }  # Description de la photo.
+      - { label: "Date", name: "date", widget: "datetime" }  # Date de la prise de la photo.

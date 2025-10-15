@@ -187,63 +187,210 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-/* ===== RÉCUPÉRER LES IMAGES DU PORTFOLIO VIA NETLIFY FUNCTIONS ===== */
-const sectionsPortfolio = ['portrait', 'mariage', 'paysage', 'macro', 'immobilier', 'lifestyle'];
+/* ===== ANIMATION AU SCROLL - DÉSACTIVÉ ===== */
+// Animations désactivées selon les préférences utilisateur
 
-sectionsPortfolio.forEach(section => {
-    // Requête à la fonction Netlify pour récupérer les fichiers Markdown de chaque section
-    fetch(`/api/getPortfolio?section=${section}`)
-        .then(response => response.json())
-        .then(data => {
-            // Vérifier si 'data' est bien un tableau avant d'appliquer 'forEach'
-            if (Array.isArray(data)) {
-                data.forEach(file => {
-                    fetch(file.download_url)  // Récupérer le contenu du fichier Markdown
-                        .then(response => response.text())
-                        .then(markdown => {
-                            const metadata = parseMarkdown(markdown);  // Extraire les métadonnées
-                            const image = metadata.image;  // Chemin de l'image
-                            const title = metadata.title;  // Titre de l'image
-                            const description = metadata.description;  // Description de l'image
+/* ===== GESTION DU FORMULAIRE DE CONTACT ===== */
+const contactForm = document.getElementById('contact-form');
 
-                            const portfolioGrid = document.getElementById('portfolio-grid');
-                            const imageElement = document.createElement('div');
-                            imageElement.classList.add('portfolio-item');
-                            imageElement.innerHTML = `
-                                <div class="image-card">
-                                    <img src="${image}" alt="${title}">
-                                    <div class="image-overlay">
-                                        <button class="image-expand" aria-label="Agrandir l'image">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <polyline points="15 3 21 3 21 9"></polyline>
-                                                <polyline points="9 21 3 21 3 15"></polyline>
-                                                <line x1="21" y1="3" x2="14" y2="10"></line>
-                                                <line x1="3" y1="21" x2="10" y2="14"></line>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                                <h3>${title}</h3>
-                                <p>${description}</p>
-                            `;
-                            portfolioGrid.appendChild(imageElement);
-                        })
-                        .catch(error => console.error('Erreur lors de la récupération du fichier Markdown :', error));
-                });
-            } else {
-                console.error('Erreur: La réponse de l\'API ne contient pas un tableau.');
+if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Récupérer les valeurs du formulaire
+        const formData = new FormData(contactForm);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const subject = formData.get('subject');
+        const message = formData.get('message');
+        
+        // Validation basique
+        if (!name || !email || !subject || !message) {
+            showNotification('Veuillez remplir tous les champs', 'error');
+            return;
+        }
+        
+        // Validation de l'email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showNotification('Veuillez entrer une adresse email valide', 'error');
+            return;
+        }
+        
+        // Simuler l'envoi (à remplacer par un vrai appel API)
+        const submitButton = contactForm.querySelector('.form-button');
+        const originalText = submitButton.innerHTML;
+        
+        submitButton.innerHTML = '⏳ Envoi en cours...';
+        submitButton.disabled = true;
+        
+        setTimeout(() => {
+            showNotification('Message envoyé avec succès ! Je vous répondrai bientôt.', 'success');
+            contactForm.reset();
+            submitButton.innerHTML = originalText;
+            submitButton.disabled = false;
+        }, 1500);
+    });
+}
+
+/* ===== SYSTÈME DE NOTIFICATION ===== */
+function showNotification(message, type = 'success') {
+    // Supprimer les notifications existantes
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notif => notif.remove());
+    
+    // Créer la notification
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    notification.setAttribute('role', 'alert');
+    notification.setAttribute('aria-live', 'polite');
+    
+    // Styles
+    Object.assign(notification.style, {
+        position: 'fixed',
+        top: '6rem',
+        right: '2rem',
+        padding: '1rem 1.5rem',
+        borderRadius: '0.5rem',
+        color: '#FFFFFF',
+        fontWeight: '500',
+        zIndex: '9999',
+        maxWidth: '400px',
+        boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
+        backgroundColor: type === 'success' ? '#4CAF50' : '#F44336'
+    });
+    
+    document.body.appendChild(notification);
+    
+    // Supprimer après 5 secondes
+    setTimeout(() => {
+        notification.remove();
+    }, 5000);
+}
+
+// Ajouter les styles de notification au CSS
+const notificationStyles = document.createElement('style');
+notificationStyles.textContent = `
+    @media screen and (max-width: 768px) {
+        .notification {
+            right: 1rem !important;
+            left: 1rem !important;
+            max-width: calc(100% - 2rem) !important;
+        }
+    }
+`;
+document.head.appendChild(notificationStyles);
+
+/* ===== LAZY LOADING DES IMAGES ===== */
+if ('loading' in HTMLImageElement.prototype) {
+    // Le navigateur supporte le lazy loading natif
+    const images = document.querySelectorAll('img[loading="lazy"]');
+    images.forEach(img => {
+        img.src = img.src;
+    });
+} else {
+    // Fallback pour les navigateurs qui ne supportent pas lazy loading
+    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+    
+    const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.src;
+                img.removeAttribute('loading');
+                imageObserver.unobserve(img);
             }
-        })
-        .catch(error => {
-            console.error('Erreur lors de la récupération des fichiers Markdown :', error);
         });
+    });
+    
+    lazyImages.forEach(img => imageObserver.observe(img));
+}
+
+/* ===== AMÉLIORATION DE LA PERFORMANCE ===== */
+// Debounce pour les événements de scroll
+function debounce(func, wait = 10) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Appliquer debounce aux fonctions de scroll
+const debouncedScrollHeader = debounce(scrollHeader, 10);
+const debouncedScrollActive = debounce(scrollActive, 10);
+
+window.removeEventListener('scroll', scrollHeader);
+window.removeEventListener('scroll', scrollActive);
+window.addEventListener('scroll', debouncedScrollHeader);
+window.addEventListener('scroll', debouncedScrollActive);
+
+/* ===== PRÉCHARGEMENT DES IMAGES AU HOVER ===== */
+const imageCards = document.querySelectorAll('.image-card');
+imageCards.forEach(card => {
+    card.addEventListener('mouseenter', function() {
+        const img = this.querySelector('img');
+        if (img && img.dataset.fullsrc) {
+            const fullImg = new Image();
+            fullImg.src = img.dataset.fullsrc;
+        }
+    });
 });
 
-// Fonction pour extraire les métadonnées du fichier Markdown
-function parseMarkdown(markdown) {
-    const metadata = {};
-    metadata.title = markdown.match(/title: "(.*)"/)[1];  // Extraire le titre
-    metadata.description = markdown.match(/description: "(.*)"/)[1];  // Extraire la description
-    metadata.image = markdown.match(/image: "(.*)"/)[1];  // Extraire le chemin de l'image
-    return metadata;
+/* ===== GESTION DU THÈME SYSTÈME ===== */
+// Détecter la préférence de contraste élevé
+if (window.matchMedia('(prefers-contrast: high)').matches) {
+    document.documentElement.style.setProperty('--color-text', '#FFFFFF');
+    document.documentElement.style.setProperty('--color-text-secondary', '#E0E0E0');
 }
+
+// Animations désactivées globalement
+
+/* ===== INITIALISATION ===== */
+document.addEventListener('DOMContentLoaded', () => {
+    // Appeler les fonctions au chargement
+    scrollHeader();
+    scrollActive();
+    
+    // Annoncer que la page est chargée (pour les lecteurs d'écran)
+    const loadAnnouncement = document.createElement('div');
+    loadAnnouncement.setAttribute('role', 'status');
+    loadAnnouncement.setAttribute('aria-live', 'polite');
+    loadAnnouncement.className = 'sr-only';
+    loadAnnouncement.textContent = 'Page chargée avec succès';
+    document.body.appendChild(loadAnnouncement);
+    
+    // Ajouter la classe pour les éléments visibles uniquement aux lecteurs d'écran
+    const srOnlyStyles = document.createElement('style');
+    srOnlyStyles.textContent = `
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+    `;
+    document.head.appendChild(srOnlyStyles);
+});
+
+/* ===== GESTION DES ERREURS D'IMAGES ===== */
+document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('error', function() {
+        // Si une image ne charge pas, afficher une image de remplacement
+        this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%230F1F3A" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Poppins, sans-serif" font-size="20" fill="%234A90E2"%3EImage non disponible%3C/text%3E%3C/svg%3E';
+        this.alt = 'Image non disponible';
+    });
+});
+
+console.log('Portfolio Monsieur Crocodeal - Chargé avec succès ✨');
+

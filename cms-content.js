@@ -33,22 +33,8 @@ class CMSContentLoader {
     }
 
     async getPortfolioFiles() {
-        try {
-            // Essayer de lister les fichiers du dossier portfolio
-            const response = await fetch('/content/portfolio/');
-            if (response.ok) {
-                const html = await response.text();
-                // Parser le HTML pour extraire les liens vers les fichiers .md
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const links = doc.querySelectorAll('a[href$=".md"]');
-                return Array.from(links).map(link => link.href.split('/').pop());
-            }
-        } catch (error) {
-            console.log('Impossible de lister les fichiers, utilisation des fichiers connus');
-        }
-        
-        // Fallback : utiliser les fichiers connus
+        // Pour l'instant, on utilise les fichiers connus
+        // Plus tard, on pourra faire un appel API pour lister les fichiers
         return ['test.md'];
     }
 
@@ -94,39 +80,6 @@ class CMSContentLoader {
         Object.keys(imagesByCategory).forEach(category => {
             this.updateCategoryImages(category, imagesByCategory[category]);
         });
-        
-        // Ajouter un bouton de rechargement manuel
-        this.addRefreshButton();
-    }
-    
-    addRefreshButton() {
-        // Vérifier si le bouton existe déjà
-        if (document.getElementById('cms-refresh-btn')) return;
-        
-        const refreshBtn = document.createElement('button');
-        refreshBtn.id = 'cms-refresh-btn';
-        refreshBtn.innerHTML = '🔄 Recharger le contenu';
-        refreshBtn.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: #4A90E2;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        `;
-        
-        refreshBtn.addEventListener('click', async () => {
-            console.log('Rechargement manuel du contenu CMS...');
-            await this.loadPortfolioData();
-            this.displayPortfolioImages();
-        });
-        
-        document.body.appendChild(refreshBtn);
     }
 
     updateCategoryImages(category, images) {
@@ -192,13 +145,4 @@ class CMSContentLoader {
 // Initialiser le loader CMS
 document.addEventListener('DOMContentLoaded', () => {
     window.cmsLoader = new CMSContentLoader();
-    
-    // Recharger le contenu toutes les 30 secondes pour détecter les nouvelles images
-    setInterval(async () => {
-        if (window.cmsLoader) {
-            console.log('Rechargement automatique du contenu CMS...');
-            await window.cmsLoader.loadPortfolioData();
-            window.cmsLoader.displayPortfolioImages();
-        }
-    }, 30000); // 30 secondes
 });

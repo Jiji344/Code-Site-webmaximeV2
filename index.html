@@ -573,6 +573,22 @@
         <img src="" alt="" class="modal-image" id="modal-image">
     </div>
 
+    <!-- Netlify Identity Widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    
+    <script>
+        // Redirection automatique après login
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                    window.netlifyIdentity.on("login", () => {
+                        document.location.href = "/admin/";
+                    });
+                }
+            });
+        }
+    </script>
+    
     <script src="script.js"></script>
     
     <!-- Script 3D pour les caméras -->

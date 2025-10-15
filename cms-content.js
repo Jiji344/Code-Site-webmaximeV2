@@ -13,16 +13,27 @@ class CMSContentLoader {
     async loadPortfolioData() {
         try {
             // Charger les données du portfolio depuis les fichiers Markdown
+            const owner = 'Jiji344';
+            const repo = 'Code-Site-webmaximeV2';
+            const path = 'content/portfolio';
+            
             const portfolioFiles = await this.getPortfolioFiles();
             
             for (const file of portfolioFiles) {
-                const response = await fetch(`/content/portfolio/${file}`);
-                if (response.ok) {
-                    const content = await response.text();
-                    const data = this.parseMarkdownFrontmatter(content);
-                    if (data) {
-                        this.portfolioData.push(data);
+                // Charger depuis GitHub Raw
+                const githubRawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}/${file}`;
+                
+                try {
+                    const response = await fetch(githubRawUrl);
+                    if (response.ok) {
+                        const content = await response.text();
+                        const data = this.parseMarkdownFrontmatter(content);
+                        if (data) {
+                            this.portfolioData.push(data);
+                        }
                     }
+                } catch (err) {
+                    console.log(`Erreur lors du chargement de ${file}:`, err);
                 }
             }
             
@@ -33,9 +44,30 @@ class CMSContentLoader {
     }
 
     async getPortfolioFiles() {
-        // Pour l'instant, on utilise les fichiers connus
-        // Plus tard, on pourra faire un appel API pour lister les fichiers
-        return ['test.md'];
+        try {
+            // Utiliser l'API GitHub pour lister tous les fichiers du portfolio
+            const owner = 'Jiji344'; // Ton nom d'utilisateur GitHub
+            const repo = 'Code-Site-webmaximeV2'; // Ton repository
+            const path = 'content/portfolio';
+            
+            const response = await fetch(
+                `https://api.github.com/repos/${owner}/${repo}/contents/${path}`
+            );
+            
+            if (response.ok) {
+                const files = await response.json();
+                // Filtrer seulement les fichiers .md
+                return files
+                    .filter(file => file.name.endsWith('.md'))
+                    .map(file => file.name);
+            } else {
+                console.log('Impossible de charger la liste des fichiers via GitHub API');
+                return [];
+            }
+        } catch (error) {
+            console.log('Erreur lors du chargement de la liste des fichiers:', error);
+            return [];
+        }
     }
 
     parseMarkdownFrontmatter(content) {

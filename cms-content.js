@@ -160,14 +160,24 @@ class CMSContentLoader {
             `;
             
             // Événement pour ouvrir la modal (utilise la modal existante du site)
-            expandButton.addEventListener('click', () => {
+            expandButton.addEventListener('click', (e) => {
+                e.stopPropagation();
                 const modal = document.getElementById('image-modal');
                 const modalImg = document.getElementById('modal-image');
+                const modalClose = document.getElementById('modal-close');
+                
                 if (modal && modalImg) {
                     modalImg.src = item.image;
                     modalImg.alt = item.title || item.description || '';
-                    modal.classList.add('show');
+                    modal.classList.add('active');
+                    
+                    // Empêcher le scroll du body
                     document.body.style.overflow = 'hidden';
+                    
+                    // Focus sur le bouton de fermeture
+                    if (modalClose) {
+                        modalClose.focus();
+                    }
                 }
             });
             

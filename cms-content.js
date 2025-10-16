@@ -100,6 +100,7 @@ class CMSContentLoader {
         // Grouper les images par catégorie puis par album
         const dataByCategory = {};
         this.portfolioData.forEach(item => {
+            console.log('Item traité:', item);
             if (item.category && item.image) {
                 if (!dataByCategory[item.category]) {
                     dataByCategory[item.category] = {
@@ -109,17 +110,21 @@ class CMSContentLoader {
                 }
                 
                 // Si l'image a un album, la grouper par album
-                if (item.album) {
+                if (item.album && item.album.trim() !== '') {
+                    console.log(`✅ Album détecté: "${item.album}" pour la catégorie ${item.category}`);
                     if (!dataByCategory[item.category].albums[item.album]) {
                         dataByCategory[item.category].albums[item.album] = [];
                     }
                     dataByCategory[item.category].albums[item.album].push(item);
                 } else {
                     // Sinon, l'ajouter aux images individuelles
+                    console.log(`📷 Image individuelle pour la catégorie ${item.category}`);
                     dataByCategory[item.category].singleImages.push(item);
                 }
             }
         });
+
+        console.log('📊 Données groupées par catégorie:', dataByCategory);
 
         // Afficher les données dans chaque section
         Object.keys(dataByCategory).forEach(category => {
@@ -131,26 +136,32 @@ class CMSContentLoader {
         // Trouver la section correspondante
         const categorySection = document.querySelector(`[data-category="${category}"]`);
         if (!categorySection) {
-            console.log(`Section ${category} non trouvée`);
+            console.log(`❌ Section ${category} non trouvée`);
             return;
         }
 
         // Trouver le conteneur d'images
         const imagesContainer = categorySection.querySelector('.category-images');
         if (!imagesContainer) {
-            console.log(`Conteneur d'images pour ${category} non trouvé`);
+            console.log(`❌ Conteneur d'images pour ${category} non trouvé`);
             return;
         }
+
+        console.log(`📁 Mise à jour de la catégorie: ${category}`);
+        console.log(`   Albums: ${Object.keys(data.albums).length}`);
+        console.log(`   Images individuelles: ${data.singleImages.length}`);
 
         // Ajouter d'abord les cartes d'albums
         Object.keys(data.albums).forEach(albumName => {
             const albumImages = data.albums[albumName];
+            console.log(`   ➕ Création de l'album: "${albumName}" (${albumImages.length} photos)`);
             const albumCard = this.createAlbumCard(albumName, albumImages);
             imagesContainer.appendChild(albumCard);
         });
 
         // Puis ajouter les images individuelles
         data.singleImages.forEach((item) => {
+            console.log(`   ➕ Ajout image individuelle: ${item.title || item.image}`);
             const imageCard = this.createImageCard(item);
             imagesContainer.appendChild(imageCard);
         });

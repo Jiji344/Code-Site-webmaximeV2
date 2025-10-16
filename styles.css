@@ -1285,12 +1285,15 @@ ul {
     position: relative;
     cursor: pointer;
     overflow: hidden;
-    border-radius: var(--border-radius);
+    border-radius: 0.75rem;
     background: rgba(15, 31, 58, 0.3);
     backdrop-filter: blur(var(--blur-glass));
     -webkit-backdrop-filter: blur(var(--blur-glass));
     border: 1px solid rgba(74, 144, 226, 0.2);
     transition: var(--transition);
+    aspect-ratio: 4/5;
+    display: flex;
+    flex-direction: column;
 }
 
 .album-card:hover {
@@ -1326,15 +1329,26 @@ ul {
 
 .album-card-image {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    height: 100%;
     object-fit: cover;
     display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
 }
 
 .album-card-content {
     padding: var(--spacing-sm);
     position: relative;
     z-index: 2;
+    margin-top: auto;
+    background: linear-gradient(
+        to top,
+        rgba(10, 22, 40, 0.95) 0%,
+        rgba(10, 22, 40, 0.8) 50%,
+        transparent 100%
+    );
 }
 
 .album-card-title {
@@ -1342,12 +1356,21 @@ ul {
     font-size: var(--font-size-md);
     color: var(--color-text);
     margin: 0 0 0.5rem 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .album-card-count {
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.album-card-count::before {
+    content: '📸';
+    font-size: 1rem;
 }
 
 /* ===== RESPONSIVE ===== */

@@ -1166,6 +1166,8 @@ ul {
     justify-content: center;
     gap: var(--spacing-md);
     position: relative;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .carousel-button {
@@ -1208,16 +1210,18 @@ ul {
 
 .carousel-image-container {
     flex: 1;
-    max-height: 70vh;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: var(--spacing-sm);
+    justify-content: center;
+    overflow: hidden;
+    min-height: 0;
 }
 
 .carousel-image {
     max-width: 100%;
-    max-height: 100%;
+    max-height: calc(90vh - 250px);
+    width: auto;
+    height: auto;
     object-fit: contain;
     border-radius: var(--border-radius);
     box-shadow: 
@@ -1724,7 +1728,11 @@ ul {
     }
 
     .carousel-image-container {
-        max-height: 60vh;
+        min-height: 0;
+    }
+
+    .carousel-image {
+        max-height: calc(95vh - 350px);
     }
 
     .carousel-thumbnails {
@@ -1804,7 +1812,11 @@ ul {
     }
 
     .carousel-image-container {
-        max-height: calc(90vh - 8rem);
+        min-height: 0;
+    }
+
+    .carousel-image {
+        max-height: calc(90vh - 200px);
     }
 }
 

@@ -1178,17 +1178,18 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
     min-height: 0;
+    padding: 1rem;
 }
 
 .carousel-image {
     max-width: 100%;
-    max-height: calc(90vh - 180px);
+    max-height: calc(90vh - 200px);
     width: auto;
     height: auto;
     object-fit: contain;
-    border-radius: var(--border-radius);
+    border-radius: 0;
     box-shadow: 
         0 0 60px rgba(74, 144, 226, 0.3),
         0 20px 80px rgba(0, 0, 0, 0.8);
@@ -1785,7 +1786,7 @@ ul {
     }
 
     .carousel-image {
-        max-height: calc(90vh - 180px);
+        max-height: calc(90vh - 200px);
     }
 }
 

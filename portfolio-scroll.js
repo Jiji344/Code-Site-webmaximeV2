@@ -2,7 +2,7 @@
 class PortfolioAutoScroll {
     constructor() {
         this.scrollZones = new Map();
-        this.scrollSpeed = 4; // Vitesse augmentée
+        this.scrollSpeed = 8; // Vitesse beaucoup plus rapide
         this.scrollThreshold = 30; // Distance en pixels pour déclencher le scroll
         this.isScrolling = false;
         this.init();
@@ -79,8 +79,8 @@ class PortfolioAutoScroll {
         const container = zone.container;
         
         // Calculer les zones de déclenchement avec effet de proximité
-        const leftZone = rect.left + 40;
-        const rightZone = rect.right - 40;
+        const leftZone = rect.left + 60;
+        const rightZone = rect.right - 60;
         
         // Vérifier si on peut scroller
         const canScrollLeft = container.scrollLeft > 0;
@@ -88,16 +88,18 @@ class PortfolioAutoScroll {
 
         // Zone gauche avec effet de proximité
         if (mouseX <= leftZone && canScrollLeft) {
-            // Calculer la vitesse basée sur la proximité du bord
-            const proximity = (leftZone - mouseX) / 40; // 0 à 1
-            const dynamicSpeed = Math.max(2, this.scrollSpeed * (0.5 + proximity * 0.5));
+            // Calculer la vitesse basée sur la proximité du bord avec easing
+            const proximity = (leftZone - mouseX) / 60; // 0 à 1
+            const easedProximity = this.easeInOutCubic(proximity);
+            const dynamicSpeed = Math.max(2, this.scrollSpeed * (0.4 + easedProximity * 0.6));
             this.startScrolling(zone, 'left', dynamicSpeed);
         }
         // Zone droite avec effet de proximité
         else if (mouseX >= rightZone && canScrollRight) {
-            // Calculer la vitesse basée sur la proximité du bord
-            const proximity = (mouseX - rightZone) / 40; // 0 à 1
-            const dynamicSpeed = Math.max(2, this.scrollSpeed * (0.5 + proximity * 0.5));
+            // Calculer la vitesse basée sur la proximité du bord avec easing
+            const proximity = (mouseX - rightZone) / 60; // 0 à 1
+            const easedProximity = this.easeInOutCubic(proximity);
+            const dynamicSpeed = Math.max(2, this.scrollSpeed * (0.4 + easedProximity * 0.6));
             this.startScrolling(zone, 'right', dynamicSpeed);
         }
         // Zone centrale
@@ -112,6 +114,7 @@ class PortfolioAutoScroll {
         zone.isScrolling = true;
         zone.scrollDirection = direction;
         zone.currentSpeed = speed;
+        zone.startTime = Date.now();
         
         const scrollInterval = setInterval(() => {
             if (!zone.isScrolling) {
@@ -120,9 +123,15 @@ class PortfolioAutoScroll {
             }
             
             const container = zone.container;
-            const scrollAmount = direction === 'left' ? -zone.currentSpeed : zone.currentSpeed;
+            const elapsed = Date.now() - zone.startTime;
             
-            // Animation fluide avec easing
+            // Easing pour l'accélération progressive
+            const easeFactor = this.easeOutCubic(Math.min(elapsed / 300, 1)); // 300ms pour atteindre la vitesse max
+            const finalSpeed = zone.currentSpeed * easeFactor;
+            
+            const scrollAmount = direction === 'left' ? -finalSpeed : finalSpeed;
+            
+            // Animation ultra-fluide
             container.scrollLeft += scrollAmount;
             
             // Arrêter si on atteint les limites
@@ -130,7 +139,7 @@ class PortfolioAutoScroll {
                 (direction === 'right' && container.scrollLeft >= (container.scrollWidth - container.clientWidth))) {
                 this.stopScrolling(zone);
             }
-        }, 16); // ~60fps pour fluidité maximale
+        }, 8); // 120fps pour fluidité maximale
         
         zone.scrollInterval = scrollInterval;
     }
@@ -148,6 +157,16 @@ class PortfolioAutoScroll {
         this.scrollZones.forEach(zone => {
             this.stopScrolling(zone);
         });
+    }
+
+    // Fonction d'easing cubic pour un mouvement naturel
+    easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    // Fonction d'easing pour l'accélération
+    easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
     }
 }
 

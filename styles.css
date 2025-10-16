@@ -561,6 +561,28 @@ ul {
     -ms-overflow-style: none;
     max-width: 100%;
     height: auto;
+    position: relative;
+}
+
+.portfolio-category .category-images::before,
+.portfolio-category .category-images::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 60px;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.portfolio-category .category-images::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.8), transparent);
+}
+
+.portfolio-category .category-images::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.8), transparent);
 }
 
 .portfolio-category .category-images::-webkit-scrollbar {

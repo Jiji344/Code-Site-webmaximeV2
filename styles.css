@@ -1073,7 +1073,11 @@ ul {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.98);
+    background: linear-gradient(
+        135deg,
+        rgba(10, 22, 40, 0.98) 0%,
+        rgba(26, 40, 69, 0.98) 100%
+    );
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
     z-index: var(--z-modal);
@@ -1131,8 +1135,13 @@ ul {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
     gap: var(--spacing-md);
+    background: rgba(15, 31, 58, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(74, 144, 226, 0.2);
+    border-radius: var(--border-radius);
 }
 
 .album-title {
@@ -1180,11 +1189,16 @@ ul {
     justify-content: center;
     overflow: hidden;
     min-height: 0;
+    background: rgba(15, 31, 58, 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-sm);
 }
 
 .carousel-image {
     max-width: 100%;
-    max-height: calc(90vh - 180px);
+    max-height: 100%;
     width: auto;
     height: auto;
     object-fit: contain;
@@ -1197,10 +1211,14 @@ ul {
 .carousel-thumbnails {
     display: flex;
     gap: var(--spacing-xs);
-    justify-content: center;
-    padding: 0 var(--spacing-md);
+    justify-content: flex-start;
+    padding: var(--spacing-sm) var(--spacing-md);
     overflow-x: auto;
-    max-height: 100px;
+    max-height: 120px;
+    background: rgba(15, 31, 58, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
 }
 
 .carousel-thumbnails::-webkit-scrollbar {
@@ -1226,22 +1244,27 @@ ul {
     width: 80px;
     height: 80px;
     object-fit: cover;
-    border-radius: 0.5rem;
+    border-radius: var(--border-radius);
     cursor: pointer;
     transition: var(--transition);
-    border: 2px solid transparent;
+    border: 2px solid rgba(74, 144, 226, 0.2);
     opacity: 0.5;
+    background: rgba(15, 31, 58, 0.3);
 }
 
 .carousel-thumbnail:hover {
     opacity: 1;
-    transform: scale(1.05);
+    transform: scale(1.08);
+    border-color: rgba(74, 144, 226, 0.4);
+    box-shadow: 0 0 15px rgba(74, 144, 226, 0.4);
 }
 
 .carousel-thumbnail.active {
     opacity: 1;
     border-color: var(--color-primary);
-    box-shadow: 0 0 20px rgba(74, 144, 226, 0.6);
+    box-shadow: 
+        0 0 25px rgba(74, 144, 226, 0.7),
+        0 0 50px rgba(74, 144, 226, 0.4);
 }
 
 /* Style des cartes d'albums */
@@ -1685,19 +1708,18 @@ ul {
 
     .carousel-image-container {
         min-height: 0;
-    }
-
-    .carousel-image {
-        max-height: calc(95vh - 250px);
+        max-height: calc(95vh - 280px);
     }
 
     .carousel-thumbnails {
-        padding: 0 var(--spacing-sm);
+        padding: var(--spacing-sm);
+        justify-content: flex-start;
     }
 
     .carousel-thumbnail {
         width: 70px;
         height: 70px;
+        flex-shrink: 0;
     }
 
     .album-card-title {
@@ -1723,41 +1745,28 @@ ul {
         gap: var(--spacing-md);
     }
 
-    .album-header {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 10;
-        background: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        padding: var(--spacing-sm) var(--spacing-md);
-    }
-
     .album-modal-close {
-        top: 6.5rem;
+        top: 5.5rem;
     }
 
     .album-carousel {
         flex: 1;
-        margin-top: 4rem;
     }
 
     .carousel-thumbnails {
-        width: 180px;
-        max-height: calc(90vh - 6rem);
+        width: 200px;
+        max-height: calc(90vh - 10rem);
         flex-direction: column;
         justify-content: flex-start;
         padding: var(--spacing-sm);
-        background: rgba(0, 0, 0, 0.3);
+        background: rgba(15, 31, 58, 0.4);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        border-radius: 1rem;
+        border: 1px solid rgba(74, 144, 226, 0.2);
+        border-radius: var(--border-radius);
         overflow-y: auto;
         overflow-x: hidden;
         order: -1;
-        margin-top: 5rem;
     }
 
     .carousel-thumbnails::-webkit-scrollbar {
@@ -1769,14 +1778,12 @@ ul {
         width: 100%;
         height: auto;
         aspect-ratio: 4/5;
+        flex-shrink: 0;
     }
 
     .carousel-image-container {
         min-height: 0;
-    }
-
-    .carousel-image {
-        max-height: calc(90vh - 180px);
+        max-height: calc(90vh - 250px);
     }
 }
 

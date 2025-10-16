@@ -1,8 +1,8 @@
 // Script simplifié pour le défilement automatique des sections portfolio
 class PortfolioAutoScroll {
     constructor() {
-        this.scrollSpeed = 5;
-        this.scrollThreshold = 50;
+        this.scrollSpeed = 8;
+        this.scrollThreshold = 30;
         this.activeScroll = null;
         this.init();
     }
@@ -16,6 +16,10 @@ class PortfolioAutoScroll {
     bindEvents() {
         document.addEventListener('mousemove', (e) => {
             this.handleMouseMove(e);
+        });
+        
+        document.addEventListener('mouseleave', () => {
+            this.handleMouseLeave();
         });
     }
 
@@ -39,6 +43,10 @@ class PortfolioAutoScroll {
                 this.stopScrolling();
             }
         });
+    }
+
+    handleMouseLeave() {
+        this.stopScrolling();
     }
 
     handleSectionHover(container, mouseX, rect) {

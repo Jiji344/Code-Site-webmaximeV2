@@ -552,7 +552,7 @@ ul {
 
 .portfolio-category .category-images {
     display: flex;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-sm);
     overflow-x: auto;
     overflow-y: hidden;
     padding: 0;

@@ -268,7 +268,6 @@ class CMSContentLoader {
         const albumCurrentTitle = document.getElementById('album-current-title');
         const albumCounter = document.getElementById('album-counter');
         const carouselImage = document.getElementById('carousel-image');
-        const carouselImageDescription = document.getElementById('carousel-image-description');
         const thumbnailsContainer = document.getElementById('carousel-thumbnails');
         const prevButton = document.getElementById('carousel-prev');
         const nextButton = document.getElementById('carousel-next');
@@ -286,7 +285,6 @@ class CMSContentLoader {
             carouselImage.src = image.image;
             carouselImage.alt = image.title || image.description || '';
             albumCurrentTitle.textContent = image.title || 'Sans titre';
-            carouselImageDescription.textContent = image.description || '';
             albumCounter.textContent = `${index + 1} / ${images.length}`;
             
             // Mettre à jour les boutons

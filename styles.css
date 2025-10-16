@@ -1225,19 +1225,6 @@ ul {
         0 20px 80px rgba(0, 0, 0, 0.8);
 }
 
-.carousel-info {
-    text-align: center;
-    padding: var(--spacing-sm) var(--spacing-sm) 0 var(--spacing-sm);
-}
-
-.carousel-image-description {
-    font-size: var(--font-size-base);
-    color: var(--color-text-secondary);
-    margin: 0;
-    max-width: 600px;
-    font-style: italic;
-}
-
 .carousel-thumbnails {
     display: flex;
     gap: var(--spacing-xs);
@@ -1740,10 +1727,6 @@ ul {
         max-height: 60vh;
     }
 
-    .carousel-image-description {
-        font-size: var(--font-size-sm);
-    }
-
     .carousel-thumbnails {
         padding: 0 var(--spacing-sm);
     }
@@ -1806,6 +1789,7 @@ ul {
         overflow-y: auto;
         overflow-x: hidden;
         order: -1;
+        margin-top: 5rem;
     }
 
     .carousel-thumbnails::-webkit-scrollbar {

@@ -552,10 +552,11 @@ ul {
 
 .portfolio-category .category-images {
     display: flex;
-    gap: var(--spacing-lg);
+    gap: 0;
     overflow-x: auto;
     overflow-y: hidden;
     padding: 0;
+    margin: 0;
     scroll-behavior: smooth;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -573,6 +574,8 @@ ul {
     flex-shrink: 0;
     width: 300px;
     height: 400px;
+    margin: 0;
+    padding: 0;
 }
 
 /* Indicateurs de scroll supprimés - défilement invisible */
@@ -614,7 +617,8 @@ ul {
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(74, 144, 226, 0.2);
     border-radius: var(--border-radius);
-    padding: var(--spacing-md);
+    padding: 0;
+    margin: 0;
     transition: var(--transition);
     position: relative;
     overflow: hidden;

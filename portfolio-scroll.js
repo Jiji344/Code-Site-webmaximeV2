@@ -2,8 +2,8 @@
 class PortfolioAutoScroll {
     constructor() {
         this.scrollZones = new Map();
-        this.scrollSpeed = 8; // Vitesse beaucoup plus rapide
-        this.scrollThreshold = 30; // Distance en pixels pour déclencher le scroll
+        this.scrollSpeed = 15; // Vitesse ultra-rapide comme un scroll normal
+        this.scrollThreshold = 20; // Distance en pixels pour déclencher le scroll
         this.isScrolling = false;
         this.init();
     }
@@ -79,8 +79,8 @@ class PortfolioAutoScroll {
         const container = zone.container;
         
         // Calculer les zones de déclenchement avec effet de proximité
-        const leftZone = rect.left + 30;
-        const rightZone = rect.right - 30;
+        const leftZone = rect.left + 20;
+        const rightZone = rect.right - 20;
         
         // Vérifier si on peut scroller
         const canScrollLeft = container.scrollLeft > 0;
@@ -88,19 +88,13 @@ class PortfolioAutoScroll {
 
         // Zone gauche avec effet de proximité
         if (mouseX <= leftZone && canScrollLeft) {
-            // Calculer la vitesse basée sur la proximité du bord avec easing
-            const proximity = (leftZone - mouseX) / 30; // 0 à 1
-            const easedProximity = this.easeInOutCubic(proximity);
-            const dynamicSpeed = Math.max(2, this.scrollSpeed * (0.4 + easedProximity * 0.6));
-            this.startScrolling(zone, 'left', dynamicSpeed);
+            // Vitesse constante et rapide comme un scroll normal
+            this.startScrolling(zone, 'left', this.scrollSpeed);
         }
         // Zone droite avec effet de proximité
         else if (mouseX >= rightZone && canScrollRight) {
-            // Calculer la vitesse basée sur la proximité du bord avec easing
-            const proximity = (mouseX - rightZone) / 30; // 0 à 1
-            const easedProximity = this.easeInOutCubic(proximity);
-            const dynamicSpeed = Math.max(2, this.scrollSpeed * (0.4 + easedProximity * 0.6));
-            this.startScrolling(zone, 'right', dynamicSpeed);
+            // Vitesse constante et rapide comme un scroll normal
+            this.startScrolling(zone, 'right', this.scrollSpeed);
         }
         // Zone centrale
         else {
@@ -114,7 +108,6 @@ class PortfolioAutoScroll {
         zone.isScrolling = true;
         zone.scrollDirection = direction;
         zone.currentSpeed = speed;
-        zone.startTime = Date.now();
         
         const scrollInterval = setInterval(() => {
             if (!zone.isScrolling) {
@@ -123,15 +116,9 @@ class PortfolioAutoScroll {
             }
             
             const container = zone.container;
-            const elapsed = Date.now() - zone.startTime;
+            const scrollAmount = direction === 'left' ? -zone.currentSpeed : zone.currentSpeed;
             
-            // Easing pour l'accélération progressive
-            const easeFactor = this.easeOutCubic(Math.min(elapsed / 300, 1)); // 300ms pour atteindre la vitesse max
-            const finalSpeed = zone.currentSpeed * easeFactor;
-            
-            const scrollAmount = direction === 'left' ? -finalSpeed : finalSpeed;
-            
-            // Animation ultra-fluide
+            // Animation ultra-fluide comme un scroll normal
             container.scrollLeft += scrollAmount;
             
             // Arrêter si on atteint les limites
@@ -139,7 +126,7 @@ class PortfolioAutoScroll {
                 (direction === 'right' && container.scrollLeft >= (container.scrollWidth - container.clientWidth))) {
                 this.stopScrolling(zone);
             }
-        }, 8); // 120fps pour fluidité maximale
+        }, 4); // 250fps pour fluidité maximale comme un scroll normal
         
         zone.scrollInterval = scrollInterval;
     }

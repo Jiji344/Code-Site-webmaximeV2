@@ -79,8 +79,8 @@ class PortfolioAutoScroll {
         const container = zone.container;
         
         // Calculer les zones de déclenchement avec effet de proximité
-        const leftZone = rect.left + 60;
-        const rightZone = rect.right - 60;
+        const leftZone = rect.left + 30;
+        const rightZone = rect.right - 30;
         
         // Vérifier si on peut scroller
         const canScrollLeft = container.scrollLeft > 0;
@@ -89,7 +89,7 @@ class PortfolioAutoScroll {
         // Zone gauche avec effet de proximité
         if (mouseX <= leftZone && canScrollLeft) {
             // Calculer la vitesse basée sur la proximité du bord avec easing
-            const proximity = (leftZone - mouseX) / 60; // 0 à 1
+            const proximity = (leftZone - mouseX) / 30; // 0 à 1
             const easedProximity = this.easeInOutCubic(proximity);
             const dynamicSpeed = Math.max(2, this.scrollSpeed * (0.4 + easedProximity * 0.6));
             this.startScrolling(zone, 'left', dynamicSpeed);
@@ -97,7 +97,7 @@ class PortfolioAutoScroll {
         // Zone droite avec effet de proximité
         else if (mouseX >= rightZone && canScrollRight) {
             // Calculer la vitesse basée sur la proximité du bord avec easing
-            const proximity = (mouseX - rightZone) / 60; // 0 à 1
+            const proximity = (mouseX - rightZone) / 30; // 0 à 1
             const easedProximity = this.easeInOutCubic(proximity);
             const dynamicSpeed = Math.max(2, this.scrollSpeed * (0.4 + easedProximity * 0.6));
             this.startScrolling(zone, 'right', dynamicSpeed);

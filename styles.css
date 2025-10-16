@@ -574,37 +574,7 @@ ul {
     height: 400px;
 }
 
-.portfolio-category .scroll-indicator {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    background: rgba(74, 144, 226, 0.8);
-    backdrop-filter: blur(10px);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.2rem;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 10;
-    cursor: pointer;
-}
-
-.portfolio-category .scroll-indicator.left {
-    left: 10px;
-}
-
-.portfolio-category .scroll-indicator.right {
-    right: 10px;
-}
-
-.portfolio-category .scroll-indicator.visible {
-    opacity: 1;
-}
+/* Indicateurs de scroll supprimés - défilement invisible */
 
 /* Layout Bento Box créatif */
 .portfolio-category:nth-child(1) {

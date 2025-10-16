@@ -2,8 +2,8 @@
 class PortfolioAutoScroll {
     constructor() {
         this.scrollZones = new Map();
-        this.scrollSpeed = 2;
-        this.scrollThreshold = 50; // Distance en pixels pour déclencher le scroll
+        this.scrollSpeed = 4; // Vitesse augmentée
+        this.scrollThreshold = 30; // Distance en pixels pour déclencher le scroll
         this.isScrolling = false;
         this.init();
     }
@@ -42,28 +42,8 @@ class PortfolioAutoScroll {
     }
 
     createScrollIndicators(section, container) {
-        // Indicateur gauche
-        const leftIndicator = document.createElement('div');
-        leftIndicator.className = 'scroll-indicator left';
-        leftIndicator.innerHTML = '←';
-        leftIndicator.style.display = 'none';
-        section.appendChild(leftIndicator);
-
-        // Indicateur droit
-        const rightIndicator = document.createElement('div');
-        rightIndicator.className = 'scroll-indicator right';
-        rightIndicator.innerHTML = '→';
-        rightIndicator.style.display = 'none';
-        section.appendChild(rightIndicator);
-
-        // Événements pour les indicateurs
-        leftIndicator.addEventListener('click', () => {
-            this.scrollToDirection(container, 'left');
-        });
-
-        rightIndicator.addEventListener('click', () => {
-            this.scrollToDirection(container, 'right');
-        });
+        // Plus d'indicateurs visuels - défilement invisible
+        // Le défilement se fait automatiquement au survol
     }
 
     bindEvents() {
@@ -97,44 +77,41 @@ class PortfolioAutoScroll {
 
     handleSectionHover(section, zone, mouseX, rect) {
         const container = zone.container;
-        const leftIndicator = zone.leftIndicator;
-        const rightIndicator = zone.rightIndicator;
         
-        // Calculer les zones de déclenchement (plus petites pour être plus réactives)
-        const leftZone = rect.left + 30;
-        const rightZone = rect.right - 30;
+        // Calculer les zones de déclenchement avec effet de proximité
+        const leftZone = rect.left + 40;
+        const rightZone = rect.right - 40;
         
         // Vérifier si on peut scroller
         const canScrollLeft = container.scrollLeft > 0;
         const canScrollRight = container.scrollLeft < (container.scrollWidth - container.clientWidth - 1);
 
-        console.log(`Mouse: ${mouseX}, LeftZone: ${leftZone}, RightZone: ${rightZone}`);
-        console.log(`Can scroll left: ${canScrollLeft}, Can scroll right: ${canScrollRight}`);
-
-        // Zone gauche
+        // Zone gauche avec effet de proximité
         if (mouseX <= leftZone && canScrollLeft) {
-            this.startScrolling(zone, 'left');
-            this.showIndicator(leftIndicator);
-            this.hideIndicator(rightIndicator);
+            // Calculer la vitesse basée sur la proximité du bord
+            const proximity = (leftZone - mouseX) / 40; // 0 à 1
+            const dynamicSpeed = Math.max(2, this.scrollSpeed * (0.5 + proximity * 0.5));
+            this.startScrolling(zone, 'left', dynamicSpeed);
         }
-        // Zone droite
+        // Zone droite avec effet de proximité
         else if (mouseX >= rightZone && canScrollRight) {
-            this.startScrolling(zone, 'right');
-            this.showIndicator(rightIndicator);
-            this.hideIndicator(leftIndicator);
+            // Calculer la vitesse basée sur la proximité du bord
+            const proximity = (mouseX - rightZone) / 40; // 0 à 1
+            const dynamicSpeed = Math.max(2, this.scrollSpeed * (0.5 + proximity * 0.5));
+            this.startScrolling(zone, 'right', dynamicSpeed);
         }
         // Zone centrale
         else {
             this.stopScrolling(zone);
-            this.hideAllIndicators(zone);
         }
     }
 
-    startScrolling(zone, direction) {
+    startScrolling(zone, direction, speed = this.scrollSpeed) {
         if (zone.isScrolling) return;
         
         zone.isScrolling = true;
         zone.scrollDirection = direction;
+        zone.currentSpeed = speed;
         
         const scrollInterval = setInterval(() => {
             if (!zone.isScrolling) {
@@ -143,8 +120,9 @@ class PortfolioAutoScroll {
             }
             
             const container = zone.container;
-            const scrollAmount = direction === 'left' ? -this.scrollSpeed : this.scrollSpeed;
+            const scrollAmount = direction === 'left' ? -zone.currentSpeed : zone.currentSpeed;
             
+            // Animation fluide avec easing
             container.scrollLeft += scrollAmount;
             
             // Arrêter si on atteint les limites
@@ -152,7 +130,7 @@ class PortfolioAutoScroll {
                 (direction === 'right' && container.scrollLeft >= (container.scrollWidth - container.clientWidth))) {
                 this.stopScrolling(zone);
             }
-        }, 16); // ~60fps
+        }, 16); // ~60fps pour fluidité maximale
         
         zone.scrollInterval = scrollInterval;
     }
@@ -169,43 +147,7 @@ class PortfolioAutoScroll {
     stopAllScrolling() {
         this.scrollZones.forEach(zone => {
             this.stopScrolling(zone);
-            this.hideAllIndicators(zone);
         });
-    }
-
-    scrollToDirection(container, direction) {
-        const scrollAmount = 300; // Distance de scroll
-        const targetScroll = direction === 'left' 
-            ? Math.max(0, container.scrollLeft - scrollAmount)
-            : Math.min(container.scrollWidth - container.clientWidth, container.scrollLeft + scrollAmount);
-        
-        container.scrollTo({
-            left: targetScroll,
-            behavior: 'smooth'
-        });
-    }
-
-    showIndicator(indicator) {
-        if (indicator) {
-            indicator.style.display = 'flex';
-            indicator.classList.add('visible');
-        }
-    }
-
-    hideIndicator(indicator) {
-        if (indicator) {
-            indicator.classList.remove('visible');
-            setTimeout(() => {
-                if (!indicator.classList.contains('visible')) {
-                    indicator.style.display = 'none';
-                }
-            }, 300);
-        }
-    }
-
-    hideAllIndicators(zone) {
-        this.hideIndicator(zone.leftIndicator);
-        this.hideIndicator(zone.rightIndicator);
     }
 }
 

@@ -165,6 +165,13 @@ class CMSContentLoader {
             const imageCard = this.createImageCard(item);
             imagesContainer.appendChild(imageCard);
         });
+
+        // Réinitialiser le système de scroll automatique après ajout de contenu
+        if (window.portfolioAutoScroll) {
+            setTimeout(() => {
+                window.portfolioAutoScroll.setupScrollZones();
+            }, 100);
+        }
     }
 
     createAlbumCard(albumName, images) {
@@ -286,6 +293,12 @@ class CMSContentLoader {
             carouselImage.alt = image.title || image.description || '';
             albumCurrentTitle.textContent = image.title || 'Sans titre';
             albumCounter.textContent = `${index + 1} / ${images.length}`;
+            
+            // Ajouter le titre à l'attribut data-title du conteneur
+            const imageContainer = document.querySelector('.carousel-image-container');
+            if (imageContainer) {
+                imageContainer.setAttribute('data-title', image.title || 'Sans titre');
+            }
             
             // Mettre à jour les boutons
             prevButton.disabled = index === 0;

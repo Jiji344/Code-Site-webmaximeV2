@@ -541,6 +541,66 @@ ul {
     gap: var(--spacing-md);
     max-width: var(--container-width);
     margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.portfolio-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.portfolio-section .category-images {
+    display: flex;
+    gap: var(--spacing-lg);
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: var(--spacing-md) 0;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.portfolio-section .category-images::-webkit-scrollbar {
+    display: none;
+}
+
+.portfolio-section .album-card,
+.portfolio-section .image-card {
+    flex-shrink: 0;
+    width: 300px;
+}
+
+.portfolio-section .scroll-indicator {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background: rgba(74, 144, 226, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+    cursor: pointer;
+}
+
+.portfolio-section .scroll-indicator.left {
+    left: 10px;
+}
+
+.portfolio-section .scroll-indicator.right {
+    right: 10px;
+}
+
+.portfolio-section .scroll-indicator.visible {
+    opacity: 1;
 }
 
 /* Layout Bento Box créatif */
@@ -1135,6 +1195,10 @@ ul {
     gap: var(--spacing-md);
 }
 
+.album-header .album-current-title {
+    display: none;
+}
+
 .album-title {
     font-family: 'GoodButter', sans-serif;
     font-size: var(--font-size-lg);
@@ -1182,6 +1246,19 @@ ul {
     min-height: 0;
     padding: 1rem;
     position: relative;
+}
+
+.carousel-image-container::after {
+    content: attr(data-title);
+    position: absolute;
+    bottom: -2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffffff;
+    font-size: var(--font-size-md);
+    text-align: center;
+    white-space: nowrap;
+    z-index: 5;
 }
 
 .carousel-image {
@@ -1704,6 +1781,11 @@ ul {
         text-align: center;
     }
 
+    .carousel-image-container::after {
+        bottom: -1.5rem;
+        font-size: 0.9rem;
+    }
+
     .carousel-thumbnails {
         padding: var(--spacing-md) var(--spacing-sm);
         margin-top: 1rem;
@@ -1807,7 +1889,7 @@ ul {
         min-height: 0;
         position: absolute;
         top: 50%;
-        left: 40%;
+        left: 44%;
         transform: translate(-50%, -50%);
         width: calc(100% - 200px);
         height: calc(100vh - 200px);

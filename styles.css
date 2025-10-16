@@ -552,7 +552,7 @@ ul {
 
 .portfolio-category .category-images {
     display: flex;
-    gap: 0;
+    gap: var(--spacing-lg);
     overflow-x: auto;
     overflow-y: hidden;
     padding: 0;
@@ -563,6 +563,10 @@ ul {
     max-width: 100%;
     height: auto;
     position: relative;
+    margin-left: calc(-1 * var(--spacing-md));
+    margin-right: calc(-1 * var(--spacing-md));
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
 }
 
 .portfolio-category .category-images::-webkit-scrollbar {
@@ -617,7 +621,7 @@ ul {
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(74, 144, 226, 0.2);
     border-radius: var(--border-radius);
-    padding: 0;
+    padding: var(--spacing-md);
     margin: 0;
     transition: var(--transition);
     position: relative;

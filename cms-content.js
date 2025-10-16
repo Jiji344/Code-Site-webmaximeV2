@@ -265,9 +265,9 @@ class CMSContentLoader {
     openAlbumCarousel(albumName, images) {
         const modal = document.getElementById('album-modal');
         const albumTitle = document.getElementById('album-title');
+        const albumCurrentTitle = document.getElementById('album-current-title');
         const albumCounter = document.getElementById('album-counter');
         const carouselImage = document.getElementById('carousel-image');
-        const carouselImageTitle = document.getElementById('carousel-image-title');
         const carouselImageDescription = document.getElementById('carousel-image-description');
         const thumbnailsContainer = document.getElementById('carousel-thumbnails');
         const prevButton = document.getElementById('carousel-prev');
@@ -285,7 +285,7 @@ class CMSContentLoader {
             
             carouselImage.src = image.image;
             carouselImage.alt = image.title || image.description || '';
-            carouselImageTitle.textContent = image.title || '';
+            albumCurrentTitle.textContent = image.title || 'Sans titre';
             carouselImageDescription.textContent = image.description || '';
             albumCounter.textContent = `${index + 1} / ${images.length}`;
             

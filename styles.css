@@ -1199,10 +1199,11 @@ ul {
 .carousel-thumbnails {
     display: flex;
     gap: var(--spacing-xs);
-    justify-content: center;
-    padding: var(--spacing-sm) var(--spacing-md);
+    justify-content: flex-start;
+    padding: var(--spacing-md) var(--spacing-sm);
     overflow-x: auto;
     max-height: 120px;
+    padding-left: var(--spacing-md);
 }
 
 .carousel-thumbnails::-webkit-scrollbar {
@@ -1702,15 +1703,18 @@ ul {
     }
 
     .carousel-thumbnails {
-        padding: var(--spacing-sm);
+        padding: var(--spacing-md) var(--spacing-sm);
         margin-top: 1rem;
+        justify-content: flex-start;
+        padding-left: var(--spacing-md);
     }
 
     .carousel-thumbnail {
         width: 70px;
         height: 70px;
         flex-shrink: 0;
-        margin: 0 2px;
+        margin: 0 4px;
+        border-radius: 0.5rem;
     }
 
     .album-card-title {
@@ -1799,7 +1803,7 @@ ul {
         min-height: 0;
         position: absolute;
         top: 50%;
-        left: 50%;
+        left: 45%;
         transform: translate(-50%, -50%);
         width: calc(100% - 200px);
         height: calc(100vh - 200px);

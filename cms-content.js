@@ -97,24 +97,37 @@ class CMSContentLoader {
     displayPortfolioImages() {
         console.log('Affichage des images du portfolio...', this.portfolioData);
         
-        // Grouper les images par catégorie
-        const imagesByCategory = {};
+        // Grouper les images par catégorie puis par album
+        const dataByCategory = {};
         this.portfolioData.forEach(item => {
             if (item.category && item.image) {
-                if (!imagesByCategory[item.category]) {
-                    imagesByCategory[item.category] = [];
+                if (!dataByCategory[item.category]) {
+                    dataByCategory[item.category] = {
+                        albums: {},
+                        singleImages: []
+                    };
                 }
-                imagesByCategory[item.category].push(item);
+                
+                // Si l'image a un album, la grouper par album
+                if (item.album) {
+                    if (!dataByCategory[item.category].albums[item.album]) {
+                        dataByCategory[item.category].albums[item.album] = [];
+                    }
+                    dataByCategory[item.category].albums[item.album].push(item);
+                } else {
+                    // Sinon, l'ajouter aux images individuelles
+                    dataByCategory[item.category].singleImages.push(item);
+                }
             }
         });
 
-        // Remplacer les images dans chaque section
-        Object.keys(imagesByCategory).forEach(category => {
-            this.updateCategoryImages(category, imagesByCategory[category]);
+        // Afficher les données dans chaque section
+        Object.keys(dataByCategory).forEach(category => {
+            this.updateCategoryContent(category, dataByCategory[category]);
         });
     }
 
-    updateCategoryImages(category, images) {
+    updateCategoryContent(category, data) {
         // Trouver la section correspondante
         const categorySection = document.querySelector(`[data-category="${category}"]`);
         if (!categorySection) {
@@ -129,65 +142,210 @@ class CMSContentLoader {
             return;
         }
 
-        // Ajouter les images du CMS (sans supprimer les images statiques)
-        images.forEach((item) => {
-            // Créer la structure complète comme les images statiques
-            const imageCard = document.createElement('div');
-            imageCard.className = 'image-card';
-            
-            // Créer l'image
-            const imgElement = document.createElement('img');
-            imgElement.src = item.image;
-            imgElement.alt = item.title || item.description || '';
-            imgElement.loading = 'lazy';
-            imgElement.width = 400;
-            imgElement.height = 600;
-            
-            // Créer l'overlay avec le bouton d'agrandissement
-            const overlay = document.createElement('div');
-            overlay.className = 'image-overlay';
-            
-            const expandButton = document.createElement('button');
-            expandButton.className = 'image-expand';
-            expandButton.setAttribute('aria-label', 'Agrandir l\'image');
-            expandButton.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="15 3 21 3 21 9"></polyline>
-                    <polyline points="9 21 3 21 3 15"></polyline>
-                    <line x1="21" y1="3" x2="14" y2="10"></line>
-                    <line x1="3" y1="21" x2="10" y2="14"></line>
-                </svg>
-            `;
-            
-            // Événement pour ouvrir la modal (utilise la modal existante du site)
-            expandButton.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const modal = document.getElementById('image-modal');
-                const modalImg = document.getElementById('modal-image');
-                const modalClose = document.getElementById('modal-close');
-                
-                if (modal && modalImg) {
-                    modalImg.src = item.image;
-                    modalImg.alt = item.title || item.description || '';
-                    modal.classList.add('active');
-                    
-                    // Empêcher le scroll du body
-                    document.body.style.overflow = 'hidden';
-                    
-                    // Focus sur le bouton de fermeture
-                    if (modalClose) {
-                        modalClose.focus();
-                    }
-                }
-            });
-            
-            overlay.appendChild(expandButton);
-            imageCard.appendChild(imgElement);
-            imageCard.appendChild(overlay);
-            
-            // Ajouter au conteneur
+        // Ajouter d'abord les cartes d'albums
+        Object.keys(data.albums).forEach(albumName => {
+            const albumImages = data.albums[albumName];
+            const albumCard = this.createAlbumCard(albumName, albumImages);
+            imagesContainer.appendChild(albumCard);
+        });
+
+        // Puis ajouter les images individuelles
+        data.singleImages.forEach((item) => {
+            const imageCard = this.createImageCard(item);
             imagesContainer.appendChild(imageCard);
         });
+    }
+
+    createAlbumCard(albumName, images) {
+        const albumCard = document.createElement('div');
+        albumCard.className = 'album-card';
+        
+        // Image de couverture (première image de l'album)
+        const coverImage = document.createElement('img');
+        coverImage.className = 'album-card-image';
+        coverImage.src = images[0].image;
+        coverImage.alt = albumName;
+        coverImage.loading = 'lazy';
+        
+        // Contenu de la carte
+        const cardContent = document.createElement('div');
+        cardContent.className = 'album-card-content';
+        
+        const albumTitle = document.createElement('h4');
+        albumTitle.className = 'album-card-title';
+        albumTitle.textContent = albumName;
+        
+        const albumCount = document.createElement('p');
+        albumCount.className = 'album-card-count';
+        albumCount.textContent = `${images.length} photo${images.length > 1 ? 's' : ''}`;
+        
+        cardContent.appendChild(albumTitle);
+        cardContent.appendChild(albumCount);
+        
+        albumCard.appendChild(coverImage);
+        albumCard.appendChild(cardContent);
+        
+        // Événement pour ouvrir le carousel
+        albumCard.addEventListener('click', () => {
+            this.openAlbumCarousel(albumName, images);
+        });
+        
+        return albumCard;
+    }
+
+    createImageCard(item) {
+        // Créer la structure complète comme les images statiques
+        const imageCard = document.createElement('div');
+        imageCard.className = 'image-card';
+        
+        // Créer l'image
+        const imgElement = document.createElement('img');
+        imgElement.src = item.image;
+        imgElement.alt = item.title || item.description || '';
+        imgElement.loading = 'lazy';
+        imgElement.width = 400;
+        imgElement.height = 600;
+        
+        // Créer l'overlay avec le bouton d'agrandissement
+        const overlay = document.createElement('div');
+        overlay.className = 'image-overlay';
+        
+        const expandButton = document.createElement('button');
+        expandButton.className = 'image-expand';
+        expandButton.setAttribute('aria-label', 'Agrandir l\'image');
+        expandButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <polyline points="9 21 3 21 3 15"></polyline>
+                <line x1="21" y1="3" x2="14" y2="10"></line>
+                <line x1="3" y1="21" x2="10" y2="14"></line>
+            </svg>
+        `;
+        
+        // Événement pour ouvrir la modal (utilise la modal existante du site)
+        expandButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-image');
+            const modalClose = document.getElementById('modal-close');
+            
+            if (modal && modalImg) {
+                modalImg.src = item.image;
+                modalImg.alt = item.title || item.description || '';
+                modal.classList.add('active');
+                
+                // Empêcher le scroll du body
+                document.body.style.overflow = 'hidden';
+                
+                // Focus sur le bouton de fermeture
+                if (modalClose) {
+                    modalClose.focus();
+                }
+            }
+        });
+        
+        overlay.appendChild(expandButton);
+        imageCard.appendChild(imgElement);
+        imageCard.appendChild(overlay);
+        
+        return imageCard;
+    }
+
+    openAlbumCarousel(albumName, images) {
+        const modal = document.getElementById('album-modal');
+        const albumTitle = document.getElementById('album-title');
+        const albumCounter = document.getElementById('album-counter');
+        const carouselImage = document.getElementById('carousel-image');
+        const carouselImageTitle = document.getElementById('carousel-image-title');
+        const carouselImageDescription = document.getElementById('carousel-image-description');
+        const thumbnailsContainer = document.getElementById('carousel-thumbnails');
+        const prevButton = document.getElementById('carousel-prev');
+        const nextButton = document.getElementById('carousel-next');
+        
+        if (!modal) return;
+        
+        // État du carousel
+        let currentIndex = 0;
+        
+        // Fonction pour afficher une image
+        const showImage = (index) => {
+            currentIndex = index;
+            const image = images[index];
+            
+            carouselImage.src = image.image;
+            carouselImage.alt = image.title || image.description || '';
+            carouselImageTitle.textContent = image.title || '';
+            carouselImageDescription.textContent = image.description || '';
+            albumCounter.textContent = `${index + 1} / ${images.length}`;
+            
+            // Mettre à jour les boutons
+            prevButton.disabled = index === 0;
+            nextButton.disabled = index === images.length - 1;
+            
+            // Mettre à jour les miniatures actives
+            document.querySelectorAll('.carousel-thumbnail').forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+        };
+        
+        // Générer les miniatures
+        thumbnailsContainer.innerHTML = '';
+        images.forEach((image, index) => {
+            const thumbnail = document.createElement('img');
+            thumbnail.className = 'carousel-thumbnail';
+            thumbnail.src = image.image;
+            thumbnail.alt = image.title || '';
+            thumbnail.addEventListener('click', () => showImage(index));
+            thumbnailsContainer.appendChild(thumbnail);
+        });
+        
+        // Configuration du carousel
+        albumTitle.textContent = albumName;
+        showImage(0);
+        
+        // Navigation
+        prevButton.onclick = () => {
+            if (currentIndex > 0) showImage(currentIndex - 1);
+        };
+        
+        nextButton.onclick = () => {
+            if (currentIndex < images.length - 1) showImage(currentIndex + 1);
+        };
+        
+        // Navigation au clavier
+        const handleKeyboard = (e) => {
+            if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                showImage(currentIndex - 1);
+            } else if (e.key === 'ArrowRight' && currentIndex < images.length - 1) {
+                showImage(currentIndex + 1);
+            } else if (e.key === 'Escape') {
+                closeCarousel();
+            }
+        };
+        
+        // Fermer le carousel
+        const closeCarousel = () => {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            document.removeEventListener('keydown', handleKeyboard);
+        };
+        
+        // Bouton de fermeture
+        document.getElementById('album-modal-close').onclick = closeCarousel;
+        
+        // Clic en dehors de la modal
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                closeCarousel();
+            }
+        };
+        
+        // Ajouter l'écoute du clavier
+        document.addEventListener('keydown', handleKeyboard);
+        
+        // Ouvrir la modal
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
 
 }

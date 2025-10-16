@@ -345,6 +345,49 @@
         <img src="" alt="" class="modal-image" id="modal-image">
     </div>
 
+    <!-- Modal Album Carousel -->
+    <div class="album-modal" id="album-modal">
+        <button class="album-modal-close" id="album-modal-close" aria-label="Fermer l'album">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        
+        <div class="album-modal-content">
+            <div class="album-header">
+                <h3 class="album-title" id="album-title">Album</h3>
+                <p class="album-counter" id="album-counter">1 / 1</p>
+            </div>
+            
+            <div class="album-carousel">
+                <button class="carousel-button carousel-prev" id="carousel-prev" aria-label="Photo précédente">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                
+                <div class="carousel-image-container">
+                    <img src="" alt="" class="carousel-image" id="carousel-image">
+                    <div class="carousel-info">
+                        <h4 class="carousel-image-title" id="carousel-image-title"></h4>
+                        <p class="carousel-image-description" id="carousel-image-description"></p>
+                    </div>
+                </div>
+                
+                <button class="carousel-button carousel-next" id="carousel-next" aria-label="Photo suivante">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="carousel-thumbnails" id="carousel-thumbnails">
+                <!-- Miniatures générées dynamiquement -->
+            </div>
+        </div>
+    </div>
+
     <!-- Netlify Identity Widget -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     

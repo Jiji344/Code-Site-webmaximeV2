@@ -1068,6 +1068,288 @@ ul {
         0 20px 80px rgba(0, 0, 0, 0.8);
 }
 
+/* ===== MODAL ALBUM CAROUSEL ===== */
+.album-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.98);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    z-index: var(--z-modal);
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+}
+
+.album-modal.active {
+    display: flex;
+}
+
+.album-modal-close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    width: 3rem;
+    height: 3rem;
+    background: rgba(74, 144, 226, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--color-text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    z-index: 10;
+    box-shadow: 
+        0 0 20px rgba(74, 144, 226, 0.6),
+        0 4px 12px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    border: none;
+}
+
+.album-modal-close:hover {
+    background: var(--color-primary);
+    box-shadow: 
+        0 0 30px rgba(74, 144, 226, 0.8),
+        0 0 50px rgba(74, 144, 226, 0.5),
+        0 4px 16px rgba(0, 0, 0, 0.5);
+    transform: rotate(90deg);
+}
+
+.album-modal-content {
+    width: 100%;
+    max-width: 1400px;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.album-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--spacing-md);
+}
+
+.album-title {
+    font-family: 'GoodButter', sans-serif;
+    font-size: var(--font-size-lg);
+    color: var(--color-text);
+    margin: 0;
+}
+
+.album-counter {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.album-carousel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+    position: relative;
+}
+
+.carousel-button {
+    width: 3.5rem;
+    height: 3.5rem;
+    background: rgba(74, 144, 226, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--color-text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    cursor: pointer;
+    border: none;
+    box-shadow: 
+        0 0 20px rgba(74, 144, 226, 0.6),
+        0 4px 12px rgba(0, 0, 0, 0.4);
+    z-index: 2;
+}
+
+.carousel-button:hover {
+    background: var(--color-primary);
+    box-shadow: 
+        0 0 30px rgba(74, 144, 226, 0.8),
+        0 0 50px rgba(74, 144, 226, 0.5),
+        0 4px 16px rgba(0, 0, 0, 0.5);
+    transform: scale(1.1);
+}
+
+.carousel-button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.carousel-button:disabled:hover {
+    transform: none;
+}
+
+.carousel-image-container {
+    flex: 1;
+    max-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.carousel-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: var(--border-radius);
+    box-shadow: 
+        0 0 60px rgba(74, 144, 226, 0.3),
+        0 20px 80px rgba(0, 0, 0, 0.8);
+}
+
+.carousel-info {
+    text-align: center;
+    padding: var(--spacing-sm);
+}
+
+.carousel-image-title {
+    font-size: var(--font-size-md);
+    color: var(--color-text);
+    margin: 0 0 0.5rem 0;
+}
+
+.carousel-image-description {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 600px;
+}
+
+.carousel-thumbnails {
+    display: flex;
+    gap: var(--spacing-xs);
+    justify-content: center;
+    padding: 0 var(--spacing-md);
+    overflow-x: auto;
+    max-height: 100px;
+}
+
+.carousel-thumbnails::-webkit-scrollbar {
+    height: 6px;
+}
+
+.carousel-thumbnails::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.carousel-thumbnails::-webkit-scrollbar-thumb {
+    background: rgba(74, 144, 226, 0.5);
+    border-radius: 3px;
+}
+
+.carousel-thumbnails::-webkit-scrollbar-thumb:hover {
+    background: rgba(74, 144, 226, 0.8);
+}
+
+.carousel-thumbnail {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 2px solid transparent;
+    opacity: 0.5;
+}
+
+.carousel-thumbnail:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.carousel-thumbnail.active {
+    opacity: 1;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 20px rgba(74, 144, 226, 0.6);
+}
+
+/* Style des cartes d'albums */
+.album-card {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    background: rgba(15, 31, 58, 0.3);
+    backdrop-filter: blur(var(--blur-glass));
+    -webkit-backdrop-filter: blur(var(--blur-glass));
+    border: 1px solid rgba(74, 144, 226, 0.2);
+    transition: var(--transition);
+}
+
+.album-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(74, 144, 226, 0.5);
+    box-shadow: 
+        0 0 30px rgba(74, 144, 226, 0.3),
+        0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.album-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: conic-gradient(
+        from 0deg at 50% 50%,
+        transparent 0deg,
+        rgba(74, 144, 226, 0.1) 90deg,
+        rgba(90, 185, 234, 0.1) 180deg,
+        rgba(126, 200, 227, 0.1) 270deg,
+        transparent 360deg
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.album-card:hover::before {
+    opacity: 1;
+    animation: rotateGradient 3s linear infinite;
+}
+
+.album-card-image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+}
+
+.album-card-content {
+    padding: var(--spacing-sm);
+    position: relative;
+    z-index: 2;
+}
+
+.album-card-title {
+    font-family: 'GoodButter', sans-serif;
+    font-size: var(--font-size-md);
+    color: var(--color-text);
+    margin: 0 0 0.5rem 0;
+}
+
+.album-card-count {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
 /* ===== RESPONSIVE ===== */
 
 /* Tablettes */
@@ -1372,6 +1654,77 @@ ul {
 
     .form-button {
         padding: 0.875rem 1.5rem;
+    }
+
+    /* Carousel mobile */
+    .album-modal-content {
+        height: 95vh;
+    }
+
+    .album-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 0 var(--spacing-sm);
+    }
+
+    .album-title {
+        font-size: var(--font-size-md);
+    }
+
+    .album-counter {
+        font-size: var(--font-size-base);
+    }
+
+    .carousel-button {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .carousel-button svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .album-modal-close {
+        top: 1rem;
+        right: 1rem;
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .album-modal-close svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .carousel-image-container {
+        max-height: 60vh;
+    }
+
+    .carousel-image-title {
+        font-size: var(--font-size-base);
+    }
+
+    .carousel-image-description {
+        font-size: var(--font-size-sm);
+    }
+
+    .carousel-thumbnails {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .carousel-thumbnail {
+        width: 60px;
+        height: 60px;
+    }
+
+    .album-card-title {
+        font-size: var(--font-size-base);
+    }
+
+    .album-card-count {
+        font-size: var(--font-size-xs);
     }
 }
 

@@ -24,6 +24,10 @@ class PortfolioAutoScroll {
             const categoryImages = section.querySelector('.category-images');
             if (!categoryImages) return;
 
+            // S'assurer que la section a une position relative
+            section.style.position = 'relative';
+            section.style.overflow = 'hidden';
+
             // Créer les indicateurs de scroll
             this.createScrollIndicators(section, categoryImages);
             
@@ -96,13 +100,16 @@ class PortfolioAutoScroll {
         const leftIndicator = zone.leftIndicator;
         const rightIndicator = zone.rightIndicator;
         
-        // Calculer les zones de déclenchement
-        const leftZone = rect.left + this.scrollThreshold;
-        const rightZone = rect.right - this.scrollThreshold;
+        // Calculer les zones de déclenchement (plus petites pour être plus réactives)
+        const leftZone = rect.left + 30;
+        const rightZone = rect.right - 30;
         
         // Vérifier si on peut scroller
         const canScrollLeft = container.scrollLeft > 0;
-        const canScrollRight = container.scrollLeft < (container.scrollWidth - container.clientWidth);
+        const canScrollRight = container.scrollLeft < (container.scrollWidth - container.clientWidth - 1);
+
+        console.log(`Mouse: ${mouseX}, LeftZone: ${leftZone}, RightZone: ${rightZone}`);
+        console.log(`Can scroll left: ${canScrollLeft}, Can scroll right: ${canScrollRight}`);
 
         // Zone gauche
         if (mouseX <= leftZone && canScrollLeft) {

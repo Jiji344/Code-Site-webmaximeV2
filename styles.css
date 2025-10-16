@@ -1127,6 +1127,68 @@ ul {
     gap: var(--spacing-sm);
 }
 
+/* Desktop layout avec miniatures à gauche */
+@media screen and (min-width: 968px) {
+    .album-modal-content {
+        flex-direction: row;
+        gap: var(--spacing-md);
+    }
+    
+    .album-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: 0 0 1rem 1rem;
+    }
+    
+    .album-carousel {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--spacing-md);
+        margin-top: 4rem;
+    }
+    
+    .carousel-image-container {
+        flex: 1;
+        max-height: 70vh;
+        margin-bottom: 0;
+    }
+    
+    .carousel-thumbnails {
+        width: 200px;
+        max-height: 70vh;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: var(--spacing-sm);
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 1rem;
+        margin-top: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    
+    .carousel-thumbnails::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .carousel-thumbnail {
+        width: 80px;
+        height: 80px;
+        margin-bottom: var(--spacing-xs);
+    }
+}
+
 .album-header {
     display: flex;
     justify-content: space-between;
@@ -1253,8 +1315,18 @@ ul {
     margin-top: auto;
 }
 
+/* Mobile : garder le layout vertical */
+@media screen and (max-width: 967px) {
+    .carousel-thumbnails {
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+}
+
 .carousel-thumbnails::-webkit-scrollbar {
     height: 6px;
+    width: 6px;
 }
 
 .carousel-thumbnails::-webkit-scrollbar-track {

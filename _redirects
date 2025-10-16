@@ -1,3 +1,4 @@
 # Redirection pour l'admin Netlify CMS
 /admin/*  /admin/index.html  200
 
+

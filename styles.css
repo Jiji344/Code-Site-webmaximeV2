@@ -1202,6 +1202,7 @@ ul {
     justify-content: flex-start;
     padding: var(--spacing-md) var(--spacing-sm);
     overflow-x: auto;
+    overflow-y: hidden;
     max-height: 120px;
     padding-left: var(--spacing-md);
 }
@@ -1663,10 +1664,11 @@ ul {
     }
 
     .album-current-title {
-        font-size: var(--font-size-base);
+        font-size: 0.9rem;
         order: 3;
         flex-basis: 100%;
         color: #ffffff;
+        margin-top: 0.5rem;
     }
 
     .album-counter {
@@ -1676,7 +1678,7 @@ ul {
     }
 
     .album-modal-close {
-        top: 1rem;
+        top: 0.5rem;
         right: 1rem;
         width: 2.5rem;
         height: 2.5rem;
@@ -1698,7 +1700,7 @@ ul {
 
     .carousel-info {
         order: 2;
-        margin-top: 1rem;
+        margin-top: 0.5rem;
         text-align: center;
     }
 
@@ -1707,6 +1709,8 @@ ul {
         margin-top: 1rem;
         justify-content: flex-start;
         padding-left: var(--spacing-md);
+        overflow-y: hidden;
+        max-height: none;
     }
 
     .carousel-thumbnail {
@@ -1803,7 +1807,7 @@ ul {
         min-height: 0;
         position: absolute;
         top: 50%;
-        left: 45%;
+        left: 40%;
         transform: translate(-50%, -50%);
         width: calc(100% - 200px);
         height: calc(100vh - 200px);

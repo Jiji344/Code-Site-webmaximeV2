@@ -237,6 +237,87 @@ if (window.location.search.includes('success')) {
     window.history.replaceState({}, document.title, window.location.pathname);
 }
 
+/* ===== COPIE AUTOMATIQUE DES COORDONNÉES ===== */
+// Fonction pour copier du texte dans le presse-papiers
+async function copyToClipboard(text) {
+    try {
+        await navigator.clipboard.writeText(text);
+        return true;
+    } catch (err) {
+        // Fallback pour les navigateurs plus anciens
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            return true;
+        } catch (err) {
+            document.body.removeChild(textArea);
+            return false;
+        }
+    }
+}
+
+// Gestionnaire pour les liens de contact
+document.addEventListener('DOMContentLoaded', function() {
+    const phoneLink = document.getElementById('phone-link');
+    const emailLink = document.getElementById('email-link');
+    
+    if (phoneLink) {
+        phoneLink.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const phoneNumber = this.getAttribute('data-copy');
+            const success = await copyToClipboard(phoneNumber);
+            
+            if (success) {
+                // Effet visuel de copie
+                this.classList.add('copied');
+                showNotification('📞 Numéro de téléphone copié !', 'success');
+                
+                // Retirer l'effet après l'animation
+                setTimeout(() => {
+                    this.classList.remove('copied');
+                }, 600);
+                
+                // Ouvrir l'app de téléphone après un court délai
+                setTimeout(() => {
+                    window.location.href = `tel:${phoneNumber}`;
+                }, 1000);
+            } else {
+                showNotification('Erreur lors de la copie', 'error');
+            }
+        });
+    }
+    
+    if (emailLink) {
+        emailLink.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const email = this.getAttribute('data-copy');
+            const success = await copyToClipboard(email);
+            
+            if (success) {
+                // Effet visuel de copie
+                this.classList.add('copied');
+                showNotification('📧 Adresse email copiée !', 'success');
+                
+                // Retirer l'effet après l'animation
+                setTimeout(() => {
+                    this.classList.remove('copied');
+                }, 600);
+                
+                // Ouvrir l'app de mail après un court délai
+                setTimeout(() => {
+                    window.location.href = `mailto:${email}`;
+                }, 1000);
+            } else {
+                showNotification('Erreur lors de la copie', 'error');
+            }
+        });
+    }
+});
+
 /* ===== SYSTÈME DE NOTIFICATION ===== */
 function showNotification(message, type = 'success') {
     // Supprimer les notifications existantes

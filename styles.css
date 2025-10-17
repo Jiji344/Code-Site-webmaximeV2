@@ -1029,11 +1029,43 @@ ul {
 .contact-link {
     color: var(--color-text-secondary);
     transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
 }
 
 .contact-link:hover,
 .contact-link:focus {
     color: var(--color-primary);
+    transform: translateY(-1px);
+    background: rgba(74, 144, 226, 0.1);
+}
+
+.contact-link:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+}
+
+/* Effet de copie */
+.contact-link.copied {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: white;
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+    animation: copySuccess 0.6s ease-out;
+}
+
+@keyframes copySuccess {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .contact-text {

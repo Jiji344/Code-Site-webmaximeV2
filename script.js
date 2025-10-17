@@ -190,47 +190,43 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 /* ===== ANIMATION AU SCROLL - DÉSACTIVÉ ===== */
 // Animations désactivées selon les préférences utilisateur
 
-/* ===== GESTION DU FORMULAIRE DE CONTACT ===== */
+/* ===== GESTION DU FORMULAIRE DE CONTACT (Netlify Forms) ===== */
 const contactForm = document.getElementById('contact-form');
 
 if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        // Récupérer les valeurs du formulaire
+        // Validation basique avant soumission
         const formData = new FormData(contactForm);
         const name = formData.get('name');
         const email = formData.get('email');
         const subject = formData.get('subject');
         const message = formData.get('message');
         
-        // Validation basique
-        if (!name || !email || !subject || !message) {
-            showNotification('Veuillez remplir tous les champs', 'error');
-            return;
-        }
-        
         // Validation de l'email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
+            e.preventDefault();
             showNotification('Veuillez entrer une adresse email valide', 'error');
             return;
         }
         
-        // Simuler l'envoi (à remplacer par un vrai appel API)
+        // Afficher le bouton en état de chargement
         const submitButton = contactForm.querySelector('.form-button');
         const originalText = submitButton.innerHTML;
         
         submitButton.innerHTML = '⏳ Envoi en cours...';
         submitButton.disabled = true;
         
-        setTimeout(() => {
-            showNotification('Message envoyé avec succès ! Je vous répondrai bientôt.', 'success');
-            contactForm.reset();
-            submitButton.innerHTML = originalText;
-            submitButton.disabled = false;
-        }, 1500);
+        // Netlify Forms gérera la soumission
+        // Le formulaire sera redirigé automatiquement
     });
+}
+
+// Afficher un message de succès si on revient de la page de confirmation
+if (window.location.search.includes('success')) {
+    showNotification('Message envoyé avec succès ! Je vous répondrai bientôt.', 'success');
+    // Nettoyer l'URL
+    window.history.replaceState({}, document.title, window.location.pathname);
 }
 
 /* ===== SYSTÈME DE NOTIFICATION ===== */

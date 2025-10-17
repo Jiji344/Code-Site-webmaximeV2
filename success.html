@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message envoyé - Monsieur Crocodeal</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .success-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-md);
+        }
+
+        .success-content {
+            text-align: center;
+            max-width: 600px;
+            background: rgba(15, 31, 58, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(74, 144, 226, 0.2);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-lg);
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            margin-bottom: var(--spacing-md);
+            animation: successPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes successPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .success-title {
+            font-family: 'GoodButter', sans-serif;
+            font-size: var(--font-size-xl);
+            color: var(--color-text);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .success-message {
+            font-size: var(--font-size-md);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.8;
+        }
+
+        .success-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: var(--color-text);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            transition: var(--transition);
+            box-shadow: 
+                0 0 20px rgba(74, 144, 226, 0.5),
+                0 0 40px rgba(74, 144, 226, 0.3),
+                0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .success-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 0 30px rgba(74, 144, 226, 0.7),
+                0 0 60px rgba(74, 144, 226, 0.4),
+                0 12px 32px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="success-page">
+        <div class="success-content">
+            <div class="success-icon">✅</div>
+            <h1 class="success-title">Message envoyé !</h1>
+            <p class="success-message">
+                Merci pour votre message !<br>
+                Je vous répondrai dans les plus brefs délais à l'adresse email que vous avez fournie.
+            </p>
+            <a href="/#accueil" class="success-button">
+                Retour à l'accueil
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Redirection automatique après 5 secondes
+        setTimeout(() => {
+            window.location.href = '/#accueil';
+        }, 5000);
+    </script>
+</body>
+</html>
+

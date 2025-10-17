@@ -238,6 +238,20 @@ class CMSContentLoader {
         const prevButton = document.getElementById('carousel-prev');
         const nextButton = document.getElementById('carousel-next');
         
+        // Fonctionnalité plein écran sur mobile
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile && carouselImage) {
+            carouselImage.addEventListener('click', () => {
+                if (carouselImage.requestFullscreen) {
+                    carouselImage.requestFullscreen();
+                } else if (carouselImage.webkitRequestFullscreen) {
+                    carouselImage.webkitRequestFullscreen();
+                } else if (carouselImage.msRequestFullscreen) {
+                    carouselImage.msRequestFullscreen();
+                }
+            });
+        }
+        
         if (!modal) return;
         
         let currentIndex = 0;

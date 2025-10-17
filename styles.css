@@ -1880,14 +1880,21 @@ ul {
     }
 
     .album-header {
-        flex-wrap: wrap;
-        padding: 0 var(--spacing-sm);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: var(--spacing-sm) var(--spacing-md);
+        justify-content: center;
+        align-items: center;
     }
 
     .album-title {
-        font-size: var(--font-size-md);
-        flex-basis: 100%;
-        text-align: center;
+        display: none;
     }
 
     .album-current-title {
@@ -1896,20 +1903,22 @@ ul {
 
     .album-counter {
         font-size: var(--font-size-base);
-        flex-basis: 100%;
         text-align: center;
+        color: #ffffff;
+        margin: 0;
     }
 
     .album-modal-close {
         top: 0.5rem;
-        right: 1rem;
-        width: 2.5rem;
-        height: 2.5rem;
+        right: 0.5rem;
+        width: 2rem;
+        height: 2rem;
+        z-index: 10;
     }
 
     .album-modal-close svg {
-        width: 24px;
-        height: 24px;
+        width: 16px;
+        height: 16px;
     }
 
     .carousel-image-container {
@@ -1918,7 +1927,14 @@ ul {
     }
 
     .carousel-image {
-        max-height: calc(95vh - 250px);
+        max-height: calc(100vh - 120px);
+        max-width: 100vw;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    
+    .carousel-image:hover {
+        transform: scale(1.02);
     }
 
     .carousel-info {

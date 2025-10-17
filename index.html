@@ -29,6 +29,19 @@
     </script>
 </head>
 <body>
+    <!-- Loader de chargement -->
+    <div class="page-loader" id="page-loader">
+        <div class="loader-content">
+            <div class="loader-sphere">
+                <div class="loader-ring"></div>
+                <div class="loader-ring"></div>
+                <div class="loader-ring"></div>
+                <div class="loader-camera">📷</div>
+            </div>
+            <p class="loader-text">Chargement...</p>
+        </div>
+    </div>
+
     <!-- Header avec effet Liquid Glass -->
     <header class="header" id="header">
         <nav class="nav container" aria-label="Navigation principale">
@@ -456,6 +469,35 @@
             </div>
         </div>
     </div>
+
+    <!-- Script Loader -->
+    <script>
+        // Masquer le loader une fois que tout est chargé
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('page-loader');
+            if (loader) {
+                // Attendre un peu pour être sûr que tout est bien chargé (polices, images, etc.)
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                    document.body.classList.add('loaded');
+                    // Supprimer complètement le loader après la transition
+                    setTimeout(() => {
+                        loader.remove();
+                    }, 600);
+                }, 300);
+            }
+        });
+
+        // Fallback : masquer le loader après 5 secondes max
+        setTimeout(() => {
+            const loader = document.getElementById('page-loader');
+            if (loader && !loader.classList.contains('hidden')) {
+                loader.classList.add('hidden');
+                document.body.classList.add('loaded');
+                setTimeout(() => loader.remove(), 600);
+            }
+        }, 5000);
+    </script>
 
     <!-- Netlify Identity Widget -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>

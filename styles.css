@@ -57,6 +57,114 @@
     --container-width: 1200px;
 }
 
+/* ===== PAGE LOADER ===== */
+.page-loader {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #0A1628 0%, #1A2845 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.page-loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.loader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.loader-sphere {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-ring {
+    position: absolute;
+    border: 2px solid transparent;
+    border-top-color: var(--color-primary);
+    border-right-color: var(--color-secondary);
+    border-radius: 50%;
+    animation: loaderSpin 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.loader-ring:nth-child(1) {
+    width: 120px;
+    height: 120px;
+    animation-duration: 2s;
+    border-width: 3px;
+}
+
+.loader-ring:nth-child(2) {
+    width: 90px;
+    height: 90px;
+    animation-duration: 1.5s;
+    animation-direction: reverse;
+    border-width: 2px;
+}
+
+.loader-ring:nth-child(3) {
+    width: 60px;
+    height: 60px;
+    animation-duration: 1s;
+    border-width: 2px;
+}
+
+.loader-camera {
+    font-size: 3rem;
+    animation: loaderPulse 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.5));
+}
+
+.loader-text {
+    font-family: 'GoodButter', sans-serif;
+    font-size: var(--font-size-lg);
+    color: var(--color-text);
+    letter-spacing: 2px;
+    animation: loaderText 1.5s ease-in-out infinite;
+}
+
+@keyframes loaderSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes loaderPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+@keyframes loaderText {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
 /* ===== RESET & BASE ===== */
 * {
     margin: 0;

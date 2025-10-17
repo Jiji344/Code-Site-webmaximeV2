@@ -281,68 +281,294 @@ class CMSContentLoader {
         
         // État du carousel
         let currentIndex = 0;
+        let isAnimating = false;
+        let lastNavigationTime = 0;
+        const navigationDelay = 350; // Délai minimum entre deux navigations (en ms)
         
-        // Fonction pour afficher une image
-        const showImage = (index) => {
-            currentIndex = index;
-            const image = images[index];
+        // Précharger toutes les images de l'album
+        const preloadedImages = new Map();
+        let loadedCount = 0;
+        
+        const preloadImages = () => {
+            console.log(`🖼️ Préchargement de ${images.length} images...`);
             
-            // Relancer l'animation en retirant puis rajoutant l'animation
-            carouselImage.style.animation = 'none';
-            void carouselImage.offsetWidth; // Trigger reflow
-            carouselImage.style.animation = 'carouselImageZoom 0.4s ease-out';
+            // Créer un indicateur de chargement
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.className = 'preload-indicator';
+            loadingIndicator.innerHTML = `
+                <div class="preload-text">Chargement des images... <span id="preload-count">0/${images.length}</span></div>
+            `;
+            loadingIndicator.style.cssText = `
+                position: fixed;
+                bottom: 2rem;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(74, 144, 226, 0.9);
+                color: white;
+                padding: 0.75rem 1.5rem;
+                border-radius: 2rem;
+                font-size: 0.9rem;
+                z-index: 10001;
+                box-shadow: 0 0 20px rgba(74, 144, 226, 0.6);
+                transition: opacity 0.3s ease;
+            `;
+            document.body.appendChild(loadingIndicator);
             
-            carouselImage.src = image.image;
-            carouselImage.alt = image.title || image.description || '';
-            albumCurrentTitle.textContent = image.title || 'Sans titre';
-            albumCounter.textContent = `${index + 1} / ${images.length}`;
-            
-            // Ajouter le titre à l'attribut data-title du conteneur
-            const imageContainer = document.querySelector('.carousel-image-container');
-            if (imageContainer) {
-                imageContainer.setAttribute('data-title', image.title || 'Sans titre');
-            }
-            
-            // Mettre à jour les boutons
-            prevButton.disabled = index === 0;
-            nextButton.disabled = index === images.length - 1;
-            
-            // Mettre à jour les miniatures actives
-            document.querySelectorAll('.carousel-thumbnail').forEach((thumb, i) => {
-                thumb.classList.toggle('active', i === index);
+            images.forEach((imgData, index) => {
+                const img = new Image();
+                img.src = imgData.image;
+                preloadedImages.set(index, img);
+                
+                img.onload = () => {
+                    loadedCount++;
+                    const countElement = document.getElementById('preload-count');
+                    if (countElement) {
+                        countElement.textContent = `${loadedCount}/${images.length}`;
+                    }
+                    console.log(`✅ Image ${loadedCount}/${images.length} préchargée`);
+                    
+                    // Supprimer l'indicateur quand tout est chargé
+                    if (loadedCount === images.length) {
+                        setTimeout(() => {
+                            loadingIndicator.style.opacity = '0';
+                            setTimeout(() => {
+                                loadingIndicator.remove();
+                            }, 300);
+                        }, 500);
+                        console.log('🎉 Toutes les images sont préchargées !');
+                    }
+                };
+                
+                img.onerror = () => {
+                    loadedCount++;
+                    const countElement = document.getElementById('preload-count');
+                    if (countElement) {
+                        countElement.textContent = `${loadedCount}/${images.length}`;
+                    }
+                    console.log(`❌ Erreur de chargement de l'image ${index + 1}`);
+                    
+                    // Supprimer l'indicateur même en cas d'erreur
+                    if (loadedCount === images.length) {
+                        setTimeout(() => {
+                            loadingIndicator.style.opacity = '0';
+                            setTimeout(() => {
+                                loadingIndicator.remove();
+                            }, 300);
+                        }, 500);
+                    }
+                };
             });
         };
         
-        // Générer les miniatures
-        thumbnailsContainer.innerHTML = '';
-        images.forEach((image, index) => {
-            const thumbnail = document.createElement('img');
-            thumbnail.className = 'carousel-thumbnail';
-            thumbnail.src = image.image;
-            thumbnail.alt = image.title || '';
-            thumbnail.addEventListener('click', () => showImage(index));
-            thumbnailsContainer.appendChild(thumbnail);
-        });
+        // Lancer le préchargement immédiatement
+        preloadImages();
+        
+        // Fonction pour créer les 3 images du carousel
+        const createCarouselImages = () => {
+            const imageContainer = document.querySelector('.carousel-image-container');
+            imageContainer.innerHTML = '';
+            imageContainer.className = 'carousel-image-container carousel-3d';
+            
+            // Image précédente
+            const prevImageDiv = document.createElement('div');
+            prevImageDiv.className = 'carousel-slide carousel-prev-slide';
+            const prevImg = document.createElement('img');
+            prevImg.className = 'carousel-image';
+            prevImageDiv.appendChild(prevImg);
+            
+            // Clic sur l'image précédente pour naviguer
+            prevImageDiv.addEventListener('click', () => {
+                prevImage();
+            });
+            
+            // Image actuelle
+            const currentImageDiv = document.createElement('div');
+            currentImageDiv.className = 'carousel-slide carousel-current-slide';
+            const currentImg = document.createElement('img');
+            currentImg.className = 'carousel-image';
+            currentImageDiv.appendChild(currentImg);
+            
+            // Image suivante
+            const nextImageDiv = document.createElement('div');
+            nextImageDiv.className = 'carousel-slide carousel-next-slide';
+            const nextImg = document.createElement('img');
+            nextImg.className = 'carousel-image';
+            nextImageDiv.appendChild(nextImg);
+            
+            // Clic sur l'image suivante pour naviguer
+            nextImageDiv.addEventListener('click', () => {
+                nextImage();
+            });
+            
+            imageContainer.appendChild(prevImageDiv);
+            imageContainer.appendChild(currentImageDiv);
+            imageContainer.appendChild(nextImageDiv);
+            
+            return { prevImg, currentImg, nextImg, prevImageDiv, currentImageDiv, nextImageDiv };
+        };
+        
+        const carouselImages = createCarouselImages();
+        
+        // Fonction pour afficher une image
+        const showImage = (index, direction = 'none') => {
+            // Vérifier le throttle pour éviter les clics trop rapides
+            const now = Date.now();
+            if (direction !== 'none' && (now - lastNavigationTime) < navigationDelay) {
+                console.log('⏱️ Navigation trop rapide, ignorée');
+                return;
+            }
+            
+            if (isAnimating && direction !== 'none') return;
+            
+            lastNavigationTime = now;
+            currentIndex = index;
+            const image = images[index];
+            const prevIndex = (index - 1 + images.length) % images.length;
+            const nextIndex = (index + 1) % images.length;
+            
+            // Mettre à jour les titres et compteur
+            albumCurrentTitle.textContent = image.title || 'Sans titre';
+            albumCounter.textContent = `${index + 1} / ${images.length}`;
+            
+            if (direction !== 'none') {
+                isAnimating = true;
+                
+                // Appliquer une classe de transition rapide
+                const container = document.querySelector('.carousel-image-container');
+                container.style.transition = 'opacity 0.2s ease';
+                container.style.opacity = '0.5';
+                
+                setTimeout(() => {
+                    // Utiliser les images préchargées (déjà en cache)
+                    carouselImages.prevImg.src = images[prevIndex].image;
+                    carouselImages.prevImg.alt = images[prevIndex].title || '';
+                    
+                    carouselImages.currentImg.src = image.image;
+                    carouselImages.currentImg.alt = image.title || '';
+                    
+                    carouselImages.nextImg.src = images[nextIndex].image;
+                    carouselImages.nextImg.alt = images[nextIndex].title || '';
+                    
+                    // Rétablir l'opacité
+                    container.style.opacity = '1';
+                    
+                    setTimeout(() => {
+                        isAnimating = false;
+                        container.style.transition = '';
+                    }, 200);
+                }, 80);
+            } else {
+                // Premier chargement sans animation
+                carouselImages.prevImg.src = images[prevIndex].image;
+                carouselImages.prevImg.alt = images[prevIndex].title || '';
+                
+                carouselImages.currentImg.src = image.image;
+                carouselImages.currentImg.alt = image.title || '';
+                
+                carouselImages.nextImg.src = images[nextIndex].image;
+                carouselImages.nextImg.alt = images[nextIndex].title || '';
+            }
+        };
+        
+        // Fonction pour passer à l'image suivante (avec boucle)
+        const nextImage = () => {
+            if (isAnimating) return;
+            const nextIndex = (currentIndex + 1) % images.length;
+            showImage(nextIndex, 'next');
+        };
+        
+        // Fonction pour passer à l'image précédente (avec boucle)
+        const prevImage = () => {
+            if (isAnimating) return;
+            const prevIndex = (currentIndex - 1 + images.length) % images.length;
+            showImage(prevIndex, 'prev');
+        };
+        
+        // Masquer les miniatures (on utilise un carousel 3D maintenant)
+        thumbnailsContainer.style.display = 'none';
         
         // Configuration du carousel
         albumTitle.textContent = albumName;
-        showImage(0);
+        showImage(0, 'none');
         
         // Navigation
         prevButton.onclick = () => {
-            if (currentIndex > 0) showImage(currentIndex - 1);
+            if (!isAnimating) {
+                prevImage();
+            }
         };
         
         nextButton.onclick = () => {
-            if (currentIndex < images.length - 1) showImage(currentIndex + 1);
+            if (!isAnimating) {
+                nextImage();
+            }
         };
+        
+        // Désactiver visuellement les boutons pendant l'animation
+        const updateButtonStates = () => {
+            if (isAnimating) {
+                prevButton.style.opacity = '0.5';
+                nextButton.style.opacity = '0.5';
+                prevButton.style.pointerEvents = 'none';
+                nextButton.style.pointerEvents = 'none';
+            } else {
+                prevButton.style.opacity = '1';
+                nextButton.style.opacity = '1';
+                prevButton.style.pointerEvents = 'auto';
+                nextButton.style.pointerEvents = 'auto';
+            }
+        };
+        
+        // Observer les changements d'état d'animation
+        const originalShowImage = showImage;
+        const showImageWrapper = (index, direction = 'none') => {
+            originalShowImage(index, direction);
+            updateButtonStates();
+            
+            // Remettre les boutons actifs après l'animation
+            if (direction !== 'none') {
+                setTimeout(() => {
+                    updateButtonStates();
+                }, navigationDelay);
+            }
+        };
+        
+        // Support du swipe pour mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        const handleSwipe = () => {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe vers la gauche - image suivante
+                    nextImage();
+                } else {
+                    // Swipe vers la droite - image précédente
+                    prevImage();
+                }
+            }
+        };
+        
+        const imageContainer = document.querySelector('.carousel-image-container');
+        
+        imageContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        imageContainer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
         
         // Navigation au clavier
         const handleKeyboard = (e) => {
-            if (e.key === 'ArrowLeft' && currentIndex > 0) {
-                showImage(currentIndex - 1);
-            } else if (e.key === 'ArrowRight' && currentIndex < images.length - 1) {
-                showImage(currentIndex + 1);
+            if (e.key === 'ArrowLeft') {
+                prevImage();
+            } else if (e.key === 'ArrowRight') {
+                nextImage();
             } else if (e.key === 'Escape') {
                 closeCarousel();
             }
@@ -353,6 +579,12 @@ class CMSContentLoader {
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
             document.removeEventListener('keydown', handleKeyboard);
+            
+            // Nettoyer l'indicateur de préchargement s'il existe
+            const loadingIndicator = document.querySelector('.preload-indicator');
+            if (loadingIndicator) {
+                loadingIndicator.remove();
+            }
         };
         
         // Bouton de fermeture

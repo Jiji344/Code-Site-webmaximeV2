@@ -1287,6 +1287,72 @@ ul {
     display: flex;
 }
 
+/* Carousel 3D avec images adjacentes */
+.carousel-3d {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    perspective: 1000px;
+}
+
+.carousel-slide {
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.4s ease;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+/* Image précédente (gauche) */
+.carousel-prev-slide {
+    opacity: 0.3;
+    transform: scale(0.75) translateX(15px);
+    z-index: 1;
+    filter: blur(2px) brightness(0.6);
+}
+
+.carousel-prev-slide:hover {
+    opacity: 0.5;
+    cursor: pointer;
+    filter: blur(1px) brightness(0.75);
+    transform: scale(0.8) translateX(10px);
+}
+
+/* Image actuelle (centre) */
+.carousel-current-slide {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 3;
+    filter: blur(0) brightness(1);
+    box-shadow: 
+        0 0 60px rgba(74, 144, 226, 0.5),
+        0 20px 80px rgba(0, 0, 0, 0.9);
+}
+
+/* Image suivante (droite) */
+.carousel-next-slide {
+    opacity: 0.3;
+    transform: scale(0.75) translateX(-15px);
+    z-index: 1;
+    filter: blur(2px) brightness(0.6);
+}
+
+.carousel-next-slide:hover {
+    opacity: 0.5;
+    cursor: pointer;
+    filter: blur(1px) brightness(0.75);
+    transform: scale(0.8) translateX(-10px);
+}
+
+.carousel-slide .carousel-image {
+    max-width: 600px;
+    max-height: 70vh;
+    display: block;
+    border-radius: var(--border-radius);
+    transition: transform 0.3s ease;
+}
+
 .album-modal-close {
     position: absolute;
     top: 7rem;
@@ -1375,7 +1441,43 @@ ul {
 }
 
 .carousel-button {
-    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3.5rem;
+    height: 3.5rem;
+    background: rgba(74, 144, 226, 0.9);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--color-text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    z-index: 10;
+    box-shadow: 
+        0 0 20px rgba(74, 144, 226, 0.6),
+        0 4px 12px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    border: none;
+}
+
+.carousel-button:hover {
+    background: var(--color-primary);
+    box-shadow: 
+        0 0 30px rgba(74, 144, 226, 0.8),
+        0 0 50px rgba(74, 144, 226, 0.5),
+        0 4px 16px rgba(0, 0, 0, 0.5);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-prev {
+    left: 2rem;
+}
+
+.carousel-next {
+    right: 2rem;
 }
 
 .carousel-image-container {
@@ -1389,41 +1491,12 @@ ul {
     position: relative;
 }
 
-.carousel-image-container::after {
-    content: attr(data-title);
-    position: absolute;
-    bottom: -2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #ffffff;
-    font-size: var(--font-size-md);
-    text-align: center;
-    white-space: nowrap;
-    z-index: 5;
-}
-
 .carousel-image {
     max-width: 100%;
     max-height: calc(90vh - 200px);
     width: auto;
     height: auto;
     object-fit: contain;
-    border-radius: 0;
-    box-shadow: 
-        0 0 60px rgba(74, 144, 226, 0.3),
-        0 20px 80px rgba(0, 0, 0, 0.8);
-    animation: carouselImageZoom 0.4s ease-out;
-}
-
-@keyframes carouselImageZoom {
-    0% {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
 }
 
 .carousel-thumbnails {
@@ -1646,6 +1719,39 @@ ul {
 
     .about-section p {
         text-align: left;
+    }
+
+    /* Carousel 3D tablette */
+    .carousel-3d {
+        gap: 1.5rem;
+    }
+
+    .carousel-slide .carousel-image {
+        max-width: 450px;
+        max-height: 60vh;
+    }
+    
+    .carousel-prev-slide {
+        transform: scale(0.7) translateX(12px);
+        opacity: 0.3;
+    }
+
+    .carousel-next-slide {
+        transform: scale(0.7) translateX(-12px);
+        opacity: 0.3;
+    }
+
+    .carousel-button {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .carousel-prev {
+        left: 1rem;
+    }
+
+    .carousel-next {
+        right: 1rem;
     }
 }
 
@@ -1934,14 +2040,14 @@ ul {
 
     .album-modal-close {
         top: 0.5rem;
-        right: 1rem;
-        width: 2.5rem;
-        height: 2.5rem;
+        right: 0.75rem;
+        width: 2rem;
+        height: 2rem;
     }
 
     .album-modal-close svg {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
     }
 
     .carousel-image-container {
@@ -1951,17 +2057,6 @@ ul {
 
     .carousel-image {
         max-height: calc(95vh - 250px);
-    }
-
-    .carousel-info {
-        order: 2;
-        margin-top: 0.5rem;
-        text-align: center;
-    }
-
-    .carousel-image-container::after {
-        bottom: -1.5rem;
-        font-size: 0.9rem;
     }
 
     .carousel-thumbnails {
@@ -1987,6 +2082,58 @@ ul {
 
     .album-card-count {
         font-size: var(--font-size-xs);
+    }
+
+    /* Carousel 3D mobile */
+    .carousel-3d {
+        gap: 0.75rem;
+    }
+
+    .carousel-slide .carousel-image {
+        max-width: 260px;
+        max-height: 45vh;
+    }
+
+    .carousel-prev-slide {
+        transform: scale(0.6) translateX(10px);
+        opacity: 0.25;
+        filter: blur(2px) brightness(0.5);
+    }
+
+    .carousel-next-slide {
+        transform: scale(0.6) translateX(-10px);
+        opacity: 0.25;
+        filter: blur(2px) brightness(0.5);
+    }
+    
+    .carousel-prev-slide:hover,
+    .carousel-next-slide:hover {
+        opacity: 0.4;
+        filter: blur(1px) brightness(0.65);
+    }
+    
+    /* Retirer l'effet lumineux bleu sur mobile */
+    .carousel-current-slide {
+        box-shadow: 
+            0 10px 40px rgba(0, 0, 0, 0.7);
+    }
+
+    .carousel-button {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .carousel-button svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .carousel-prev {
+        left: 0.5rem;
+    }
+
+    .carousel-next {
+        right: 0.5rem;
     }
 }
 

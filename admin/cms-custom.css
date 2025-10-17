@@ -11,12 +11,57 @@
     --text-secondary: #B8C5D6;
 }
 
-/* Background général du CMS */
-[data-slate-editor="true"],
-.css-1hwfws3,
-.css-v7duua {
+/* Reset et override complet */
+* {
+    box-sizing: border-box !important;
+}
+
+body {
     background: var(--background-dark) !important;
     color: var(--text-color) !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* Background général du CMS - Override agressif */
+#nc-root,
+#nc-root *,
+[data-testid],
+[class*="nc-"],
+[class*="cms-"],
+[class*="decap-"],
+div[style*="background"],
+div[style*="color"] {
+    background: var(--background-dark) !important;
+    color: var(--text-color) !important;
+}
+
+/* Override spécifique pour les cards vides */
+[class*="Card"],
+[class*="card"],
+[class*="ListCard"],
+[class*="EntryCard"],
+[class*="EntryListingCard"] {
+    background: rgba(15, 31, 58, 0.4) !important;
+    border: 1px solid rgba(74, 144, 226, 0.3) !important;
+    border-radius: 0.75rem !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(74, 144, 226, 0.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+[class*="Card"]:hover,
+[class*="card"]:hover,
+[class*="ListCard"]:hover,
+[class*="EntryCard"]:hover,
+[class*="EntryListingCard"]:hover {
+    border-color: rgba(74, 144, 226, 0.6) !important;
+    box-shadow: 
+        0 8px 30px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(74, 144, 226, 0.2) !important;
+    transform: translateY(-2px) !important;
 }
 
 /* Sidebar */
@@ -146,5 +191,78 @@ p, span, label {
 [class*="Badge"] {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
     color: var(--text-color) !important;
+}
+
+/* Override ultra-agressif pour les éléments spécifiques */
+div[role="gridcell"],
+div[role="grid"],
+[data-testid="entry-listing"],
+[data-testid="entry-card"],
+[class*="EntryListingCard"],
+[class*="EntryCard"] {
+    background: rgba(15, 31, 58, 0.4) !important;
+    border: 1px solid rgba(74, 144, 226, 0.3) !important;
+    border-radius: 0.75rem !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(74, 144, 226, 0.1) !important;
+    transition: all 0.3s ease !important;
+    min-height: 200px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    position: relative !important;
+}
+
+/* Contenu des cards */
+[class*="EntryCard"] > div,
+[class*="EntryListingCard"] > div,
+[data-testid="entry-card"] > div {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 1rem !important;
+    text-align: center !important;
+}
+
+/* Images dans les cards */
+[class*="EntryCard"] img,
+[class*="EntryListingCard"] img,
+[data-testid="entry-card"] img {
+    max-width: 100% !important;
+    max-height: 150px !important;
+    object-fit: cover !important;
+    border-radius: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Textes dans les cards */
+[class*="EntryCard"] h3,
+[class*="EntryListingCard"] h3,
+[class*="EntryCard"] p,
+[class*="EntryListingCard"] p,
+[data-testid="entry-card"] h3,
+[data-testid="entry-card"] p {
+    color: var(--text-color) !important;
+    margin: 0.25rem 0 !important;
+    font-size: 0.9rem !important;
+}
+
+/* Override pour les gros rectangles bleus */
+div[style*="background-color: rgb(59, 130, 246)"],
+div[style*="background-color: #3b82f6"],
+div[style*="background-color: rgb(37, 99, 235)"],
+div[style*="background-color: #2563eb"] {
+    background: rgba(15, 31, 58, 0.4) !important;
+    border: 1px solid rgba(74, 144, 226, 0.3) !important;
+    border-radius: 0.75rem !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(74, 144, 226, 0.1) !important;
 }
 

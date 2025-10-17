@@ -238,18 +238,113 @@ class CMSContentLoader {
         const prevButton = document.getElementById('carousel-prev');
         const nextButton = document.getElementById('carousel-next');
         
-        // Fonctionnalité plein écran sur mobile
+        // Fonctionnalité plein écran sur mobile avec zoom
         const isMobile = window.innerWidth <= 768;
         if (isMobile && carouselImage) {
+            let isFullscreen = false;
+            let startDistance = 0;
+            let startScale = 1;
+            let currentScale = 1;
+            let startX = 0;
+            let startY = 0;
+            let currentX = 0;
+            let currentY = 0;
+            let isDragging = false;
+            
+            // Entrer en plein écran
             carouselImage.addEventListener('click', () => {
-                if (carouselImage.requestFullscreen) {
-                    carouselImage.requestFullscreen();
-                } else if (carouselImage.webkitRequestFullscreen) {
-                    carouselImage.webkitRequestFullscreen();
-                } else if (carouselImage.msRequestFullscreen) {
-                    carouselImage.msRequestFullscreen();
+                if (!isFullscreen) {
+                    if (carouselImage.requestFullscreen) {
+                        carouselImage.requestFullscreen();
+                    } else if (carouselImage.webkitRequestFullscreen) {
+                        carouselImage.webkitRequestFullscreen();
+                    } else if (carouselImage.msRequestFullscreen) {
+                        carouselImage.msRequestFullscreen();
+                    }
                 }
             });
+            
+            // Détecter l'entrée/sortie du plein écran
+            document.addEventListener('fullscreenchange', handleFullscreenChange);
+            document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+            document.addEventListener('msfullscreenchange', handleFullscreenChange);
+            
+            function handleFullscreenChange() {
+                isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+                
+                if (isFullscreen) {
+                    // Ajouter les styles de zoom
+                    carouselImage.style.transform = 'scale(1)';
+                    carouselImage.style.transformOrigin = 'center center';
+                    carouselImage.style.transition = 'transform 0.3s ease';
+                } else {
+                    // Réinitialiser
+                    carouselImage.style.transform = '';
+                    carouselImage.style.transformOrigin = '';
+                    carouselImage.style.transition = '';
+                    currentScale = 1;
+                    currentX = 0;
+                    currentY = 0;
+                }
+            }
+            
+            // Gestion du zoom et pan
+            if (isFullscreen) {
+                // Zoom avec pincement
+                carouselImage.addEventListener('touchstart', (e) => {
+                    if (e.touches.length === 2) {
+                        startDistance = Math.hypot(
+                            e.touches[0].clientX - e.touches[1].clientX,
+                            e.touches[0].clientY - e.touches[1].clientY
+                        );
+                        startScale = currentScale;
+                    } else if (e.touches.length === 1) {
+                        isDragging = true;
+                        startX = e.touches[0].clientX - currentX;
+                        startY = e.touches[0].clientY - currentY;
+                    }
+                });
+                
+                carouselImage.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                    
+                    if (e.touches.length === 2) {
+                        // Zoom
+                        const currentDistance = Math.hypot(
+                            e.touches[0].clientX - e.touches[1].clientX,
+                            e.touches[0].clientY - e.touches[1].clientY
+                        );
+                        const scale = Math.max(1, Math.min(3, (currentDistance / startDistance) * startScale));
+                        currentScale = scale;
+                        carouselImage.style.transform = `scale(${scale}) translate(${currentX}px, ${currentY}px)`;
+                    } else if (e.touches.length === 1 && isDragging) {
+                        // Pan
+                        currentX = e.touches[0].clientX - startX;
+                        currentY = e.touches[0].clientY - startY;
+                        carouselImage.style.transform = `scale(${currentScale}) translate(${currentX}px, ${currentY}px)`;
+                    }
+                });
+                
+                carouselImage.addEventListener('touchend', () => {
+                    isDragging = false;
+                });
+                
+                // Double tap pour reset
+                carouselImage.addEventListener('touchend', (e) => {
+                    if (e.changedTouches.length === 1) {
+                        const touch = e.changedTouches[0];
+                        const now = Date.now();
+                        if (now - (carouselImage.lastTouchEnd || 0) < 300) {
+                            // Double tap - reset zoom
+                            currentScale = 1;
+                            currentX = 0;
+                            currentY = 0;
+                            carouselImage.style.transform = 'scale(1) translate(0px, 0px)';
+                        }
+                        carouselImage.lastTouchEnd = now;
+                    }
+                });
+            }
         }
         
         if (!modal) return;

@@ -4,6 +4,84 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin - Monsieur Crocodeal</title>
+    <style>
+      /* Thème sombre personnalisé pour Decap CMS */
+      :root {
+        --primaryColor: #4A90E2;
+        --secondaryColor: #5AB9EA;
+        --backgroundColor: #0A1628;
+        --foregroundColor: #0F1F3A;
+        --textColor: #FFFFFF;
+        --textColorSecondary: #B8C5D6;
+        --borderColor: rgba(74, 144, 226, 0.2);
+      }
+
+      body {
+        background: linear-gradient(135deg, #0A1628 0%, #1A2845 100%);
+      }
+
+      /* Personnalisation Decap CMS */
+      [data-slate-editor="true"] {
+        background: rgba(15, 31, 58, 0.5) !important;
+        color: #FFFFFF !important;
+      }
+
+      /* Sidebar */
+      aside {
+        background: rgba(10, 22, 40, 0.95) !important;
+        backdrop-filter: blur(20px) !important;
+      }
+
+      /* Main content */
+      main {
+        background: transparent !important;
+      }
+
+      /* Cards */
+      article {
+        background: rgba(15, 31, 58, 0.5) !important;
+        border: 1px solid rgba(74, 144, 226, 0.2) !important;
+        border-radius: 1rem !important;
+      }
+
+      /* Inputs */
+      input, textarea, select {
+        background: rgba(10, 22, 40, 0.7) !important;
+        color: #FFFFFF !important;
+        border: 1px solid rgba(74, 144, 226, 0.3) !important;
+        border-radius: 0.5rem !important;
+      }
+
+      input:focus, textarea:focus, select:focus {
+        border-color: #4A90E2 !important;
+        box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2) !important;
+      }
+
+      /* Boutons */
+      button {
+        background: linear-gradient(135deg, #4A90E2, #5AB9EA) !important;
+        color: #FFFFFF !important;
+        border-radius: 0.5rem !important;
+      }
+
+      button:hover {
+        box-shadow: 0 0 20px rgba(74, 144, 226, 0.5) !important;
+      }
+
+      /* Texte */
+      h1, h2, h3, h4, h5, h6, p, span, label {
+        color: #FFFFFF !important;
+      }
+
+      /* Links */
+      a {
+        color: #5AB9EA !important;
+      }
+
+      a:hover {
+        color: #7EC8E3 !important;
+      }
+    </style>
   </head>
   <body>
     <!-- Point de montage pour Decap CMS -->

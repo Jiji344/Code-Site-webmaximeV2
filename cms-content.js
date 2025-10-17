@@ -363,51 +363,19 @@ class CMSContentLoader {
         // Lancer le préchargement immédiatement
         preloadImages();
         
-        // Fonction pour créer les 3 images du carousel
-        const createCarouselImages = () => {
-            const imageContainer = document.querySelector('.carousel-image-container');
-            imageContainer.innerHTML = '';
-            imageContainer.className = 'carousel-image-container carousel-3d';
-            
-            // Image précédente
-            const prevImageDiv = document.createElement('div');
-            prevImageDiv.className = 'carousel-slide carousel-prev-slide';
-            const prevImg = document.createElement('img');
-            prevImg.className = 'carousel-image';
-            prevImageDiv.appendChild(prevImg);
-            
-            // Clic sur l'image précédente pour naviguer
-            prevImageDiv.addEventListener('click', () => {
-                prevImage();
-            });
-            
-            // Image actuelle
-            const currentImageDiv = document.createElement('div');
-            currentImageDiv.className = 'carousel-slide carousel-current-slide';
-            const currentImg = document.createElement('img');
-            currentImg.className = 'carousel-image';
-            currentImageDiv.appendChild(currentImg);
-            
-            // Image suivante
-            const nextImageDiv = document.createElement('div');
-            nextImageDiv.className = 'carousel-slide carousel-next-slide';
-            const nextImg = document.createElement('img');
-            nextImg.className = 'carousel-image';
-            nextImageDiv.appendChild(nextImg);
-            
-            // Clic sur l'image suivante pour naviguer
-            nextImageDiv.addEventListener('click', () => {
-                nextImage();
-            });
-            
-            imageContainer.appendChild(prevImageDiv);
-            imageContainer.appendChild(currentImageDiv);
-            imageContainer.appendChild(nextImageDiv);
-            
-            return { prevImg, currentImg, nextImg, prevImageDiv, currentImageDiv, nextImageDiv };
-        };
+        // Récupérer l'élément image du carousel
+        const imageContainer = document.querySelector('.carousel-image-container');
+        const mainImage = document.getElementById('carousel-image');
         
-        const carouselImages = createCarouselImages();
+        if (!mainImage) {
+            console.error('❌ Image carousel introuvable');
+            return;
+        }
+        
+        // S'assurer que le conteneur est propre
+        imageContainer.className = 'carousel-image-container';
+        
+        console.log('✅ Carousel initialisé pour:', albumName);
         
         // Fonction pour afficher une image
         const showImage = (index, direction = 'none') => {
@@ -423,8 +391,6 @@ class CMSContentLoader {
             lastNavigationTime = now;
             currentIndex = index;
             const image = images[index];
-            const prevIndex = (index - 1 + images.length) % images.length;
-            const nextIndex = (index + 1) % images.length;
             
             // Mettre à jour les titres et compteur
             albumCurrentTitle.textContent = image.title || 'Sans titre';
@@ -433,40 +399,33 @@ class CMSContentLoader {
             if (direction !== 'none') {
                 isAnimating = true;
                 
-                // Appliquer une classe de transition rapide
-                const container = document.querySelector('.carousel-image-container');
-                container.style.transition = 'opacity 0.2s ease';
-                container.style.opacity = '0.5';
+                // Animation de transition simple
+                mainImage.style.transition = 'opacity 0.25s ease';
+                mainImage.style.opacity = '0';
                 
                 setTimeout(() => {
-                    // Utiliser les images préchargées (déjà en cache)
-                    carouselImages.prevImg.src = images[prevIndex].image;
-                    carouselImages.prevImg.alt = images[prevIndex].title || '';
+                    // Changer l'image (elle est déjà préchargée)
+                    mainImage.src = image.image;
+                    mainImage.alt = image.title || image.description || '';
+                    mainImage.style.display = 'block';
                     
-                    carouselImages.currentImg.src = image.image;
-                    carouselImages.currentImg.alt = image.title || '';
+                    console.log('🔄 Navigation vers:', image.title || 'Sans titre');
                     
-                    carouselImages.nextImg.src = images[nextIndex].image;
-                    carouselImages.nextImg.alt = images[nextIndex].title || '';
-                    
-                    // Rétablir l'opacité
-                    container.style.opacity = '1';
+                    // Faire apparaître la nouvelle image
+                    mainImage.style.opacity = '1';
                     
                     setTimeout(() => {
                         isAnimating = false;
-                        container.style.transition = '';
-                    }, 200);
-                }, 80);
+                        mainImage.style.transition = '';
+                    }, 250);
+                }, 250);
             } else {
                 // Premier chargement sans animation
-                carouselImages.prevImg.src = images[prevIndex].image;
-                carouselImages.prevImg.alt = images[prevIndex].title || '';
-                
-                carouselImages.currentImg.src = image.image;
-                carouselImages.currentImg.alt = image.title || '';
-                
-                carouselImages.nextImg.src = images[nextIndex].image;
-                carouselImages.nextImg.alt = images[nextIndex].title || '';
+                mainImage.src = image.image;
+                mainImage.alt = image.title || image.description || '';
+                mainImage.style.opacity = '1';
+                mainImage.style.display = 'block';
+                console.log('📸 Image chargée:', image.title || 'Sans titre');
             }
         };
         
@@ -484,11 +443,16 @@ class CMSContentLoader {
             showImage(prevIndex, 'prev');
         };
         
-        // Masquer les miniatures (on utilise un carousel 3D maintenant)
+        // Masquer les miniatures (diaporama simple)
         thumbnailsContainer.style.display = 'none';
+        
+        // Afficher les boutons de navigation
+        prevButton.style.display = 'flex';
+        nextButton.style.display = 'flex';
         
         // Configuration du carousel
         albumTitle.textContent = albumName;
+        console.log(`🎬 Affichage de la première image de ${images.length} photos`);
         showImage(0, 'none');
         
         // Navigation
@@ -504,34 +468,6 @@ class CMSContentLoader {
             }
         };
         
-        // Désactiver visuellement les boutons pendant l'animation
-        const updateButtonStates = () => {
-            if (isAnimating) {
-                prevButton.style.opacity = '0.5';
-                nextButton.style.opacity = '0.5';
-                prevButton.style.pointerEvents = 'none';
-                nextButton.style.pointerEvents = 'none';
-            } else {
-                prevButton.style.opacity = '1';
-                nextButton.style.opacity = '1';
-                prevButton.style.pointerEvents = 'auto';
-                nextButton.style.pointerEvents = 'auto';
-            }
-        };
-        
-        // Observer les changements d'état d'animation
-        const originalShowImage = showImage;
-        const showImageWrapper = (index, direction = 'none') => {
-            originalShowImage(index, direction);
-            updateButtonStates();
-            
-            // Remettre les boutons actifs après l'animation
-            if (direction !== 'none') {
-                setTimeout(() => {
-                    updateButtonStates();
-                }, navigationDelay);
-            }
-        };
         
         // Support du swipe pour mobile
         let touchStartX = 0;

@@ -1287,79 +1287,15 @@ ul {
     display: flex;
 }
 
-/* Carousel 3D avec images adjacentes */
-.carousel-3d {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    perspective: 1000px;
-}
-
-.carousel-slide {
-    position: relative;
-    flex-shrink: 0;
-    transition: all 0.4s ease;
-    border-radius: var(--border-radius);
-    overflow: hidden;
-}
-
-/* Image précédente (gauche) */
-.carousel-prev-slide {
-    opacity: 0.3;
-    transform: scale(0.75) translateX(15px);
-    z-index: 1;
-    filter: blur(2px) brightness(0.6);
-}
-
-.carousel-prev-slide:hover {
-    opacity: 0.5;
-    cursor: pointer;
-    filter: blur(1px) brightness(0.75);
-    transform: scale(0.8) translateX(10px);
-}
-
-/* Image actuelle (centre) */
-.carousel-current-slide {
-    opacity: 1;
-    transform: scale(1);
-    z-index: 3;
-    filter: blur(0) brightness(1);
-    box-shadow: 
-        0 0 60px rgba(74, 144, 226, 0.5),
-        0 20px 80px rgba(0, 0, 0, 0.9);
-}
-
-/* Image suivante (droite) */
-.carousel-next-slide {
-    opacity: 0.3;
-    transform: scale(0.75) translateX(-15px);
-    z-index: 1;
-    filter: blur(2px) brightness(0.6);
-}
-
-.carousel-next-slide:hover {
-    opacity: 0.5;
-    cursor: pointer;
-    filter: blur(1px) brightness(0.75);
-    transform: scale(0.8) translateX(-10px);
-}
-
-.carousel-slide .carousel-image {
-    max-width: 600px;
-    max-height: 70vh;
-    display: block;
-    border-radius: var(--border-radius);
-    transition: transform 0.3s ease;
-}
+/* Diaporama simple et propre */
 
 .album-modal-close {
-    position: absolute;
-    top: 7rem;
+    position: fixed;
+    top: 2rem;
     right: 2rem;
-    width: 3rem;
-    height: 3rem;
-    background: rgba(74, 144, 226, 0.9);
+    width: 3.5rem;
+    height: 3.5rem;
+    background: rgba(74, 144, 226, 0.95);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     color: var(--color-text);
@@ -1368,10 +1304,10 @@ ul {
     align-items: center;
     justify-content: center;
     transition: var(--transition);
-    z-index: 10;
+    z-index: 10001;
     box-shadow: 
-        0 0 20px rgba(74, 144, 226, 0.6),
-        0 4px 12px rgba(0, 0, 0, 0.4);
+        0 0 25px rgba(74, 144, 226, 0.7),
+        0 4px 15px rgba(0, 0, 0, 0.5);
     cursor: pointer;
     border: none;
 }
@@ -1379,31 +1315,44 @@ ul {
 .album-modal-close:hover {
     background: var(--color-primary);
     box-shadow: 
-        0 0 30px rgba(74, 144, 226, 0.8),
-        0 0 50px rgba(74, 144, 226, 0.5),
-        0 4px 16px rgba(0, 0, 0, 0.5);
-    transform: rotate(90deg);
+        0 0 35px rgba(74, 144, 226, 0.9),
+        0 0 60px rgba(74, 144, 226, 0.6),
+        0 4px 20px rgba(0, 0, 0, 0.6);
+    transform: rotate(90deg) scale(1.1);
+}
+
+.album-modal-close:active {
+    transform: rotate(90deg) scale(1);
 }
 
 .album-modal-content {
     width: 100%;
-    max-width: 1400px;
-    height: 90vh;
+    max-width: 1200px;
+    height: 85vh;
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-sm);
+    gap: 0;
+    background: rgba(10, 22, 40, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 1rem;
+    border: 1px solid rgba(74, 144, 226, 0.2);
+    overflow: hidden;
 }
 
 .album-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
     gap: var(--spacing-md);
+    background: rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid rgba(74, 144, 226, 0.15);
+    flex-shrink: 0;
 }
 
 .album-header .album-current-title {
-    display: none;
+    display: block;
 }
 
 .album-title {
@@ -1438,6 +1387,7 @@ ul {
     position: relative;
     min-height: 0;
     overflow: hidden;
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .carousel-button {
@@ -1446,7 +1396,7 @@ ul {
     transform: translateY(-50%);
     width: 3.5rem;
     height: 3.5rem;
-    background: rgba(74, 144, 226, 0.9);
+    background: rgba(74, 144, 226, 0.95);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     color: var(--color-text);
@@ -1454,11 +1404,11 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: var(--transition);
-    z-index: 10;
+    transition: all 0.3s ease;
+    z-index: 50;
     box-shadow: 
-        0 0 20px rgba(74, 144, 226, 0.6),
-        0 4px 12px rgba(0, 0, 0, 0.4);
+        0 0 25px rgba(74, 144, 226, 0.7),
+        0 4px 15px rgba(0, 0, 0, 0.5);
     cursor: pointer;
     border: none;
 }
@@ -1466,10 +1416,14 @@ ul {
 .carousel-button:hover {
     background: var(--color-primary);
     box-shadow: 
-        0 0 30px rgba(74, 144, 226, 0.8),
-        0 0 50px rgba(74, 144, 226, 0.5),
-        0 4px 16px rgba(0, 0, 0, 0.5);
-    transform: translateY(-50%) scale(1.1);
+        0 0 35px rgba(74, 144, 226, 0.9),
+        0 0 60px rgba(74, 144, 226, 0.6),
+        0 4px 20px rgba(0, 0, 0, 0.6);
+    transform: translateY(-50%) scale(1.15);
+}
+
+.carousel-button:active {
+    transform: translateY(-50%) scale(1.05);
 }
 
 .carousel-prev {
@@ -1485,18 +1439,23 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: visible;
+    overflow: hidden;
     min-height: 0;
-    padding: 1rem;
+    padding: 2rem;
     position: relative;
 }
 
 .carousel-image {
-    max-width: 100%;
-    max-height: calc(90vh - 200px);
+    max-width: 90%;
+    max-height: calc(90vh - 250px);
     width: auto;
     height: auto;
     object-fit: contain;
+    border-radius: 0.5rem;
+    box-shadow: 
+        0 10px 50px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(74, 144, 226, 0.2);
+    transition: opacity 0.3s ease;
 }
 
 .carousel-thumbnails {
@@ -1721,37 +1680,27 @@ ul {
         text-align: left;
     }
 
-    /* Carousel 3D tablette */
-    .carousel-3d {
-        gap: 1.5rem;
-    }
-
-    .carousel-slide .carousel-image {
-        max-width: 450px;
-        max-height: 60vh;
+    /* Diaporama tablette */
+    .carousel-image-container {
+        padding: 2rem 2rem;
     }
     
-    .carousel-prev-slide {
-        transform: scale(0.7) translateX(12px);
-        opacity: 0.3;
-    }
-
-    .carousel-next-slide {
-        transform: scale(0.7) translateX(-12px);
-        opacity: 0.3;
+    .carousel-image {
+        max-width: 85%;
+        max-height: calc(75vh - 180px);
     }
 
     .carousel-button {
-        width: 3rem;
-        height: 3rem;
+        width: 3.25rem;
+        height: 3.25rem;
     }
 
     .carousel-prev {
-        left: 1rem;
+        left: 1.5rem;
     }
 
     .carousel-next {
-        right: 1rem;
+        right: 1.5rem;
     }
 }
 
@@ -2008,55 +1957,45 @@ ul {
         padding: 0.875rem 1.5rem;
     }
 
-    /* Carousel mobile */
+    /* Diaporama mobile */
     .album-modal-content {
-        height: 95vh;
+        height: 90vh;
+        border-radius: 0.75rem;
     }
 
     .album-header {
-        flex-wrap: wrap;
-        padding: 0 var(--spacing-sm);
+        flex-direction: column;
+        align-items: center;
+        padding: var(--spacing-sm);
+        gap: var(--spacing-xs);
     }
 
     .album-title {
         font-size: var(--font-size-md);
-        flex-basis: 100%;
         text-align: center;
     }
 
     .album-current-title {
-        font-size: 0.9rem;
-        order: 3;
-        flex-basis: 100%;
-        color: #ffffff;
-        margin-top: 0.5rem;
+        font-size: 0.95rem;
+        color: var(--color-text-secondary);
+        text-align: center;
     }
 
     .album-counter {
-        font-size: var(--font-size-base);
-        flex-basis: 100%;
+        font-size: var(--font-size-sm);
         text-align: center;
     }
 
     .album-modal-close {
-        top: 0.5rem;
-        right: 0.75rem;
-        width: 2rem;
-        height: 2rem;
+        top: 1rem;
+        right: 1rem;
+        width: 2.5rem;
+        height: 2.5rem;
     }
 
     .album-modal-close svg {
-        width: 20px;
-        height: 20px;
-    }
-
-    .carousel-image-container {
-        min-height: 0;
-        order: 1;
-    }
-
-    .carousel-image {
-        max-height: calc(95vh - 250px);
+        width: 22px;
+        height: 22px;
     }
 
     .carousel-thumbnails {
@@ -2084,56 +2023,34 @@ ul {
         font-size: var(--font-size-xs);
     }
 
-    /* Carousel 3D mobile */
-    .carousel-3d {
-        gap: 0.75rem;
-    }
-
-    .carousel-slide .carousel-image {
-        max-width: 260px;
-        max-height: 45vh;
-    }
-
-    .carousel-prev-slide {
-        transform: scale(0.6) translateX(10px);
-        opacity: 0.25;
-        filter: blur(2px) brightness(0.5);
-    }
-
-    .carousel-next-slide {
-        transform: scale(0.6) translateX(-10px);
-        opacity: 0.25;
-        filter: blur(2px) brightness(0.5);
+    /* Diaporama mobile */
+    .carousel-image-container {
+        padding: 1.5rem 0.5rem;
     }
     
-    .carousel-prev-slide:hover,
-    .carousel-next-slide:hover {
-        opacity: 0.4;
-        filter: blur(1px) brightness(0.65);
-    }
-    
-    /* Retirer l'effet lumineux bleu sur mobile */
-    .carousel-current-slide {
-        box-shadow: 
-            0 10px 40px rgba(0, 0, 0, 0.7);
+    .carousel-image {
+        max-width: 90%;
+        max-height: calc(70vh - 150px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+        border-radius: 0.5rem;
     }
 
     .carousel-button {
-        width: 2.5rem;
-        height: 2.5rem;
+        width: 2.75rem;
+        height: 2.75rem;
     }
 
     .carousel-button svg {
-        width: 20px;
-        height: 20px;
+        width: 22px;
+        height: 22px;
     }
 
     .carousel-prev {
-        left: 0.5rem;
+        left: 0.75rem;
     }
 
     .carousel-next {
-        right: 0.5rem;
+        right: 0.75rem;
     }
 }
 
@@ -2144,85 +2061,33 @@ ul {
     }
 }
 
-/* Carousel Desktop - Miniatures à gauche */
+/* Diaporama Desktop */
 @media screen and (min-width: 968px) {
     .album-modal-content {
-        flex-direction: row;
-        gap: var(--spacing-md);
-    }
-
-    .album-header {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 10;
-        background: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        padding: var(--spacing-sm) var(--spacing-md);
-    }
-
-    .album-carousel {
-        flex: 1;
-        margin-top: 4rem;
-        position: relative;
-    }
-
-    .carousel-thumbnails {
-        width: 180px;
-        max-height: calc(90vh - 8rem);
-        flex-direction: column;
-        justify-content: flex-start;
-        padding: var(--spacing-sm);
-        background: rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 1rem;
-        overflow-y: auto;
-        overflow-x: hidden;
-        order: -1;
-        margin-top: 7rem;
-    }
-
-    .carousel-thumbnails::-webkit-scrollbar {
-        width: 12px;
-        height: auto;
-    }
-
-    .carousel-thumbnails::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 6px;
-    }
-
-    .carousel-thumbnails::-webkit-scrollbar-thumb {
-        background: rgba(74, 144, 226, 0.6);
-        border-radius: 6px;
-    }
-
-    .carousel-thumbnails::-webkit-scrollbar-thumb:hover {
-        background: rgba(74, 144, 226, 0.9);
-    }
-
-    .carousel-thumbnail {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 4/5;
+        max-width: 1400px;
+        height: 90vh;
     }
 
     .carousel-image-container {
-        min-height: 0;
-        position: absolute;
-        top: 50%;
-        left: 44%;
-        transform: translate(-50%, -50%);
-        width: calc(100% - 200px);
-        height: calc(100vh - 200px);
-        z-index: 1;
+        padding: 3rem 5rem;
     }
 
     .carousel-image {
-        max-height: calc(90vh - 200px);
+        max-width: 80%;
+        max-height: calc(75vh - 120px);
+    }
+    
+    .carousel-button {
+        width: 4rem;
+        height: 4rem;
+    }
+    
+    .carousel-prev {
+        left: 3rem;
+    }
+    
+    .carousel-next {
+        right: 3rem;
     }
 }
 

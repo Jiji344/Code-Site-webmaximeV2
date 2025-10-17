@@ -1,0 +1,150 @@
+/* Thème personnalisé pour Decap CMS - Monsieur Crocodeal */
+
+/* Variables du thème */
+:root {
+    --primary-color: #4A90E2;
+    --secondary-color: #5AB9EA;
+    --accent-color: #7EC8E3;
+    --background-dark: #0A1628;
+    --background-secondary: #0F1F3A;
+    --text-color: #FFFFFF;
+    --text-secondary: #B8C5D6;
+}
+
+/* Background général du CMS */
+[data-slate-editor="true"],
+.css-1hwfws3,
+.css-v7duua {
+    background: var(--background-dark) !important;
+    color: var(--text-color) !important;
+}
+
+/* Sidebar */
+aside {
+    background: linear-gradient(135deg, var(--background-dark) 0%, var(--background-secondary) 100%) !important;
+    border-right: 1px solid rgba(74, 144, 226, 0.2) !important;
+}
+
+/* Boutons primaires */
+button[class*="Button-button"],
+button[type="submit"] {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+    border: none !important;
+    box-shadow: 
+        0 0 20px rgba(74, 144, 226, 0.5),
+        0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    transition: all 0.3s ease !important;
+}
+
+button[class*="Button-button"]:hover,
+button[type="submit"]:hover {
+    box-shadow: 
+        0 0 30px rgba(74, 144, 226, 0.8),
+        0 0 50px rgba(74, 144, 226, 0.5) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Cards et conteneurs */
+[class*="Card"],
+[class*="card"] {
+    background: rgba(15, 31, 58, 0.3) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(74, 144, 226, 0.2) !important;
+    border-radius: 1rem !important;
+}
+
+/* Inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+    background: rgba(10, 22, 40, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 0.5rem !important;
+    color: var(--text-color) !important;
+    padding: 0.75rem !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--primary-color) !important;
+    background: rgba(10, 22, 40, 0.7) !important;
+    box-shadow: 0 0 20px rgba(74, 144, 226, 0.3) !important;
+    outline: none !important;
+}
+
+/* Liste d'entrées */
+[class*="ListCard"] {
+    background: rgba(15, 31, 58, 0.4) !important;
+    border: 1px solid rgba(74, 144, 226, 0.2) !important;
+    transition: all 0.3s ease !important;
+}
+
+[class*="ListCard"]:hover {
+    border-color: rgba(74, 144, 226, 0.5) !important;
+}
+
+/* Header du CMS */
+header {
+    background: rgba(10, 22, 40, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-bottom: 1px solid rgba(74, 144, 226, 0.2) !important;
+}
+
+/* Textes */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-color) !important;
+}
+
+p, span, label {
+    color: var(--text-secondary) !important;
+}
+
+/* Scrollbar personnalisée */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(74, 144, 226, 0.5);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(74, 144, 226, 0.8);
+}
+
+/* Dropdown et select */
+[class*="DropdownButton"] {
+    background: rgba(15, 31, 58, 0.6) !important;
+    border: 1px solid rgba(74, 144, 226, 0.3) !important;
+    border-radius: 0.5rem !important;
+}
+
+/* Widget d'image */
+[class*="ImagePreview"] {
+    border: 2px solid rgba(74, 144, 226, 0.3) !important;
+    border-radius: 1rem !important;
+}
+
+/* Toggle switches */
+[class*="Switch"] {
+    background: var(--primary-color) !important;
+}
+
+/* Badges et tags */
+[class*="Badge"] {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+    color: var(--text-color) !important;
+}
+

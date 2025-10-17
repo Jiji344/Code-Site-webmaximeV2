@@ -14,7 +14,6 @@ collections:
     fields:
       - { label: "Image", name: "image", widget: "image" }  # Champ pour uploader l'image.
       - { label: "Titre", name: "title", widget: "string" }  # Titre de la photo.
-      - { label: "Description", name: "description", widget: "text" }  # Description de la photo.
       - { label: "Catégorie", name: "category", widget: "select", options: ["Portrait", "Mariage", "Immobilier", "Paysage", "Macro", "Lifestyle"] }  # Catégorie de la photo.
       - { label: "Album/Shooting", name: "album", widget: "string", required: false, hint: "Nom de l'album pour grouper les photos ensemble (ex: 'Mariage Sophie & Marc', 'Portrait Marie')" }  # Album pour grouper les photos.
       - { label: "Date", name: "date", widget: "datetime" }  # Date de la prise de la photo.

@@ -199,7 +199,7 @@ if (contactForm) {
         const formData = new FormData(contactForm);
         const name = formData.get('name');
         const email = formData.get('email');
-        const subject = formData.get('subject');
+        const phone = formData.get('phone');
         const message = formData.get('message');
         
         // Validation de l'email
@@ -207,6 +207,14 @@ if (contactForm) {
         if (!emailRegex.test(email)) {
             e.preventDefault();
             showNotification('Veuillez entrer une adresse email valide', 'error');
+            return;
+        }
+        
+        // Validation du numéro de téléphone (format français)
+        const phoneRegex = /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/;
+        if (!phoneRegex.test(phone)) {
+            e.preventDefault();
+            showNotification('Veuillez entrer un numéro de téléphone valide (ex: 06 12 34 56 78)', 'error');
             return;
         }
         

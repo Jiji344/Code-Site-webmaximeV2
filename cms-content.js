@@ -1,7 +1,12 @@
-// Script pour charger et afficher le contenu du CMS
+// Chargement et affichage du contenu du CMS
 class CMSContentLoader {
     constructor() {
         this.portfolioData = [];
+        this.config = {
+            owner: 'Jiji344',
+            repo: 'Code-Site-webmaximeV2',
+            path: 'content/portfolio'
+        };
         this.init();
     }
 
@@ -12,15 +17,10 @@ class CMSContentLoader {
 
     async loadPortfolioData() {
         try {
-            // Charger les données du portfolio depuis les fichiers Markdown
-            const owner = 'Jiji344';
-            const repo = 'Code-Site-webmaximeV2';
-            const path = 'content/portfolio';
-            
             const portfolioFiles = await this.getPortfolioFiles();
             
             for (const file of portfolioFiles) {
-                // Charger depuis GitHub Raw
+                const { owner, repo, path } = this.config;
                 const githubRawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}/${file}`;
                 
                 try {
@@ -33,39 +33,30 @@ class CMSContentLoader {
                         }
                     }
                 } catch (err) {
-                    console.log(`Erreur lors du chargement de ${file}:`, err);
+                    console.warn(`Impossible de charger ${file}`);
                 }
             }
-            
-            console.log('Données portfolio chargées:', this.portfolioData);
         } catch (error) {
-            console.log('Erreur lors du chargement des données CMS:', error);
+            console.error('Erreur lors du chargement des données CMS:', error);
         }
     }
 
     async getPortfolioFiles() {
         try {
-            // Utiliser l'API GitHub pour lister tous les fichiers du portfolio
-            const owner = 'Jiji344'; // Ton nom d'utilisateur GitHub
-            const repo = 'Code-Site-webmaximeV2'; // Ton repository
-            const path = 'content/portfolio';
-            
+            const { owner, repo, path } = this.config;
             const response = await fetch(
                 `https://api.github.com/repos/${owner}/${repo}/contents/${path}`
             );
             
             if (response.ok) {
                 const files = await response.json();
-                // Filtrer seulement les fichiers .md
                 return files
                     .filter(file => file.name.endsWith('.md'))
                     .map(file => file.name);
-            } else {
-                console.log('Impossible de charger la liste des fichiers via GitHub API');
-                return [];
             }
+            return [];
         } catch (error) {
-            console.log('Erreur lors du chargement de la liste des fichiers:', error);
+            console.error('Erreur lors du chargement de la liste des fichiers:', error);
             return [];
         }
     }
@@ -78,7 +69,6 @@ class CMSContentLoader {
             const frontmatter = match[1];
             const data = {};
             
-            // Parser le frontmatter YAML simple
             frontmatter.split('\n').forEach(line => {
                 const colonIndex = line.indexOf(':');
                 if (colonIndex > 0) {
@@ -95,78 +85,59 @@ class CMSContentLoader {
     }
 
     displayPortfolioImages() {
-        console.log('Affichage des images du portfolio...', this.portfolioData);
-        
-        // Grouper les images par catégorie puis par album
-        const dataByCategory = {};
-        this.portfolioData.forEach(item => {
-            console.log('Item traité:', item);
-            if (item.category && item.image) {
-                if (!dataByCategory[item.category]) {
-                    dataByCategory[item.category] = {
-                        albums: {},
-                        singleImages: []
-                    };
-                }
-                
-                // Si l'image a un album, la grouper par album
-                if (item.album && item.album.trim() !== '') {
-                    console.log(`✅ Album détecté: "${item.album}" pour la catégorie ${item.category}`);
-                    if (!dataByCategory[item.category].albums[item.album]) {
-                        dataByCategory[item.category].albums[item.album] = [];
-                    }
-                    dataByCategory[item.category].albums[item.album].push(item);
-                } else {
-                    // Sinon, l'ajouter aux images individuelles
-                    console.log(`📷 Image individuelle pour la catégorie ${item.category}`);
-                    dataByCategory[item.category].singleImages.push(item);
-                }
-            }
-        });
-
-        console.log('📊 Données groupées par catégorie:', dataByCategory);
-
-        // Afficher les données dans chaque section
+        const dataByCategory = this.groupByCategory(this.portfolioData);
         Object.keys(dataByCategory).forEach(category => {
             this.updateCategoryContent(category, dataByCategory[category]);
         });
     }
 
+    groupByCategory(data) {
+        const grouped = {};
+        
+        data.forEach(item => {
+            if (item.category && item.image) {
+                if (!grouped[item.category]) {
+                    grouped[item.category] = {
+                        albums: {},
+                        singleImages: []
+                    };
+                }
+                
+                if (item.album && item.album.trim() !== '') {
+                    if (!grouped[item.category].albums[item.album]) {
+                        grouped[item.category].albums[item.album] = [];
+                    }
+                    grouped[item.category].albums[item.album].push(item);
+                } else {
+                    grouped[item.category].singleImages.push(item);
+                }
+            }
+        });
+
+        return grouped;
+    }
+
     updateCategoryContent(category, data) {
-        // Trouver la section correspondante
         const categorySection = document.querySelector(`[data-category="${category}"]`);
-        if (!categorySection) {
-            console.log(`❌ Section ${category} non trouvée`);
-            return;
-        }
+        if (!categorySection) return;
 
-        // Trouver le conteneur d'images
         const imagesContainer = categorySection.querySelector('.category-images');
-        if (!imagesContainer) {
-            console.log(`❌ Conteneur d'images pour ${category} non trouvé`);
-            return;
-        }
+        if (!imagesContainer) return;
 
-        console.log(`📁 Mise à jour de la catégorie: ${category}`);
-        console.log(`   Albums: ${Object.keys(data.albums).length}`);
-        console.log(`   Images individuelles: ${data.singleImages.length}`);
-
-        // Ajouter d'abord les cartes d'albums
+        // Ajouter les albums
         Object.keys(data.albums).forEach(albumName => {
             const albumImages = data.albums[albumName];
-            console.log(`   ➕ Création de l'album: "${albumName}" (${albumImages.length} photos)`);
             const albumCard = this.createAlbumCard(albumName, albumImages);
             imagesContainer.appendChild(albumCard);
         });
 
-        // Puis ajouter les images individuelles
+        // Ajouter les images individuelles
         data.singleImages.forEach((item) => {
-            console.log(`   ➕ Ajout image individuelle: ${item.title || item.image}`);
             const imageCard = this.createImageCard(item);
             imagesContainer.appendChild(imageCard);
         });
 
-        // Mettre à jour le carrousel de cette catégorie
+        // Mettre à jour le carrousel
         if (window.portfolioCarousel) {
             window.portfolioCarousel.updateCarousel(category);
         }
@@ -176,14 +147,12 @@ class CMSContentLoader {
         const albumCard = document.createElement('div');
         albumCard.className = 'album-card';
         
-        // Image de couverture (première image de l'album)
         const coverImage = document.createElement('img');
         coverImage.className = 'album-card-image';
         coverImage.src = images[0].image;
         coverImage.alt = albumName;
         coverImage.loading = 'lazy';
         
-        // Contenu de la carte
         const cardContent = document.createElement('div');
         cardContent.className = 'album-card-content';
         
@@ -201,7 +170,6 @@ class CMSContentLoader {
         albumCard.appendChild(coverImage);
         albumCard.appendChild(cardContent);
         
-        // Événement pour ouvrir le carousel
         albumCard.addEventListener('click', () => {
             this.openAlbumCarousel(albumName, images);
         });
@@ -210,11 +178,9 @@ class CMSContentLoader {
     }
 
     createImageCard(item) {
-        // Créer la structure complète comme les images statiques
         const imageCard = document.createElement('div');
         imageCard.className = 'image-card';
         
-        // Créer l'image
         const imgElement = document.createElement('img');
         imgElement.src = item.image;
         imgElement.alt = item.title || item.description || '';
@@ -222,7 +188,6 @@ class CMSContentLoader {
         imgElement.width = 400;
         imgElement.height = 600;
         
-        // Créer l'overlay avec le bouton d'agrandissement
         const overlay = document.createElement('div');
         overlay.className = 'image-overlay';
         
@@ -238,7 +203,6 @@ class CMSContentLoader {
             </svg>
         `;
         
-        // Événement pour ouvrir la modal (utilise la modal existante du site)
         expandButton.addEventListener('click', (e) => {
             e.stopPropagation();
             const modal = document.getElementById('image-modal');
@@ -249,11 +213,8 @@ class CMSContentLoader {
                 modalImg.src = item.image;
                 modalImg.alt = item.title || item.description || '';
                 modal.classList.add('active');
-                
-                // Empêcher le scroll du body
                 document.body.style.overflow = 'hidden';
                 
-                // Focus sur le bouton de fermeture
                 if (modalClose) {
                     modalClose.focus();
                 }
@@ -279,17 +240,14 @@ class CMSContentLoader {
         
         if (!modal) return;
         
-        // État du carousel
         let currentIndex = 0;
         
-        // Fonction pour afficher une image
         const showImage = (index) => {
             currentIndex = index;
             const image = images[index];
             
-            // Relancer l'animation en retirant puis rajoutant l'animation
             carouselImage.style.animation = 'none';
-            void carouselImage.offsetWidth; // Trigger reflow
+            void carouselImage.offsetWidth;
             carouselImage.style.animation = 'carouselImageZoom 0.4s ease-out';
             
             carouselImage.src = image.image;
@@ -297,23 +255,19 @@ class CMSContentLoader {
             albumCurrentTitle.textContent = image.title || 'Sans titre';
             albumCounter.textContent = `${index + 1} / ${images.length}`;
             
-            // Ajouter le titre à l'attribut data-title du conteneur
             const imageContainer = document.querySelector('.carousel-image-container');
             if (imageContainer) {
                 imageContainer.setAttribute('data-title', image.title || 'Sans titre');
             }
             
-            // Mettre à jour les boutons
             prevButton.disabled = index === 0;
             nextButton.disabled = index === images.length - 1;
             
-            // Mettre à jour les miniatures actives
             document.querySelectorAll('.carousel-thumbnail').forEach((thumb, i) => {
                 thumb.classList.toggle('active', i === index);
             });
         };
         
-        // Générer les miniatures
         thumbnailsContainer.innerHTML = '';
         images.forEach((image, index) => {
             const thumbnail = document.createElement('img');
@@ -324,11 +278,9 @@ class CMSContentLoader {
             thumbnailsContainer.appendChild(thumbnail);
         });
         
-        // Configuration du carousel
         albumTitle.textContent = albumName;
         showImage(0);
         
-        // Navigation
         prevButton.onclick = () => {
             if (currentIndex > 0) showImage(currentIndex - 1);
         };
@@ -337,7 +289,6 @@ class CMSContentLoader {
             if (currentIndex < images.length - 1) showImage(currentIndex + 1);
         };
         
-        // Navigation au clavier
         const handleKeyboard = (e) => {
             if (e.key === 'ArrowLeft' && currentIndex > 0) {
                 showImage(currentIndex - 1);
@@ -348,34 +299,22 @@ class CMSContentLoader {
             }
         };
         
-        // Fermer le carousel
         const closeCarousel = () => {
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
             document.removeEventListener('keydown', handleKeyboard);
         };
         
-        // Bouton de fermeture
         document.getElementById('album-modal-close').onclick = closeCarousel;
-        
-        // Clic en dehors de la modal
-        modal.onclick = (e) => {
-            if (e.target === modal) {
-                closeCarousel();
-            }
-        };
-        
-        // Ajouter l'écoute du clavier
+        modal.onclick = (e) => e.target === modal && closeCarousel();
         document.addEventListener('keydown', handleKeyboard);
         
-        // Ouvrir la modal
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
-
 }
 
-// Initialiser le loader CMS
+// Initialiser
 document.addEventListener('DOMContentLoaded', () => {
     window.cmsLoader = new CMSContentLoader();
 });

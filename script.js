@@ -1,182 +1,199 @@
+/* ===== CONFIGURATION ===== */
+const CONFIG = {
+    SCROLL_THRESHOLD: 50,
+    SECTION_OFFSET: 100,
+    NOTIFICATION_DURATION: 5000,
+    DEBOUNCE_DELAY: 10,
+    COPY_FEEDBACK_DURATION: 600,
+    EMAIL_REDIRECT_DELAY: 1000,
+    PHONE_REGEX: /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/,
+    EMAIL_REGEX: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+};
+
+/* ===== UTILITAIRES ===== */
+const debounce = (func, wait = CONFIG.DEBOUNCE_DELAY) => {
+    let timeout;
+    return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func(...args), wait);
+    };
+};
+
+const isMobileDevice = () => /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+
 /* ===== MENU MOBILE ===== */
-const navMenu = document.getElementById('nav-menu');
-const navToggle = document.getElementById('nav-toggle');
-const navClose = document.getElementById('nav-close');
-const navLinks = document.querySelectorAll('.nav-link');
-
-// Ouvrir le menu mobile
-if (navToggle) {
-    navToggle.addEventListener('click', () => {
-        navMenu.classList.add('show-menu');
-        navToggle.setAttribute('aria-expanded', 'true');
-        // Piéger le focus dans le menu
-        trapFocus(navMenu);
-    });
-}
-
-// Fermer le menu mobile
-if (navClose) {
-    navClose.addEventListener('click', () => {
-        navMenu.classList.remove('show-menu');
-        navToggle.setAttribute('aria-expanded', 'false');
-        navToggle.focus(); // Retourner le focus au bouton
-    });
-}
-
-// Fermer le menu quand on clique sur un lien
-navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        navMenu.classList.remove('show-menu');
-        navToggle.setAttribute('aria-expanded', 'false');
-        // Enlever le focus après le clic pour éviter que l'effet hover reste
-        setTimeout(() => {
-            e.target.blur();
-        }, 100);
-    });
-});
-
-// Enlever le focus du bouton Contact après clic
-const contactLink = document.querySelector('.nav-link-contact');
-if (contactLink) {
-    contactLink.addEventListener('click', (e) => {
-        setTimeout(() => {
-            e.target.blur();
-        }, 100);
-    });
-}
-
-// Fermer le menu avec Escape
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && navMenu.classList.contains('show-menu')) {
-        navMenu.classList.remove('show-menu');
-        navToggle.setAttribute('aria-expanded', 'false');
-        navToggle.focus();
+class MobileMenu {
+    constructor() {
+        this.menu = document.getElementById('nav-menu');
+        this.toggle = document.getElementById('nav-toggle');
+        this.close = document.getElementById('nav-close');
+        this.links = document.querySelectorAll('.nav-link');
+        
+        if (this.menu && this.toggle && this.close) {
+            this.init();
+        }
     }
-});
 
-/* ===== PIÈGE À FOCUS POUR ACCESSIBILITÉ ===== */
-function trapFocus(element) {
-    const focusableElements = element.querySelectorAll(
-        'a[href], button:not([disabled]), textarea, input, select'
-    );
-    const firstFocusable = focusableElements[0];
-    const lastFocusable = focusableElements[focusableElements.length - 1];
+    init() {
+        this.toggle.addEventListener('click', () => this.open());
+        this.close.addEventListener('click', () => this.closeMenu());
+        this.links.forEach(link => link.addEventListener('click', (e) => this.handleLinkClick(e)));
+        document.addEventListener('keydown', (e) => this.handleEscape(e));
+    }
 
-    element.addEventListener('keydown', function(e) {
-        if (e.key !== 'Tab') return;
+    open() {
+        this.menu.classList.add('show-menu');
+        this.toggle.setAttribute('aria-expanded', 'true');
+        this.trapFocus();
+    }
 
-        if (e.shiftKey) {
-            if (document.activeElement === firstFocusable) {
+    closeMenu() {
+        this.menu.classList.remove('show-menu');
+        this.toggle.setAttribute('aria-expanded', 'false');
+        this.toggle.focus();
+    }
+
+    handleLinkClick(e) {
+        this.closeMenu();
+        setTimeout(() => e.target.blur(), 100);
+    }
+
+    handleEscape(e) {
+        if (e.key === 'Escape' && this.menu.classList.contains('show-menu')) {
+            this.closeMenu();
+        }
+    }
+
+    trapFocus() {
+        const focusableElements = this.menu.querySelectorAll('a[href], button:not([disabled]), textarea, input, select');
+        const firstFocusable = focusableElements[0];
+        const lastFocusable = focusableElements[focusableElements.length - 1];
+
+        this.menu.addEventListener('keydown', (e) => {
+            if (e.key !== 'Tab') return;
+
+            if (e.shiftKey && document.activeElement === firstFocusable) {
                 lastFocusable.focus();
                 e.preventDefault();
-            }
-        } else {
-            if (document.activeElement === lastFocusable) {
+            } else if (!e.shiftKey && document.activeElement === lastFocusable) {
                 firstFocusable.focus();
                 e.preventDefault();
             }
-        }
-    });
+        });
 
-    firstFocusable.focus();
-}
-
-/* ===== EFFET SCROLL HEADER ===== */
-const header = document.getElementById('header');
-
-function scrollHeader() {
-    if (window.scrollY >= 50) {
-        header.style.background = 'rgba(10, 22, 40, 0.5)';
-        header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3)';
-    } else {
-        header.style.background = 'rgba(10, 22, 40, 0.3)';
-        header.style.boxShadow = 'none';
+        firstFocusable.focus();
     }
 }
 
-window.addEventListener('scroll', scrollHeader);
-
-/* ===== LIEN ACTIF DANS LA NAVIGATION ===== */
-const sections = document.querySelectorAll('section[id]');
-
-function scrollActive() {
-    const scrollY = window.pageYOffset;
-
-    sections.forEach(current => {
-        const sectionHeight = current.offsetHeight;
-        const sectionTop = current.offsetTop - 100;
-        const sectionId = current.getAttribute('id');
-        const link = document.querySelector(`.nav-link[href*="${sectionId}"]`);
-
-        if (link) {
-            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-                link.classList.add('active-link');
-            } else {
-                link.classList.remove('active-link');
-            }
+/* ===== HEADER SCROLL ===== */
+class ScrollHeader {
+    constructor() {
+        this.header = document.getElementById('header');
+        if (this.header) {
+            this.init();
         }
-    });
+    }
+
+    init() {
+        const handleScroll = debounce(() => this.update());
+        window.addEventListener('scroll', handleScroll);
+        this.update();
+    }
+
+    update() {
+        const scrolled = window.scrollY >= CONFIG.SCROLL_THRESHOLD;
+        this.header.style.background = scrolled ? 'rgba(10, 22, 40, 0.5)' : 'rgba(10, 22, 40, 0.3)';
+        this.header.style.boxShadow = scrolled ? '0 4px 20px rgba(0, 0, 0, 0.3)' : 'none';
+    }
 }
 
-window.addEventListener('scroll', scrollActive);
+/* ===== NAVIGATION ACTIVE ===== */
+class ActiveNav {
+    constructor() {
+        this.sections = document.querySelectorAll('section[id]');
+        if (this.sections.length) {
+            this.init();
+        }
+    }
+
+    init() {
+        const handleScroll = debounce(() => this.update());
+        window.addEventListener('scroll', handleScroll);
+    }
+
+    update() {
+        const scrollY = window.pageYOffset;
+
+        this.sections.forEach(section => {
+            const sectionHeight = section.offsetHeight;
+            const sectionTop = section.offsetTop - CONFIG.SECTION_OFFSET;
+            const sectionId = section.getAttribute('id');
+            const link = document.querySelector(`.nav-link[href*="${sectionId}"]`);
+
+            if (link) {
+                const isActive = scrollY > sectionTop && scrollY <= sectionTop + sectionHeight;
+                link.classList.toggle('active-link', isActive);
+            }
+        });
+    }
+}
 
 /* ===== MODAL IMAGE ===== */
-const imageModal = document.getElementById('image-modal');
-const modalImage = document.getElementById('modal-image');
-const modalClose = document.getElementById('modal-close');
-const imageExpandButtons = document.querySelectorAll('.image-expand');
+class ImageModal {
+    constructor() {
+        this.modal = document.getElementById('image-modal');
+        this.image = document.getElementById('modal-image');
+        this.closeBtn = document.getElementById('modal-close');
+        this.expandButtons = document.querySelectorAll('.image-expand');
 
-// Ouvrir la modal
-imageExpandButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
+        if (this.modal && this.image && this.closeBtn) {
+            this.init();
+        }
+    }
+
+    init() {
+        this.expandButtons.forEach(btn => btn.addEventListener('click', (e) => this.open(e)));
+        this.closeBtn.addEventListener('click', () => this.close());
+        this.modal.addEventListener('click', (e) => e.target === this.modal && this.close());
+        document.addEventListener('keydown', (e) => e.key === 'Escape' && this.modal.classList.contains('active') && this.close());
+    }
+
+    open(e) {
         e.stopPropagation();
-        const img = button.closest('.image-card').querySelector('img');
-        
-        modalImage.src = img.src;
-        modalImage.alt = img.alt;
-        imageModal.classList.add('active');
-        
-        // Empêcher le scroll du body
+        const img = e.target.closest('.image-card').querySelector('img');
+        this.image.src = img.src;
+        this.image.alt = img.alt;
+        this.modal.classList.add('active');
         document.body.style.overflow = 'hidden';
-        
-        // Focus sur le bouton de fermeture
-        modalClose.focus();
-    });
-});
-
-// Fermer la modal
-function closeModal() {
-    imageModal.classList.remove('active');
-    modalImage.src = '';
-    document.body.style.overflow = 'auto';
-}
-
-if (modalClose) {
-    modalClose.addEventListener('click', closeModal);
-}
-
-// Fermer en cliquant en dehors de l'image
-imageModal.addEventListener('click', (e) => {
-    if (e.target === imageModal) {
-        closeModal();
+        this.closeBtn.focus();
     }
-});
 
-// Fermer avec Escape
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && imageModal.classList.contains('active')) {
-        closeModal();
+    close() {
+        this.modal.classList.remove('active');
+        this.image.src = '';
+        document.body.style.overflow = 'auto';
     }
-});
+}
 
 /* ===== SMOOTH SCROLL ===== */
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
+class SmoothScroll {
+    constructor() {
+        this.header = document.getElementById('header');
+        this.init();
+    }
+
+    init() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => this.handleClick(e));
+        });
+    }
+
+    handleClick(e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const target = document.querySelector(e.currentTarget.getAttribute('href'));
         
         if (target) {
-            const headerHeight = header.offsetHeight;
+            const headerHeight = this.header.offsetHeight;
             const targetPosition = target.offsetTop - headerHeight;
             
             window.scrollTo({
@@ -184,188 +201,149 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 behavior: 'smooth'
             });
         }
-    });
-});
+    }
+}
 
-/* ===== ANIMATION AU SCROLL - DÉSACTIVÉ ===== */
-// Animations désactivées selon les préférences utilisateur
+/* ===== FORMULAIRE DE CONTACT ===== */
+class ContactForm {
+    constructor() {
+        this.form = document.getElementById('contact-form');
+        if (this.form) {
+            this.init();
+        }
+    }
 
-/* ===== GESTION DU FORMULAIRE DE CONTACT (Netlify Forms) ===== */
-const contactForm = document.getElementById('contact-form');
+    init() {
+        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+        
+        if (window.location.search.includes('success')) {
+            showNotification('Message envoyé avec succès ! Je vous répondrai bientôt.', 'success');
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    }
 
-if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        // Validation basique avant soumission
-        const formData = new FormData(contactForm);
-        const name = formData.get('name');
+    handleSubmit(e) {
+        const formData = new FormData(this.form);
         const email = formData.get('email');
         const phone = formData.get('phone');
-        const message = formData.get('message');
         
-        // Validation de l'email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
+        if (!CONFIG.EMAIL_REGEX.test(email)) {
             e.preventDefault();
             showNotification('Veuillez entrer une adresse email valide', 'error');
             return;
         }
         
-        // Validation du numéro de téléphone (format français)
-        const phoneRegex = /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/;
-        if (!phoneRegex.test(phone)) {
+        if (!CONFIG.PHONE_REGEX.test(phone)) {
             e.preventDefault();
             showNotification('Veuillez entrer un numéro de téléphone valide (ex: 06 12 34 56 78)', 'error');
             return;
         }
         
-        // Afficher le bouton en état de chargement
-        const submitButton = contactForm.querySelector('.form-button');
-        const originalText = submitButton.innerHTML;
-        
+        const submitButton = this.form.querySelector('.form-button');
         submitButton.innerHTML = '⏳ Envoi en cours...';
         submitButton.disabled = true;
+    }
+}
+
+/* ===== COPIE DES COORDONNÉES ===== */
+class ContactCopy {
+    constructor() {
+        this.phoneLink = document.getElementById('phone-link');
+        this.emailLink = document.getElementById('email-link');
+        this.instagramLink = document.getElementById('instagram-link');
+        this.isMobile = isMobileDevice();
         
-        // Netlify Forms gérera la soumission
-        // Le formulaire sera redirigé automatiquement
-    });
-}
+        this.init();
+    }
 
-// Afficher un message de succès si on revient de la page de confirmation
-if (window.location.search.includes('success')) {
-    showNotification('Message envoyé avec succès ! Je vous répondrai bientôt.', 'success');
-    // Nettoyer l'URL
-    window.history.replaceState({}, document.title, window.location.pathname);
-}
+    init() {
+        window.addEventListener('resize', () => {
+            this.isMobile = isMobileDevice();
+        });
+        
+        if (this.phoneLink) {
+            this.phoneLink.addEventListener('click', (e) => this.handlePhone(e));
+        }
+        
+        if (this.emailLink) {
+            this.emailLink.addEventListener('click', (e) => this.handleEmail(e));
+        }
+        
+        if (this.instagramLink) {
+            this.instagramLink.addEventListener('click', () => {
+                showNotification('💬 Ouverture d\'Instagram...', 'success');
+            });
+        }
+    }
 
-/* ===== COPIE AUTOMATIQUE DES COORDONNÉES ===== */
-// Fonction pour copier du texte dans le presse-papiers
-async function copyToClipboard(text) {
-    try {
-        await navigator.clipboard.writeText(text);
-        return true;
-    } catch (err) {
-        // Fallback pour les navigateurs plus anciens
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.select();
+    async handlePhone(e) {
+        if (this.isMobile) return;
+        
+        e.preventDefault();
+        const phoneNumber = e.target.getAttribute('data-copy');
+        const success = await this.copyToClipboard(phoneNumber);
+        
+        if (success) {
+            e.target.classList.add('copied');
+            showNotification('📞 Numéro de téléphone copié !', 'success');
+            
+            setTimeout(() => e.target.classList.remove('copied'), CONFIG.COPY_FEEDBACK_DURATION);
+            setTimeout(() => window.location.href = `tel:${phoneNumber}`, CONFIG.EMAIL_REDIRECT_DELAY);
+        } else {
+            showNotification('Erreur lors de la copie', 'error');
+        }
+    }
+
+    async handleEmail(e) {
+        if (this.isMobile) return;
+        
+        e.preventDefault();
+        const email = e.target.getAttribute('data-copy');
+        const success = await this.copyToClipboard(email);
+        
+        if (success) {
+            e.target.classList.add('copied');
+            showNotification('📧 Adresse email copiée !', 'success');
+            
+            setTimeout(() => e.target.classList.remove('copied'), CONFIG.COPY_FEEDBACK_DURATION);
+            setTimeout(() => window.location.href = `mailto:${email}`, CONFIG.EMAIL_REDIRECT_DELAY);
+        } else {
+            showNotification('Erreur lors de la copie', 'error');
+        }
+    }
+
+    async copyToClipboard(text) {
         try {
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
+            await navigator.clipboard.writeText(text);
             return true;
         } catch (err) {
-            document.body.removeChild(textArea);
-            return false;
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                return true;
+            } catch (err) {
+                return false;
+            } finally {
+                document.body.removeChild(textArea);
+            }
         }
     }
 }
 
-// Gestionnaire pour les liens de contact
-document.addEventListener('DOMContentLoaded', function() {
-    const phoneLink = document.getElementById('phone-link');
-    const emailLink = document.getElementById('email-link');
-    const instagramLink = document.getElementById('instagram-link');
-    
-    // Fonction pour détecter si on est sur mobile
-    function isMobileDevice() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
-    }
-    
-    // Détecter si on est sur mobile
-    let isMobile = isMobileDevice();
-    
-    // Re-détecter si on change de taille de fenêtre
-    window.addEventListener('resize', function() {
-        isMobile = isMobileDevice();
-    });
-    
-    if (phoneLink) {
-        phoneLink.addEventListener('click', async function(e) {
-            if (isMobile) {
-                // Sur mobile : comportement normal (pas de copie)
-                return; // Laisse le lien href="tel:" fonctionner normalement
-            }
-            
-            // Sur desktop : copie automatique
-            e.preventDefault();
-            const phoneNumber = this.getAttribute('data-copy');
-            const success = await copyToClipboard(phoneNumber);
-            
-            if (success) {
-                // Effet visuel de copie
-                this.classList.add('copied');
-                showNotification('📞 Numéro de téléphone copié !', 'success');
-                
-                // Retirer l'effet après l'animation
-                setTimeout(() => {
-                    this.classList.remove('copied');
-                }, 600);
-                
-                // Ouvrir l'app de téléphone après un court délai
-                setTimeout(() => {
-                    window.location.href = `tel:${phoneNumber}`;
-                }, 1000);
-            } else {
-                showNotification('Erreur lors de la copie', 'error');
-            }
-        });
-    }
-    
-    if (emailLink) {
-        emailLink.addEventListener('click', async function(e) {
-            if (isMobile) {
-                // Sur mobile : comportement normal (pas de copie)
-                return; // Laisse le lien href="mailto:" fonctionner normalement
-            }
-            
-            // Sur desktop : copie automatique
-            e.preventDefault();
-            const email = this.getAttribute('data-copy');
-            const success = await copyToClipboard(email);
-            
-            if (success) {
-                // Effet visuel de copie
-                this.classList.add('copied');
-                showNotification('📧 Adresse email copiée !', 'success');
-                
-                // Retirer l'effet après l'animation
-                setTimeout(() => {
-                    this.classList.remove('copied');
-                }, 600);
-                
-                // Ouvrir l'app de mail après un court délai
-                setTimeout(() => {
-                    window.location.href = `mailto:${email}`;
-                }, 1000);
-            } else {
-                showNotification('Erreur lors de la copie', 'error');
-            }
-        });
-    }
-    
-    if (instagramLink) {
-        instagramLink.addEventListener('click', function(e) {
-            // Lien Instagram : ouverture directe (pas de copie)
-            // Le lien href="https://instagram.com/monsieurcrocodeal" fonctionnera normalement
-            showNotification('💬 Ouverture d\'Instagram...', 'success');
-        });
-    }
-});
-
 /* ===== SYSTÈME DE NOTIFICATION ===== */
 function showNotification(message, type = 'success') {
-    // Supprimer les notifications existantes
-    const existingNotifications = document.querySelectorAll('.notification');
-    existingNotifications.forEach(notif => notif.remove());
+    document.querySelectorAll('.notification').forEach(notif => notif.remove());
     
-    // Créer la notification
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
     notification.setAttribute('role', 'alert');
     notification.setAttribute('aria-live', 'polite');
     
-    // Styles
     Object.assign(notification.style, {
         position: 'fixed',
         top: '6rem',
@@ -381,112 +359,78 @@ function showNotification(message, type = 'success') {
     });
     
     document.body.appendChild(notification);
-    
-    // Supprimer après 5 secondes
-    setTimeout(() => {
-        notification.remove();
-    }, 5000);
+    setTimeout(() => notification.remove(), CONFIG.NOTIFICATION_DURATION);
 }
-
-// Ajouter les styles de notification au CSS
-const notificationStyles = document.createElement('style');
-notificationStyles.textContent = `
-    @media screen and (max-width: 768px) {
-        .notification {
-            right: 1rem !important;
-            left: 1rem !important;
-            max-width: calc(100% - 2rem) !important;
-        }
-    }
-`;
-document.head.appendChild(notificationStyles);
 
 /* ===== LAZY LOADING DES IMAGES ===== */
-if ('loading' in HTMLImageElement.prototype) {
-    // Le navigateur supporte le lazy loading natif
-    const images = document.querySelectorAll('img[loading="lazy"]');
-    images.forEach(img => {
-        img.src = img.src;
-    });
-} else {
-    // Fallback pour les navigateurs qui ne supportent pas lazy loading
-    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-    
-    const imageObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.src;
-                img.removeAttribute('loading');
-                imageObserver.unobserve(img);
-            }
-        });
-    });
-    
-    lazyImages.forEach(img => imageObserver.observe(img));
-}
-
-/* ===== AMÉLIORATION DE LA PERFORMANCE ===== */
-// Debounce pour les événements de scroll
-function debounce(func, wait = 10) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Appliquer debounce aux fonctions de scroll
-const debouncedScrollHeader = debounce(scrollHeader, 10);
-const debouncedScrollActive = debounce(scrollActive, 10);
-
-window.removeEventListener('scroll', scrollHeader);
-window.removeEventListener('scroll', scrollActive);
-window.addEventListener('scroll', debouncedScrollHeader);
-window.addEventListener('scroll', debouncedScrollActive);
-
-/* ===== PRÉCHARGEMENT DES IMAGES AU HOVER ===== */
-const imageCards = document.querySelectorAll('.image-card');
-imageCards.forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        const img = this.querySelector('img');
-        if (img && img.dataset.fullsrc) {
-            const fullImg = new Image();
-            fullImg.src = img.dataset.fullsrc;
+class LazyLoadImages {
+    init() {
+        if ('loading' in HTMLImageElement.prototype) {
+            return;
         }
-    });
-});
-
-/* ===== GESTION DU THÈME SYSTÈME ===== */
-// Détecter la préférence de contraste élevé
-if (window.matchMedia('(prefers-contrast: high)').matches) {
-    document.documentElement.style.setProperty('--color-text', '#FFFFFF');
-    document.documentElement.style.setProperty('--color-text-secondary', '#E0E0E0');
+        
+        const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.src;
+                    img.removeAttribute('loading');
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
+        
+        lazyImages.forEach(img => imageObserver.observe(img));
+    }
 }
 
-// Animations désactivées globalement
+/* ===== GESTION DES ERREURS D'IMAGES ===== */
+class ImageErrorHandler {
+    init() {
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('error', function() {
+                this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%230F1F3A" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="20" fill="%234A90E2"%3EImage non disponible%3C/text%3E%3C/svg%3E';
+                this.alt = 'Image non disponible';
+            });
+        });
+    }
+}
+
+/* ===== PRÉFÉRENCES SYSTÈME ===== */
+class SystemPreferences {
+    init() {
+        if (window.matchMedia('(prefers-contrast: high)').matches) {
+            document.documentElement.style.setProperty('--color-text', '#FFFFFF');
+            document.documentElement.style.setProperty('--color-text-secondary', '#E0E0E0');
+        }
+    }
+}
 
 /* ===== INITIALISATION ===== */
 document.addEventListener('DOMContentLoaded', () => {
-    // Appeler les fonctions au chargement
-    scrollHeader();
-    scrollActive();
+    // Initialiser tous les modules
+    new MobileMenu();
+    new ScrollHeader();
+    new ActiveNav();
+    new ImageModal();
+    new SmoothScroll();
+    new ContactForm();
+    new ContactCopy();
+    new LazyLoadImages().init();
+    new ImageErrorHandler().init();
+    new SystemPreferences().init();
     
-    // Annoncer que la page est chargée (pour les lecteurs d'écran)
-    const loadAnnouncement = document.createElement('div');
-    loadAnnouncement.setAttribute('role', 'status');
-    loadAnnouncement.setAttribute('aria-live', 'polite');
-    loadAnnouncement.className = 'sr-only';
-    loadAnnouncement.textContent = 'Page chargée avec succès';
-    document.body.appendChild(loadAnnouncement);
-    
-    // Ajouter la classe pour les éléments visibles uniquement aux lecteurs d'écran
-    const srOnlyStyles = document.createElement('style');
-    srOnlyStyles.textContent = `
+    // Styles pour les notifications
+    const notificationStyles = document.createElement('style');
+    notificationStyles.textContent = `
+        @media screen and (max-width: 768px) {
+            .notification {
+                right: 1rem !important;
+                left: 1rem !important;
+                max-width: calc(100% - 2rem) !important;
+            }
+        }
         .sr-only {
             position: absolute;
             width: 1px;
@@ -499,17 +443,21 @@ document.addEventListener('DOMContentLoaded', () => {
             border-width: 0;
         }
     `;
-    document.head.appendChild(srOnlyStyles);
+    document.head.appendChild(notificationStyles);
+    
+    // Annoncer le chargement pour l'accessibilité
+    const loadAnnouncement = document.createElement('div');
+    loadAnnouncement.setAttribute('role', 'status');
+    loadAnnouncement.setAttribute('aria-live', 'polite');
+    loadAnnouncement.className = 'sr-only';
+    loadAnnouncement.textContent = 'Page chargée avec succès';
+    document.body.appendChild(loadAnnouncement);
 });
 
-/* ===== GESTION DES ERREURS D'IMAGES ===== */
-document.querySelectorAll('img').forEach(img => {
-    img.addEventListener('error', function() {
-        // Si une image ne charge pas, afficher une image de remplacement
-        this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%230F1F3A" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Poppins, sans-serif" font-size="20" fill="%234A90E2"%3EImage non disponible%3C/text%3E%3C/svg%3E';
-        this.alt = 'Image non disponible';
+// Enlever le focus du bouton Contact après clic
+const contactLink = document.querySelector('.nav-link-contact');
+if (contactLink) {
+    contactLink.addEventListener('click', (e) => {
+        setTimeout(() => e.target.blur(), 100);
     });
-});
-
-console.log('Portfolio Monsieur Crocodeal - Chargé avec succès ✨');
-
+}

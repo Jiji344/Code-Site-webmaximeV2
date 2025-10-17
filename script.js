@@ -264,6 +264,7 @@ async function copyToClipboard(text) {
 document.addEventListener('DOMContentLoaded', function() {
     const phoneLink = document.getElementById('phone-link');
     const emailLink = document.getElementById('email-link');
+    const instagramLink = document.getElementById('instagram-link');
     
     // Fonction pour détecter si on est sur mobile
     function isMobileDevice() {
@@ -339,6 +340,14 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 showNotification('Erreur lors de la copie', 'error');
             }
+        });
+    }
+    
+    if (instagramLink) {
+        instagramLink.addEventListener('click', function(e) {
+            // Lien Instagram : ouverture directe (pas de copie)
+            // Le lien href="https://instagram.com/monsieurcrocodeal" fonctionnera normalement
+            showNotification('💬 Ouverture d\'Instagram...', 'success');
         });
     }
 });

@@ -993,8 +993,8 @@ ul {
 }
 
 .contact-info {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: var(--spacing-sm);
 }
 
@@ -1831,6 +1831,7 @@ ul {
 
     /* Contact Mobile */
     .contact-info {
+        grid-template-columns: 1fr;
         gap: var(--spacing-sm);
     }
 

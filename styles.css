@@ -1410,6 +1410,10 @@ ul {
     animation: carouselImageZoom 0.4s ease-out;
     cursor: pointer;
     transition: var(--transition);
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 /* Styles pour le mode plein écran */
@@ -1947,10 +1951,7 @@ ul {
         user-select: none;
         -webkit-user-select: none;
         -webkit-touch-callout: none;
-    }
-    
-    .carousel-image:active {
-        opacity: 0.9;
+        -webkit-tap-highlight-color: transparent;
     }
 
     .carousel-info {

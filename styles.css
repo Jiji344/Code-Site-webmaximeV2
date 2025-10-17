@@ -211,6 +211,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
 }
 
 html {
@@ -262,12 +264,18 @@ body::after {
 a {
     text-decoration: none;
     color: inherit;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
 }
 
 img {
     max-width: 100%;
     height: auto;
     display: block;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 button {
@@ -275,6 +283,8 @@ button {
     background: none;
     cursor: pointer;
     font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
 }
 
 ul {
@@ -830,6 +840,10 @@ ul {
     aspect-ratio: 4/5;
     cursor: pointer;
     border: 1px solid var(--border-primary);
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .image-card img {
@@ -1487,6 +1501,10 @@ ul {
     border: 2px solid transparent;
     opacity: 0.5;
     flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .carousel-thumbnail:hover {
@@ -1514,6 +1532,10 @@ ul {
     aspect-ratio: 4/5;
     display: flex;
     flex-direction: column;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .album-card:hover {

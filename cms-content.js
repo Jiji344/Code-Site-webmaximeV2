@@ -165,6 +165,11 @@ class CMSContentLoader {
             const imageCard = this.createImageCard(item);
             imagesContainer.appendChild(imageCard);
         });
+
+        // Mettre à jour le carrousel de cette catégorie
+        if (window.portfolioCarousel) {
+            window.portfolioCarousel.updateCarousel(category);
+        }
     }
 
     createAlbumCard(albumName, images) {
@@ -281,6 +286,11 @@ class CMSContentLoader {
         const showImage = (index) => {
             currentIndex = index;
             const image = images[index];
+            
+            // Relancer l'animation en retirant puis rajoutant l'animation
+            carouselImage.style.animation = 'none';
+            void carouselImage.offsetWidth; // Trigger reflow
+            carouselImage.style.animation = 'carouselImageZoom 0.4s ease-out';
             
             carouselImage.src = image.image;
             carouselImage.alt = image.title || image.description || '';

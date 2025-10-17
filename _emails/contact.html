@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouveau message de contact - Monsieur Crocodeal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4A90E2, #357ABD);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .info-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .info-item {
+            margin-bottom: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .label {
+            font-weight: 600;
+            color: #4A90E2;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        
+        .value {
+            font-size: 16px;
+            color: #333;
+            word-break: break-word;
+        }
+        
+        .message-section {
+            background: white;
+            border: 2px solid #4A90E2;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .message-label {
+            font-weight: 600;
+            color: #4A90E2;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        
+        .message-content {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #333;
+            white-space: pre-wrap;
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .footer p {
+            margin: 5px 0;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #4A90E2, #357ABD);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>📸 Nouveau message de contact</h1>
+            <p>Monsieur Crocodeal - Photographe</p>
+        </div>
+        
+        <div class="content">
+            <div class="info-section">
+                <div class="info-item">
+                    <div class="label">Nom du client</div>
+                    <div class="value">{{name}}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="label">Email du client</div>
+                    <div class="value">{{email}}</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="label">Téléphone du client</div>
+                    <div class="value">{{phone}}</div>
+                </div>
+            </div>
+            
+            <div class="message-section">
+                <div class="message-label">Message</div>
+                <div class="message-content">{{message}}</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>📅 Reçu le :</strong> {{date}}</p>
+            <p><strong>🌐 Site :</strong> photographemonsieurcrocodeal.netlify.app</p>
+            <p style="margin-top: 15px; opacity: 0.8;">
+                <span class="highlight">Monsieur Crocodeal</span> - Photographe professionnel
+            </p>
+        </div>
+    </div>
+</body>
+</html>

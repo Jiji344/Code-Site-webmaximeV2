@@ -1306,7 +1306,7 @@ ul {
 
 .album-modal-close {
     position: absolute;
-    top: 7rem;
+    top: 8.5rem;
     right: 2rem;
     width: 3rem;
     height: 3rem;
@@ -1889,7 +1889,7 @@ ul {
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         padding: var(--spacing-sm) var(--spacing-md);
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
     }
 
@@ -1906,14 +1906,17 @@ ul {
         text-align: center;
         color: #ffffff;
         margin: 0;
+        flex: 1;
+        order: 2;
     }
 
     .album-modal-close {
-        top: 0.5rem;
-        right: 0.5rem;
+        position: static;
         width: 2rem;
         height: 2rem;
         z-index: 10;
+        order: 1;
+        margin-right: auto;
     }
 
     .album-modal-close svg {

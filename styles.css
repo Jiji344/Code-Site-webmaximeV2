@@ -1306,7 +1306,7 @@ ul {
 
 .album-modal-close {
     position: absolute;
-    top: 8.5rem;
+    top: 7rem;
     right: 2rem;
     width: 3rem;
     height: 3rem;
@@ -1408,6 +1408,29 @@ ul {
         0 0 60px var(--primary-alpha-30),
         0 20px 80px rgba(0, 0, 0, 0.8);
     animation: carouselImageZoom 0.4s ease-out;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+/* Styles pour le mode plein écran */
+.carousel-image:fullscreen,
+.carousel-image:-webkit-full-screen,
+.carousel-image:-moz-full-screen,
+.carousel-image:-ms-fullscreen {
+    max-width: 100vw;
+    max-height: 100vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    cursor: grab;
+    background: #000000;
+    padding: 0;
+    margin: 0;
+}
+
+.carousel-image:fullscreen:active,
+.carousel-image:-webkit-full-screen:active {
+    cursor: grabbing;
 }
 
 @keyframes carouselImageZoom {
@@ -1880,21 +1903,14 @@ ul {
     }
 
     .album-header {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 10;
-        background: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        padding: var(--spacing-sm) var(--spacing-md);
-        justify-content: space-between;
-        align-items: center;
+        flex-wrap: wrap;
+        padding: 0 var(--spacing-sm);
     }
 
     .album-title {
-        display: none;
+        font-size: var(--font-size-md);
+        flex-basis: 100%;
+        text-align: center;
     }
 
     .album-current-title {
@@ -1903,25 +1919,20 @@ ul {
 
     .album-counter {
         font-size: var(--font-size-base);
+        flex-basis: 100%;
         text-align: center;
-        color: #ffffff;
-        margin: 0;
-        flex: 1;
-        order: 2;
     }
 
     .album-modal-close {
-        position: static;
-        width: 2rem;
-        height: 2rem;
-        z-index: 10;
-        order: 1;
-        margin-right: auto;
+        top: 0.5rem;
+        right: 1rem;
+        width: 2.5rem;
+        height: 2.5rem;
     }
 
     .album-modal-close svg {
-        width: 16px;
-        height: 16px;
+        width: 24px;
+        height: 24px;
     }
 
     .carousel-image-container {
@@ -1930,31 +1941,16 @@ ul {
     }
 
     .carousel-image {
-        max-height: calc(100vh - 120px);
-        max-width: 100vw;
+        max-height: calc(95vh - 250px);
         cursor: pointer;
-        transition: transform 0.2s ease;
         touch-action: manipulation;
         user-select: none;
         -webkit-user-select: none;
         -webkit-touch-callout: none;
     }
     
-    .carousel-image:hover {
-        transform: scale(1.02);
-    }
-    
-    /* Styles pour le mode plein écran */
-    .carousel-image:fullscreen {
-        max-height: 100vh;
-        max-width: 100vw;
-        object-fit: contain;
-        cursor: grab;
-        touch-action: pan-x pan-y pinch-zoom;
-    }
-    
-    .carousel-image:fullscreen:active {
-        cursor: grabbing;
+    .carousel-image:active {
+        opacity: 0.9;
     }
 
     .carousel-info {

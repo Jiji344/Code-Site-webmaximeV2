@@ -1362,12 +1362,7 @@ ul {
 }
 
 .album-current-title {
-    font-size: var(--font-size-md);
-    color: #ffffff;
-    margin: 0;
-    text-align: center;
-    flex: 1;
-    font-weight: 300;
+    display: none;
 }
 
 .album-counter {
@@ -1905,11 +1900,7 @@ ul {
     }
 
     .album-current-title {
-        font-size: 0.9rem;
-        order: 3;
-        flex-basis: 100%;
-        color: #ffffff;
-        margin-top: 0.5rem;
+        display: none;
     }
 
     .album-counter {

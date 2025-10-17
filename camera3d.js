@@ -23,11 +23,6 @@ if (!container) {
     renderer.setSize(container.offsetWidth, container.offsetHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
-    
-    // Afficher l'animation 3D une fois prête
-    setTimeout(() => {
-        container.style.opacity = '1';
-    }, 100);
 
     // Lumière bleue puissante au centre
     const centerLight = new THREE.PointLight(0x4A90E2, 8, 15);

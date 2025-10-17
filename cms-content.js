@@ -281,230 +281,68 @@ class CMSContentLoader {
         
         // État du carousel
         let currentIndex = 0;
-        let isAnimating = false;
-        let lastNavigationTime = 0;
-        const navigationDelay = 350; // Délai minimum entre deux navigations (en ms)
-        
-        // Précharger toutes les images de l'album
-        const preloadedImages = new Map();
-        let loadedCount = 0;
-        
-        const preloadImages = () => {
-            console.log(`🖼️ Préchargement de ${images.length} images...`);
-            
-            // Créer un indicateur de chargement
-            const loadingIndicator = document.createElement('div');
-            loadingIndicator.className = 'preload-indicator';
-            loadingIndicator.innerHTML = `
-                <div class="preload-text">Chargement des images... <span id="preload-count">0/${images.length}</span></div>
-            `;
-            loadingIndicator.style.cssText = `
-                position: fixed;
-                bottom: 2rem;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(74, 144, 226, 0.9);
-                color: white;
-                padding: 0.75rem 1.5rem;
-                border-radius: 2rem;
-                font-size: 0.9rem;
-                z-index: 10001;
-                box-shadow: 0 0 20px rgba(74, 144, 226, 0.6);
-                transition: opacity 0.3s ease;
-            `;
-            document.body.appendChild(loadingIndicator);
-            
-            images.forEach((imgData, index) => {
-                const img = new Image();
-                img.src = imgData.image;
-                preloadedImages.set(index, img);
-                
-                img.onload = () => {
-                    loadedCount++;
-                    const countElement = document.getElementById('preload-count');
-                    if (countElement) {
-                        countElement.textContent = `${loadedCount}/${images.length}`;
-                    }
-                    console.log(`✅ Image ${loadedCount}/${images.length} préchargée`);
-                    
-                    // Supprimer l'indicateur quand tout est chargé
-                    if (loadedCount === images.length) {
-                        setTimeout(() => {
-                            loadingIndicator.style.opacity = '0';
-                            setTimeout(() => {
-                                loadingIndicator.remove();
-                            }, 300);
-                        }, 500);
-                        console.log('🎉 Toutes les images sont préchargées !');
-                    }
-                };
-                
-                img.onerror = () => {
-                    loadedCount++;
-                    const countElement = document.getElementById('preload-count');
-                    if (countElement) {
-                        countElement.textContent = `${loadedCount}/${images.length}`;
-                    }
-                    console.log(`❌ Erreur de chargement de l'image ${index + 1}`);
-                    
-                    // Supprimer l'indicateur même en cas d'erreur
-                    if (loadedCount === images.length) {
-                        setTimeout(() => {
-                            loadingIndicator.style.opacity = '0';
-                            setTimeout(() => {
-                                loadingIndicator.remove();
-                            }, 300);
-                        }, 500);
-                    }
-                };
-            });
-        };
-        
-        // Lancer le préchargement immédiatement
-        preloadImages();
-        
-        // Récupérer l'élément image du carousel
-        const imageContainer = document.querySelector('.carousel-image-container');
-        const mainImage = document.getElementById('carousel-image');
-        
-        if (!mainImage) {
-            console.error('❌ Image carousel introuvable');
-            return;
-        }
-        
-        // S'assurer que le conteneur est propre
-        imageContainer.className = 'carousel-image-container';
-        
-        console.log('✅ Carousel initialisé pour:', albumName);
         
         // Fonction pour afficher une image
-        const showImage = (index, direction = 'none') => {
-            // Vérifier le throttle pour éviter les clics trop rapides
-            const now = Date.now();
-            if (direction !== 'none' && (now - lastNavigationTime) < navigationDelay) {
-                console.log('⏱️ Navigation trop rapide, ignorée');
-                return;
-            }
-            
-            if (isAnimating && direction !== 'none') return;
-            
-            lastNavigationTime = now;
+        const showImage = (index) => {
             currentIndex = index;
             const image = images[index];
             
-            // Mettre à jour les titres et compteur
+            // Relancer l'animation en retirant puis rajoutant l'animation
+            carouselImage.style.animation = 'none';
+            void carouselImage.offsetWidth; // Trigger reflow
+            carouselImage.style.animation = 'carouselImageZoom 0.4s ease-out';
+            
+            carouselImage.src = image.image;
+            carouselImage.alt = image.title || image.description || '';
             albumCurrentTitle.textContent = image.title || 'Sans titre';
             albumCounter.textContent = `${index + 1} / ${images.length}`;
             
-            if (direction !== 'none') {
-                isAnimating = true;
-                
-                // Animation de transition simple
-                mainImage.style.transition = 'opacity 0.25s ease';
-                mainImage.style.opacity = '0';
-                
-                setTimeout(() => {
-                    // Changer l'image (elle est déjà préchargée)
-                    mainImage.src = image.image;
-                    mainImage.alt = image.title || image.description || '';
-                    mainImage.style.display = 'block';
-                    
-                    console.log('🔄 Navigation vers:', image.title || 'Sans titre');
-                    
-                    // Faire apparaître la nouvelle image
-                    mainImage.style.opacity = '1';
-                    
-                    setTimeout(() => {
-                        isAnimating = false;
-                        mainImage.style.transition = '';
-                    }, 250);
-                }, 250);
-            } else {
-                // Premier chargement sans animation
-                mainImage.src = image.image;
-                mainImage.alt = image.title || image.description || '';
-                mainImage.style.opacity = '1';
-                mainImage.style.display = 'block';
-                console.log('📸 Image chargée:', image.title || 'Sans titre');
+            // Ajouter le titre à l'attribut data-title du conteneur
+            const imageContainer = document.querySelector('.carousel-image-container');
+            if (imageContainer) {
+                imageContainer.setAttribute('data-title', image.title || 'Sans titre');
             }
+            
+            // Mettre à jour les boutons
+            prevButton.disabled = index === 0;
+            nextButton.disabled = index === images.length - 1;
+            
+            // Mettre à jour les miniatures actives
+            document.querySelectorAll('.carousel-thumbnail').forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
         };
         
-        // Fonction pour passer à l'image suivante (avec boucle)
-        const nextImage = () => {
-            if (isAnimating) return;
-            const nextIndex = (currentIndex + 1) % images.length;
-            showImage(nextIndex, 'next');
-        };
-        
-        // Fonction pour passer à l'image précédente (avec boucle)
-        const prevImage = () => {
-            if (isAnimating) return;
-            const prevIndex = (currentIndex - 1 + images.length) % images.length;
-            showImage(prevIndex, 'prev');
-        };
-        
-        // Masquer les miniatures (diaporama simple)
-        thumbnailsContainer.style.display = 'none';
-        
-        // Afficher les boutons de navigation
-        prevButton.style.display = 'flex';
-        nextButton.style.display = 'flex';
+        // Générer les miniatures
+        thumbnailsContainer.innerHTML = '';
+        images.forEach((image, index) => {
+            const thumbnail = document.createElement('img');
+            thumbnail.className = 'carousel-thumbnail';
+            thumbnail.src = image.image;
+            thumbnail.alt = image.title || '';
+            thumbnail.addEventListener('click', () => showImage(index));
+            thumbnailsContainer.appendChild(thumbnail);
+        });
         
         // Configuration du carousel
         albumTitle.textContent = albumName;
-        console.log(`🎬 Affichage de la première image de ${images.length} photos`);
-        showImage(0, 'none');
+        showImage(0);
         
         // Navigation
         prevButton.onclick = () => {
-            if (!isAnimating) {
-                prevImage();
-            }
+            if (currentIndex > 0) showImage(currentIndex - 1);
         };
         
         nextButton.onclick = () => {
-            if (!isAnimating) {
-                nextImage();
-            }
+            if (currentIndex < images.length - 1) showImage(currentIndex + 1);
         };
-        
-        
-        // Support du swipe pour mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
-        
-        const handleSwipe = () => {
-            const swipeThreshold = 50;
-            const diff = touchStartX - touchEndX;
-            
-            if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0) {
-                    // Swipe vers la gauche - image suivante
-                    nextImage();
-                } else {
-                    // Swipe vers la droite - image précédente
-                    prevImage();
-                }
-            }
-        };
-        
-        const imageContainer = document.querySelector('.carousel-image-container');
-        
-        imageContainer.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-        
-        imageContainer.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
         
         // Navigation au clavier
         const handleKeyboard = (e) => {
-            if (e.key === 'ArrowLeft') {
-                prevImage();
-            } else if (e.key === 'ArrowRight') {
-                nextImage();
+            if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                showImage(currentIndex - 1);
+            } else if (e.key === 'ArrowRight' && currentIndex < images.length - 1) {
+                showImage(currentIndex + 1);
             } else if (e.key === 'Escape') {
                 closeCarousel();
             }
@@ -515,12 +353,6 @@ class CMSContentLoader {
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
             document.removeEventListener('keydown', handleKeyboard);
-            
-            // Nettoyer l'indicateur de préchargement s'il existe
-            const loadingIndicator = document.querySelector('.preload-indicator');
-            if (loadingIndicator) {
-                loadingIndicator.remove();
-            }
         };
         
         // Bouton de fermeture

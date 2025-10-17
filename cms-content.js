@@ -165,13 +165,6 @@ class CMSContentLoader {
             const imageCard = this.createImageCard(item);
             imagesContainer.appendChild(imageCard);
         });
-
-        // Réinitialiser le système de scroll automatique après ajout de contenu
-        if (window.portfolioAutoScroll) {
-            setTimeout(() => {
-                window.portfolioAutoScroll.setupScrollZones();
-            }, 100);
-        }
     }
 
     createAlbumCard(albumName, images) {

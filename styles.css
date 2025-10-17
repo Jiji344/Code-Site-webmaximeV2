@@ -541,48 +541,7 @@ ul {
     gap: var(--spacing-md);
     max-width: var(--container-width);
     margin: 0 auto;
-    position: relative;
-    overflow: hidden;
 }
-
-.portfolio-section {
-    position: relative;
-    overflow: hidden;
-}
-
-.portfolio-category .category-images {
-    display: flex;
-    gap: var(--spacing-sm);
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 0;
-    margin: 0;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    max-width: 100%;
-    height: auto;
-    position: relative;
-    margin-left: calc(-1 * var(--spacing-md));
-    margin-right: calc(-1 * var(--spacing-md));
-    padding-left: var(--spacing-md);
-    padding-right: var(--spacing-md);
-}
-
-.portfolio-category .category-images::-webkit-scrollbar {
-    display: none;
-}
-
-.portfolio-category .album-card,
-.portfolio-category .image-card {
-    flex-shrink: 0;
-    width: 300px;
-    height: 400px;
-    margin: 0;
-    padding: 0;
-}
-
-/* Indicateurs de scroll supprimés - défilement invisible */
 
 /* Layout Bento Box créatif */
 .portfolio-category:nth-child(1) {
@@ -622,7 +581,6 @@ ul {
     border: 1px solid rgba(74, 144, 226, 0.2);
     border-radius: var(--border-radius);
     padding: var(--spacing-md);
-    margin: 0;
     transition: var(--transition);
     position: relative;
     overflow: hidden;

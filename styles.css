@@ -1394,16 +1394,7 @@ ul {
 }
 
 .carousel-image-container::after {
-    content: attr(data-title);
-    position: absolute;
-    bottom: -2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #ffffff;
-    font-size: var(--font-size-md);
-    text-align: center;
-    white-space: nowrap;
-    z-index: 5;
+    display: none;
 }
 
 .carousel-image {
@@ -1937,8 +1928,7 @@ ul {
     }
 
     .carousel-image-container::after {
-        bottom: -1.5rem;
-        font-size: 0.9rem;
+        display: none;
     }
 
     .carousel-thumbnails {

@@ -265,8 +265,27 @@ document.addEventListener('DOMContentLoaded', function() {
     const phoneLink = document.getElementById('phone-link');
     const emailLink = document.getElementById('email-link');
     
+    // Fonction pour détecter si on est sur mobile
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    }
+    
+    // Détecter si on est sur mobile
+    let isMobile = isMobileDevice();
+    
+    // Re-détecter si on change de taille de fenêtre
+    window.addEventListener('resize', function() {
+        isMobile = isMobileDevice();
+    });
+    
     if (phoneLink) {
         phoneLink.addEventListener('click', async function(e) {
+            if (isMobile) {
+                // Sur mobile : comportement normal (pas de copie)
+                return; // Laisse le lien href="tel:" fonctionner normalement
+            }
+            
+            // Sur desktop : copie automatique
             e.preventDefault();
             const phoneNumber = this.getAttribute('data-copy');
             const success = await copyToClipboard(phoneNumber);
@@ -293,6 +312,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (emailLink) {
         emailLink.addEventListener('click', async function(e) {
+            if (isMobile) {
+                // Sur mobile : comportement normal (pas de copie)
+                return; // Laisse le lien href="mailto:" fonctionner normalement
+            }
+            
+            // Sur desktop : copie automatique
             e.preventDefault();
             const email = this.getAttribute('data-copy');
             const success = await copyToClipboard(email);

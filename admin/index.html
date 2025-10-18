@@ -46,42 +46,54 @@
     <!-- Point de montage pour Decap CMS -->
     <div id="nc-root"></div>
     
+    <!-- Bouton Upload Multiple (visible uniquement quand connecté) -->
+    <a href="batch-upload.html" class="batch-upload-btn" id="batch-upload-btn" style="display: none;">
+      <span>📸</span>
+      <span>Upload Multiple</span>
+    </a>
+    
     <!-- Decap CMS (anciennement Netlify CMS) -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     
     <script>
-      // Rendre le lien d'upload multiple cliquable dans le CMS
+      // Afficher le bouton seulement quand on n'est pas sur la page de login
       document.addEventListener('DOMContentLoaded', function() {
-        // Attendre que le CMS se charge
-        setTimeout(function() {
-          // Trouver le lien dans la section upload-multiple
-          const uploadLink = document.querySelector('a[href="batch-upload.html"]');
-          if (uploadLink) {
-            uploadLink.style.cssText = `
-              display: inline-block;
-              padding: 1rem 2rem;
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-              color: white;
-              text-decoration: none;
-              border-radius: 8px;
-              font-weight: 600;
-              box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-              transition: all 0.3s ease;
-              margin: 1rem 0;
-            `;
-            
-            // Effet hover
-            uploadLink.addEventListener('mouseenter', function() {
-              this.style.transform = 'translateY(-2px)';
-              this.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.4)';
-            });
-            
-            uploadLink.addEventListener('mouseleave', function() {
-              this.style.transform = 'translateY(0)';
-              this.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.3)';
-            });
+        const batchBtn = document.getElementById('batch-upload-btn');
+        
+        // Fonction simple pour détecter la page de login
+        function isLoginPage() {
+          const ncRoot = document.querySelector('.nc-root');
+          if (!ncRoot) return true;
+          
+          // Chercher des éléments spécifiques à la page de login
+          return ncRoot.querySelector('.nc-login') || 
+                 ncRoot.querySelector('.nc-login-page') ||
+                 ncRoot.querySelector('[data-testid="login-page"]') ||
+                 ncRoot.innerHTML.toLowerCase().includes('sign in') ||
+                 ncRoot.innerHTML.toLowerCase().includes('authenticate');
+        }
+        
+        // Fonction pour mettre à jour la visibilité
+        function updateVisibility() {
+          if (isLoginPage()) {
+            batchBtn.style.display = 'none';
+          } else {
+            batchBtn.style.display = 'flex';
           }
-        }, 2000);
+        }
+        
+        // Vérifier immédiatement
+        updateVisibility();
+        
+        // Vérifier toutes les 3 secondes pendant 30 secondes
+        let checkCount = 0;
+        const interval = setInterval(() => {
+          updateVisibility();
+          checkCount++;
+          if (checkCount >= 10) { // 10 * 3s = 30s
+            clearInterval(interval);
+          }
+        }, 3000);
       });
     </script>
   </body>

@@ -6,20 +6,6 @@ media_folder: "static/img"
 public_folder: "/static/img"
 
 collections:
-  # ========================================
-  # UPLOAD MULTIPLE
-  # ========================================
-  - name: "upload-multiple"
-    label: "📸 Upload Multiple"
-    label_singular: "Upload Multiple"
-    files:
-      - name: "upload-tool"
-        label: "Outil d'Upload Multiple"
-        file: "admin/upload-tool.md"
-        fields:
-          - { name: title, label: "Titre", widget: "hidden", default: "Upload Multiple" }
-          - { name: description, label: "Description", widget: "markdown", default: "## 📸 Upload Multiple\n\nUtilisez cet outil pour uploader plusieurs photos à la fois avec des titres automatiques.\n\n### Comment utiliser :\n1. Cliquez sur le bouton ci-dessous\n2. Sélectionnez vos photos\n3. Choisissez la catégorie et le nom d'album\n4. L'upload se fait automatiquement\n\n### Avantages :\n- ✅ Upload en lot\n- ✅ Titres automatiques\n- ✅ Organisation par album\n- ✅ Génération d'index automatique" }
-          - { name: upload_button, label: "Lancer l'Upload Multiple", widget: "string", default: "📸 Ouvrir l'outil d'upload multiple" }
 
   # ========================================
   # PORTRAITS

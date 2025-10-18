@@ -440,37 +440,25 @@
     </div>
 
     <script>
-        async function hideLoader() {
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('page-loader');
+            if (loader) {
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                    document.body.classList.add('loaded');
+                    setTimeout(() => loader.remove(), 600);
+                }, 300);
+            }
+        });
+
+        setTimeout(() => {
             const loader = document.getElementById('page-loader');
             if (loader && !loader.classList.contains('hidden')) {
                 loader.classList.add('hidden');
                 document.body.classList.add('loaded');
                 setTimeout(() => loader.remove(), 600);
             }
-        }
-
-        // Attendre que la page ET le portfolio soient chargés
-        window.addEventListener('load', async () => {
-            try {
-                // Attendre que le CMS soit initialisé
-                if (window.cmsLoader && window.cmsLoader.loadPromise) {
-                    await window.cmsLoader.loadPromise;
-                    console.log('✅ Portfolio préchargé');
-                }
-                // Petit délai pour transition fluide
-                setTimeout(() => hideLoader(), 300);
-            } catch (error) {
-                console.error('Erreur chargement portfolio:', error);
-                // Cache le loader même en cas d'erreur
-                setTimeout(() => hideLoader(), 1000);
-            }
-        });
-
-        // Timeout de sécurité si le chargement prend trop de temps
-        setTimeout(() => {
-            console.warn('⚠️ Timeout: affichage forcé du site');
-            hideLoader();
-        }, 10000); // 10 secondes max
+        }, 5000);
     </script>
 
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>

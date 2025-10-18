@@ -7,59 +7,12 @@ class CMSContentLoader {
             repo: 'Code-Site-webmaximeV2',
             path: 'content/portfolio'
         };
-        this.loadPromise = this.init();
+        this.init();
     }
 
     async init() {
         await this.loadPortfolioData();
-        await this.preloadAllImages();
         this.displayPortfolioImages();
-    }
-
-    async preloadAllImages() {
-        const imageUrls = this.portfolioData.map(item => item.image).filter(Boolean);
-        
-        if (imageUrls.length === 0) {
-            console.log('Aucune image à précharger');
-            return;
-        }
-
-        console.log(`🔄 Préchargement de ${imageUrls.length} images...`);
-        this.updateLoaderText(`Chargement des photos (0/${imageUrls.length})...`);
-        
-        let loadedCount = 0;
-        
-        const preloadPromises = imageUrls.map(url => {
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.onload = () => {
-                    loadedCount++;
-                    this.updateLoaderText(`Chargement des photos (${loadedCount}/${imageUrls.length})...`);
-                    resolve();
-                };
-                img.onerror = () => {
-                    loadedCount++;
-                    this.updateLoaderText(`Chargement des photos (${loadedCount}/${imageUrls.length})...`);
-                    resolve();
-                };
-                img.src = url;
-            });
-        });
-
-        try {
-            await Promise.all(preloadPromises);
-            this.updateLoaderText('Portfolio prêt !');
-            console.log(`✅ ${imageUrls.length} images préchargées`);
-        } catch (error) {
-            console.warn('Erreur lors du préchargement des images:', error);
-        }
-    }
-
-    updateLoaderText(text) {
-        const loaderText = document.querySelector('.loader-text');
-        if (loaderText) {
-            loaderText.textContent = text;
-        }
     }
 
     async loadPortfolioData() {
@@ -227,6 +180,7 @@ class CMSContentLoader {
     createImageCard(item) {
         const imageCard = document.createElement('div');
         imageCard.className = 'image-card';
+        imageCard.style.cursor = 'pointer';
         
         const imgElement = document.createElement('img');
         imgElement.src = item.image;
@@ -235,22 +189,8 @@ class CMSContentLoader {
         imgElement.width = 400;
         imgElement.height = 600;
         
-        const overlay = document.createElement('div');
-        overlay.className = 'image-overlay';
-        
-        const expandButton = document.createElement('button');
-        expandButton.className = 'image-expand';
-        expandButton.setAttribute('aria-label', 'Agrandir l\'image');
-        expandButton.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <polyline points="9 21 3 21 3 15"></polyline>
-                <line x1="21" y1="3" x2="14" y2="10"></line>
-                <line x1="3" y1="21" x2="10" y2="14"></line>
-            </svg>
-        `;
-        
-        expandButton.addEventListener('click', (e) => {
+        // Clic simple pour ouvrir la modal
+        imageCard.addEventListener('click', (e) => {
             e.stopPropagation();
             const modal = document.getElementById('image-modal');
             const modalImg = document.getElementById('modal-image');
@@ -262,15 +202,18 @@ class CMSContentLoader {
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 
+                // Réinitialiser le zoom
+                modalImg.style.transform = 'scale(1)';
+                modalImg.style.cursor = 'pointer';
+                modalImg.dataset.zoomed = 'false';
+                
                 if (modalClose) {
                     modalClose.focus();
                 }
             }
         });
         
-        overlay.appendChild(expandButton);
         imageCard.appendChild(imgElement);
-        imageCard.appendChild(overlay);
         
         return imageCard;
     }

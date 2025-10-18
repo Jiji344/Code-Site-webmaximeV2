@@ -144,7 +144,6 @@ class ImageModal {
         this.modal = document.getElementById('image-modal');
         this.image = document.getElementById('modal-image');
         this.closeBtn = document.getElementById('modal-close');
-        this.expandButtons = document.querySelectorAll('.image-expand');
 
         if (this.modal && this.image && this.closeBtn) {
             this.init();
@@ -152,25 +151,52 @@ class ImageModal {
     }
 
     init() {
-        this.expandButtons.forEach(btn => btn.addEventListener('click', (e) => this.open(e)));
         this.closeBtn.addEventListener('click', () => this.close());
         this.modal.addEventListener('click', (e) => e.target === this.modal && this.close());
         document.addEventListener('keydown', (e) => e.key === 'Escape' && this.modal.classList.contains('active') && this.close());
+        
+        // Double-clic/double-tap pour zoom x2
+        let lastTap = 0;
+        
+        this.image.addEventListener('dblclick', () => {
+            this.toggleZoom();
+        });
+        
+        // Pour mobile (double-tap)
+        this.image.addEventListener('touchend', (e) => {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            
+            if (tapLength < 300 && tapLength > 0) {
+                e.preventDefault();
+                this.toggleZoom();
+            }
+            
+            lastTap = currentTime;
+        });
     }
 
-    open(e) {
-        e.stopPropagation();
-        const img = e.target.closest('.image-card').querySelector('img');
-        this.image.src = img.src;
-        this.image.alt = img.alt;
-        this.modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        this.closeBtn.focus();
+    toggleZoom() {
+        const isZoomed = this.image.dataset.zoomed === 'true';
+        
+        if (isZoomed) {
+            // Dezoom vers x1
+            this.image.style.transform = 'scale(1)';
+            this.image.style.cursor = 'pointer';
+            this.image.dataset.zoomed = 'false';
+        } else {
+            // Zoom vers x2
+            this.image.style.transform = 'scale(2)';
+            this.image.style.cursor = 'zoom-out';
+            this.image.dataset.zoomed = 'true';
+        }
     }
 
     close() {
         this.modal.classList.remove('active');
         this.image.src = '';
+        this.image.style.transform = 'scale(1)';
+        this.image.dataset.zoomed = 'false';
         document.body.style.overflow = 'auto';
     }
 }

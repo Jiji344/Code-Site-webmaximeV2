@@ -371,54 +371,23 @@ class ContactCopy {
 
 /* ===== SYSTÈME DE NOTIFICATION ===== */
 function showNotification(message, type = 'success') {
+    // Supprimer les anciennes notifications
     document.querySelectorAll('.notification').forEach(notif => notif.remove());
     
+    // Créer la nouvelle notification
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
     notification.setAttribute('role', 'alert');
     notification.setAttribute('aria-live', 'polite');
     
-    Object.assign(notification.style, {
-        position: 'fixed',
-        top: '6rem',
-        right: '2rem',
-        padding: '1rem 1.5rem',
-        borderRadius: '0.5rem',
-        color: '#FFFFFF',
-        fontWeight: '500',
-        zIndex: '9999',
-        maxWidth: '400px',
-        boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
-        backgroundColor: type === 'success' ? '#4CAF50' : '#F44336'
-    });
-    
     document.body.appendChild(notification);
     setTimeout(() => notification.remove(), CONFIG.NOTIFICATION_DURATION);
 }
 
 /* ===== LAZY LOADING DES IMAGES ===== */
-class LazyLoadImages {
-    init() {
-        if ('loading' in HTMLImageElement.prototype) {
-            return;
-        }
-        
-        const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-        const imageObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.src;
-                    img.removeAttribute('loading');
-                    imageObserver.unobserve(img);
-                }
-            });
-        });
-        
-        lazyImages.forEach(img => imageObserver.observe(img));
-    }
-}
+// Utilisation du loading="lazy" natif des navigateurs modernes
+// Plus besoin de polyfill - tous les navigateurs récents le supportent
 
 /* ===== GESTION DES ERREURS D'IMAGES ===== */
 class ImageErrorHandler {
@@ -452,33 +421,8 @@ document.addEventListener('DOMContentLoaded', () => {
     new SmoothScroll();
     new ContactForm();
     new ContactCopy();
-    new LazyLoadImages().init();
     new ImageErrorHandler().init();
     new SystemPreferences().init();
-    
-    // Styles pour les notifications
-    const notificationStyles = document.createElement('style');
-    notificationStyles.textContent = `
-        @media screen and (max-width: 768px) {
-            .notification {
-                right: 1rem !important;
-                left: 1rem !important;
-                max-width: calc(100% - 2rem) !important;
-            }
-        }
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border-width: 0;
-        }
-    `;
-    document.head.appendChild(notificationStyles);
     
     // Annoncer le chargement pour l'accessibilité
     const loadAnnouncement = document.createElement('div');

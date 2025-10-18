@@ -1,5 +1,144 @@
 const fetch = require('node-fetch');
 
+// Fonction pour régénérer l'index portfolio
+async function regenerateIndex(owner, repo, branch, githubToken) {
+  const categories = ['portrait', 'mariage', 'immobilier', 'paysage', 'macro', 'lifestyle'];
+  const allPhotos = [];
+
+  // Scanner tous les dossiers de catégories
+  for (const category of categories) {
+    const categoryPath = `content/portfolio/${category}`;
+    const photos = await scanDirectory(owner, repo, branch, githubToken, categoryPath);
+    allPhotos.push(...photos);
+  }
+
+  // Créer le contenu JSON
+  const indexContent = JSON.stringify(allPhotos, null, 2);
+  const base64Content = Buffer.from(indexContent).toString('base64');
+
+  // Vérifier si le fichier existe déjà (pour obtenir le SHA)
+  let sha = null;
+  try {
+    const existingFileResponse = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json`,
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': `token ${githubToken}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      }
+    );
+    
+    if (existingFileResponse.ok) {
+      const existingFile = await existingFileResponse.json();
+      sha = existingFile.sha;
+    }
+  } catch (error) {
+    // Fichier n'existe pas encore, c'est OK
+  }
+
+  // Créer ou mettre à jour le fichier
+  const updatePayload = {
+    message: `🔄 Auto-update portfolio index (${allPhotos.length} photos)`,
+    content: base64Content,
+    branch: branch
+  };
+
+  if (sha) {
+    updatePayload.sha = sha; // Nécessaire pour update
+  }
+
+  const updateResponse = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json`,
+    {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${githubToken}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/vnd.github.v3+json'
+      },
+      body: JSON.stringify(updatePayload)
+    }
+  );
+
+  if (!updateResponse.ok) {
+    const errorData = await updateResponse.json();
+    throw new Error(`Échec update index: ${errorData.message}`);
+  }
+
+  return allPhotos.length;
+}
+
+// Fonction pour scanner un dossier récursivement
+async function scanDirectory(owner, repo, branch, githubToken, path) {
+  const photos = [];
+
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`,
+      {
+        headers: {
+          'Authorization': `token ${githubToken}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      }
+    );
+
+    if (!response.ok) {
+      return photos; // Dossier vide ou n'existe pas
+    }
+
+    const items = await response.json();
+
+    for (const item of items) {
+      if (item.type === 'file' && item.name.endsWith('.md')) {
+        // Lire le fichier markdown
+        const fileResponse = await fetch(item.download_url);
+        if (fileResponse.ok) {
+          const content = await fileResponse.text();
+          const data = parseMarkdownFrontmatter(content);
+          if (data) {
+            photos.push(data);
+          }
+        }
+      } else if (item.type === 'dir') {
+        // Scanner récursivement
+        const subPhotos = await scanDirectory(owner, repo, branch, githubToken, item.path);
+        photos.push(...subPhotos);
+      }
+    }
+  } catch (error) {
+    console.debug(`Dossier ${path} non accessible`);
+  }
+
+  return photos;
+}
+
+// Parser le frontmatter YAML
+function parseMarkdownFrontmatter(content) {
+  const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---/;
+  const match = content.match(frontmatterRegex);
+
+  if (match) {
+    const frontmatter = match[1];
+    const data = {};
+
+    frontmatter.split('\n').forEach(line => {
+      const colonIndex = line.indexOf(':');
+      if (colonIndex > 0) {
+        const key = line.substring(0, colonIndex).trim();
+        const value = line.substring(colonIndex + 1).trim();
+        data[key] = value;
+      }
+    });
+
+    return data;
+  }
+
+  return null;
+}
+
 exports.handler = async (event, context) => {
   // Configuration CORS
   const headers = {
@@ -175,6 +314,16 @@ date: ${formattedDate}
           error: error.message
         });
       }
+    }
+
+    // Régénérer automatiquement l'index portfolio
+    console.log('🔄 Régénération de l\'index portfolio...');
+    try {
+      await regenerateIndex(owner, repo, branch, githubToken);
+      console.log('✅ Index portfolio régénéré');
+    } catch (indexError) {
+      console.error('⚠️ Erreur lors de la régénération de l\'index:', indexError.message);
+      // Ne pas bloquer la réponse si l'index échoue
     }
 
     // Réponse finale

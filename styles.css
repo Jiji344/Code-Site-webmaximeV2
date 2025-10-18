@@ -2093,3 +2093,45 @@ ul {
     }
 }
 
+/* ===== NOTIFICATIONS ===== */
+.notification {
+    position: fixed;
+    top: 6rem;
+    right: 2rem;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    color: #FFFFFF;
+    font-weight: 500;
+    z-index: 9999;
+    max-width: 400px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.notification-success {
+    background-color: #4CAF50;
+}
+
+.notification-error {
+    background-color: #F44336;
+}
+
+@media screen and (max-width: 768px) {
+    .notification {
+        right: 1rem;
+        left: 1rem;
+        max-width: calc(100% - 2rem);
+    }
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+

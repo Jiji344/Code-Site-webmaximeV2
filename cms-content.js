@@ -19,15 +19,40 @@ class CMSContentLoader {
 
     async loadPortfolioData() {
         try {
-            // Charger récursivement tous les fichiers de toutes les catégories
-            for (const category of this.config.categories) {
-                const categoryPath = `${this.config.basePath}/${category}`;
-                await this.loadFilesFromPath(categoryPath);
+            // Essayer de charger l'index JSON (généré par la fonction Netlify)
+            const indexLoaded = await this.loadFromIndex();
+            
+            if (!indexLoaded) {
+                // Fallback : charger récursivement (ancien système)
+                console.log('📦 Chargement depuis GitHub (fallback)...');
+                for (const category of this.config.categories) {
+                    const categoryPath = `${this.config.basePath}/${category}`;
+                    await this.loadFilesFromPath(categoryPath);
+                }
             }
             
             console.log(`✅ ${this.portfolioData.length} photos chargées`);
         } catch (error) {
             console.error('Erreur lors du chargement des données CMS:', error);
+        }
+    }
+
+    async loadFromIndex() {
+        try {
+            const { owner, repo } = this.config;
+            const indexUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/portfolio-index.json`;
+            
+            const response = await fetch(indexUrl);
+            if (response.ok) {
+                const photos = await response.json();
+                this.portfolioData = photos;
+                console.log('📦 Index chargé depuis portfolio-index.json');
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.debug('Index non disponible, utilisation du fallback');
+            return false;
         }
     }
 

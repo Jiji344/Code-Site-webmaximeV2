@@ -5,7 +5,9 @@ class CMSContentLoader {
         this.config = {
             owner: 'Jiji344',
             repo: 'Code-Site-webmaximeV2',
-            path: 'content/portfolio'
+            basePath: 'content/portfolio',
+            // Liste des catégories à scanner
+            categories: ['portrait', 'mariage', 'immobilier', 'paysage', 'macro', 'lifestyle']
         };
         this.init();
     }
@@ -17,47 +19,63 @@ class CMSContentLoader {
 
     async loadPortfolioData() {
         try {
-            const portfolioFiles = await this.getPortfolioFiles();
-            
-            for (const file of portfolioFiles) {
-                const { owner, repo, path } = this.config;
-                const githubRawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}/${file}`;
-                
-                try {
-                    const response = await fetch(githubRawUrl);
-                    if (response.ok) {
-                        const content = await response.text();
-                        const data = this.parseMarkdownFrontmatter(content);
-                        if (data) {
-                            this.portfolioData.push(data);
-                        }
-                    }
-                } catch (err) {
-                    console.warn(`Impossible de charger ${file}`);
-                }
+            // Charger récursivement tous les fichiers de toutes les catégories
+            for (const category of this.config.categories) {
+                const categoryPath = `${this.config.basePath}/${category}`;
+                await this.loadFilesFromPath(categoryPath);
             }
+            
+            // FALLBACK : Aussi charger l'ancien format (directement dans content/portfolio)
+            // Pour compatibilité avec les anciennes photos
+            await this.loadFilesFromPath(this.config.basePath);
+            
+            console.log(`✅ ${this.portfolioData.length} photos chargées`);
         } catch (error) {
             console.error('Erreur lors du chargement des données CMS:', error);
         }
     }
 
-    async getPortfolioFiles() {
+    async loadFilesFromPath(path) {
         try {
-            const { owner, repo, path } = this.config;
+            const { owner, repo } = this.config;
             const response = await fetch(
                 `https://api.github.com/repos/${owner}/${repo}/contents/${path}`
             );
             
             if (response.ok) {
-                const files = await response.json();
-                return files
-                    .filter(file => file.name.endsWith('.md'))
-                    .map(file => file.name);
+                const items = await response.json();
+                
+                for (const item of items) {
+                    if (item.type === 'file' && item.name.endsWith('.md')) {
+                        // C'est un fichier markdown, on le charge
+                        await this.loadMarkdownFile(item.path);
+                    } else if (item.type === 'dir') {
+                        // C'est un dossier (album), on le scan récursivement
+                        await this.loadFilesFromPath(item.path);
+                    }
+                }
             }
-            return [];
         } catch (error) {
-            console.error('Erreur lors du chargement de la liste des fichiers:', error);
-            return [];
+            // Silencieux si le dossier n'existe pas encore (normal pour une nouvelle installation)
+            console.debug(`Dossier ${path} non trouvé ou vide`);
+        }
+    }
+
+    async loadMarkdownFile(filePath) {
+        try {
+            const { owner, repo } = this.config;
+            const githubRawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/${filePath}`;
+            
+            const response = await fetch(githubRawUrl);
+            if (response.ok) {
+                const content = await response.text();
+                const data = this.parseMarkdownFrontmatter(content);
+                if (data) {
+                    this.portfolioData.push(data);
+                }
+            }
+        } catch (err) {
+            console.warn(`Impossible de charger ${filePath}`);
         }
     }
 

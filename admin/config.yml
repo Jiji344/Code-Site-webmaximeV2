@@ -2,18 +2,120 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "static/img"  # Dossier où les images téléchargées seront stockées (sur Netlify).
-public_folder: "/static/img"  # Le chemin relatif pour afficher les images sur le site (ex. /static/img/photo.jpg).
+media_folder: "static/img"
+public_folder: "/static/img"
 
 collections:
-  - name: "portfolio"  # Nom de la collection, ici 'portfolio' pour ton site photo.
-    label: "Portfolio"  # Label qui apparaitra dans l'interface de Netlify CMS.
-    folder: "content/portfolio"  # Dossier où les fichiers photo seront stockés (créé sur GitHub).
-    create: true  # Permet de créer de nouvelles entrées pour chaque nouvelle photo.
-    slug: "{{slug}}"  # Utiliser le titre comme slug (avec génération automatique d'unicité par Netlify CMS).
+  # ========================================
+  # PORTRAITS
+  # ========================================
+  - name: "portrait"
+    label: "📸 Portraits"
+    label_singular: "Portrait"
+    folder: "content/portfolio/portrait"
+    create: true
+    slug: "{{album}}/{{slug}}"
+    path: "{{album}}/{{slug}}"
+    media_folder: "/static/img/portrait/{{album}}"
+    public_folder: "/static/img/portrait/{{album}}"
     fields:
-      - { label: "Image", name: "image", widget: "image" }  # Champ pour uploader l'image.
-      - { label: "Titre", name: "title", widget: "string" }  # Titre de la photo.
-      - { label: "Catégorie", name: "category", widget: "select", options: ["Portrait", "Mariage", "Immobilier", "Paysage", "Macro", "Lifestyle"] }  # Catégorie de la photo.
-      - { label: "Album/Shooting", name: "album", widget: "string", required: false, hint: "Nom de l'album pour grouper les photos ensemble (ex: 'Mariage Sophie & Marc', 'Portrait Marie')" }  # Album pour grouper les photos.
-      - { label: "Date", name: "date", widget: "datetime" }  # Date de la prise de la photo.
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Titre", name: "title", widget: "string", hint: "Ex: Portrait Marie 1, Portrait Marie 2..." }
+      - { label: "Album", name: "album", widget: "string", hint: "Nom du shooting (ex: Marie, Jean, Famille Dupont). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
+      - { label: "Date", name: "date", widget: "datetime", default: "" }
+      - { label: "Catégorie", name: "category", widget: "hidden", default: "Portrait" }
+
+  # ========================================
+  # MARIAGES
+  # ========================================
+  - name: "mariage"
+    label: "💍 Mariages"
+    label_singular: "Mariage"
+    folder: "content/portfolio/mariage"
+    create: true
+    slug: "{{album}}/{{slug}}"
+    path: "{{album}}/{{slug}}"
+    media_folder: "/static/img/mariage/{{album}}"
+    public_folder: "/static/img/mariage/{{album}}"
+    fields:
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Titre", name: "title", widget: "string", hint: "Ex: Sophie & Marc 1, Sophie & Marc 2..." }
+      - { label: "Album", name: "album", widget: "string", hint: "Nom du mariage (ex: Sophie & Marc). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
+      - { label: "Date", name: "date", widget: "datetime", default: "" }
+      - { label: "Catégorie", name: "category", widget: "hidden", default: "Mariage" }
+
+  # ========================================
+  # IMMOBILIER
+  # ========================================
+  - name: "immobilier"
+    label: "🏠 Immobilier"
+    label_singular: "Immobilier"
+    folder: "content/portfolio/immobilier"
+    create: true
+    slug: "{{album}}/{{slug}}"
+    path: "{{album}}/{{slug}}"
+    media_folder: "/static/img/immobilier/{{album}}"
+    public_folder: "/static/img/immobilier/{{album}}"
+    fields:
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Titre", name: "title", widget: "string", hint: "Ex: Villa Bordeaux 1, Villa Bordeaux 2..." }
+      - { label: "Album", name: "album", widget: "string", hint: "Nom du bien (ex: Villa Bordeaux). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
+      - { label: "Date", name: "date", widget: "datetime", default: "" }
+      - { label: "Catégorie", name: "category", widget: "hidden", default: "Immobilier" }
+
+  # ========================================
+  # PAYSAGES
+  # ========================================
+  - name: "paysage"
+    label: "🌄 Paysages"
+    label_singular: "Paysage"
+    folder: "content/portfolio/paysage"
+    create: true
+    slug: "{{album}}/{{slug}}"
+    path: "{{album}}/{{slug}}"
+    media_folder: "/static/img/paysage/{{album}}"
+    public_folder: "/static/img/paysage/{{album}}"
+    fields:
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Titre", name: "title", widget: "string", hint: "Ex: Bretagne 1, Bretagne 2..." }
+      - { label: "Album", name: "album", widget: "string", hint: "Nom du lieu (ex: Bretagne). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
+      - { label: "Date", name: "date", widget: "datetime", default: "" }
+      - { label: "Catégorie", name: "category", widget: "hidden", default: "Paysage" }
+
+  # ========================================
+  # MACRO
+  # ========================================
+  - name: "macro"
+    label: "🔬 Macro"
+    label_singular: "Macro"
+    folder: "content/portfolio/macro"
+    create: true
+    slug: "{{album}}/{{slug}}"
+    path: "{{album}}/{{slug}}"
+    media_folder: "/static/img/macro/{{album}}"
+    public_folder: "/static/img/macro/{{album}}"
+    fields:
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Titre", name: "title", widget: "string", hint: "Ex: Insectes 1, Insectes 2..." }
+      - { label: "Album", name: "album", widget: "string", hint: "Nom du thème (ex: Insectes). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
+      - { label: "Date", name: "date", widget: "datetime", default: "" }
+      - { label: "Catégorie", name: "category", widget: "hidden", default: "Macro" }
+
+  # ========================================
+  # LIFESTYLE
+  # ========================================
+  - name: "lifestyle"
+    label: "✨ Lifestyle"
+    label_singular: "Lifestyle"
+    folder: "content/portfolio/lifestyle"
+    create: true
+    slug: "{{album}}/{{slug}}"
+    path: "{{album}}/{{slug}}"
+    media_folder: "/static/img/lifestyle/{{album}}"
+    public_folder: "/static/img/lifestyle/{{album}}"
+    fields:
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Titre", name: "title", widget: "string", hint: "Ex: Urban Style 1, Urban Style 2..." }
+      - { label: "Album", name: "album", widget: "string", hint: "Nom du shooting (ex: Urban Style). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
+      - { label: "Date", name: "date", widget: "datetime", default: "" }
+      - { label: "Catégorie", name: "category", widget: "hidden", default: "Lifestyle" }

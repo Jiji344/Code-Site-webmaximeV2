@@ -1319,9 +1319,7 @@ ul {
 }
 
 .album-modal-close {
-    position: absolute;
-    top: 7rem;
-    right: 2rem;
+    position: static;
     width: 3rem;
     height: 3rem;
     background: var(--primary-alpha-90);
@@ -1339,6 +1337,7 @@ ul {
         0 4px 12px rgba(0, 0, 0, 0.4);
     cursor: pointer;
     border: none;
+    flex-shrink: 0;
 }
 
 .album-modal-close:hover {
@@ -1950,15 +1949,14 @@ ul {
     }
 
     .album-modal-close {
-        top: 0.5rem;
-        right: 1rem;
+        position: static;
         width: 2.5rem;
         height: 2.5rem;
     }
 
     .album-modal-close svg {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
     }
 
     .carousel-image-container {

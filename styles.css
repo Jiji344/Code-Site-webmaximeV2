@@ -771,20 +771,19 @@ ul {
     width: 100%;
     overflow: hidden;
     padding: 1rem 0;
-    margin: 0 -0.5rem;
 }
 
 .category-images {
     display: flex;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-md);
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
-    padding: 0.5rem;
+    padding: 0;
 }
 
 .category-images > * {
-    flex: 0 0 calc((100% - (var(--spacing-sm) * 2) - 1rem) / 3);
-    max-width: calc((100% - (var(--spacing-sm) * 2) - 1rem) / 3);
+    flex: 0 0 calc((100% - (var(--spacing-md) * 2)) / 3);
+    max-width: calc((100% - (var(--spacing-md) * 2)) / 3);
 }
 
 .category-nav {
@@ -1603,8 +1602,8 @@ ul {
 /* Tablette - 2 éléments par slide */
 @media screen and (min-width: 769px) and (max-width: 968px) {
     .category-images > * {
-        flex: 0 0 calc((100% - var(--spacing-sm) - 1rem) / 2);
-        max-width: calc((100% - var(--spacing-sm) - 1rem) / 2);
+        flex: 0 0 calc((100% - var(--spacing-md)) / 2);
+        max-width: calc((100% - var(--spacing-md)) / 2);
     }
 }
 
@@ -1814,8 +1813,8 @@ ul {
 
     /* Portfolio Mobile */
     .category-images > * {
-        flex: 0 0 calc(100% - 1rem);
-        max-width: calc(100% - 1rem);
+        flex: 0 0 100%;
+        max-width: 100%;
     }
 
     .portfolio-category {
@@ -1901,7 +1900,7 @@ ul {
     .circle-9 { width: 40px; height: 40px; }
 
     .category-images {
-        gap: var(--spacing-xs);
+        gap: 0;
     }
 
     .form-button {

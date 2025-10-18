@@ -56,42 +56,74 @@
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     
     <script>
-      // Afficher le bouton après un délai pour laisser le CMS se charger
+      // Masquer le bouton par défaut et l'afficher seulement si connecté
       document.addEventListener('DOMContentLoaded', function() {
         const batchBtn = document.getElementById('batch-upload-btn');
         
-        // Attendre que le CMS se charge complètement
-        setTimeout(function() {
-          // Vérifier si on est sur la page de login
-          const isLoginPage = document.querySelector('.nc-root')?.innerHTML.includes('login') ||
-                             document.querySelector('[data-testid="login-page"]') ||
-                             document.querySelector('.nc-login') ||
-                             document.querySelector('.nc-login-page');
+        // Fonction pour détecter si on est sur la page de login
+        function isLoginPage() {
+          const ncRoot = document.querySelector('.nc-root');
+          if (!ncRoot) return true; // Si pas de CMS, considérer comme login
           
-          // Si ce n'est pas la page de login, afficher le bouton
-          if (!isLoginPage) {
-            batchBtn.style.display = 'flex';
-          }
-        }, 3000); // Attendre 3 secondes pour que le CMS se charge
+          const rootHTML = ncRoot.innerHTML.toLowerCase();
+          
+          // Détecter les éléments de login
+          return rootHTML.includes('login') || 
+                 rootHTML.includes('sign in') ||
+                 rootHTML.includes('authenticate') ||
+                 rootHTML.includes('github') && rootHTML.includes('login') ||
+                 document.querySelector('[data-testid="login-page"]') ||
+                 document.querySelector('.nc-login') ||
+                 document.querySelector('.nc-login-page') ||
+                 document.querySelector('.nc-login-form');
+        }
         
-        // Vérifier périodiquement (toutes les 2 secondes)
-        const checkInterval = setInterval(function() {
-          const isLoginPage = document.querySelector('.nc-root')?.innerHTML.includes('login') ||
-                             document.querySelector('[data-testid="login-page"]') ||
-                             document.querySelector('.nc-login') ||
-                             document.querySelector('.nc-login-page');
-          
-          if (!isLoginPage) {
-            batchBtn.style.display = 'flex';
-          } else {
+        // Fonction pour mettre à jour la visibilité du bouton
+        function updateButtonVisibility() {
+          if (isLoginPage()) {
             batchBtn.style.display = 'none';
+          } else {
+            batchBtn.style.display = 'flex';
           }
-        }, 2000);
+        }
         
-        // Arrêter la vérification après 30 secondes
+        // Vérifier immédiatement
+        updateButtonVisibility();
+        
+        // Observer les changements dans le DOM du CMS
+        const observer = new MutationObserver(function(mutations) {
+          let shouldUpdate = false;
+          mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList' && 
+                (mutation.target.classList.contains('nc-root') || 
+                 mutation.target.closest('.nc-root'))) {
+              shouldUpdate = true;
+            }
+          });
+          
+          if (shouldUpdate) {
+            setTimeout(updateButtonVisibility, 100);
+          }
+        });
+        
+        // Observer le conteneur CMS
+        const cmsRoot = document.querySelector('.nc-root');
+        if (cmsRoot) {
+          observer.observe(cmsRoot, { 
+            childList: true, 
+            subtree: true, 
+            characterData: true 
+          });
+        }
+        
+        // Vérification de sécurité toutes les 2 secondes
+        const securityInterval = setInterval(updateButtonVisibility, 2000);
+        
+        // Arrêter après 1 minute
         setTimeout(() => {
-          clearInterval(checkInterval);
-        }, 30000);
+          clearInterval(securityInterval);
+          observer.disconnect();
+        }, 60000);
       });
     </script>
   </body>

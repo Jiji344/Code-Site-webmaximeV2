@@ -157,6 +157,16 @@ exports.handler = async (event, context) => {
     };
   }
 
+  // SÉCURITÉ : Vérifier l'authentification
+  const authHeader = event.headers.authorization || event.headers.Authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return {
+      statusCode: 401,
+      headers,
+      body: JSON.stringify({ error: 'Non autorisé. Authentification requise.' })
+    };
+  }
+
   // Vérifier la méthode HTTP
   if (event.httpMethod !== 'POST') {
     return {

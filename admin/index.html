@@ -46,13 +46,45 @@
     <!-- Point de montage pour Decap CMS -->
     <div id="nc-root"></div>
     
-    <!-- Bouton Upload Multiple -->
-    <a href="batch-upload.html" class="batch-upload-btn">
+    <!-- Bouton Upload Multiple (visible uniquement quand connecté) -->
+    <a href="batch-upload.html" class="batch-upload-btn" id="batch-upload-btn" style="display: none;">
       <span>📸</span>
       <span>Upload Multiple</span>
     </a>
     
     <!-- Decap CMS (anciennement Netlify CMS) -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    
+    <script>
+      // Afficher le bouton uniquement quand l'utilisateur est connecté
+      document.addEventListener('DOMContentLoaded', function() {
+        // Vérifier si l'utilisateur est connecté
+        function checkAuthStatus() {
+          // Décap CMS expose l'état d'authentification
+          if (window.CMS && window.CMS.auth && window.CMS.auth.isAuthenticated()) {
+            document.getElementById('batch-upload-btn').style.display = 'flex';
+          } else {
+            document.getElementById('batch-upload-btn').style.display = 'none';
+          }
+        }
+        
+        // Vérifier immédiatement
+        checkAuthStatus();
+        
+        // Vérifier périodiquement (au cas où l'auth change)
+        setInterval(checkAuthStatus, 1000);
+        
+        // Écouter les événements d'authentification de Décap CMS
+        if (window.CMS) {
+          window.CMS.events.on('login', function() {
+            document.getElementById('batch-upload-btn').style.display = 'flex';
+          });
+          
+          window.CMS.events.on('logout', function() {
+            document.getElementById('batch-upload-btn').style.display = 'none';
+          });
+        }
+      });
+    </script>
   </body>
 </html>

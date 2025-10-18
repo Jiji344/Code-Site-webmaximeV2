@@ -229,7 +229,9 @@ class SmoothScroll {
                 
                 // Offset supplémentaire pour la section portfolio
                 if (target.id === 'portfolio') {
-                    targetPosition += 100; // 100px plus bas
+                    // Offset adaptatif selon la taille d'écran
+                    const isMobile = window.innerWidth <= 768;
+                    targetPosition += isMobile ? 50 : 100; // 50px sur mobile, 100px sur desktop
                 }
                 
                 window.scrollTo({

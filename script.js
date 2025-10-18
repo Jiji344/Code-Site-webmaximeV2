@@ -124,16 +124,19 @@ class ActiveNav {
     update() {
         const scrollY = window.pageYOffset;
 
-        this.sections.forEach(section => {
-            const sectionHeight = section.offsetHeight;
-            const sectionTop = section.offsetTop - CONFIG.SECTION_OFFSET;
-            const sectionId = section.getAttribute('id');
-            const link = document.querySelector(`.nav-link[href*="${sectionId}"]`);
+        // Utiliser requestAnimationFrame pour des calculs de dimensions précises
+        requestAnimationFrame(() => {
+            this.sections.forEach(section => {
+                const sectionHeight = section.offsetHeight;
+                const sectionTop = section.offsetTop - CONFIG.SECTION_OFFSET;
+                const sectionId = section.getAttribute('id');
+                const link = document.querySelector(`.nav-link[href*="${sectionId}"]`);
 
-            if (link) {
-                const isActive = scrollY > sectionTop && scrollY <= sectionTop + sectionHeight;
-                link.classList.toggle('active-link', isActive);
-            }
+                if (link) {
+                    const isActive = scrollY > sectionTop && scrollY <= sectionTop + sectionHeight;
+                    link.classList.toggle('active-link', isActive);
+                }
+            });
         });
     }
 }
@@ -219,12 +222,15 @@ class SmoothScroll {
         const target = document.querySelector(e.currentTarget.getAttribute('href'));
         
         if (target) {
-            const headerHeight = this.header.offsetHeight;
-            const targetPosition = target.offsetTop - headerHeight;
-            
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
+            // Attendre le rendu pour avoir les bonnes dimensions
+            requestAnimationFrame(() => {
+                const headerHeight = this.header ? this.header.offsetHeight : 0;
+                const targetPosition = target.offsetTop - headerHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
             });
         }
     }
@@ -283,9 +289,12 @@ class ContactCopy {
     }
 
     init() {
-        window.addEventListener('resize', () => {
+        // Debounce du resize pour optimiser les performances
+        const debouncedResize = debounce(() => {
             this.isMobile = isMobileDevice();
-        });
+        }, 150);
+        
+        window.addEventListener('resize', debouncedResize);
         
         if (this.phoneLink) {
             this.phoneLink.addEventListener('click', (e) => this.handlePhone(e));

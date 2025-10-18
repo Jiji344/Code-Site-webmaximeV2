@@ -25,10 +25,6 @@ class CMSContentLoader {
                 await this.loadFilesFromPath(categoryPath);
             }
             
-            // FALLBACK : Aussi charger l'ancien format (directement dans content/portfolio)
-            // Pour compatibilité avec les anciennes photos
-            await this.loadFilesFromPath(this.config.basePath);
-            
             console.log(`✅ ${this.portfolioData.length} photos chargées`);
         } catch (error) {
             console.error('Erreur lors du chargement des données CMS:', error);

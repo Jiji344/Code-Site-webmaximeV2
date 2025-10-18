@@ -205,20 +205,8 @@ class CMSContentLoader {
         
         expandButton.addEventListener('click', (e) => {
             e.stopPropagation();
-            const modal = document.getElementById('image-modal');
-            const modalImg = document.getElementById('modal-image');
-            const modalClose = document.getElementById('modal-close');
-            
-            if (modal && modalImg) {
-                modalImg.src = item.image;
-                modalImg.alt = item.title || item.description || '';
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                
-                if (modalClose) {
-                    modalClose.focus();
-                }
-            }
+            // Ouvrir l'image seule dans le visualiseur d'album
+            this.openAlbumCarousel(item.title || 'Photo', [item]);
         });
         
         overlay.appendChild(expandButton);
@@ -287,6 +275,19 @@ class CMSContentLoader {
         
         albumTitle.textContent = albumName;
         showImage(0);
+        
+        // Si une seule image, cacher les miniatures et les boutons de navigation
+        if (images.length === 1) {
+            thumbnailsContainer.style.display = 'none';
+            prevButton.style.display = 'none';
+            nextButton.style.display = 'none';
+            albumCounter.style.display = 'none';
+        } else {
+            thumbnailsContainer.style.display = 'flex';
+            prevButton.style.display = 'flex';
+            nextButton.style.display = 'flex';
+            albumCounter.style.display = 'block';
+        }
         
         // Gestion du zoom au double tap sur mobile
         carouselImage.addEventListener('touchend', (e) => {

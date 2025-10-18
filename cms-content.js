@@ -1,71 +1,3 @@
-// Système de préchargement des images
-class ImagePreloader {
-    constructor() {
-        this.preloadedImages = new Set();
-        this.preloadQueue = [];
-        this.isPreloading = false;
-        this.maxConcurrent = 3; // Nombre max d'images à précharger en parallèle
-    }
-
-    preload(imageUrl, priority = 'low') {
-        if (this.preloadedImages.has(imageUrl)) {
-            return Promise.resolve();
-        }
-
-        return new Promise((resolve, reject) => {
-            const img = new Image();
-            
-            img.onload = () => {
-                this.preloadedImages.add(imageUrl);
-                resolve(img);
-            };
-            
-            img.onerror = () => {
-                // Échec silencieux du préchargement
-                reject();
-            };
-            
-            // Définir la priorité du fetch
-            if (priority === 'high') {
-                img.fetchPriority = 'high';
-            }
-            
-            img.src = imageUrl;
-        });
-    }
-
-    async preloadBatch(imageUrls, priority = 'low') {
-        const chunks = [];
-        for (let i = 0; i < imageUrls.length; i += this.maxConcurrent) {
-            chunks.push(imageUrls.slice(i, i + this.maxConcurrent));
-        }
-
-        for (const chunk of chunks) {
-            await Promise.allSettled(
-                chunk.map(url => this.preload(url, priority))
-            );
-        }
-    }
-
-    preloadVisible(container) {
-        const images = container.querySelectorAll('img[data-src]');
-        images.forEach(img => {
-            const rect = img.getBoundingClientRect();
-            const isVisible = (
-                rect.top < window.innerHeight + 500 && // 500px avant d'être visible
-                rect.bottom > -500
-            );
-            
-            if (isVisible && img.dataset.src) {
-                this.preload(img.dataset.src, 'high').then(() => {
-                    img.src = img.dataset.src;
-                    img.removeAttribute('data-src');
-                });
-            }
-        });
-    }
-}
-
 // Chargement et affichage du contenu du CMS
 class CMSContentLoader {
     constructor() {
@@ -75,14 +7,59 @@ class CMSContentLoader {
             repo: 'Code-Site-webmaximeV2',
             path: 'content/portfolio'
         };
-        this.imagePreloader = new ImagePreloader();
-        this.init();
+        this.loadPromise = this.init();
     }
 
     async init() {
         await this.loadPortfolioData();
+        await this.preloadAllImages();
         this.displayPortfolioImages();
-        this.startPreloading();
+    }
+
+    async preloadAllImages() {
+        const imageUrls = this.portfolioData.map(item => item.image).filter(Boolean);
+        
+        if (imageUrls.length === 0) {
+            console.log('Aucune image à précharger');
+            return;
+        }
+
+        console.log(`🔄 Préchargement de ${imageUrls.length} images...`);
+        this.updateLoaderText(`Chargement des photos (0/${imageUrls.length})...`);
+        
+        let loadedCount = 0;
+        
+        const preloadPromises = imageUrls.map(url => {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => {
+                    loadedCount++;
+                    this.updateLoaderText(`Chargement des photos (${loadedCount}/${imageUrls.length})...`);
+                    resolve();
+                };
+                img.onerror = () => {
+                    loadedCount++;
+                    this.updateLoaderText(`Chargement des photos (${loadedCount}/${imageUrls.length})...`);
+                    resolve();
+                };
+                img.src = url;
+            });
+        });
+
+        try {
+            await Promise.all(preloadPromises);
+            this.updateLoaderText('Portfolio prêt !');
+            console.log(`✅ ${imageUrls.length} images préchargées`);
+        } catch (error) {
+            console.warn('Erreur lors du préchargement des images:', error);
+        }
+    }
+
+    updateLoaderText(text) {
+        const loaderText = document.querySelector('.loader-text');
+        if (loaderText) {
+            loaderText.textContent = text;
+        }
     }
 
     async loadPortfolioData() {
@@ -275,8 +252,20 @@ class CMSContentLoader {
         
         expandButton.addEventListener('click', (e) => {
             e.stopPropagation();
-            // Ouvrir l'image seule dans le visualiseur d'album
-            this.openAlbumCarousel(item.title || 'Photo', [item]);
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-image');
+            const modalClose = document.getElementById('modal-close');
+            
+            if (modal && modalImg) {
+                modalImg.src = item.image;
+                modalImg.alt = item.title || item.description || '';
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                if (modalClose) {
+                    modalClose.focus();
+                }
+            }
         });
         
         overlay.appendChild(expandButton);
@@ -297,10 +286,6 @@ class CMSContentLoader {
         const nextButton = document.getElementById('carousel-next');
         
         if (!modal) return;
-        
-        // Précharger toutes les images de l'album en priorité haute
-        const albumImages = images.map(img => img.image);
-        this.imagePreloader.preloadBatch(albumImages, 'high');
         
         let currentIndex = 0;
         let isZoomed = false;
@@ -349,19 +334,6 @@ class CMSContentLoader {
         
         albumTitle.textContent = albumName;
         showImage(0);
-        
-        // Si une seule image, cacher les miniatures et les boutons de navigation
-        if (images.length === 1) {
-            thumbnailsContainer.style.display = 'none';
-            prevButton.style.display = 'none';
-            nextButton.style.display = 'none';
-            albumCounter.style.display = 'none';
-        } else {
-            thumbnailsContainer.style.display = 'flex';
-            prevButton.style.display = 'flex';
-            nextButton.style.display = 'flex';
-            albumCounter.style.display = 'block';
-        }
         
         // Gestion du zoom au double tap sur mobile
         carouselImage.addEventListener('touchend', (e) => {
@@ -418,16 +390,6 @@ class CMSContentLoader {
         
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
-    }
-
-    startPreloading() {
-        // Précharger toutes les images du portfolio en arrière-plan (silencieux)
-        const allImages = this.portfolioData.map(item => item.image);
-        
-        // Commencer le préchargement après un court délai (ne pas bloquer l'UI)
-        setTimeout(() => {
-            this.imagePreloader.preloadBatch(allImages, 'low');
-        }, 1000);
     }
 }
 

@@ -126,11 +126,13 @@ exports.handler = async (event, context) => {
         }
 
         // 2. Créer le fichier markdown dans content/portfolio/{category}/{album}/
-        const mdContent = `image: /${imagePath}
+        const mdContent = `---
+image: /${imagePath}
 title: ${photoTitle}
 category: ${categoryName}
 album: ${albumTitle}
-date: ${formattedDate}`;
+date: ${formattedDate}
+---`;
 
         const mdPath = `content/portfolio/${category}/${baseSlug}/${slug}.md`;
 

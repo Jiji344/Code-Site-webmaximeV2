@@ -163,12 +163,6 @@ exports.handler = async (event, context) => {
   const origin = event.headers.origin || event.headers.Origin;
   const referer = event.headers.referer || event.headers.Referer;
   
-  // DEBUG: Logs pour diagnostiquer
-  console.log('🔍 DEBUG - Headers reçus:');
-  console.log('Origin:', origin);
-  console.log('Referer:', referer);
-  console.log('User-Agent:', userAgent);
-  console.log('Auth Header:', authHeader ? 'Présent' : 'Absent');
   
   // Vérifier l'origine
   const allowedOrigins = [
@@ -178,38 +172,32 @@ exports.handler = async (event, context) => {
   ];
   
   if (!allowedOrigins.includes(origin)) {
-    console.log('❌ ÉCHEC - Origine non autorisée:', origin);
     return {
       statusCode: 403,
       headers,
       body: JSON.stringify({ error: 'Origine non autorisée.' })
     };
   }
-  console.log('✅ Origine autorisée:', origin);
   
   // Vérifier que la requête vient bien du domaine autorisé
   if (!referer || (!referer.includes('photographemonsieurcrocodeal.netlify.app') && 
                    !referer.includes('code-site-webmaximev2.netlify.app') && 
                    !referer.includes('localhost:8888'))) {
-    console.log('❌ ÉCHEC - Referer non autorisé:', referer);
     return {
       statusCode: 403,
       headers,
       body: JSON.stringify({ error: 'Accès non autorisé. Referer non autorisé.' })
     };
   }
-  console.log('✅ Referer autorisé:', referer);
   
   // Vérifier le User-Agent (bloquer les requêtes suspectes)
   if (!userAgent || userAgent.includes('curl') || userAgent.includes('wget') || userAgent.includes('bot')) {
-    console.log('❌ ÉCHEC - User-Agent non autorisé:', userAgent);
     return {
       statusCode: 403,
       headers,
       body: JSON.stringify({ error: 'User-Agent non autorisé.' })
     };
   }
-  console.log('✅ User-Agent autorisé:', userAgent);
 
   // Vérifier la méthode HTTP
   if (event.httpMethod !== 'POST') {
@@ -320,7 +308,7 @@ exports.handler = async (event, context) => {
 
         // 2. Créer le fichier markdown dans content/portfolio/{category}/{album}/
         const mdContent = `---
-image: ${imagePath}
+image: /${imagePath}
 title: ${photoTitle}
 category: ${categoryName}
 album: ${albumTitle}

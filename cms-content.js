@@ -242,9 +242,36 @@ class CMSContentLoader {
         
         let currentIndex = 0;
         
+        // Variables pour le zoom et pinch-to-zoom
+        let scale = 1;
+        let lastTapTime = 0;
+        let lastDistance = 0;
+        let isPinching = false;
+        let translateX = 0;
+        let translateY = 0;
+        let lastTouchX = 0;
+        let lastTouchY = 0;
+        let isDragging = false;
+        
+        const resetZoom = () => {
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+            carouselImage.style.transform = 'scale(1) translate(0, 0)';
+            carouselImage.style.cursor = 'pointer';
+        };
+        
+        const updateTransform = () => {
+            carouselImage.style.transform = `scale(${scale}) translate(${translateX}px, ${translateY}px)`;
+            carouselImage.style.cursor = scale > 1 ? 'grab' : 'pointer';
+        };
+        
         const showImage = (index) => {
             currentIndex = index;
             const image = images[index];
+            
+            // Réinitialiser le zoom lors du changement d'image
+            resetZoom();
             
             carouselImage.style.animation = 'none';
             void carouselImage.offsetWidth;
@@ -286,14 +313,122 @@ class CMSContentLoader {
             return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
         };
         
-        carouselImage.addEventListener('click', () => {
+        // Double-tap pour zoomer/dézoomer
+        carouselImage.addEventListener('click', (e) => {
             if (isMobileDevice()) {
-                if (carouselImage.requestFullscreen) {
-                    carouselImage.requestFullscreen();
-                } else if (carouselImage.webkitRequestFullscreen) {
-                    carouselImage.webkitRequestFullscreen();
-                } else if (carouselImage.msRequestFullscreen) {
-                    carouselImage.msRequestFullscreen();
+                const currentTime = Date.now();
+                const tapInterval = currentTime - lastTapTime;
+                
+                if (tapInterval < 300 && tapInterval > 0) {
+                    // Double tap détecté
+                    e.preventDefault();
+                    
+                    if (scale === 1) {
+                        // Zoomer à 2.5x
+                        scale = 2.5;
+                        
+                        // Calculer la position de zoom centrée sur le tap
+                        const rect = carouselImage.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        translateX = (centerX - x) * (scale - 1) / scale;
+                        translateY = (centerY - y) * (scale - 1) / scale;
+                    } else {
+                        // Dézoomer
+                        resetZoom();
+                    }
+                    
+                    updateTransform();
+                } else if (scale === 1) {
+                    // Simple tap et pas de zoom actif - passer en plein écran
+                    if (carouselImage.requestFullscreen) {
+                        carouselImage.requestFullscreen();
+                    } else if (carouselImage.webkitRequestFullscreen) {
+                        carouselImage.webkitRequestFullscreen();
+                    } else if (carouselImage.msRequestFullscreen) {
+                        carouselImage.msRequestFullscreen();
+                    }
+                }
+                
+                lastTapTime = currentTime;
+            }
+        });
+        
+        // Pinch-to-zoom
+        carouselImage.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                isPinching = true;
+                
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                lastDistance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+            } else if (e.touches.length === 1 && scale > 1) {
+                // Démarrer le drag si zoomé
+                isDragging = true;
+                lastTouchX = e.touches[0].clientX;
+                lastTouchY = e.touches[0].clientY;
+            }
+        }, { passive: false });
+        
+        carouselImage.addEventListener('touchmove', (e) => {
+            if (isPinching && e.touches.length === 2) {
+                e.preventDefault();
+                
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                const currentDistance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                
+                const scaleChange = currentDistance / lastDistance;
+                scale *= scaleChange;
+                
+                // Limiter le zoom entre 1x et 5x
+                scale = Math.min(Math.max(scale, 1), 5);
+                
+                lastDistance = currentDistance;
+                
+                if (scale === 1) {
+                    resetZoom();
+                } else {
+                    updateTransform();
+                }
+            } else if (isDragging && e.touches.length === 1 && scale > 1) {
+                e.preventDefault();
+                
+                const touchX = e.touches[0].clientX;
+                const touchY = e.touches[0].clientY;
+                
+                const deltaX = (touchX - lastTouchX) / scale;
+                const deltaY = (touchY - lastTouchY) / scale;
+                
+                translateX += deltaX;
+                translateY += deltaY;
+                
+                lastTouchX = touchX;
+                lastTouchY = touchY;
+                
+                updateTransform();
+                carouselImage.style.cursor = 'grabbing';
+            }
+        }, { passive: false });
+        
+        carouselImage.addEventListener('touchend', (e) => {
+            if (e.touches.length < 2) {
+                isPinching = false;
+            }
+            if (e.touches.length === 0) {
+                isDragging = false;
+                if (scale > 1) {
+                    carouselImage.style.cursor = 'grab';
                 }
             }
         });

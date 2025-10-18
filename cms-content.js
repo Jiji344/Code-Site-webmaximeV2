@@ -241,6 +241,8 @@ class CMSContentLoader {
         if (!modal) return;
         
         let currentIndex = 0;
+        let isZoomed = false;
+        let lastTap = 0;
         
         const showImage = (index) => {
             currentIndex = index;
@@ -287,9 +289,6 @@ class CMSContentLoader {
         showImage(0);
         
         // Gestion du zoom au double tap sur mobile
-        let isZoomed = false;
-        let lastTap = 0;
-        
         carouselImage.addEventListener('touchend', (e) => {
             const currentTime = new Date().getTime();
             const tapLength = currentTime - lastTap;

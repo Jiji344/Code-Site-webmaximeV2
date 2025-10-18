@@ -114,13 +114,9 @@
         
         // Fonction pour mettre à jour la visibilité du bouton
         function updateButtonVisibility() {
-          console.log('🔍 Vérification de l\'authentification...');
-          
           if (isUserLoggedIn()) {
-            console.log('✅ Utilisateur connecté - Affichage du bouton');
             batchBtn.style.display = 'flex';
           } else {
-            console.log('❌ Utilisateur non connecté - Masquage du bouton');
             batchBtn.style.display = 'none';
           }
         }
@@ -136,19 +132,16 @@
           
           if (checkCount >= 120) { // 120 * 1s = 2 minutes
             clearInterval(checkInterval);
-            console.log('⏰ Arrêt de la vérification d\'authentification');
           }
         }, 1000);
         
         // Écouter les événements de changement d'état
         if (window.CMS && window.CMS.events) {
           window.CMS.events.on('login', function() {
-            console.log('🔓 Événement de connexion détecté');
             batchBtn.style.display = 'flex';
           });
           
           window.CMS.events.on('logout', function() {
-            console.log('🔒 Événement de déconnexion détecté');
             batchBtn.style.display = 'none';
           });
         }

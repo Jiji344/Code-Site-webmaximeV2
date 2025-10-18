@@ -1446,6 +1446,8 @@ ul {
     }
 }
 
+/* Préchargement invisible - pas d'effet visuel */
+
 .carousel-thumbnails {
     display: flex;
     gap: var(--spacing-xs);

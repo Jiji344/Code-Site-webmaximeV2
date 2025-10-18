@@ -1,3 +1,71 @@
+// Système de préchargement des images
+class ImagePreloader {
+    constructor() {
+        this.preloadedImages = new Set();
+        this.preloadQueue = [];
+        this.isPreloading = false;
+        this.maxConcurrent = 3; // Nombre max d'images à précharger en parallèle
+    }
+
+    preload(imageUrl, priority = 'low') {
+        if (this.preloadedImages.has(imageUrl)) {
+            return Promise.resolve();
+        }
+
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            
+            img.onload = () => {
+                this.preloadedImages.add(imageUrl);
+                resolve(img);
+            };
+            
+            img.onerror = () => {
+                // Échec silencieux du préchargement
+                reject();
+            };
+            
+            // Définir la priorité du fetch
+            if (priority === 'high') {
+                img.fetchPriority = 'high';
+            }
+            
+            img.src = imageUrl;
+        });
+    }
+
+    async preloadBatch(imageUrls, priority = 'low') {
+        const chunks = [];
+        for (let i = 0; i < imageUrls.length; i += this.maxConcurrent) {
+            chunks.push(imageUrls.slice(i, i + this.maxConcurrent));
+        }
+
+        for (const chunk of chunks) {
+            await Promise.allSettled(
+                chunk.map(url => this.preload(url, priority))
+            );
+        }
+    }
+
+    preloadVisible(container) {
+        const images = container.querySelectorAll('img[data-src]');
+        images.forEach(img => {
+            const rect = img.getBoundingClientRect();
+            const isVisible = (
+                rect.top < window.innerHeight + 500 && // 500px avant d'être visible
+                rect.bottom > -500
+            );
+            
+            if (isVisible && img.dataset.src) {
+                this.preload(img.dataset.src, 'high').then(() => {
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                });
+            }
+        });
+    }
+}
+
 // Chargement et affichage du contenu du CMS
 class CMSContentLoader {
     constructor() {
@@ -7,12 +75,14 @@ class CMSContentLoader {
             repo: 'Code-Site-webmaximeV2',
             path: 'content/portfolio'
         };
+        this.imagePreloader = new ImagePreloader();
         this.init();
     }
 
     async init() {
         await this.loadPortfolioData();
         this.displayPortfolioImages();
+        this.startPreloading();
     }
 
     async loadPortfolioData() {
@@ -228,6 +298,10 @@ class CMSContentLoader {
         
         if (!modal) return;
         
+        // Précharger toutes les images de l'album en priorité haute
+        const albumImages = images.map(img => img.image);
+        this.imagePreloader.preloadBatch(albumImages, 'high');
+        
         let currentIndex = 0;
         let isZoomed = false;
         let lastTap = 0;
@@ -344,6 +418,16 @@ class CMSContentLoader {
         
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
+    }
+
+    startPreloading() {
+        // Précharger toutes les images du portfolio en arrière-plan (silencieux)
+        const allImages = this.portfolioData.map(item => item.image);
+        
+        // Commencer le préchargement après un court délai (ne pas bloquer l'UI)
+        setTimeout(() => {
+            this.imagePreloader.preloadBatch(allImages, 'low');
+        }, 1000);
     }
 }
 

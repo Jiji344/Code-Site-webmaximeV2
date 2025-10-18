@@ -1,5 +1,5 @@
 ---
-image: /static/img/mariage/mariage-paul/mariage-paul-2.jpg
+image: static/img/mariage/mariage-paul/mariage-paul-2.jpg
 title: mariage paul 2
 category: Mariage
 album: mariage paul

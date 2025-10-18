@@ -1,5 +1,5 @@
 ---
-image: /static/img/portrait/test/test-2.jpg
+image: static/img/portrait/test/test-2.jpg
 title: test 2
 category: Portrait
 album: test

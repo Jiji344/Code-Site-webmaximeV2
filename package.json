@@ -1,0 +1,20 @@
+{
+  "name": "site-web-maxime",
+  "version": "2.0.0",
+  "description": "Portfolio photographe avec CMS et upload multiple",
+  "main": "index.html",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'No build needed'",
+    "deploy": "netlify deploy --prod"
+  },
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "author": "Monsieur Crocodeal",
+  "license": "MIT"
+}
+

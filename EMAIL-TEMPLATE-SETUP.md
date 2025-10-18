@@ -142,3 +142,4 @@ L'email devrait maintenant avoir :
 
 **Déploie et configure dans Netlify Dashboard !** 🚀
 
+

@@ -22,7 +22,7 @@ collections:
     label: "📦 Album Complet (plusieurs photos)"
     folder: "content/albums"
     create: true
-    slug: "{{slug}}"
+    slug: "album-{{fields.baseTitle}}"
     fields:
       - { label: "📦 Nom de l'album", name: "albumName", widget: "string", hint: "Ex: 'Mariage Sophie & Marc' - Ce nom sera utilisé pour grouper toutes les photos" }
       - { label: "📂 Catégorie", name: "category", widget: "select", options: ["Portrait", "Mariage", "Immobilier", "Paysage", "Macro", "Lifestyle"], hint: "Catégorie appliquée à toutes les photos de l'album" }
@@ -34,4 +34,3 @@ collections:
         field: { label: "Image", name: "image", widget: "image" }
         hint: "Cliquez sur 'Ajouter' plusieurs fois pour uploader toutes vos photos. Vous pouvez en ajouter autant que vous voulez !"
       - { label: "📅 Date de prise de vue", name: "date", widget: "datetime", default: "" }
-      - { label: "⚠️ Instructions", name: "instructions", widget: "hidden", default: "Une fois publié, ce fichier temporaire sera automatiquement transformé en photos individuelles dans votre portfolio. Vous pouvez le supprimer après la publication." }

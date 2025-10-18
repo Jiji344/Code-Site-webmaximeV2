@@ -46,84 +46,42 @@
     <!-- Point de montage pour Decap CMS -->
     <div id="nc-root"></div>
     
-    <!-- Bouton Upload Multiple (visible uniquement quand connecté) -->
-    <a href="batch-upload.html" class="batch-upload-btn" id="batch-upload-btn" style="display: none;">
-      <span>📸</span>
-      <span>Upload Multiple</span>
-    </a>
-    
     <!-- Decap CMS (anciennement Netlify CMS) -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     
     <script>
-      // Masquer le bouton par défaut et l'afficher seulement si connecté
+      // Rendre le lien d'upload multiple cliquable dans le CMS
       document.addEventListener('DOMContentLoaded', function() {
-        const batchBtn = document.getElementById('batch-upload-btn');
-        
-        // Fonction pour détecter si on est sur la page de login
-        function isLoginPage() {
-          const ncRoot = document.querySelector('.nc-root');
-          if (!ncRoot) return true; // Si pas de CMS, considérer comme login
-          
-          const rootHTML = ncRoot.innerHTML.toLowerCase();
-          
-          // Détecter les éléments de login
-          return rootHTML.includes('login') || 
-                 rootHTML.includes('sign in') ||
-                 rootHTML.includes('authenticate') ||
-                 rootHTML.includes('github') && rootHTML.includes('login') ||
-                 document.querySelector('[data-testid="login-page"]') ||
-                 document.querySelector('.nc-login') ||
-                 document.querySelector('.nc-login-page') ||
-                 document.querySelector('.nc-login-form');
-        }
-        
-        // Fonction pour mettre à jour la visibilité du bouton
-        function updateButtonVisibility() {
-          if (isLoginPage()) {
-            batchBtn.style.display = 'none';
-          } else {
-            batchBtn.style.display = 'flex';
+        // Attendre que le CMS se charge
+        setTimeout(function() {
+          // Trouver le lien dans la section upload-multiple
+          const uploadLink = document.querySelector('a[href="batch-upload.html"]');
+          if (uploadLink) {
+            uploadLink.style.cssText = `
+              display: inline-block;
+              padding: 1rem 2rem;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              text-decoration: none;
+              border-radius: 8px;
+              font-weight: 600;
+              box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+              transition: all 0.3s ease;
+              margin: 1rem 0;
+            `;
+            
+            // Effet hover
+            uploadLink.addEventListener('mouseenter', function() {
+              this.style.transform = 'translateY(-2px)';
+              this.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.4)';
+            });
+            
+            uploadLink.addEventListener('mouseleave', function() {
+              this.style.transform = 'translateY(0)';
+              this.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.3)';
+            });
           }
-        }
-        
-        // Vérifier immédiatement
-        updateButtonVisibility();
-        
-        // Observer les changements dans le DOM du CMS
-        const observer = new MutationObserver(function(mutations) {
-          let shouldUpdate = false;
-          mutations.forEach(function(mutation) {
-            if (mutation.type === 'childList' && 
-                (mutation.target.classList.contains('nc-root') || 
-                 mutation.target.closest('.nc-root'))) {
-              shouldUpdate = true;
-            }
-          });
-          
-          if (shouldUpdate) {
-            setTimeout(updateButtonVisibility, 100);
-          }
-        });
-        
-        // Observer le conteneur CMS
-        const cmsRoot = document.querySelector('.nc-root');
-        if (cmsRoot) {
-          observer.observe(cmsRoot, { 
-            childList: true, 
-            subtree: true, 
-            characterData: true 
-          });
-        }
-        
-        // Vérification de sécurité toutes les 2 secondes
-        const securityInterval = setInterval(updateButtonVisibility, 2000);
-        
-        // Arrêter après 1 minute
-        setTimeout(() => {
-          clearInterval(securityInterval);
-          observer.disconnect();
-        }, 60000);
+        }, 2000);
       });
     </script>
   </body>

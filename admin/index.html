@@ -46,8 +46,8 @@
     <!-- Point de montage pour Decap CMS -->
     <div id="nc-root"></div>
     
-    <!-- Bouton Upload Multiple (visible uniquement quand connecté) -->
-    <a href="batch-upload.html" class="batch-upload-btn" id="batch-upload-btn" style="display: none;">
+    <!-- Bouton Upload Multiple (visible par défaut) -->
+    <a href="batch-upload.html" class="batch-upload-btn" id="batch-upload-btn">
       <span>📸</span>
       <span>Upload Multiple</span>
     </a>
@@ -56,44 +56,37 @@
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     
     <script>
-      // Afficher le bouton seulement quand on n'est pas sur la page de login
+      // Masquer le bouton seulement si on détecte vraiment une page de login
       document.addEventListener('DOMContentLoaded', function() {
         const batchBtn = document.getElementById('batch-upload-btn');
         
-        // Fonction simple pour détecter la page de login
-        function isLoginPage() {
+        // Fonction pour vérifier si on est sur une page de login
+        function checkForLoginPage() {
           const ncRoot = document.querySelector('.nc-root');
-          if (!ncRoot) return true;
+          if (!ncRoot) return false;
           
-          // Chercher des éléments spécifiques à la page de login
-          return ncRoot.querySelector('.nc-login') || 
+          const rootHTML = ncRoot.innerHTML.toLowerCase();
+          
+          // Détecter des éléments très spécifiques à la page de login
+          return (rootHTML.includes('sign in') && rootHTML.includes('github')) ||
+                 ncRoot.querySelector('.nc-login') ||
                  ncRoot.querySelector('.nc-login-page') ||
-                 ncRoot.querySelector('[data-testid="login-page"]') ||
-                 ncRoot.innerHTML.toLowerCase().includes('sign in') ||
-                 ncRoot.innerHTML.toLowerCase().includes('authenticate');
+                 ncRoot.querySelector('[data-testid="login-page"]');
         }
         
-        // Fonction pour mettre à jour la visibilité
-        function updateVisibility() {
-          if (isLoginPage()) {
+        // Vérifier toutes les 2 secondes
+        const checkInterval = setInterval(function() {
+          if (checkForLoginPage()) {
             batchBtn.style.display = 'none';
           } else {
             batchBtn.style.display = 'flex';
           }
-        }
+        }, 2000);
         
-        // Vérifier immédiatement
-        updateVisibility();
-        
-        // Vérifier toutes les 3 secondes pendant 30 secondes
-        let checkCount = 0;
-        const interval = setInterval(() => {
-          updateVisibility();
-          checkCount++;
-          if (checkCount >= 10) { // 10 * 3s = 30s
-            clearInterval(interval);
-          }
-        }, 3000);
+        // Arrêter après 30 secondes
+        setTimeout(() => {
+          clearInterval(checkInterval);
+        }, 30000);
       });
     </script>
   </body>

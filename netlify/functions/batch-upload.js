@@ -157,16 +157,17 @@ exports.handler = async (event, context) => {
     };
   }
 
-  // SÉCURITÉ : Vérifier l'authentification (version adaptée pour Décap CMS)
+  // SÉCURITÉ RENFORCÉE : Vérifier l'authentification
   const authHeader = event.headers.authorization || event.headers.Authorization;
   const userAgent = event.headers['user-agent'] || '';
-  
-  // Accepter les requêtes depuis le domaine du site (sécurité basique)
   const origin = event.headers.origin || event.headers.Origin;
+  const referer = event.headers.referer || event.headers.Referer;
+  
+  // Vérifier l'origine
   const allowedOrigins = [
     'https://photographemonsieurcrocodeal.netlify.app',
     'https://code-site-webmaximev2.netlify.app',
-    'http://localhost:8888' // Pour le développement local
+    'http://localhost:8888'
   ];
   
   if (!allowedOrigins.includes(origin)) {
@@ -174,6 +175,24 @@ exports.handler = async (event, context) => {
       statusCode: 403,
       headers,
       body: JSON.stringify({ error: 'Origine non autorisée.' })
+    };
+  }
+  
+  // Vérifier que la requête vient bien du CMS (pas d'accès direct)
+  if (!referer || !referer.includes('/admin/')) {
+    return {
+      statusCode: 403,
+      headers,
+      body: JSON.stringify({ error: 'Accès non autorisé. Authentification CMS requise.' })
+    };
+  }
+  
+  // Vérifier le User-Agent (bloquer les requêtes suspectes)
+  if (!userAgent || userAgent.includes('curl') || userAgent.includes('wget') || userAgent.includes('bot')) {
+    return {
+      statusCode: 403,
+      headers,
+      body: JSON.stringify({ error: 'User-Agent non autorisé.' })
     };
   }
 

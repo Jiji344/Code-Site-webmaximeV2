@@ -5,12 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📸 Upload Multiple - Decap CMS</title>
     
-    <!-- Note: La sécurité est gérée côté serveur dans la fonction Netlify -->
+    <!-- SÉCURITÉ RENFORCÉE : Vérification immédiate -->
     <script>
-        // Message de sécurité pour l'utilisateur
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🔒 Upload Multiple - Accès sécurisé via authentification CMS');
-        });
+        // Vérifier immédiatement l'authentification
+        function checkAuthImmediately() {
+            // Vérifier si on vient du CMS
+            if (!document.referrer || !document.referrer.includes('/admin/')) {
+                window.location.href = 'index.html';
+                return false;
+            }
+            
+            // Vérifier les tokens d'authentification
+            const hasAuthToken = localStorage.getItem('netlify-cms-user') || 
+                                sessionStorage.getItem('netlify-cms-user') ||
+                                localStorage.getItem('decap-cms-user') ||
+                                sessionStorage.getItem('decap-cms-user') ||
+                                localStorage.getItem('github-user') ||
+                                sessionStorage.getItem('github-user');
+            
+            if (!hasAuthToken) {
+                // Attendre un peu au cas où l'auth se charge
+                setTimeout(() => {
+                    const hasAuthAfterDelay = localStorage.getItem('netlify-cms-user') || 
+                                            sessionStorage.getItem('netlify-cms-user') ||
+                                            localStorage.getItem('decap-cms-user') || 
+                                            sessionStorage.getItem('decap-cms-user') ||
+                                            localStorage.getItem('github-user') || 
+                                            sessionStorage.getItem('github-user');
+                    
+                    if (!hasAuthAfterDelay) {
+                        window.location.href = 'index.html';
+                    }
+                }, 1000);
+            }
+            
+            return true;
+        }
+        
+        // Vérifier immédiatement au chargement
+        checkAuthImmediately();
+        
+        // Vérifier périodiquement pendant 10 secondes
+        let checkCount = 0;
+        const authInterval = setInterval(() => {
+            checkAuthImmediately();
+            checkCount++;
+            if (checkCount >= 10) {
+                clearInterval(authInterval);
+            }
+        }, 1000);
     </script>
     <style>
         * {

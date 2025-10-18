@@ -10,7 +10,7 @@ collections:
     label: "Portfolio"  # Label qui apparaitra dans l'interface de Netlify CMS.
     folder: "content/portfolio"  # Dossier où les fichiers photo seront stockés (créé sur GitHub).
     create: true  # Permet de créer de nouvelles entrées pour chaque nouvelle photo.
-    slug: "{{year}}-{{month}}-{{day}}-{{hour}}-{{minute}}-{{second}}"  # Utiliser la date/heure comme slug unique.
+    slug: "{{slug}}"  # Utiliser le titre comme slug (avec génération automatique d'unicité par Netlify CMS).
     fields:
       - { label: "Image", name: "image", widget: "image" }  # Champ pour uploader l'image.
       - { label: "Titre", name: "title", widget: "string" }  # Titre de la photo.

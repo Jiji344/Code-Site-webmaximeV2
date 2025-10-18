@@ -56,34 +56,42 @@
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     
     <script>
-      // Afficher le bouton uniquement quand l'utilisateur est connecté
+      // Afficher le bouton après un délai pour laisser le CMS se charger
       document.addEventListener('DOMContentLoaded', function() {
-        // Vérifier si l'utilisateur est connecté
-        function checkAuthStatus() {
-          // Décap CMS expose l'état d'authentification
-          if (window.CMS && window.CMS.auth && window.CMS.auth.isAuthenticated()) {
-            document.getElementById('batch-upload-btn').style.display = 'flex';
-          } else {
-            document.getElementById('batch-upload-btn').style.display = 'none';
-          }
-        }
+        const batchBtn = document.getElementById('batch-upload-btn');
         
-        // Vérifier immédiatement
-        checkAuthStatus();
-        
-        // Vérifier périodiquement (au cas où l'auth change)
-        setInterval(checkAuthStatus, 1000);
-        
-        // Écouter les événements d'authentification de Décap CMS
-        if (window.CMS) {
-          window.CMS.events.on('login', function() {
-            document.getElementById('batch-upload-btn').style.display = 'flex';
-          });
+        // Attendre que le CMS se charge complètement
+        setTimeout(function() {
+          // Vérifier si on est sur la page de login
+          const isLoginPage = document.querySelector('.nc-root')?.innerHTML.includes('login') ||
+                             document.querySelector('[data-testid="login-page"]') ||
+                             document.querySelector('.nc-login') ||
+                             document.querySelector('.nc-login-page');
           
-          window.CMS.events.on('logout', function() {
-            document.getElementById('batch-upload-btn').style.display = 'none';
-          });
-        }
+          // Si ce n'est pas la page de login, afficher le bouton
+          if (!isLoginPage) {
+            batchBtn.style.display = 'flex';
+          }
+        }, 3000); // Attendre 3 secondes pour que le CMS se charge
+        
+        // Vérifier périodiquement (toutes les 2 secondes)
+        const checkInterval = setInterval(function() {
+          const isLoginPage = document.querySelector('.nc-root')?.innerHTML.includes('login') ||
+                             document.querySelector('[data-testid="login-page"]') ||
+                             document.querySelector('.nc-login') ||
+                             document.querySelector('.nc-login-page');
+          
+          if (!isLoginPage) {
+            batchBtn.style.display = 'flex';
+          } else {
+            batchBtn.style.display = 'none';
+          }
+        }, 2000);
+        
+        // Arrêter la vérification après 30 secondes
+        setTimeout(() => {
+          clearInterval(checkInterval);
+        }, 30000);
       });
     </script>
   </body>

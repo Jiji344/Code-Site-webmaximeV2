@@ -1,23 +1,23 @@
 [
   {
-    "image": "static/img/mariage/mariage-paul/mariage-paul-1.jpg",
-    "title": "mariage paul 1",
-    "category": "Mariage",
-    "album": "mariage paul",
-    "date": "2025-10-18T18:37:10.613Z"
+    "image": "static/img/portrait/test/test-1.jpg",
+    "title": "test 1",
+    "category": "Portrait",
+    "album": "test",
+    "date": "2025-10-18T18:41:07.216Z"
   },
   {
-    "image": "static/img/mariage/mariage-paul/mariage-paul-2.jpg",
-    "title": "mariage paul 2",
-    "category": "Mariage",
-    "album": "mariage paul",
-    "date": "2025-10-18T18:37:12.613Z"
+    "image": "static/img/portrait/test/test-2.jpg",
+    "title": "test 2",
+    "category": "Portrait",
+    "album": "test",
+    "date": "2025-10-18T18:41:09.216Z"
   },
   {
-    "image": "static/img/mariage/mariage-paul/mariage-paul-3.jpg",
-    "title": "mariage paul 3",
-    "category": "Mariage",
-    "album": "mariage paul",
-    "date": "2025-10-18T18:37:14.613Z"
+    "image": "static/img/portrait/test/test-3.jpg",
+    "title": "test 3",
+    "category": "Portrait",
+    "album": "test",
+    "date": "2025-10-18T18:41:11.216Z"
   }
 ]

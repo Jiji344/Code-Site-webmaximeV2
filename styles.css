@@ -1427,11 +1427,12 @@ ul {
         0 20px 80px rgba(0, 0, 0, 0.8);
     animation: carouselImageZoom 0.4s ease-out;
     cursor: pointer;
-    transition: var(--transition);
+    transition: transform 0.3s ease-out;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
+    transform-origin: center center;
 }
 
 

@@ -246,6 +246,11 @@ class CMSContentLoader {
             currentIndex = index;
             const image = images[index];
             
+            // Réinitialiser le zoom lors du changement d'image
+            carouselImage.style.transform = 'scale(1)';
+            carouselImage.style.cursor = 'pointer';
+            isZoomed = false;
+            
             carouselImage.style.animation = 'none';
             void carouselImage.offsetWidth;
             carouselImage.style.animation = 'carouselImageZoom 0.4s ease-out';
@@ -281,8 +286,33 @@ class CMSContentLoader {
         albumTitle.textContent = albumName;
         showImage(0);
         
-        // Gestion du plein écran sur mobile au clic sur l'image
-        // Plein écran désactivé sur mobile
+        // Gestion du zoom au double tap sur mobile
+        let isZoomed = false;
+        let lastTap = 0;
+        
+        carouselImage.addEventListener('touchend', (e) => {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            
+            // Détection du double tap (moins de 300ms entre deux taps)
+            if (tapLength < 300 && tapLength > 0) {
+                e.preventDefault();
+                
+                if (!isZoomed) {
+                    // Zoom
+                    carouselImage.style.transform = 'scale(2)';
+                    carouselImage.style.cursor = 'zoom-out';
+                    isZoomed = true;
+                } else {
+                    // Dézoom
+                    carouselImage.style.transform = 'scale(1)';
+                    carouselImage.style.cursor = 'pointer';
+                    isZoomed = false;
+                }
+            }
+            
+            lastTap = currentTime;
+        });
         
         prevButton.onclick = () => {
             if (currentIndex > 0) showImage(currentIndex - 1);

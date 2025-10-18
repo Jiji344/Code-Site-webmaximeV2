@@ -957,6 +957,14 @@ ul {
     margin-top: var(--spacing-md);
 }
 
+.about-skills {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
 .skill-item {
     display: flex;
     align-items: center;
@@ -967,6 +975,8 @@ ul {
     border-radius: var(--border-radius-pill);
     font-weight: 500;
     transition: var(--transition);
+    flex: 0 0 auto;
+    white-space: nowrap;
 }
 
 .skill-item:hover {
@@ -976,6 +986,25 @@ ul {
 
 .skill-icon {
     font-size: 1.25rem;
+}
+
+/* Responsive pour les compétences */
+@media screen and (max-width: 768px) {
+    .about-skills {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .skill-item {
+        flex: 0 0 calc(50% - 0.5rem);
+        min-width: 0;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .skill-item {
+        flex: 0 0 100%;
+    }
 }
 
 /* ===== SECTION CONTACT ===== */
@@ -1006,6 +1035,10 @@ ul {
     padding: var(--spacing-sm);
     text-align: center;
     transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .contact-card:hover {
@@ -1016,6 +1049,19 @@ ul {
 .contact-icon {
     font-size: 2rem;
     margin-bottom: var(--spacing-xs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-icon svg {
+    color: var(--color-primary);
+    transition: var(--transition);
+}
+
+.contact-card:hover .contact-icon svg {
+    color: var(--color-secondary);
+    transform: scale(1.1);
 }
 
 .contact-card-title {

@@ -225,7 +225,12 @@ class SmoothScroll {
             // Attendre le rendu pour avoir les bonnes dimensions
             requestAnimationFrame(() => {
                 const headerHeight = this.header ? this.header.offsetHeight : 0;
-                const targetPosition = target.offsetTop - headerHeight;
+                let targetPosition = target.offsetTop - headerHeight;
+                
+                // Offset supplémentaire pour la section portfolio
+                if (target.id === 'portfolio') {
+                    targetPosition += 100; // 100px plus bas
+                }
                 
                 window.scrollTo({
                     top: targetPosition,

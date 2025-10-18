@@ -116,4 +116,3 @@ Le formulaire inclut déjà :
 **Une fois déployé, configure les notifications email dans Netlify Dashboard !**
 
 
-

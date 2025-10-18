@@ -7,7 +7,7 @@ public_folder: "/static/img"  # Le chemin relatif pour afficher les images sur l
 
 collections:
   - name: "portfolio"  # Nom de la collection, ici 'portfolio' pour ton site photo.
-    label: "Portfolio (1 photo)"  # Label qui apparaitra dans l'interface de Netlify CMS.
+    label: "Portfolio"  # Label qui apparaitra dans l'interface de Netlify CMS.
     folder: "content/portfolio"  # Dossier où les fichiers photo seront stockés (créé sur GitHub).
     create: true  # Permet de créer de nouvelles entrées pour chaque nouvelle photo.
     slug: "{{slug}}"  # Utiliser le titre comme slug (avec génération automatique d'unicité par Netlify CMS).
@@ -17,20 +17,3 @@ collections:
       - { label: "Catégorie", name: "category", widget: "select", options: ["Portrait", "Mariage", "Immobilier", "Paysage", "Macro", "Lifestyle"] }  # Catégorie de la photo.
       - { label: "Album/Shooting", name: "album", widget: "string", required: false, hint: "Nom de l'album pour grouper les photos ensemble (ex: 'Mariage Sophie & Marc', 'Portrait Marie')" }  # Album pour grouper les photos.
       - { label: "Date", name: "date", widget: "datetime" }  # Date de la prise de la photo.
-  
-  - name: "album-bulk"
-    label: "📦 Album Complet (plusieurs photos)"
-    folder: "content/albums"
-    create: true
-    slug: "album-{{fields.baseTitle}}"
-    fields:
-      - { label: "📦 Nom de l'album", name: "albumName", widget: "string", hint: "Ex: 'Mariage Sophie & Marc' - Ce nom sera utilisé pour grouper toutes les photos" }
-      - { label: "📂 Catégorie", name: "category", widget: "select", options: ["Portrait", "Mariage", "Immobilier", "Paysage", "Macro", "Lifestyle"], hint: "Catégorie appliquée à toutes les photos de l'album" }
-      - { label: "📝 Titre de base", name: "baseTitle", widget: "string", hint: "Ex: 'Mariage Sophie' → deviendra 'Mariage Sophie 1', 'Mariage Sophie 2', etc." }
-      - label: "📸 Photos de l'album"
-        name: "images"
-        widget: "list"
-        summary: "Photo {{fields.image}}"
-        field: { label: "Image", name: "image", widget: "image" }
-        hint: "Cliquez sur 'Ajouter' plusieurs fois pour uploader toutes vos photos. Vous pouvez en ajouter autant que vous voulez !"
-      - { label: "📅 Date de prise de vue", name: "date", widget: "datetime", default: "" }

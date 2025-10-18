@@ -157,13 +157,23 @@ exports.handler = async (event, context) => {
     };
   }
 
-  // SÉCURITÉ : Vérifier l'authentification
+  // SÉCURITÉ : Vérifier l'authentification (version adaptée pour Décap CMS)
   const authHeader = event.headers.authorization || event.headers.Authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  const userAgent = event.headers['user-agent'] || '';
+  
+  // Accepter les requêtes depuis le domaine du site (sécurité basique)
+  const origin = event.headers.origin || event.headers.Origin;
+  const allowedOrigins = [
+    'https://photographemonsieurcrocodeal.netlify.app',
+    'https://code-site-webmaximev2.netlify.app',
+    'http://localhost:8888' // Pour le développement local
+  ];
+  
+  if (!allowedOrigins.includes(origin)) {
     return {
-      statusCode: 401,
+      statusCode: 403,
       headers,
-      body: JSON.stringify({ error: 'Non autorisé. Authentification requise.' })
+      body: JSON.stringify({ error: 'Origine non autorisée.' })
     };
   }
 

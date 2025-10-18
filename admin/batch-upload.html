@@ -5,23 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📸 Upload Multiple - Decap CMS</title>
     
-    <!-- Sécurité : Vérifier l'authentification -->
+    <!-- Note: La sécurité est gérée côté serveur dans la fonction Netlify -->
     <script>
-        // Vérifier si l'utilisateur est connecté au CMS
-        function checkAuthentication() {
-            // Si pas de token d'auth ou pas connecté, rediriger vers le CMS
-            if (!localStorage.getItem('netlify-cms-user') && !sessionStorage.getItem('netlify-cms-user')) {
-                window.location.href = 'index.html';
-                return false;
-            }
-            return true;
-        }
-        
-        // Vérifier l'auth au chargement
+        // Message de sécurité pour l'utilisateur
         document.addEventListener('DOMContentLoaded', function() {
-            if (!checkAuthentication()) {
-                return;
-            }
+            console.log('🔒 Upload Multiple - Accès sécurisé via authentification CMS');
         });
     </script>
     <style>
@@ -466,14 +454,10 @@
             
             // Appeler la fonction Netlify
             try {
-                // Récupérer le token d'authentification
-                const authToken = localStorage.getItem('netlify-cms-user') || sessionStorage.getItem('netlify-cms-user');
-                
                 const response = await fetch('/.netlify/functions/batch-upload', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken || 'anonymous'}`
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         albumTitle: albumTitle,

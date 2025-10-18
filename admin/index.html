@@ -4,10 +4,53 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin - Monsieur Crocodeal</title>
+    <style>
+      /* Bouton Upload Multiple */
+      .batch-upload-btn {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        padding: 1rem 1.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+      }
+      
+      .batch-upload-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+      }
+      
+      @media screen and (max-width: 768px) {
+        .batch-upload-btn {
+          bottom: 1rem;
+          right: 1rem;
+          padding: 0.75rem 1.25rem;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
   </head>
   <body>
     <!-- Point de montage pour Decap CMS -->
     <div id="nc-root"></div>
+    
+    <!-- Bouton Upload Multiple -->
+    <a href="batch-upload.html" class="batch-upload-btn">
+      <span>📸</span>
+      <span>Upload Multiple</span>
+    </a>
     
     <!-- Decap CMS (anciennement Netlify CMS) -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>

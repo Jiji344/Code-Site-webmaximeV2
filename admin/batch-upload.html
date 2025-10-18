@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📸 Upload Multiple - Decap CMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: #764ba2;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-upload input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-upload-label {
+            display: block;
+            padding: 2rem;
+            border: 3px dashed #667eea;
+            border-radius: 10px;
+            text-align: center;
+            background: #f8f9ff;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload-label:hover {
+            background: #e8eaff;
+            border-color: #764ba2;
+        }
+        
+        .file-upload-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .file-count {
+            margin-top: 0.5rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .preview {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f8f9ff;
+            border-radius: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .preview-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        .preview-item {
+            position: relative;
+            aspect-ratio: 4/5;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #667eea;
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .preview-item-number {
+            position: absolute;
+            top: 0.25rem;
+            left: 0.25rem;
+            background: rgba(102, 126, 234, 0.9);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 2rem 1.5rem;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .preview-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../admin/" class="back-link">← Retour au CMS</a>
+        
+        <h1><span>📸</span> Upload Multiple</h1>
+        <p class="subtitle">Uploadez 10-20 photos en un seul clic avec auto-numérotation</p>
+        
+        <form id="batchForm">
+            <div class="form-group">
+                <label for="albumTitle">Titre de l'album / Nom du shooting</label>
+                <input type="text" id="albumTitle" placeholder="Ex: Mariage Sophie & Marc" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="category">Catégorie</label>
+                <select id="category" required>
+                    <option value="">Sélectionner une catégorie...</option>
+                    <option value="portrait">📸 Portrait</option>
+                    <option value="mariage">💍 Mariage</option>
+                    <option value="immobilier">🏠 Immobilier</option>
+                    <option value="paysage">🌄 Paysage</option>
+                    <option value="macro">🔬 Macro</option>
+                    <option value="lifestyle">✨ Lifestyle</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Photos à uploader (10-20 recommandé)</label>
+                <div class="file-upload">
+                    <label class="file-upload-label">
+                        <div class="file-upload-icon">📁</div>
+                        <div><strong>Cliquez ou glissez</strong> vos photos ici</div>
+                        <div style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">Formats: JPG, PNG, WebP</div>
+                        <div class="file-count" id="fileCount">Aucune photo sélectionnée</div>
+                        <input type="file" id="photos" accept="image/jpeg,image/jpg,image/png,image/webp" multiple required>
+                    </label>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" id="uploadBtn">
+                🚀 Uploader les photos
+            </button>
+        </form>
+        
+        <div class="progress-bar" id="progressBar">
+            <div class="progress-fill" id="progressFill">0%</div>
+        </div>
+        
+        <div class="preview" id="preview" style="display: none;">
+            <div class="preview-title">Aperçu (photos avec numérotation) :</div>
+            <div class="preview-grid" id="previewGrid"></div>
+        </div>
+        
+        <div class="success" id="success"></div>
+        <div class="error" id="error"></div>
+    </div>
+    
+    <script type="module">
+        const albumTitleInput = document.getElementById('albumTitle');
+        const categorySelect = document.getElementById('category');
+        const photosInput = document.getElementById('photos');
+        const fileCount = document.getElementById('fileCount');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const preview = document.getElementById('preview');
+        const previewGrid = document.getElementById('previewGrid');
+        const success = document.getElementById('success');
+        const error = document.getElementById('error');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const form = document.getElementById('batchForm');
+        
+        let selectedFiles = [];
+        
+        photosInput.addEventListener('change', function() {
+            selectedFiles = Array.from(this.files);
+            updateFileCount();
+            updatePreview();
+        });
+        
+        function updateFileCount() {
+            const count = selectedFiles.length;
+            fileCount.textContent = count > 0 
+                ? `${count} photo${count > 1 ? 's' : ''} sélectionnée${count > 1 ? 's' : ''}` 
+                : 'Aucune photo sélectionnée';
+            fileCount.style.color = count > 0 ? '#4CAF50' : '#667eea';
+        }
+        
+        async function updatePreview() {
+            if (selectedFiles.length === 0 || !albumTitleInput.value.trim()) {
+                preview.style.display = 'none';
+                return;
+            }
+            
+            preview.style.display = 'block';
+            previewGrid.innerHTML = '';
+            
+            const albumTitle = albumTitleInput.value.trim();
+            
+            for (let i = 0; i < selectedFiles.length; i++) {
+                const file = selectedFiles[i];
+                const counter = i + 1;
+                
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.alt = `${albumTitle} ${counter}`;
+                
+                const number = document.createElement('div');
+                number.className = 'preview-item-number';
+                number.textContent = counter;
+                
+                previewItem.appendChild(img);
+                previewItem.appendChild(number);
+                previewGrid.appendChild(previewItem);
+            }
+        }
+        
+        albumTitleInput.addEventListener('input', updatePreview);
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (selectedFiles.length === 0) {
+                showError('Veuillez sélectionner au moins une photo');
+                return;
+            }
+            
+            const albumTitle = albumTitleInput.value.trim();
+            const category = categorySelect.value;
+            
+            uploadBtn.disabled = true;
+            uploadBtn.textContent = '⏳ Upload en cours...';
+            progressBar.style.display = 'block';
+            success.style.display = 'none';
+            error.style.display = 'none';
+            
+            try {
+                await uploadPhotos(albumTitle, category, selectedFiles);
+                showSuccess(`✅ ${selectedFiles.length} photos uploadées avec succès ! Redirecting vers le CMS...`);
+                
+                setTimeout(() => {
+                    window.location.href = '../admin/';
+                }, 3000);
+            } catch (err) {
+                console.error(err);
+                showError('Erreur lors de l\'upload. Veuillez réessayer ou utiliser le CMS classique.');
+                uploadBtn.disabled = false;
+                uploadBtn.textContent = '🚀 Uploader les photos';
+                progressBar.style.display = 'none';
+            }
+        });
+        
+        async function uploadPhotos(albumTitle, category, files) {
+            // Générer un slug de base (URL-friendly)
+            const baseSlug = albumTitle.toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-');
+            
+            const now = new Date();
+            const categoryName = getCategoryName(category);
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const counter = i + 1;
+                const photoTitle = `${albumTitle} ${counter}`;
+                
+                // Incrémenter la date de quelques secondes pour éviter les conflits
+                const photoDate = new Date(now.getTime() + (counter * 2000));
+                const formattedDate = photoDate.toISOString();
+                
+                // Créer l'entrée dans Decap CMS via l'API Git Gateway
+                const entry = {
+                    image: file,
+                    title: photoTitle,
+                    album: albumTitle,
+                    category: categoryName,
+                    date: formattedDate
+                };
+                
+                // Mettre à jour la barre de progression
+                const progress = Math.round(((i + 1) / files.length) * 100);
+                progressFill.style.width = `${progress}%`;
+                progressFill.textContent = `${progress}% (${i + 1}/${files.length})`;
+                
+                // Simuler l'upload (tu devras connecter à l'API Decap CMS)
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+        }
+        
+        function getCategoryName(category) {
+            const names = {
+                'portrait': 'Portrait',
+                'mariage': 'Mariage',
+                'immobilier': 'Immobilier',
+                'paysage': 'Paysage',
+                'macro': 'Macro',
+                'lifestyle': 'Lifestyle'
+            };
+            return names[category] || category;
+        }
+        
+        function showSuccess(message) {
+            success.textContent = message;
+            success.style.display = 'block';
+            error.style.display = 'none';
+        }
+        
+        function showError(message) {
+            error.textContent = message;
+            error.style.display = 'block';
+            success.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+

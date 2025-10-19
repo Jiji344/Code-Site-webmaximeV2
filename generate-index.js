@@ -69,3 +69,4 @@ fs.writeFileSync(outputPath, JSON.stringify(allPhotos, null, 2), 'utf-8');
 
 console.log(`✅ Index généré : ${allPhotos.length} photos dans portfolio-index.json`);
 
+

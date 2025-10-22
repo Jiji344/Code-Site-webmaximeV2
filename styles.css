@@ -1033,7 +1033,7 @@ ul {
 }
 
 .testimonial-card {
-    flex: 0 0 300px;
+    flex: 0 0 350px;
     padding: 0 var(--spacing-sm);
     box-sizing: border-box;
 }
@@ -1044,15 +1044,15 @@ ul {
     -webkit-backdrop-filter: blur(var(--blur-glass-medium));
     border: 1px solid var(--border-primary);
     border-radius: var(--border-radius);
-    padding: var(--spacing-sm);
+    padding: var(--spacing-md);
     text-align: center;
     position: relative;
     transition: var(--transition);
-    height: 200px;
+    height: 240px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-width: 280px;
+    min-width: 320px;
     box-sizing: border-box;
     cursor: pointer;
 }
@@ -2007,13 +2007,13 @@ ul {
 
     /* Avis Mobile */
     .testimonial-card {
-        flex: 0 0 250px;
+        flex: 0 0 300px;
     }
     
     .testimonial-content {
-        height: 160px;
-        padding: var(--spacing-xs);
-        min-width: 230px;
+        height: 200px;
+        padding: var(--spacing-sm);
+        min-width: 280px;
     }
     
     .testimonial-text {

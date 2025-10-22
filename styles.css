@@ -2055,14 +2055,14 @@ ul {
     }
     
     .testimonial-content {
-        height: 200px;
+        height: 250px;
         padding: var(--spacing-xs);
         width: 100%;
     }
     
     .testimonial-text {
         font-size: 0.8rem;
-        line-height: 1.5;
+        line-height: 1.6;
         margin: var(--spacing-xs) 0;
         padding: var(--spacing-xs) 0;
     }

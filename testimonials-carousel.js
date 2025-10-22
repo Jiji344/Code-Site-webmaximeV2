@@ -1,11 +1,7 @@
-/* ===== BANDEROLE D'AVIS GOOGLE ===== */
-class GoogleReviewsBanner {
+/* ===== BANDEROLE D'AVIS STATIQUES ===== */
+class TestimonialsBanner {
     constructor() {
         this.track = document.getElementById('testimonials-track');
-        
-        // Configuration Google Places - Monsieur Crocodeal
-        this.apiKey = window.GOOGLE_API_KEY || 'VOTRE_CLE_API'; // Variable d'environnement Netlify
-        this.placeId = '0x12b44191280072c5:0x4ca0a65562f95654'; // Place ID de Monsieur Crocodeal
         
         // Configuration
         this.speed = 25;
@@ -13,115 +9,65 @@ class GoogleReviewsBanner {
         this.animationId = null;
         this.testimonials = [];
         
-        // Cache
-        this.cacheKey = 'google_reviews_cache';
-        this.cacheDuration = 6 * 60 * 60 * 1000; // 6 heures
-        
         if (this.track) {
             this.init();
         }
     }
     
-    async init() {
-        await this.loadConfig();
-        await this.loadGoogleReviews();
+    init() {
+        this.loadStaticReviews();
         this.renderTestimonials();
         this.bindEvents();
         this.startAnimation();
     }
     
-    async loadConfig() {
-        try {
-            console.log('🔄 Chargement des avis depuis Netlify Functions...');
-            const response = await fetch('/.netlify/functions/get-config');
-            const data = await response.json();
-            
-            console.log('📊 Réponse Netlify Functions:', data);
-            
-            if (data.success && data.reviews && data.reviews.length > 0) {
-                this.testimonials = data.reviews;
-                console.log('✅ Avis Google chargés depuis Netlify:', data.reviews.length, 'avis');
-                return true;
-            } else {
-                console.warn('⚠️ Aucun avis Google trouvé:', data.error || 'Raison inconnue');
-                console.warn('📊 Debug info:', data.debug);
-                return false;
-            }
-        } catch (error) {
-            console.warn('⚠️ Impossible de charger les avis Google, utilisation du fallback:', error);
-            return false;
-        }
-    }
-    
-    async loadGoogleReviews() {
-        try {
-            // Vérifier le cache d'abord
-            const cached = this.getCachedReviews();
-            if (cached && this.isCacheValid(cached)) {
-                console.log('✅ Utilisation du cache - 0 requête API');
-                this.testimonials = cached.reviews;
-                return;
-            }
-            
-            console.log('🔄 Cache expiré - 1 requête API');
-            const success = await this.loadConfig();
-            
-            if (success) {
-                // Sauvegarder en cache
-                this.saveToCache(this.testimonials);
-            } else {
-                this.loadFallbackReviews();
-            }
-            
-        } catch (error) {
-            console.error('❌ Erreur lors du chargement des avis Google:', error);
-            this.loadFallbackReviews();
-        }
-    }
-    
-    // Fonction supprimée - les avis sont maintenant récupérés via Netlify Functions
-    
-    // Fonction supprimée - plus de catégories d'avis
-    
-    getCachedReviews() {
-        try {
-            return JSON.parse(localStorage.getItem(this.cacheKey));
-        } catch {
-            return null;
-        }
-    }
-    
-    isCacheValid(cached) {
-        const now = Date.now();
-        return (now - cached.timestamp) < this.cacheDuration;
-    }
-    
-    saveToCache(reviews) {
-        const cacheData = {
-            reviews: reviews,
-            timestamp: Date.now()
-        };
-        localStorage.setItem(this.cacheKey, JSON.stringify(cacheData));
-    }
-    
-    loadFallbackReviews() {
-        // Avis de secours si l'API ne fonctionne pas
+    loadStaticReviews() {
         this.testimonials = [
             {
-                name: "Client Google",
-                text: "Service exceptionnel ! Photos de qualité, je recommande vivement.",
+                name: "Marie L.",
+                text: "Service exceptionnel ! Maxime a su capturer parfaitement nos émotions. Photos magnifiques et professionnalisme au rendez-vous.",
                 rating: 5,
                 date: "2024"
             },
             {
-                name: "Client Google",
-                text: "Très satisfait du travail de Maxime. Photos magnifiques !",
+                name: "Thomas M.",
+                text: "Très satisfait de notre séance photo. Maxime est patient et créatif. Je recommande vivement !",
                 rating: 5,
                 date: "2024"
             },
             {
-                name: "Client Google",
-                text: "Photographe professionnel et créatif. Résultats excellents !",
+                name: "Sophie D.",
+                text: "Un photographe talentueux qui sait mettre en valeur ses sujets. Résultat au-delà de nos attentes.",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "Pierre R.",
+                text: "Excellent rapport qualité-prix. Maxime est à l'écoute et très professionnel. Photos superbes !",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "Julie K.",
+                text: "Séance photo parfaite ! Maxime a su créer une ambiance détendue. Résultat magnifique, je recommande !",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "Alexandre B.",
+                text: "Photographe très professionnel, à l'écoute et créatif. Les photos sont magnifiques, je recommande !",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "Camille S.",
+                text: "Séance photo incroyable ! Maxime sait mettre en confiance et capturer les meilleurs moments.",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "Nicolas F.",
+                text: "Très bon photographe, patient et créatif. Résultat au-delà de nos attentes, merci !",
                 rating: 5,
                 date: "2024"
             }
@@ -218,5 +164,5 @@ class GoogleReviewsBanner {
 
 /* ===== INITIALISATION ===== */
 document.addEventListener('DOMContentLoaded', () => {
-    new GoogleReviewsBanner();
+    new TestimonialsBanner();
 });

@@ -1007,6 +1007,135 @@ ul {
     }
 }
 
+/* ===== SECTION AVIS ===== */
+.testimonials {
+    padding: var(--spacing-xl) 0;
+    background: transparent;
+}
+
+.testimonials-banner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-top: var(--spacing-lg);
+    background: linear-gradient(135deg, rgba(74, 144, 226, 0.05), rgba(90, 185, 234, 0.05));
+    border-top: 1px solid var(--border-primary);
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.testimonials-track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-sm);
+    align-items: stretch;
+}
+
+.testimonial-card {
+    flex: 0 0 300px;
+    padding: 0 var(--spacing-sm);
+    box-sizing: border-box;
+}
+
+.testimonial-content {
+    background: var(--glass-bg-medium);
+    backdrop-filter: blur(var(--blur-glass-medium));
+    -webkit-backdrop-filter: blur(var(--blur-glass-medium));
+    border: 1px solid var(--border-primary);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-sm);
+    text-align: center;
+    position: relative;
+    transition: var(--transition);
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 280px;
+    box-sizing: border-box;
+}
+
+.testimonial-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(74, 144, 226, 0.05) 0%, transparent 70%);
+    opacity: 0;
+    transition: var(--transition);
+    border-radius: var(--border-radius);
+}
+
+.testimonial-content:hover::before {
+    opacity: 1;
+}
+
+.testimonial-content:hover {
+    border-color: var(--border-primary-strong);
+    box-shadow: var(--shadow-glow-strong);
+    transform: translateY(-5px);
+}
+
+.testimonial-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: var(--spacing-xs);
+    flex-shrink: 0;
+}
+
+/* Styles supprimés - plus de catégories d'avis */
+
+.testimonial-rating {
+    color: #FFD700;
+    font-size: 1.2rem;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.testimonial-text {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--color-text);
+    font-style: italic;
+    margin: var(--spacing-xs) 0;
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--spacing-xs) 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Guillemets stylisés supprimés */
+
+.testimonial-footer {
+    margin-top: var(--spacing-xs);
+    flex-shrink: 0;
+}
+
+.testimonial-author {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.author-name {
+    font-weight: 600;
+    color: var(--color-text);
+    font-size: 1.1rem;
+}
+
+.author-date {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+/* Suppression des anciens contrôles - plus nécessaires pour la banderole */
+
 /* ===== SECTION CONTACT ===== */
 .contact {
     padding: var(--spacing-lg) 0;
@@ -1857,6 +1986,40 @@ ul {
     /* About Mobile */
     .about-skills {
         justify-content: center;
+    }
+
+    /* Avis Mobile */
+    .testimonial-card {
+        flex: 0 0 250px;
+    }
+    
+    .testimonial-content {
+        height: 160px;
+        padding: var(--spacing-xs);
+        min-width: 230px;
+    }
+    
+    .testimonial-text {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+    
+    /* Guillemets stylisés supprimés sur mobile */
+    
+    .testimonial-header {
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .testimonial-rating {
+        font-size: 1rem;
+    }
+    
+    .author-name {
+        font-size: 1rem;
+    }
+    
+    .author-date {
+        font-size: 0.75rem;
     }
 
     /* Contact Mobile */

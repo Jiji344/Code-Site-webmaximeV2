@@ -288,8 +288,12 @@ class TestimonialsBanner {
     }
     
     createTestimonialElement(testimonial, index) {
-        const testimonialDiv = document.createElement('div');
+        const testimonialDiv = document.createElement('a');
         testimonialDiv.className = 'testimonial-card';
+        testimonialDiv.href = 'https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=avis+sur+monsieur+crocodeal+photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwiwn5PusriQAxVB9LsIHd1pEj8Q3PALegQIJhAO';
+        testimonialDiv.target = '_blank';
+        testimonialDiv.rel = 'noopener noreferrer';
+        testimonialDiv.setAttribute('aria-label', `Voir tous les avis Google - ${testimonial.name}`);
         
         const stars = '★'.repeat(testimonial.rating);
         
@@ -306,6 +310,13 @@ class TestimonialsBanner {
                     <div class="testimonial-author">
                         <span class="author-name">${testimonial.name}</span>
                         <span class="author-date">${testimonial.date}</span>
+                    </div>
+                    <div class="testimonial-link">
+                        <span class="link-text">Voir sur Google</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M7 17L17 7"></path>
+                            <path d="M7 7h10v10"></path>
+                        </svg>
                     </div>
                 </div>
             </div>

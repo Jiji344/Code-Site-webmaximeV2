@@ -1027,15 +1027,25 @@ ul {
     display: flex;
     width: max-content;
     will-change: transform;
-    gap: var(--spacing-md);
-    padding: var(--spacing-lg) var(--spacing-md);
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-sm);
     align-items: stretch;
 }
 
 .testimonial-card {
-    flex: 0 0 450px;
-    padding: 0 var(--spacing-sm);
+    flex: 0 0 300px;
+    padding: 0;
     box-sizing: border-box;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.testimonial-card:hover {
+    transform: translateY(-3px);
+    text-decoration: none;
+    color: inherit;
 }
 
 .testimonial-content {
@@ -1044,15 +1054,15 @@ ul {
     -webkit-backdrop-filter: blur(var(--blur-glass-medium));
     border: 1px solid var(--border-primary);
     border-radius: var(--border-radius);
-    padding: var(--spacing-lg);
+    padding: var(--spacing-sm);
     text-align: center;
     position: relative;
     transition: var(--transition);
-    min-height: 320px;
+    height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-width: 420px;
+    width: 100%;
     box-sizing: border-box;
 }
 
@@ -1070,55 +1080,59 @@ ul {
     opacity: 1;
 }
 
-.testimonial-content:hover {
+.testimonial-card:hover .testimonial-content {
     border-color: var(--border-primary-strong);
     box-shadow: var(--shadow-glow-strong);
-    transform: translateY(-5px);
 }
 
 .testimonial-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
     flex-shrink: 0;
 }
 
 .testimonial-type {
     background: var(--primary-alpha-20);
     color: var(--color-primary);
-    padding: 0.5rem 1rem;
+    padding: 0.25rem 0.5rem;
     border-radius: var(--border-radius-pill);
-    font-size: var(--font-size-sm);
+    font-size: 0.7rem;
     font-weight: 600;
     border: 1px solid var(--border-primary-medium);
 }
 
 .testimonial-rating {
     color: #FFD700;
-    font-size: 1.2rem;
+    font-size: 1rem;
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .testimonial-text {
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: 0.8rem;
+    line-height: 1.4;
     color: var(--color-text);
     font-style: italic;
-    margin: var(--spacing-sm) 0;
+    margin: var(--spacing-xs) 0;
     position: relative;
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: var(--spacing-sm) 0;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 /* Guillemets stylisés supprimés */
 
 .testimonial-footer {
-    margin-top: var(--spacing-sm);
+    margin-top: var(--spacing-xs);
     flex-shrink: 0;
 }
 
@@ -1132,12 +1146,54 @@ ul {
 .author-name {
     font-weight: 600;
     color: var(--color-text);
-    font-size: 1.1rem;
+    font-size: 0.9rem;
 }
 
 .author-date {
     color: var(--color-text-secondary);
-    font-size: var(--font-size-sm);
+    font-size: 0.7rem;
+}
+
+.testimonial-link {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: var(--spacing-xs);
+    padding: 0.25rem 0.5rem;
+    background: var(--primary-alpha-10);
+    border: 1px solid var(--border-primary-medium);
+    border-radius: var(--border-radius-pill);
+    color: var(--color-primary);
+    font-size: 0.7rem;
+    font-weight: 500;
+    transition: var(--transition);
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.testimonial-card:hover .testimonial-link {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.testimonial-link:hover {
+    background: var(--primary-alpha-20);
+    border-color: var(--color-primary);
+    transform: translateY(-1px);
+}
+
+.link-text {
+    font-size: 0.6rem;
+}
+
+.testimonial-link svg {
+    width: 10px;
+    height: 10px;
+    transition: var(--transition);
+}
+
+.testimonial-link:hover svg {
+    transform: translate(2px, -2px);
 }
 
 /* Suppression des anciens contrôles - plus nécessaires pour la banderole */
@@ -1996,18 +2052,18 @@ ul {
 
     /* Avis Mobile */
     .testimonial-card {
-        flex: 0 0 320px;
+        flex: 0 0 250px;
     }
     
     .testimonial-content {
-        min-height: 280px;
-        padding: var(--spacing-md);
-        min-width: 300px;
+        height: 180px;
+        padding: var(--spacing-xs);
+        width: 100%;
     }
     
     .testimonial-text {
-        font-size: 0.85rem;
-        line-height: 1.5;
+        font-size: 0.7rem;
+        line-height: 1.3;
     }
     
     /* Guillemets stylisés supprimés sur mobile */
@@ -2017,20 +2073,34 @@ ul {
     }
     
     .testimonial-type {
-        font-size: 0.75rem;
-        padding: 0.25rem 0.75rem;
+        font-size: 0.6rem;
+        padding: 0.2rem 0.4rem;
     }
     
     .testimonial-rating {
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
     
     .author-name {
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
     
     .author-date {
-        font-size: 0.75rem;
+        font-size: 0.6rem;
+    }
+    
+    .testimonial-link {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.6rem;
+    }
+    
+    .link-text {
+        font-size: 0.5rem;
+    }
+    
+    .testimonial-link svg {
+        width: 8px;
+        height: 8px;
     }
 
     /* Contact Mobile */

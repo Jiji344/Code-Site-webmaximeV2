@@ -1054,11 +1054,11 @@ ul {
     -webkit-backdrop-filter: blur(var(--blur-glass-medium));
     border: 1px solid var(--border-primary);
     border-radius: var(--border-radius);
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
     text-align: center;
     position: relative;
     transition: var(--transition);
-    height: 250px;
+    height: 300px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -1089,50 +1089,50 @@ ul {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
     flex-shrink: 0;
 }
 
 .testimonial-type {
     background: var(--primary-alpha-20);
     color: var(--color-primary);
-    padding: 0.25rem 0.5rem;
+    padding: 0.2rem 0.4rem;
     border-radius: var(--border-radius-pill);
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 600;
     border: 1px solid var(--border-primary-medium);
 }
 
 .testimonial-rating {
     color: #FFD700;
-    font-size: 1rem;
+    font-size: 0.9rem;
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .testimonial-text {
-    font-size: 0.85rem;
-    line-height: 1.5;
+    font-size: 0.9rem;
+    line-height: 1.6;
     color: var(--color-text);
     font-style: italic;
-    margin: var(--spacing-sm) 0;
+    margin: var(--spacing-md) 0;
     position: relative;
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: var(--spacing-xs) 0;
+    padding: var(--spacing-sm) 0;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
 }
 
 /* Guillemets stylisés supprimés */
 
 .testimonial-footer {
-    margin-top: var(--spacing-sm);
+    margin-top: var(--spacing-md);
     flex-shrink: 0;
 }
 
@@ -1146,25 +1146,25 @@ ul {
 .author-name {
     font-weight: 600;
     color: var(--color-text);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .author-date {
     color: var(--color-text-secondary);
-    font-size: 0.7rem;
+    font-size: 0.65rem;
 }
 
 .testimonial-link {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.2rem;
     margin-top: var(--spacing-xs);
-    padding: 0.25rem 0.5rem;
+    padding: 0.2rem 0.4rem;
     background: var(--primary-alpha-10);
     border: 1px solid var(--border-primary-medium);
     border-radius: var(--border-radius-pill);
     color: var(--color-primary);
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 500;
     transition: var(--transition);
     opacity: 0;
@@ -1183,12 +1183,12 @@ ul {
 }
 
 .link-text {
-    font-size: 0.6rem;
+    font-size: 0.55rem;
 }
 
 .testimonial-link svg {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     transition: var(--transition);
 }
 
@@ -2056,16 +2056,16 @@ ul {
     }
     
     .testimonial-content {
-        height: 220px;
+        height: 260px;
         padding: var(--spacing-sm);
         width: 100%;
     }
     
     .testimonial-text {
-        font-size: 0.75rem;
-        line-height: 1.4;
-        margin: var(--spacing-xs) 0;
-        padding: var(--spacing-xs) 0;
+        font-size: 0.8rem;
+        line-height: 1.5;
+        margin: var(--spacing-sm) 0;
+        padding: var(--spacing-sm) 0;
     }
     
     /* Guillemets stylisés supprimés sur mobile */

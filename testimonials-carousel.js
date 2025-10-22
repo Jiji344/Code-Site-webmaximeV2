@@ -106,6 +106,181 @@ class TestimonialsBanner {
                 rating: 5,
                 date: "2024",
                 link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "guillaume cormier",
+                text: "Notre choix s'est posé sur Maxime pour un grand événement, notre mariage... et quel bonheur de l'avoir choisi plutôt qu'un autre, non seulement nous avons eu des photos magnifiques mais aussi un moment de partage exceptionnel !",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Florence DURUT",
+                text: "Pour mon EVJF, mes témoins m'ont fait la surprise d'immortaliser ce week-end avec elles. C'était une superbe expérience ce shooting par Maxime, on a passé un moment magique !",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Pascal Cardonna",
+                text: "Maxime rayonne dans toute la région avec de sublimes photos. C'est un excellent photographe professionnel. Il est sérieux, ponctuel, assidu et abordable. Je le recommande vivement !",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Pierrick Benadassi",
+                text: "J'ai eu la chance de travailler avec Maxime sur un projet de vidéo de présentation pour mon concours de Mister Beau en Forme PACA 2023. Il est très souriant, professionnel et créatif !",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Lucile Garoute",
+                text: "Le shooting avec Maxime a magnifiquement clôturé l'EVJF de notre mariée. Nous avons passé une très bonne après-midi entre témoins et mariée et les photos sont magnifiques !",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Elodie Fougerol",
+                text: "Maxime est un photographe à l'écoute qui sais capturer l'essentiel et la personnalité des gens au beau milieu d'une fête comme dans un shooting. Merci à lui !",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "juliette",
+                text: "Shooting réalisé en juillet après avoir vu le résultat des photos du mariage de ma sœur par Monsieur Crocodeal. Shooting au top, très bonne ambiance, photos magnifiques !",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "χєlι иα",
+                text: "Super photographe, très professionnel et amical à la fois ! Super doué pour mettre à l'aise, très respectueux et à l'écoute, des idées photos géniales et le rendu est top, j'adore !",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Morgane Brun",
+                text: "Un travail diverse et varié, des thèmes différents selon les goûts, les envies, et un rendu exceptionnel grâce à sa patiente. Très professionnel ! Merci Maxime d'éclairer nos yeux avec tes clichés à couper le souffle.",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Julie Halouin",
+                text: "Très professionnel, à l'écoute de nos attentes, il sait exactement donné le résultat que l'on souhaite en photo ! Je recommande à 100% ! En plus il est très sympathique !",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "PELISSIER Laura",
+                text: "Un super photographe ! Il arrives a capter les moments et les émotions de manière incroyable ! Je vous recommande grandement ce photographe :)",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Magali Palumbo",
+                text: "Talentueux et passionné, ce jeune photographe est déjà très professionnel et prometteur ! Ses photos sont justes magnifiques et remarquables ! Je vous le recommande 😊",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Nikita",
+                text: "Photographe qualifié et impliqué qui a su se montrer à l'écoute de mon projet photo. Très professionnel et créatif, je recommande vivement !",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Douglas Le Bihan",
+                text: "Superbe photographe, professionnel, passionné de photos et de vidéos, je vous le recommande les yeux fermés !",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Dorian Vignes",
+                text: "Photographe officiel de la fête à St Hilaire. Une personne à l'écoute, au grand coeur qui saura immortalisé tout vos moments avec professionnalisme et passion. Merci encore",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Nicolas Bolle",
+                text: "Et c'est 5 étoiles pour Maxime ! Même en plein nouvel an il a sorti des clichés magnifiques !",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Camille Vareilhes",
+                text: "Photographe compétent qui saura immortaliser vos plus beaux moments. Personne très sympathique qui connaît son travail",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Alex Wzk",
+                text: "Au top, photos de qualité. Cette personne est passionnée et le fait ressentir. A consommer sans modération!",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Gino Boci",
+                text: "Photos incroyablement belle un très bon talent en espérant te voir à Hollywood 👏🎥📸⏳",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Jean Pierre",
+                text: "Un photographe bien talentueux bravo pour ces photos d'exception !",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Mathieu Leveque",
+                text: "Tres bon photographe en pleine progression. Qui propose déjà un travail de qualités",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Malika Bonheur",
+                text: "Très belle expérience pour notre journée de mariage et même plus encore 🤗 Moment inoubliable 😍",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Léa Tulipe",
+                text: "Un homme passionnée par ce qu'il fait, très professionnel et adorable.",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Loïc Seibert",
+                text: "Excellent photographe, très professionnel et créatif. Je recommande vivement ses services !",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
+            },
+            {
+                name: "Aurore Cayrel",
+                text: "Photographe exceptionnel, très professionnel et à l'écoute. Les photos sont magnifiques !",
+                rating: 5,
+                date: "2024",
+                link: "https://search.google.com/local/reviews?placeid=ChIJxXIAKJFBtBIRVFb5YlWmoEw&q=Monsieur+Crocodeal+Photographie&hl=fr&gl=FR&sa=X&ved=2ahUKEwi5_LydpbiQAxVoK_sDHR0hEdwQ3PALegQIIBAO"
             }
         ];
     }

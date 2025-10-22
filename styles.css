@@ -1027,13 +1027,13 @@ ul {
     display: flex;
     width: max-content;
     will-change: transform;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-md) var(--spacing-sm);
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg) var(--spacing-md);
     align-items: stretch;
 }
 
 .testimonial-card {
-    flex: 0 0 400px;
+    flex: 0 0 450px;
     padding: 0 var(--spacing-sm);
     box-sizing: border-box;
 }
@@ -1044,18 +1044,16 @@ ul {
     -webkit-backdrop-filter: blur(var(--blur-glass-medium));
     border: 1px solid var(--border-primary);
     border-radius: var(--border-radius);
-    padding: var(--spacing-sm);
+    padding: var(--spacing-lg);
     text-align: center;
     position: relative;
     transition: var(--transition);
-    height: 280px;
+    min-height: 320px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-width: 360px;
+    min-width: 420px;
     box-sizing: border-box;
-    cursor: pointer;
-    overflow: hidden;
 }
 
 .testimonial-content::before {
@@ -1080,13 +1078,21 @@ ul {
 
 .testimonial-header {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
     flex-shrink: 0;
 }
 
-/* Styles supprimés - plus de catégories d'avis */
+.testimonial-type {
+    background: var(--primary-alpha-20);
+    color: var(--color-primary);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius-pill);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    border: 1px solid var(--border-primary-medium);
+}
 
 .testimonial-rating {
     color: #FFD700;
@@ -1095,26 +1101,44 @@ ul {
 }
 
 .testimonial-text {
-    font-size: 0.75rem;
-    line-height: 1.3;
+    font-size: 0.95rem;
+    line-height: 1.6;
     color: var(--color-text);
     font-style: italic;
-    margin: var(--spacing-xs) 0;
+    margin: var(--spacing-sm) 0;
     position: relative;
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: var(--spacing-xs) 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    padding: var(--spacing-sm) 0;
 }
 
-/* Guillemets stylisés supprimés */
+.testimonial-text::before {
+    content: '"';
+    font-size: 2.5rem;
+    color: var(--color-primary);
+    position: absolute;
+    top: -0.5rem;
+    left: -0.25rem;
+    opacity: 0.3;
+    font-family: serif;
+}
+
+.testimonial-text::after {
+    content: '"';
+    font-size: 2.5rem;
+    color: var(--color-primary);
+    position: absolute;
+    bottom: -1.5rem;
+    right: -0.25rem;
+    opacity: 0.3;
+    font-family: serif;
+}
 
 .testimonial-footer {
-    margin-top: var(--spacing-xs);
+    margin-top: var(--spacing-sm);
     flex-shrink: 0;
 }
 
@@ -1134,22 +1158,6 @@ ul {
 .author-date {
     color: var(--color-text-secondary);
     font-size: var(--font-size-sm);
-}
-
-.read-more {
-    color: var(--primary);
-    text-decoration: none;
-    font-size: 0.75rem;
-    font-weight: 500;
-    margin-left: 0.5rem;
-    transition: var(--transition);
-    display: inline-block;
-}
-
-.read-more:hover {
-    color: var(--secondary);
-    text-decoration: underline;
-    transform: translateY(-1px);
 }
 
 /* Suppression des anciens contrôles - plus nécessaires pour la banderole */
@@ -2008,32 +2016,50 @@ ul {
 
     /* Avis Mobile */
     .testimonial-card {
-        flex: 0 0 350px;
+        flex: 0 0 320px;
     }
     
     .testimonial-content {
-        height: 240px;
-        padding: var(--spacing-sm);
-        min-width: 320px;
+        min-height: 280px;
+        padding: var(--spacing-md);
+        min-width: 300px;
     }
     
     .testimonial-text {
-        font-size: 0.65rem;
-        line-height: 1.2;
+        font-size: 0.85rem;
+        line-height: 1.5;
     }
     
-    /* Guillemets stylisés supprimés sur mobile */
+    .testimonial-text::before,
+    .testimonial-text::after {
+        font-size: 2rem;
+    }
+    
+    .testimonial-text::before {
+        top: -0.25rem;
+        left: -0.125rem;
+    }
+    
+    .testimonial-text::after {
+        bottom: -1rem;
+        right: -0.125rem;
+    }
     
     .testimonial-header {
         margin-bottom: var(--spacing-xs);
     }
     
+    .testimonial-type {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+    }
+    
     .testimonial-rating {
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
     
     .author-name {
-        font-size: 0.8rem;
+        font-size: 1rem;
     }
     
     .author-date {

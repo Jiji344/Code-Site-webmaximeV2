@@ -1058,7 +1058,7 @@ ul {
     text-align: center;
     position: relative;
     transition: var(--transition);
-    height: 300px;
+    height: 400px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -1125,7 +1125,7 @@ ul {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 8;
     -webkit-box-orient: vertical;
 }
 
@@ -2056,7 +2056,7 @@ ul {
     }
     
     .testimonial-content {
-        height: 260px;
+        height: 350px;
         padding: var(--spacing-sm);
         width: 100%;
     }

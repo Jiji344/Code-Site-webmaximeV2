@@ -1134,6 +1134,22 @@ ul {
     font-size: var(--font-size-sm);
 }
 
+.read-more {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-left: 0.5rem;
+    transition: var(--transition);
+    display: inline-block;
+}
+
+.read-more:hover {
+    color: var(--secondary);
+    text-decoration: underline;
+    transform: translateY(-1px);
+}
+
 /* Suppression des anciens contrôles - plus nécessaires pour la banderole */
 
 /* ===== SECTION CONTACT ===== */

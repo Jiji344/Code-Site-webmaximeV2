@@ -24,52 +24,88 @@ class TestimonialsBanner {
     loadStaticReviews() {
         this.testimonials = [
             {
-                name: "Marie L.",
-                text: "Service exceptionnel ! Maxime a su capturer parfaitement nos émotions. Photos magnifiques et professionnalisme au rendez-vous.",
+                name: "M",
+                text: "Première séance photo avec Maxime 🐊 et quelle belle découverte ! Il a su me mettre à l'aise dès le début, avec beaucoup de douceur et de professionnalisme.",
                 rating: 5,
-                date: "2024"
+                date: "2024",
+                link: "https://www.google.com/maps/place/Monsieur+Crocodeal+Photographie"
             },
             {
-                name: "Thomas M.",
-                text: "Très satisfait de notre séance photo. Maxime est patient et créatif. Je recommande vivement !",
+                name: "Yayou Yeh",
+                text: "C'est un photographe incroyable et super talentueux, on a était très content de travailler avec lui. Les résultats sont toujours sublimes. Il sait capturer les plus beaux moments.",
                 rating: 5,
-                date: "2024"
+                date: "2024",
+                link: "https://www.google.com/maps/place/Monsieur+Crocodeal+Photographie"
             },
             {
-                name: "Sophie D.",
-                text: "Un photographe talentueux qui sait mettre en valeur ses sujets. Résultat au-delà de nos attentes.",
+                name: "Noémie Muela",
+                text: "Maxime est un photographe très talentueux qui saura immortaliser chaque instant précieux de votre vie.",
                 rating: 5,
-                date: "2024"
+                date: "2024",
+                link: "https://www.google.com/maps/place/Monsieur+Crocodeal+Photographie"
             },
             {
-                name: "Pierre R.",
-                text: "Excellent rapport qualité-prix. Maxime est à l'écoute et très professionnel. Photos superbes !",
+                name: "Lilou",
+                text: "Un moment incroyable passé avec Monsieur crocodeal pour mon shooting photo ! En plus d'être super doué derrière l'objectif, il sait mettre en confiance et rendre l'expérience hyper agréable. Les photos sont juste sublimes ✨",
                 rating: 5,
-                date: "2024"
+                date: "2024",
+                link: "https://www.google.com/maps/place/Monsieur+Crocodeal+Photographie"
             },
             {
-                name: "Julie K.",
-                text: "Séance photo parfaite ! Maxime a su créer une ambiance détendue. Résultat magnifique, je recommande !",
+                name: "Florette BRIAND",
+                text: "Photographe très professionnel, de la prise de vue jusqu'aux retouches des photos.",
                 rating: 5,
-                date: "2024"
+                date: "2024",
+                link: "https://www.google.com/maps/place/Monsieur+Crocodeal+Photographie"
             },
             {
-                name: "Alexandre B.",
-                text: "Photographe très professionnel, à l'écoute et créatif. Les photos sont magnifiques, je recommande !",
+                name: "Perdigawette",
+                text: "Super expérience avec Monsieur Crocodeal ! N'étant pas particulièrement à l'aise, il a vraiment su détendre l'atmosphère",
                 rating: 5,
-                date: "2024"
+                date: "2024",
+                link: "https://www.google.com/maps/place/Monsieur+Crocodeal+Photographie"
             },
             {
-                name: "Camille S.",
-                text: "Séance photo incroyable ! Maxime sait mettre en confiance et capturer les meilleurs moments.",
+                name: "Bianca",
+                text: "Un photographe qui sait mettre à l'aise ses modèles et surtout les sublimer! Vous pouvez y aller les yeux fermés, je recommande sans hésiter! Merci Maxime!",
                 rating: 5,
-                date: "2024"
+                date: "2024",
+                link: "https://www.google.com/maps/place/Monsieur+Crocodeal+Photographie"
             },
             {
-                name: "Nicolas F.",
-                text: "Très bon photographe, patient et créatif. Résultat au-delà de nos attentes, merci !",
+                name: "Marine RATIER",
+                text: "Un photographe extraordinaire, un travail incroyable et de qualité, un professionnalisme exemplaire, une personne formidable ! Je recommande à 100000000%",
                 rating: 5,
-                date: "2024"
+                date: "2024",
+                link: "https://www.google.com/maps/place/Monsieur+Crocodeal+Photographie"
+            },
+            {
+                name: "Alicia Lepetit",
+                text: "Un photographe très pro ! Qui nous a bien mis à l'aise ! Il fait du taff incroyable je le remercie pour ce moment sympathique ! On a bien ri quand même un peu !",
+                rating: 5,
+                date: "2024",
+                link: "https://www.google.com/maps/place/Monsieur+Crocodeal+Photographie"
+            },
+            {
+                name: "Elsa Constant",
+                text: "Super photographe ! Maxime nous a fait de superbes photos pour notre mariage ! Avec 500 photos les souvenirs sont géniaux ! La qualité du travail est top",
+                rating: 5,
+                date: "2024",
+                link: "https://www.google.com/maps/place/Monsieur+Crocodeal+Photographie"
+            },
+            {
+                name: "Amélie Martin",
+                text: "Maxime a été le photographe de notre mariage le 1er juillet dernier, il a été parfait du début à la fin! discret mais toujours à l'affût du moindre moment à",
+                rating: 5,
+                date: "2024",
+                link: "https://www.google.com/maps/place/Monsieur+Crocodeal+Photographie"
+            },
+            {
+                name: "Marie Lévêque",
+                text: "Premier shooting réalisé avec beaucoup d'appréhension. Mais Maxime as su nous mettre à l'aise et nous faire passer un merveilleux moment! Très professionnel",
+                rating: 5,
+                date: "2024",
+                link: "https://www.google.com/maps/place/Monsieur+Crocodeal+Photographie"
             }
         ];
     }
@@ -92,6 +128,10 @@ class TestimonialsBanner {
         
         const stars = '★'.repeat(testimonial.rating);
         
+        // Vérifier si le texte est tronqué (contient "...")
+        const hasMoreText = testimonial.text.includes('...') || testimonial.text.includes('…');
+        const readMoreLink = hasMoreText ? `<a href="${testimonial.link}" target="_blank" class="read-more">Lire plus</a>` : '';
+        
         testimonialDiv.innerHTML = `
             <div class="testimonial-content">
                 <div class="testimonial-header">
@@ -99,6 +139,7 @@ class TestimonialsBanner {
                 </div>
                 <blockquote class="testimonial-text">
                     ${testimonial.text}
+                    ${readMoreLink}
                 </blockquote>
                 <div class="testimonial-footer">
                     <div class="testimonial-author">

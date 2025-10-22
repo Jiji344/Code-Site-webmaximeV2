@@ -1054,6 +1054,7 @@ ul {
     justify-content: space-between;
     min-width: 280px;
     box-sizing: border-box;
+    cursor: pointer;
 }
 
 .testimonial-content::before {

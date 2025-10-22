@@ -1027,13 +1027,13 @@ ul {
     display: flex;
     width: max-content;
     will-change: transform;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-sm) var(--spacing-sm);
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-xs);
     align-items: stretch;
 }
 
 .testimonial-card {
-    flex: 0 0 300px;
+    flex: 0 0 280px;
     padding: 0;
     box-sizing: border-box;
     text-decoration: none;
@@ -1054,7 +1054,7 @@ ul {
     -webkit-backdrop-filter: blur(var(--blur-glass-medium));
     border: 1px solid var(--border-primary);
     border-radius: var(--border-radius);
-    padding: var(--spacing-sm);
+    padding: var(--spacing-xs);
     text-align: center;
     position: relative;
     transition: var(--transition);
@@ -1114,14 +1114,14 @@ ul {
     line-height: 1.6;
     color: var(--color-text);
     font-style: italic;
-    margin: var(--spacing-md) 0;
+    margin: var(--spacing-sm) 0;
     position: relative;
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: var(--spacing-sm) 0;
+    padding: var(--spacing-xs) 0;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -1132,7 +1132,7 @@ ul {
 /* Guillemets stylisés supprimés */
 
 .testimonial-footer {
-    margin-top: var(--spacing-md);
+    margin-top: var(--spacing-sm);
     flex-shrink: 0;
 }
 
@@ -1158,7 +1158,7 @@ ul {
     display: flex;
     align-items: center;
     gap: 0.2rem;
-    margin-top: var(--spacing-xs);
+    margin-top: 0;
     padding: 0.2rem 0.4rem;
     background: var(--primary-alpha-10);
     border: 1px solid var(--border-primary-medium);
@@ -2052,20 +2052,20 @@ ul {
 
     /* Avis Mobile */
     .testimonial-card {
-        flex: 0 0 250px;
+        flex: 0 0 220px;
     }
     
     .testimonial-content {
         height: 350px;
-        padding: var(--spacing-sm);
+        padding: var(--spacing-xs);
         width: 100%;
     }
     
     .testimonial-text {
         font-size: 0.8rem;
         line-height: 1.5;
-        margin: var(--spacing-sm) 0;
-        padding: var(--spacing-sm) 0;
+        margin: var(--spacing-xs) 0;
+        padding: var(--spacing-xs) 0;
     }
     
     /* Guillemets stylisés supprimés sur mobile */

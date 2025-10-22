@@ -1,9 +1,12 @@
 exports.handler = async (event, context) => {
     const apiKey = process.env.GOOGLE_API_KEY;
-    const placeId = '0x12b44191280072c5:0x4ca0a65562f95654';
+    
+    // Place ID à trouver - pour l'instant on va utiliser une recherche par nom
+    const businessName = 'Monsieur Crocodeal Photographie';
+    const businessLocation = 'France'; // ou votre ville spécifique
     
     console.log('🔍 Debug - API Key exists:', !!apiKey);
-    console.log('🔍 Debug - Place ID:', placeId);
+    console.log('🔍 Debug - Business Name:', businessName);
     
     if (!apiKey) {
         console.error('❌ GOOGLE_API_KEY not found in environment variables');
@@ -24,46 +27,62 @@ exports.handler = async (event, context) => {
     }
     
     try {
-        console.log('🔄 Fetching reviews from Google API...');
-        const response = await fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews&key=${apiKey}`);
-        const data = await response.json();
+        console.log('🔄 Recherche de l\'établissement...');
         
-        console.log('📊 Google API Response Status:', data.status);
-        console.log('📊 Google API Response:', JSON.stringify(data, null, 2));
+        // Étape 1: Rechercher l'établissement par nom
+        const searchResponse = await fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(businessName + ' ' + businessLocation)}&key=${apiKey}`);
+        const searchData = await searchResponse.json();
         
-        if (data.status === 'OK') {
-            const reviews = data.result.reviews || [];
-            console.log('📝 Found reviews:', reviews.length);
+        console.log('📊 Résultats de recherche:', searchData);
+        
+        if (searchData.status === 'OK' && searchData.results && searchData.results.length > 0) {
+            // Prendre le premier résultat (le plus pertinent)
+            const place = searchData.results[0];
+            const placeId = place.place_id;
             
-            const formattedReviews = reviews.map(review => ({
-                name: review.author_name,
-                text: review.text,
-                rating: review.rating,
-                date: new Date(review.time * 1000).getFullYear().toString()
-            }));
+            console.log('✅ Établissement trouvé:', place.name, 'Place ID:', placeId);
             
-            console.log('✅ Formatted reviews:', formattedReviews.length);
+            // Étape 2: Récupérer les avis avec le bon Place ID
+            console.log('🔄 Récupération des avis...');
+            const detailsResponse = await fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews&key=${apiKey}`);
+            const detailsData = await detailsResponse.json();
             
-            return {
-                statusCode: 200,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Headers': 'Content-Type',
-                    'Access-Control-Allow-Methods': 'GET'
-                },
-                body: JSON.stringify({
-                    reviews: formattedReviews,
-                    success: true,
-                    debug: {
-                        apiStatus: data.status,
-                        reviewsCount: reviews.length
-                    }
-                })
-            };
+            console.log('📊 Détails de l\'établissement:', detailsData);
+            
+            if (detailsData.status === 'OK') {
+                const reviews = detailsData.result.reviews || [];
+                const formattedReviews = reviews.map(review => ({
+                    name: review.author_name,
+                    text: review.text,
+                    rating: review.rating,
+                    date: new Date(review.time * 1000).getFullYear().toString()
+                }));
+                
+                console.log('✅ Avis récupérés:', formattedReviews.length);
+                
+                return {
+                    statusCode: 200,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Headers': 'Content-Type',
+                        'Access-Control-Allow-Methods': 'GET'
+                    },
+                    body: JSON.stringify({
+                        reviews: formattedReviews,
+                        success: true,
+                        placeInfo: {
+                            name: place.name,
+                            placeId: placeId,
+                            address: place.formatted_address
+                        }
+                    })
+                };
+            } else {
+                throw new Error('Erreur lors de la récupération des détails: ' + detailsData.status);
+            }
         } else {
-            console.error('❌ Google API Error:', data.status, data.error_message);
-            throw new Error(`Erreur API Google: ${data.status} - ${data.error_message || 'Unknown error'}`);
+            throw new Error('Établissement non trouvé: ' + (searchData.error_message || 'Aucun résultat'));
         }
     } catch (error) {
         console.error('❌ Erreur lors de la récupération des avis:', error);
@@ -81,7 +100,8 @@ exports.handler = async (event, context) => {
                 error: error.message,
                 debug: {
                     apiKeyExists: !!apiKey,
-                    placeId: placeId
+                    businessName: businessName,
+                    businessLocation: businessLocation
                 }
             })
         };

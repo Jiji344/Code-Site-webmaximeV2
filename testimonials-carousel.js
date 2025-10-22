@@ -8,75 +8,257 @@ class TestimonialsBanner {
         this.isPaused = false;
         this.animationId = null;
         
-        // Données des avis
+        // Données des avis Google réels
         this.testimonials = [
             {
-                name: "Marie & Pierre",
-                type: "Mariage",
-                text: "Photos de mariage exceptionnelles ! Maxime a su capturer l'émotion de notre jour J avec une sensibilité remarquable. Je recommande vivement !",
-                rating: 5,
-                date: "2024"
-            },
-            {
-                name: "Sophie L.",
+                name: "Noémie Muela",
                 type: "Portrait",
-                text: "Séance portrait parfaite ! Maxime m'a mise en confiance et a capturé ma personnalité. Les photos sont magnifiques, je recommande !",
+                text: "Maxime est un photographe très talentueux qui saura immortaliser chaque instant précieux de votre vie.",
                 rating: 5,
                 date: "2024"
             },
             {
-                name: "Famille Martin",
-                type: "Lifestyle",
-                text: "Super séance en famille ! Maxime a su saisir l'authenticité de nos moments. Des souvenirs précieux, merci !",
+                name: "Yayou Yeh",
+                type: "Portrait",
+                text: "C'est un photographe incroyable et super talentueux, on a était très content de travailler avec lui. Les résultats sont toujours sublimes.",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "Lilou",
+                type: "Portrait",
+                text: "Un moment incroyable passé avec Monsieur crocodeal pour mon shooting photo ! En plus d'être super doué derrière l'objectif, il sait mettre en confiance.",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "Gaël Le Thiec",
+                type: "Formation",
+                text: "Maxime m'a clairement appris les bases de la photographie de manière très pédagogique. Nous avons passé une demie journée à analyser les différents réglages.",
                 rating: 5,
                 date: "2023"
             },
             {
-                name: "Agence ABC",
-                type: "Immobilier",
-                text: "Professionnalisme exemplaire ! Les photos de nos biens sont d'une qualité exceptionnelle. Nos ventes ont augmenté grâce à ces visuels.",
+                name: "Florette BRIAND",
+                type: "Portrait",
+                text: "Photographe très professionnel, de la prise de vue jusqu'aux retouches des photos.",
                 rating: 5,
                 date: "2024"
             },
             {
-                name: "Claire & Thomas",
+                name: "Perdigawette",
+                type: "Portrait",
+                text: "Super expérience avec Monsieur Crocodeal ! N'étant pas particulièrement à l'aise, il a vraiment su détendre l'atmosphère.",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "Bianca",
+                type: "Portrait",
+                text: "Un photographe qui sait mettre à l'aise ses modèles et surtout les sublimer! Vous pouvez y aller les yeux fermés, je recommande sans hésiter!",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "Alicia Lepetit",
+                type: "Portrait",
+                text: "Un photographe très pro ! Qui nous a bien mis à l'aise ! Il fait du taff incroyable je le remercie pour ce moment sympathique !",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "Elsa Constant",
                 type: "Mariage",
-                text: "Photographe exceptionnel ! Maxime a su être discret tout en capturant tous les détails importants. Travail remarquable !",
+                text: "Super photographe ! Maxime nous a fait de superbes photos pour notre mariage ! Avec 500 photos les souvenirs sont géniaux !",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "Marine RATIER",
+                type: "Portrait",
+                text: "Un photographe extraordinaire, un travail incroyable et de qualité, un professionnalisme exemplaire, une personne formidable !",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "Amélie Martin",
+                type: "Mariage",
+                text: "Maxime a été le photographe de notre mariage, il a été parfait du début à la fin! discret mais toujours à l'affût du moindre moment.",
                 rating: 5,
                 date: "2023"
             },
             {
-                name: "Emma R.",
+                name: "Marie Lévêque",
                 type: "Portrait",
-                text: "Séance corporate réussie ! Maxime a créé une ambiance professionnelle naturelle. Les photos reflètent parfaitement mon image.",
+                text: "Premier shooting réalisé avec beaucoup d'appréhension. Mais Maxime as su nous mettre à l'aise et nous faire passer un merveilleux moment!",
                 rating: 5,
                 date: "2024"
             },
             {
-                name: "Jean & Sarah",
+                name: "guillaume cormier",
                 type: "Mariage",
-                text: "Photos de mariage magnifiques ! Maxime a capturé tous les moments importants avec créativité. Nous recommandons !",
+                text: "Notre choix s'est posé sur Maxime pour un grand événement, notre mariage et quel bonheur de l'avoir choisi plutôt qu'un autre.",
                 rating: 5,
                 date: "2024"
             },
             {
-                name: "Lisa M.",
-                type: "Portrait",
-                text: "Séance photo parfaite ! Maxime est à l'écoute et sait mettre en valeur. Les résultats dépassent nos attentes !",
+                name: "Florence DURUT",
+                type: "EVJF",
+                text: "Pour mon EVJF, mes témoins m'ont fait la surprise d'immortaliser ce week-end avec elles. C'était une superbe expérience ce shooting par Maxime.",
                 rating: 5,
                 date: "2023"
             },
             {
-                name: "Marc & Julie",
-                type: "Mariage",
-                text: "Service impeccable ! Maxime a su immortaliser notre mariage avec talent. Photos magnifiques, nous sommes ravis !",
+                name: "Pascal Cardonna",
+                type: "Portrait",
+                text: "Maxime rayonne dans toute la région avec de sublimes photos. C'est un excellent photographe professionnel. Il est sérieux, ponctuel, assidu et abordable.",
+                rating: 5,
+                date: "2023"
+            },
+            {
+                name: "Pierrick Benadassi",
+                type: "Vidéo",
+                text: "J'ai eu la chance de travailler avec Maxime sur un projet de vidéo de présentation pour mon concours de Mister Beau en Forme PACA 2023.",
+                rating: 5,
+                date: "2023"
+            },
+            {
+                name: "Lucile Garoute",
+                type: "EVJF",
+                text: "Le shooting avec Maxime a magnifiquement clôturé l'EVJF de notre mariée. Nous avons passé une très bonne après-midi entre témoins et mariée.",
+                rating: 5,
+                date: "2023"
+            },
+            {
+                name: "Elodie Fougerol",
+                type: "Événement",
+                text: "Maxime est un photographe à l'écoute qui sais capturer l'essentiel et la personnalité des gens au beau milieu d'une fête comme dans un shooting.",
                 rating: 5,
                 date: "2024"
             },
             {
-                name: "Sarah K.",
+                name: "juliette",
                 type: "Portrait",
-                text: "Excellente séance ! Maxime est professionnel et créatif. Les photos sont superbes, je recommande !",
+                text: "Shooting réalisé en juillet après avoir vu le résultat des photos du mariage de ma sœur par Monsieur Crocodeal. Shooting au top, très bonne ambiance.",
+                rating: 5,
+                date: "2023"
+            },
+            {
+                name: "χєlι иα",
+                type: "Portrait",
+                text: "Super photographe, très professionnel et amical à la fois ! Super doué pour mettre à l'aise, très respectueux et à l'écoute.",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "Morgane Brun",
+                type: "Portrait",
+                text: "Un travail diverse et varié, des thèmes différents selon les goûts, les envies, et un rendu exceptionnel grâce à sa patiente. Très professionnel !",
+                rating: 5,
+                date: "2020"
+            },
+            {
+                name: "Julie Halouin",
+                type: "Portrait",
+                text: "Très professionnel, à l'écoute de nos attentes, il sait exactement donné le résultat que l'on souhaite en photo ! Je recommande à 100% !",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "PELISSIER Laura",
+                type: "Portrait",
+                text: "Un super photographe ! Il arrives a capter les moments et les émotions de manière incroyable ! Je vous recommande grandement ce photographe.",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "Magali Palumbo",
+                type: "Portrait",
+                text: "Talentueux et passionné, ce jeune photographe est déjà très professionnel et prometteur ! Ses photos sont justes magnifiques et remarquables !",
+                rating: 5,
+                date: "2020"
+            },
+            {
+                name: "Nikita",
+                type: "Portrait",
+                text: "Photographe qualifié et impliqué qui a su se montrer à l'écoute de mon projet photo.",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "Douglas Le Bihan",
+                type: "Portrait",
+                text: "Superbe photographe, professionnel, passionné de photos et de vidéos, je vous le recommande les yeux fermés !",
+                rating: 5,
+                date: "2023"
+            },
+            {
+                name: "Dorian Vignes",
+                type: "Événement",
+                text: "Photographe officiel de la fête à St Hilaire. Une personne à l'écoute, au grand coeur qui saura immortalisé tout vos moments avec professionnalisme et passion.",
+                rating: 5,
+                date: "2023"
+            },
+            {
+                name: "Nicolas Bolle",
+                type: "Événement",
+                text: "Et c'est 5 étoiles pour Maxime ! Même en plein nouvel an il a sorti des clichés magnifiques !",
+                rating: 5,
+                date: "2024"
+            },
+            {
+                name: "Camille Vareilhes",
+                type: "Portrait",
+                text: "Photographe compétent qui saura immortaliser vos plus beaux moments. Personne très sympathique qui connaît son travail.",
+                rating: 5,
+                date: "2022"
+            },
+            {
+                name: "Alex Wzk",
+                type: "Portrait",
+                text: "Au top, photos de qualité. Cette personne est passionnée et le fait ressentir. A consommer sans modération!",
+                rating: 5,
+                date: "2020"
+            },
+            {
+                name: "Gino Boci",
+                type: "Portrait",
+                text: "Photos incroyablement belle un très bon talent en espérant te voir à Hollywood.",
+                rating: 5,
+                date: "2022"
+            },
+            {
+                name: "Jean Pierre",
+                type: "Portrait",
+                text: "Un photographe bien talentueux bravo pour ces photos d'exception !",
+                rating: 5,
+                date: "2023"
+            },
+            {
+                name: "Mathieu Leveque",
+                type: "Portrait",
+                text: "Tres bon photographe en pleine progression. Qui propose déjà un travail de qualités.",
+                rating: 5,
+                date: "2020"
+            },
+            {
+                name: "Malika Bonheur",
+                type: "Mariage",
+                text: "Très belle expérience pour notre journée de mariage et même plus encore. Moment inoubliable.",
+                rating: 5,
+                date: "2020"
+            },
+            {
+                name: "Léa Tulipe",
+                type: "Portrait",
+                text: "Un homme passionnée par ce qu'il fait, très professionnel et adorable.",
+                rating: 5,
+                date: "2020"
+            },
+            {
+                name: "M",
+                type: "Portrait",
+                text: "Première séance photo avec Maxime et quelle belle découverte ! Il a su me mettre à l'aise dès le début, avec beaucoup de douceur et de professionnalisme.",
                 rating: 5,
                 date: "2024"
             }
@@ -118,7 +300,7 @@ class TestimonialsBanner {
                     <div class="testimonial-rating">${stars}</div>
                 </div>
                 <blockquote class="testimonial-text">
-                    "${testimonial.text}"
+                    ${testimonial.text}
                 </blockquote>
                 <div class="testimonial-footer">
                     <div class="testimonial-author">

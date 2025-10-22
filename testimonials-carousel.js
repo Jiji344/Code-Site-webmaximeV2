@@ -33,15 +33,19 @@ class GoogleReviewsBanner {
     async loadConfig() {
         try {
             const response = await fetch('/.netlify/functions/get-config');
-            const config = await response.json();
-            if (config.googleApiKey) {
-                this.apiKey = config.googleApiKey;
-                console.log('✅ Clé API chargée depuis Netlify');
+            const data = await response.json();
+            
+            if (data.success && data.reviews && data.reviews.length > 0) {
+                this.testimonials = data.reviews;
+                console.log('✅ Avis Google chargés depuis Netlify:', data.reviews.length, 'avis');
+                return true;
             } else {
-                console.warn('⚠️ Clé API non trouvée, utilisation du fallback');
+                console.warn('⚠️ Aucun avis Google trouvé, utilisation du fallback');
+                return false;
             }
         } catch (error) {
-            console.warn('⚠️ Impossible de charger la config, utilisation du fallback:', error);
+            console.warn('⚠️ Impossible de charger les avis Google, utilisation du fallback:', error);
+            return false;
         }
     }
     
@@ -56,16 +60,14 @@ class GoogleReviewsBanner {
             }
             
             console.log('🔄 Cache expiré - 1 requête API');
-            const reviews = await this.fetchGoogleReviews();
-            this.testimonials = reviews.map(review => ({
-                name: review.author_name,
-                text: review.text,
-                rating: review.rating,
-                date: new Date(review.time * 1000).getFullYear().toString()
-            }));
+            const success = await this.loadConfig();
             
-            // Sauvegarder en cache
-            this.saveToCache(this.testimonials);
+            if (success) {
+                // Sauvegarder en cache
+                this.saveToCache(this.testimonials);
+            } else {
+                this.loadFallbackReviews();
+            }
             
         } catch (error) {
             console.error('❌ Erreur lors du chargement des avis Google:', error);
@@ -73,18 +75,7 @@ class GoogleReviewsBanner {
         }
     }
     
-    async fetchGoogleReviews() {
-        const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${this.placeId}&fields=reviews&key=${this.apiKey}`;
-        
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        if (data.status === 'OK') {
-            return data.result.reviews || [];
-        } else {
-            throw new Error('Erreur API Google: ' + data.status);
-        }
-    }
+    // Fonction supprimée - les avis sont maintenant récupérés via Netlify Functions
     
     // Fonction supprimée - plus de catégories d'avis
     

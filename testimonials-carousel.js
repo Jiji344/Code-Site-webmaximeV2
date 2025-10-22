@@ -32,15 +32,19 @@ class GoogleReviewsBanner {
     
     async loadConfig() {
         try {
+            console.log('🔄 Chargement des avis depuis Netlify Functions...');
             const response = await fetch('/.netlify/functions/get-config');
             const data = await response.json();
+            
+            console.log('📊 Réponse Netlify Functions:', data);
             
             if (data.success && data.reviews && data.reviews.length > 0) {
                 this.testimonials = data.reviews;
                 console.log('✅ Avis Google chargés depuis Netlify:', data.reviews.length, 'avis');
                 return true;
             } else {
-                console.warn('⚠️ Aucun avis Google trouvé, utilisation du fallback');
+                console.warn('⚠️ Aucun avis Google trouvé:', data.error || 'Raison inconnue');
+                console.warn('📊 Debug info:', data.debug);
                 return false;
             }
         } catch (error) {

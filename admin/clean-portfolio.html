@@ -366,16 +366,14 @@
             stats.style.display = 'none';
             
             try {
-                // Créer un index vide
-                const response = await fetch('/.netlify/functions/batch-upload', {
+                // Vider complètement l'index
+                const response = await fetch('/.netlify/functions/clean-portfolio', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        albumTitle: 'CLEANUP',
-                        category: 'portrait',
-                        files: []
+                        action: 'reset'
                     })
                 });
                 

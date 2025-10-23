@@ -465,6 +465,80 @@ function parseMarkdownFrontmatter(content) {
   return null;
 }
 
+// Fonction pour vider complètement l'index
+async function resetPortfolioIndex(owner, repo, branch, githubToken) {
+  console.log('🗑️ Vidage complet de l\'index portfolio...');
+  
+  try {
+    // Créer un index vide
+    const emptyIndex = JSON.stringify([], null, 2);
+    const base64Content = Buffer.from(emptyIndex).toString('base64');
+
+    // Vérifier si le fichier existe déjà (pour obtenir le SHA)
+    let sha = null;
+    try {
+      const existingFileResponse = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json`,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': `token ${githubToken}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        }
+      );
+      
+      if (existingFileResponse.ok) {
+        const existingFile = await existingFileResponse.json();
+        sha = existingFile.sha;
+      }
+    } catch (error) {
+      // Fichier n'existe pas encore, c'est OK
+    }
+
+    // Créer ou mettre à jour le fichier
+    const updatePayload = {
+      message: `🗑️ Vidage complet de l'index portfolio`,
+      content: base64Content,
+      branch: branch
+    };
+
+    if (sha) {
+      updatePayload.sha = sha; // Nécessaire pour update
+    }
+
+    const updateResponse = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json`,
+      {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${githubToken}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/vnd.github.v3+json'
+        },
+        body: JSON.stringify(updatePayload)
+      }
+    );
+
+    if (!updateResponse.ok) {
+      const errorData = await updateResponse.json();
+      throw new Error(`Échec vidage index: ${errorData.message}`);
+    }
+
+    console.log('✅ Index portfolio vidé complètement');
+    return {
+      before: 0,
+      after: 0,
+      cleaned: 0,
+      reset: true
+    };
+
+  } catch (error) {
+    console.error('❌ Erreur lors du vidage:', error);
+    throw error;
+  }
+}
+
 // Exporter la fonction pour l'utiliser dans batch-upload.js
 exports.cleanPortfolioIndex = cleanPortfolioIndex;
 
@@ -513,8 +587,22 @@ exports.handler = async (event, context) => {
     const repo = 'Code-Site-webmaximeV2';
     const branch = 'main';
 
-    // Exécuter le nettoyage
-    const result = await cleanPortfolioIndex(owner, repo, branch, githubToken);
+    // Vérifier l'action demandée
+    let body = {};
+    try {
+      body = JSON.parse(event.body || '{}');
+    } catch (e) {
+      body = {};
+    }
+
+    let result;
+    if (body.action === 'reset') {
+      // Vider complètement l'index
+      result = await resetPortfolioIndex(owner, repo, branch, githubToken);
+    } else {
+      // Nettoyage normal
+      result = await cleanPortfolioIndex(owner, repo, branch, githubToken);
+    }
 
     return {
       statusCode: 200,

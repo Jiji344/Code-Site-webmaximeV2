@@ -45,8 +45,33 @@ class CMSContentLoader {
             const response = await fetch(indexUrl);
             if (response.ok) {
                 const photos = await response.json();
-                this.portfolioData = photos;
-                console.log('📦 Index chargé depuis portfolio-index.json');
+                
+                // Vérifier que les images existent encore
+                const validPhotos = [];
+                for (const photo of photos) {
+                    if (photo.image) {
+                        try {
+                            const imageResponse = await fetch(photo.image, { method: 'HEAD' });
+                            if (imageResponse.ok) {
+                                validPhotos.push(photo);
+                            } else {
+                                console.log(`❌ Image manquante: ${photo.title}`);
+                            }
+                        } catch (error) {
+                            console.log(`❌ Erreur vérification image: ${photo.title}`);
+                        }
+                    }
+                }
+                
+                this.portfolioData = validPhotos;
+                console.log(`📦 Index chargé: ${photos.length} → ${validPhotos.length} photos valides`);
+                
+                // Si des images sont manquantes, déclencher un nettoyage automatique
+                if (validPhotos.length < photos.length) {
+                    console.log('🧹 Images manquantes détectées, nettoyage automatique...');
+                    this.triggerAutoCleanup();
+                }
+                
                 return true;
             }
             return false;
@@ -121,6 +146,32 @@ class CMSContentLoader {
         }
         
         return null;
+    }
+
+    async triggerAutoCleanup() {
+        try {
+            console.log('🧹 Déclenchement du nettoyage automatique...');
+            const response = await fetch('/.netlify/functions/clean-portfolio', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                console.log('✅ Nettoyage automatique terminé');
+                // Recharger les données après nettoyage
+                setTimeout(() => {
+                    this.loadPortfolioData().then(() => {
+                        this.displayPortfolioImages();
+                    });
+                }, 2000);
+            } else {
+                console.log('⚠️ Nettoyage automatique échoué');
+            }
+        } catch (error) {
+            console.log('⚠️ Erreur lors du nettoyage automatique:', error);
+        }
     }
 
     displayPortfolioImages() {

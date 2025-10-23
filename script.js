@@ -399,12 +399,45 @@ function showNotification(message, type = 'success') {
 /* ===== GESTION DES ERREURS D'IMAGES ===== */
 class ImageErrorHandler {
     init() {
+        // Gérer les images existantes
         document.querySelectorAll('img').forEach(img => {
-            img.addEventListener('error', function() {
-                this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%230F1F3A" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="20" fill="%234A90E2"%3EImage non disponible%3C/text%3E%3C/svg%3E';
-                this.alt = 'Image non disponible';
+            this.setupImageErrorHandling(img);
+        });
+        
+        // Observer les nouvelles images ajoutées dynamiquement
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === 1) { // Element node
+                        if (node.tagName === 'IMG') {
+                            this.setupImageErrorHandling(node);
+                        }
+                        // Vérifier aussi les enfants
+                        node.querySelectorAll && node.querySelectorAll('img').forEach(img => {
+                            this.setupImageErrorHandling(img);
+                        });
+                    }
+                });
             });
         });
+        
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+    
+    setupImageErrorHandling(img) {
+        if (img.dataset.errorHandled) return; // Éviter les doublons
+        
+        img.addEventListener('error', function() {
+            this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%230F1F3A" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="20" fill="%234A90E2"%3EImage non disponible%3C/text%3E%3C/svg%3E';
+            this.alt = 'Image non disponible';
+            this.style.opacity = '0.7';
+            this.dataset.errorHandled = 'true';
+        });
+        
+        img.dataset.errorHandled = 'true';
     }
 }
 

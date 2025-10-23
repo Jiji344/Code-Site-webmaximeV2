@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin - Monsieur Crocodeal</title>
     <style>
-      /* Bouton Upload Multiple */
-      .batch-upload-btn {
+      /* Boutons Admin */
+      .batch-upload-btn, .clean-portfolio-btn {
         position: fixed;
         bottom: 2rem;
-        right: 2rem;
         padding: 1rem 1.5rem;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
@@ -27,17 +26,45 @@
         text-decoration: none;
       }
       
-      .batch-upload-btn:hover {
+      .batch-upload-btn {
+        right: 2rem;
+      }
+      
+      .clean-portfolio-btn {
+        right: 12rem;
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+      }
+      
+      .batch-upload-btn:hover, .clean-portfolio-btn:hover {
         transform: translateY(-3px);
         box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
       }
       
+      .clean-portfolio-btn:hover {
+        box-shadow: 0 15px 40px rgba(255, 107, 107, 0.5);
+      }
+      
       @media screen and (max-width: 768px) {
-        .batch-upload-btn {
+        .batch-upload-btn, .clean-portfolio-btn {
           bottom: 1rem;
-          right: 1rem;
           padding: 0.75rem 1.25rem;
           font-size: 0.9rem;
+        }
+        
+        .batch-upload-btn {
+          right: 1rem;
+        }
+        
+        .clean-portfolio-btn {
+          right: 8rem;
+        }
+      }
+      
+      @media screen and (max-width: 480px) {
+        .clean-portfolio-btn {
+          right: 1rem;
+          bottom: 5rem;
         }
       }
     </style>

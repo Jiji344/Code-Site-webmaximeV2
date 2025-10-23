@@ -7,7 +7,7 @@ class CMSContentLoader {
             repo: 'Code-Site-webmaximeV2',
             basePath: 'content/portfolio',
             // Liste des catégories à scanner
-            categories: ['portrait', 'mariage', 'immobilier', 'paysage', 'macro', 'lifestyle']
+            categories: ['Portrait', 'Mariage', 'Immobilier', 'Paysage', 'Macro', 'Lifestyle']
         };
         this.init();
     }
@@ -26,7 +26,7 @@ class CMSContentLoader {
                 // Fallback : charger récursivement (ancien système)
                 console.log('📦 Chargement depuis GitHub (fallback)...');
                 for (const category of this.config.categories) {
-                    const categoryPath = `${this.config.basePath}/${category}`;
+                    const categoryPath = `${this.config.basePath}/${category.toLowerCase()}`;
                     await this.loadFilesFromPath(categoryPath);
                 }
             }

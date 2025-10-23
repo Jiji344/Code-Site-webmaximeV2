@@ -2,12 +2,12 @@ const fetch = require('node-fetch');
 
 // Fonction pour régénérer l'index portfolio
 async function regenerateIndex(owner, repo, branch, githubToken) {
-  const categories = ['portrait', 'mariage', 'immobilier', 'paysage', 'macro', 'lifestyle'];
+  const categories = ['Portrait', 'Mariage', 'Immobilier', 'Paysage', 'Macro', 'Lifestyle'];
   const allPhotos = [];
 
   // Scanner tous les dossiers de catégories
   for (const category of categories) {
-    const categoryPath = `content/portfolio/${category}`;
+    const categoryPath = `content/portfolio/${category.toLowerCase()}`;
     const photos = await scanDirectory(owner, repo, branch, githubToken, categoryPath);
     allPhotos.push(...photos);
   }

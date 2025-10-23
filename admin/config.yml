@@ -15,8 +15,8 @@ collections:
     label_singular: "Portrait"
     folder: "content/portfolio/portrait"
     create: true
-    slug: "{{slug}}"
-    path: "{{slug}}"
+    slug: "{{album}}/{{slug}}"
+    path: "{{album}}/{{slug}}"
     media_folder: "static/img/portrait"
     public_folder: "/static/img/portrait"
     fields:
@@ -34,8 +34,8 @@ collections:
     label_singular: "Mariage"
     folder: "content/portfolio/mariage"
     create: true
-    slug: "{{slug}}"
-    path: "{{slug}}"
+    slug: "{{album}}/{{slug}}"
+    path: "{{album}}/{{slug}}"
     media_folder: "static/img/mariage"
     public_folder: "/static/img/mariage"
     fields:
@@ -53,8 +53,8 @@ collections:
     label_singular: "Immobilier"
     folder: "content/portfolio/immobilier"
     create: true
-    slug: "{{slug}}"
-    path: "{{slug}}"
+    slug: "{{album}}/{{slug}}"
+    path: "{{album}}/{{slug}}"
     media_folder: "static/img/immobilier"
     public_folder: "/static/img/immobilier"
     fields:
@@ -72,8 +72,8 @@ collections:
     label_singular: "Paysage"
     folder: "content/portfolio/paysage"
     create: true
-    slug: "{{slug}}"
-    path: "{{slug}}"
+    slug: "{{album}}/{{slug}}"
+    path: "{{album}}/{{slug}}"
     media_folder: "static/img/paysage"
     public_folder: "/static/img/paysage"
     fields:
@@ -91,8 +91,8 @@ collections:
     label_singular: "Macro"
     folder: "content/portfolio/macro"
     create: true
-    slug: "{{slug}}"
-    path: "{{slug}}"
+    slug: "{{album}}/{{slug}}"
+    path: "{{album}}/{{slug}}"
     media_folder: "static/img/macro"
     public_folder: "/static/img/macro"
     fields:
@@ -110,8 +110,8 @@ collections:
     label_singular: "Lifestyle"
     folder: "content/portfolio/lifestyle"
     create: true
-    slug: "{{slug}}"
-    path: "{{slug}}"
+    slug: "{{album}}/{{slug}}"
+    path: "{{album}}/{{slug}}"
     media_folder: "static/img/lifestyle"
     public_folder: "/static/img/lifestyle"
     fields:

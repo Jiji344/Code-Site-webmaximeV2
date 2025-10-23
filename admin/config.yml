@@ -15,10 +15,10 @@ collections:
     label_singular: "Portrait"
     folder: "content/portfolio/portrait"
     create: true
-    slug: "{{album}}/{{slug}}"
-    path: "{{album}}/{{slug}}"
-    media_folder: "/static/img/portrait/{{album}}"
-    public_folder: "/static/img/portrait/{{album}}"
+    slug: "{{slug}}"
+    path: "{{slug}}"
+    media_folder: "static/img/portrait"
+    public_folder: "/static/img/portrait"
     fields:
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Titre", name: "title", widget: "string", hint: "Ex: Portrait Marie 1, Portrait Marie 2..." }
@@ -34,10 +34,10 @@ collections:
     label_singular: "Mariage"
     folder: "content/portfolio/mariage"
     create: true
-    slug: "{{album}}/{{slug}}"
-    path: "{{album}}/{{slug}}"
-    media_folder: "/static/img/mariage/{{album}}"
-    public_folder: "/static/img/mariage/{{album}}"
+    slug: "{{slug}}"
+    path: "{{slug}}"
+    media_folder: "static/img/mariage"
+    public_folder: "/static/img/mariage"
     fields:
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Titre", name: "title", widget: "string", hint: "Ex: Sophie & Marc 1, Sophie & Marc 2..." }
@@ -53,10 +53,10 @@ collections:
     label_singular: "Immobilier"
     folder: "content/portfolio/immobilier"
     create: true
-    slug: "{{album}}/{{slug}}"
-    path: "{{album}}/{{slug}}"
-    media_folder: "/static/img/immobilier/{{album}}"
-    public_folder: "/static/img/immobilier/{{album}}"
+    slug: "{{slug}}"
+    path: "{{slug}}"
+    media_folder: "static/img/immobilier"
+    public_folder: "/static/img/immobilier"
     fields:
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Titre", name: "title", widget: "string", hint: "Ex: Villa Bordeaux 1, Villa Bordeaux 2..." }
@@ -72,10 +72,10 @@ collections:
     label_singular: "Paysage"
     folder: "content/portfolio/paysage"
     create: true
-    slug: "{{album}}/{{slug}}"
-    path: "{{album}}/{{slug}}"
-    media_folder: "/static/img/paysage/{{album}}"
-    public_folder: "/static/img/paysage/{{album}}"
+    slug: "{{slug}}"
+    path: "{{slug}}"
+    media_folder: "static/img/paysage"
+    public_folder: "/static/img/paysage"
     fields:
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Titre", name: "title", widget: "string", hint: "Ex: Bretagne 1, Bretagne 2..." }
@@ -91,10 +91,10 @@ collections:
     label_singular: "Macro"
     folder: "content/portfolio/macro"
     create: true
-    slug: "{{album}}/{{slug}}"
-    path: "{{album}}/{{slug}}"
-    media_folder: "/static/img/macro/{{album}}"
-    public_folder: "/static/img/macro/{{album}}"
+    slug: "{{slug}}"
+    path: "{{slug}}"
+    media_folder: "static/img/macro"
+    public_folder: "/static/img/macro"
     fields:
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Titre", name: "title", widget: "string", hint: "Ex: Insectes 1, Insectes 2..." }
@@ -110,10 +110,10 @@ collections:
     label_singular: "Lifestyle"
     folder: "content/portfolio/lifestyle"
     create: true
-    slug: "{{album}}/{{slug}}"
-    path: "{{album}}/{{slug}}"
-    media_folder: "/static/img/lifestyle/{{album}}"
-    public_folder: "/static/img/lifestyle/{{album}}"
+    slug: "{{slug}}"
+    path: "{{slug}}"
+    media_folder: "static/img/lifestyle"
+    public_folder: "/static/img/lifestyle"
     fields:
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Titre", name: "title", widget: "string", hint: "Ex: Urban Style 1, Urban Style 2..." }

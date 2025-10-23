@@ -1,8 +1,8 @@
 const fetch = require('node-fetch');
 
-// Fonction pour nettoyer l'index portfolio en supprimant les entrées orphelines
+// Fonction pour nettoyer complètement le portfolio (index + fichiers orphelins)
 async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
-  console.log('🧹 Début du nettoyage de l\'index portfolio...');
+  console.log('🧹 Début du nettoyage complet du portfolio...');
   
   try {
     // 1. Récupérer l'index actuel
@@ -31,6 +31,8 @@ async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
     // 2. Scanner les dossiers de contenu pour vérifier les fichiers existants
     const categories = ['portrait', 'mariage', 'immobilier', 'paysage', 'macro', 'lifestyle'];
     const validEntries = [];
+    const validImagePaths = new Set();
+    const validMdPaths = new Set();
     
     for (const category of categories) {
       const categoryPath = `content/portfolio/${category}`;
@@ -89,6 +91,8 @@ async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
                         
                         if (imageResponse.ok) {
                           validEntries.push(data);
+                          validImagePaths.add(imagePath);
+                          validMdPaths.add(albumItem.path);
                           console.log(`✅ Entrée valide: ${data.title}`);
                         } else {
                           console.log(`❌ Image manquante: ${data.title}`);
@@ -106,11 +110,23 @@ async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
       }
     }
 
-    // 3. Créer le nouvel index nettoyé
+    // 3. NETTOYAGE COMPLET : Supprimer tous les fichiers orphelins
+    console.log('🗑️ Suppression des fichiers orphelins...');
+    
+    // 3.1. Supprimer les images orphelines
+    await deleteOrphanImages(owner, repo, branch, githubToken, validImagePaths);
+    
+    // 3.2. Supprimer les fichiers .md orphelins
+    await deleteOrphanMarkdowns(owner, repo, branch, githubToken, validMdPaths);
+    
+    // 3.3. Supprimer les dossiers vides
+    await deleteEmptyDirectories(owner, repo, branch, githubToken);
+
+    // 4. Créer le nouvel index nettoyé
     const cleanedIndex = JSON.stringify(validEntries, null, 2);
     const base64Content = Buffer.from(cleanedIndex).toString('base64');
 
-    // 4. Obtenir le SHA du fichier existant
+    // 5. Obtenir le SHA du fichier existant
     let sha = null;
     try {
       const existingFileResponse = await fetch(
@@ -132,9 +148,9 @@ async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
       // Fichier n'existe pas encore
     }
 
-    // 5. Mettre à jour le fichier
+    // 6. Mettre à jour le fichier index
     const updatePayload = {
-      message: `🧹 Auto-cleanup portfolio index (${validEntries.length} entrées valides)`,
+      message: `🧹 Nettoyage complet portfolio (${validEntries.length} entrées valides)`,
       content: base64Content,
       branch: branch
     };
@@ -161,17 +177,268 @@ async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
       throw new Error(`Échec update index: ${errorData.message}`);
     }
 
-    console.log(`✅ Index nettoyé: ${currentIndex.length} → ${validEntries.length} entrées`);
+    console.log(`✅ Nettoyage complet terminé: ${currentIndex.length} → ${validEntries.length} entrées`);
     return {
       before: currentIndex.length,
       after: validEntries.length,
-      cleaned: currentIndex.length - validEntries.length
+      cleaned: currentIndex.length - validEntries.length,
+      orphanImagesDeleted: true,
+      orphanMarkdownsDeleted: true,
+      emptyDirectoriesDeleted: true
     };
 
   } catch (error) {
     console.error('❌ Erreur lors du nettoyage:', error);
     throw error;
   }
+}
+
+// Fonction pour supprimer les images orphelines
+async function deleteOrphanImages(owner, repo, branch, githubToken, validImagePaths) {
+  console.log('🖼️ Suppression des images orphelines...');
+  
+  const categories = ['portrait', 'mariage', 'immobilier', 'paysage', 'macro', 'lifestyle'];
+  let deletedCount = 0;
+  
+  for (const category of categories) {
+    const imageDir = `static/img/${category}`;
+    
+    try {
+      const response = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/contents/${imageDir}?ref=${branch}`,
+        {
+          headers: {
+            'Authorization': `token ${githubToken}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        }
+      );
+      
+      if (response.ok) {
+        const items = await response.json();
+        
+        for (const item of items) {
+          if (item.type === 'dir') {
+            // Scanner le dossier d'album
+            const albumPath = item.path;
+            const albumResponse = await fetch(
+              `https://api.github.com/repos/${owner}/${repo}/contents/${albumPath}?ref=${branch}`,
+              {
+                headers: {
+                  'Authorization': `token ${githubToken}`,
+                  'Accept': 'application/vnd.github.v3+json'
+                }
+              }
+            );
+            
+            if (albumResponse.ok) {
+              const albumItems = await albumResponse.json();
+              
+              for (const albumItem of albumItems) {
+                if (albumItem.type === 'file' && 
+                    (albumItem.name.endsWith('.jpg') || 
+                     albumItem.name.endsWith('.jpeg') || 
+                     albumItem.name.endsWith('.png') || 
+                     albumItem.name.endsWith('.webp'))) {
+                  
+                  // Vérifier si l'image est référencée
+                  if (!validImagePaths.has(albumItem.path)) {
+                    console.log(`🗑️ Suppression image orpheline: ${albumItem.path}`);
+                    
+                    try {
+                      await fetch(
+                        `https://api.github.com/repos/${owner}/${repo}/contents/${albumItem.path}`,
+                        {
+                          method: 'DELETE',
+                          headers: {
+                            'Authorization': `token ${githubToken}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                          },
+                          body: JSON.stringify({
+                            message: `🗑️ Suppression image orpheline: ${albumItem.name}`,
+                            sha: albumItem.sha,
+                            branch: branch
+                          })
+                        }
+                      );
+                      deletedCount++;
+                    } catch (deleteError) {
+                      console.log(`⚠️ Erreur suppression ${albumItem.path}: ${deleteError.message}`);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.log(`⚠️ Erreur lors de la vérification des images ${category}: ${error.message}`);
+    }
+  }
+  
+  console.log(`✅ ${deletedCount} images orphelines supprimées`);
+}
+
+// Fonction pour supprimer les fichiers .md orphelins
+async function deleteOrphanMarkdowns(owner, repo, branch, githubToken, validMdPaths) {
+  console.log('📄 Suppression des fichiers .md orphelins...');
+  
+  const categories = ['portrait', 'mariage', 'immobilier', 'paysage', 'macro', 'lifestyle'];
+  let deletedCount = 0;
+  
+  for (const category of categories) {
+    const categoryPath = `content/portfolio/${category}`;
+    
+    try {
+      const response = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/contents/${categoryPath}?ref=${branch}`,
+        {
+          headers: {
+            'Authorization': `token ${githubToken}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        }
+      );
+      
+      if (response.ok) {
+        const items = await response.json();
+        
+        for (const item of items) {
+          if (item.type === 'dir') {
+            // Scanner le dossier d'album
+            const albumPath = item.path;
+            const albumResponse = await fetch(
+              `https://api.github.com/repos/${owner}/${repo}/contents/${albumPath}?ref=${branch}`,
+              {
+                headers: {
+                  'Authorization': `token ${githubToken}`,
+                  'Accept': 'application/vnd.github.v3+json'
+                }
+              }
+            );
+            
+            if (albumResponse.ok) {
+              const albumItems = await albumResponse.json();
+              
+              for (const albumItem of albumItems) {
+                if (albumItem.type === 'file' && albumItem.name.endsWith('.md')) {
+                  
+                  // Vérifier si le fichier .md est référencé
+                  if (!validMdPaths.has(albumItem.path)) {
+                    console.log(`🗑️ Suppression fichier .md orphelin: ${albumItem.path}`);
+                    
+                    try {
+                      await fetch(
+                        `https://api.github.com/repos/${owner}/${repo}/contents/${albumItem.path}`,
+                        {
+                          method: 'DELETE',
+                          headers: {
+                            'Authorization': `token ${githubToken}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                          },
+                          body: JSON.stringify({
+                            message: `🗑️ Suppression fichier .md orphelin: ${albumItem.name}`,
+                            sha: albumItem.sha,
+                            branch: branch
+                          })
+                        }
+                      );
+                      deletedCount++;
+                    } catch (deleteError) {
+                      console.log(`⚠️ Erreur suppression ${albumItem.path}: ${deleteError.message}`);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.log(`⚠️ Erreur lors de la vérification des .md ${category}: ${error.message}`);
+    }
+  }
+  
+  console.log(`✅ ${deletedCount} fichiers .md orphelins supprimés`);
+}
+
+// Fonction pour supprimer les dossiers vides
+async function deleteEmptyDirectories(owner, repo, branch, githubToken) {
+  console.log('📁 Suppression des dossiers vides...');
+  
+  const categories = ['portrait', 'mariage', 'immobilier', 'paysage', 'macro', 'lifestyle'];
+  let deletedCount = 0;
+  
+  for (const category of categories) {
+    const categoryPath = `content/portfolio/${category}`;
+    
+    try {
+      const response = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/contents/${categoryPath}?ref=${branch}`,
+        {
+          headers: {
+            'Authorization': `token ${githubToken}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        }
+      );
+      
+      if (response.ok) {
+        const items = await response.json();
+        
+        for (const item of items) {
+          if (item.type === 'dir') {
+            // Vérifier si le dossier d'album est vide
+            const albumPath = item.path;
+            const albumResponse = await fetch(
+              `https://api.github.com/repos/${owner}/${repo}/contents/${albumPath}?ref=${branch}`,
+              {
+                headers: {
+                  'Authorization': `token ${githubToken}`,
+                  'Accept': 'application/vnd.github.v3+json'
+                }
+              }
+            );
+            
+            if (albumResponse.ok) {
+              const albumItems = await albumResponse.json();
+              
+              // Si le dossier est vide, le supprimer
+              if (albumItems.length === 0) {
+                console.log(`🗑️ Suppression dossier vide: ${albumPath}`);
+                
+                try {
+                  await fetch(
+                    `https://api.github.com/repos/${owner}/${repo}/contents/${albumPath}`,
+                    {
+                      method: 'DELETE',
+                      headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                      },
+                      body: JSON.stringify({
+                        message: `🗑️ Suppression dossier vide: ${item.name}`,
+                        sha: item.sha,
+                        branch: branch
+                      })
+                    }
+                  );
+                  deletedCount++;
+                } catch (deleteError) {
+                  console.log(`⚠️ Erreur suppression dossier ${albumPath}: ${deleteError.message}`);
+                }
+              }
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.log(`⚠️ Erreur lors de la vérification des dossiers ${category}: ${error.message}`);
+    }
+  }
+  
+  console.log(`✅ ${deletedCount} dossiers vides supprimés`);
 }
 
 // Parser le frontmatter YAML

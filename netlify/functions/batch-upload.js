@@ -368,6 +368,17 @@ date: ${formattedDate}
       // Ne pas bloquer la réponse si l'index échoue
     }
 
+    // Nettoyer automatiquement l'index des entrées orphelines
+    console.log('🧹 Nettoyage automatique de l\'index...');
+    try {
+      const { cleanPortfolioIndex } = require('./clean-portfolio');
+      await cleanPortfolioIndex(owner, repo, branch, githubToken);
+      console.log('✅ Index portfolio nettoyé automatiquement');
+    } catch (cleanError) {
+      console.error('⚠️ Erreur lors du nettoyage automatique:', cleanError.message);
+      // Ne pas bloquer la réponse si le nettoyage échoue
+    }
+
     // Réponse finale
     const response = {
       success: errors.length === 0,

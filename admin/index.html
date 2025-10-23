@@ -52,6 +52,12 @@
       <span>Upload Multiple</span>
     </a>
     
+    <!-- Bouton Nettoyage Portfolio (masqué par défaut pour sécurité) -->
+    <a href="clean-portfolio.html" class="clean-portfolio-btn" id="clean-portfolio-btn" style="display: none !important;">
+      <span>🧹</span>
+      <span>Nettoyer Portfolio</span>
+    </a>
+    
     <!-- Decap CMS (anciennement Netlify CMS) -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     
@@ -112,12 +118,17 @@
           return hasAuthToken || hasSession;
         }
         
-        // Fonction pour mettre à jour la visibilité du bouton
+        // Fonction pour mettre à jour la visibilité des boutons
         function updateButtonVisibility() {
+          const batchBtn = document.getElementById('batch-upload-btn');
+          const cleanBtn = document.getElementById('clean-portfolio-btn');
+          
           if (isUserLoggedIn()) {
-            batchBtn.style.display = 'flex';
+            if (batchBtn) batchBtn.style.display = 'flex';
+            if (cleanBtn) cleanBtn.style.display = 'flex';
           } else {
-            batchBtn.style.display = 'none';
+            if (batchBtn) batchBtn.style.display = 'none';
+            if (cleanBtn) cleanBtn.style.display = 'none';
           }
         }
         

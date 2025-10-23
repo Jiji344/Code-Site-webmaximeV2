@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧹 Nettoyage Portfolio - Decap CMS</title>
+    
+    <!-- SÉCURITÉ RENFORCÉE : Vérification immédiate -->
+    <script>
+        // Vérifier immédiatement l'authentification
+        function checkAuthImmediately() {
+            // Vérifier si on vient du CMS
+            if (!document.referrer || !document.referrer.includes('/admin/')) {
+                window.location.href = 'index.html';
+                return false;
+            }
+            
+            // Vérifier les tokens d'authentification
+            const hasAuthToken = localStorage.getItem('netlify-cms-user') || 
+                                sessionStorage.getItem('netlify-cms-user') ||
+                                localStorage.getItem('decap-cms-user') ||
+                                sessionStorage.getItem('decap-cms-user') ||
+                                localStorage.getItem('github-user') ||
+                                sessionStorage.getItem('github-user');
+            
+            if (!hasAuthToken) {
+                // Attendre un peu au cas où l'auth se charge
+                setTimeout(() => {
+                    const hasAuthAfterDelay = localStorage.getItem('netlify-cms-user') || 
+                                            sessionStorage.getItem('netlify-cms-user') ||
+                                            localStorage.getItem('decap-cms-user') || 
+                                            sessionStorage.getItem('decap-cms-user') ||
+                                            localStorage.getItem('github-user') || 
+                                            sessionStorage.getItem('github-user');
+                    
+                    if (!hasAuthAfterDelay) {
+                        window.location.href = 'index.html';
+                    }
+                }, 1000);
+            }
+            
+            return true;
+        }
+        
+        // Vérifier immédiatement au chargement
+        checkAuthImmediately();
+        
+        // Vérifier périodiquement pendant 10 secondes
+        let checkCount = 0;
+        const authInterval = setInterval(() => {
+            checkAuthImmediately();
+            checkCount++;
+            if (checkCount >= 10) {
+                clearInterval(authInterval);
+            }
+        }, 1000);
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: #764ba2;
+        }
+        
+        .info-box {
+            background: #f8f9ff;
+            border: 2px solid #e8eaff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .info-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-text {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+        }
+        
+        .btn-danger:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9ff;
+            border-radius: 10px;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 2rem 1.5rem;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../admin/" class="back-link">← Retour au CMS</a>
+        
+        <h1><span>🧹</span> Nettoyage Portfolio</h1>
+        <p class="subtitle">Supprime automatiquement les entrées orphelines de l'index</p>
+        
+        <div class="info-box">
+            <div class="info-title">ℹ️ Qu'est-ce que le nettoyage automatique ?</div>
+            <div class="info-text">
+                Ce script vérifie tous les fichiers de l'index portfolio et supprime automatiquement les entrées qui n'ont plus de fichiers correspondants (images ou fichiers .md supprimés).
+            </div>
+        </div>
+        
+        <button type="button" class="btn btn-primary" id="cleanBtn">
+            🧹 Nettoyer l'index portfolio
+        </button>
+        
+        <button type="button" class="btn btn-danger" id="resetBtn">
+            🗑️ Vider complètement l'index
+        </button>
+        
+        <div class="progress-bar" id="progressBar">
+            <div class="progress-fill" id="progressFill">0%</div>
+        </div>
+        
+        <div class="stats" id="stats" style="display: none;">
+            <div class="stat-item">
+                <div class="stat-number" id="beforeCount">0</div>
+                <div class="stat-label">Avant</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="afterCount">0</div>
+                <div class="stat-label">Après</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="cleanedCount">0</div>
+                <div class="stat-label">Nettoyées</div>
+            </div>
+        </div>
+        
+        <div class="success" id="success"></div>
+        <div class="error" id="error"></div>
+    </div>
+    
+    <script type="module">
+        const cleanBtn = document.getElementById('cleanBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const success = document.getElementById('success');
+        const error = document.getElementById('error');
+        const stats = document.getElementById('stats');
+        const beforeCount = document.getElementById('beforeCount');
+        const afterCount = document.getElementById('afterCount');
+        const cleanedCount = document.getElementById('cleanedCount');
+        
+        cleanBtn.addEventListener('click', async () => {
+            cleanBtn.disabled = true;
+            cleanBtn.textContent = '🧹 Nettoyage en cours...';
+            progressBar.style.display = 'block';
+            success.style.display = 'none';
+            error.style.display = 'none';
+            stats.style.display = 'none';
+            
+            try {
+                const response = await fetch('/.netlify/functions/clean-portfolio', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Erreur lors du nettoyage');
+                }
+                
+                const result = await response.json();
+                
+                // Mise à jour de la progression
+                progressFill.style.width = '100%';
+                progressFill.textContent = '100% - Terminé !';
+                
+                // Afficher les statistiques
+                beforeCount.textContent = result.result.before;
+                afterCount.textContent = result.result.after;
+                cleanedCount.textContent = result.result.cleaned;
+                stats.style.display = 'grid';
+                
+                showSuccess(`✅ Nettoyage terminé ! ${result.result.cleaned} entrées supprimées.`);
+                
+                setTimeout(() => {
+                    window.location.href = '../admin/';
+                }, 3000);
+                
+            } catch (err) {
+                console.error(err);
+                showError('Erreur lors du nettoyage. Veuillez réessayer.');
+                cleanBtn.disabled = false;
+                cleanBtn.textContent = '🧹 Nettoyer l\'index portfolio';
+                progressBar.style.display = 'none';
+            }
+        });
+        
+        resetBtn.addEventListener('click', async () => {
+            if (!confirm('⚠️ Êtes-vous sûr de vouloir vider complètement l\'index portfolio ? Cette action est irréversible.')) {
+                return;
+            }
+            
+            resetBtn.disabled = true;
+            resetBtn.textContent = '🗑️ Suppression en cours...';
+            progressBar.style.display = 'block';
+            success.style.display = 'none';
+            error.style.display = 'none';
+            stats.style.display = 'none';
+            
+            try {
+                // Créer un index vide
+                const response = await fetch('/.netlify/functions/batch-upload', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        albumTitle: 'CLEANUP',
+                        category: 'portrait',
+                        files: []
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Erreur lors de la suppression');
+                }
+                
+                // Mise à jour de la progression
+                progressFill.style.width = '100%';
+                progressFill.textContent = '100% - Terminé !';
+                
+                showSuccess('✅ Index portfolio vidé complètement !');
+                
+                setTimeout(() => {
+                    window.location.href = '../admin/';
+                }, 2000);
+                
+            } catch (err) {
+                console.error(err);
+                showError('Erreur lors de la suppression. Veuillez réessayer.');
+                resetBtn.disabled = false;
+                resetBtn.textContent = '🗑️ Vider complètement l\'index';
+                progressBar.style.display = 'none';
+            }
+        });
+        
+        function showSuccess(message) {
+            success.textContent = message;
+            success.style.display = 'block';
+            error.style.display = 'none';
+        }
+        
+        function showError(message) {
+            error.textContent = message;
+            error.style.display = 'block';
+            success.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

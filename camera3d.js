@@ -35,12 +35,22 @@ class Camera3D {
 
         // Modèle 3D
         this.cameraModel = null;
+        this.modelLoaded = false;
         const loader = new GLTFLoader();
         loader.load('assets/camera.glb', (gltf) => {
             this.cameraModel = gltf.scene;
             this.cameraModel.scale.set(0.35, 0.35, 0.35);
             this.cameraModel.position.set(0, 0, 0);
             this.scene.add(this.cameraModel);
+            this.modelLoaded = true;
+            
+            // Émettre un événement pour signaler que le modèle est chargé
+            window.dispatchEvent(new CustomEvent('camera3d-loaded'));
+        }, undefined, (error) => {
+            console.error('Erreur de chargement du modèle 3D:', error);
+            // Même en cas d'erreur, signaler pour ne pas bloquer le loader indéfiniment
+            this.modelLoaded = true;
+            window.dispatchEvent(new CustomEvent('camera3d-loaded'));
         });
 
         // Suivi du curseur/touch sur toute la section hero

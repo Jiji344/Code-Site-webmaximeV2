@@ -488,25 +488,44 @@
     </div>
 
     <script>
-        window.addEventListener('load', () => {
+        let pageLoaded = false;
+        let camera3dLoaded = false;
+        let loaderHidden = false;
+
+        function hideLoader() {
+            if (loaderHidden) return;
+            
             const loader = document.getElementById('page-loader');
-            if (loader) {
+            if (loader && pageLoaded && camera3dLoaded) {
+                loaderHidden = true;
                 setTimeout(() => {
                     loader.classList.add('hidden');
                     document.body.classList.add('loaded');
                     setTimeout(() => loader.remove(), 600);
                 }, 300);
             }
+        }
+
+        // Attendre que la page soit chargée
+        window.addEventListener('load', () => {
+            pageLoaded = true;
+            hideLoader();
         });
 
+        // Attendre que l'objet 3D soit chargé
+        window.addEventListener('camera3d-loaded', () => {
+            camera3dLoaded = true;
+            hideLoader();
+        });
+
+        // Timeout de sécurité (10 secondes max)
         setTimeout(() => {
-            const loader = document.getElementById('page-loader');
-            if (loader && !loader.classList.contains('hidden')) {
-                loader.classList.add('hidden');
-                document.body.classList.add('loaded');
-                setTimeout(() => loader.remove(), 600);
+            if (!loaderHidden) {
+                pageLoaded = true;
+                camera3dLoaded = true;
+                hideLoader();
             }
-        }, 5000);
+        }, 10000);
     </script>
 
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>

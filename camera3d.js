@@ -61,10 +61,10 @@ class Camera3D {
             this.targetY = ((clientY - rect.top) / rect.height - 0.5) * 2;
         };
 
-        // Suivre le curseur sur toute la section hero (desktop)
+        // Suivre le curseur sur toute la section hero (desktop uniquement)
         const heroSection = document.querySelector('.hero');
         if (heroSection) {
-            // Événements souris (desktop)
+            // Événements souris (desktop seulement)
             heroSection.addEventListener('mousemove', (e) => {
                 updateTargetPosition(e.clientX, e.clientY, heroSection);
             });
@@ -73,44 +73,14 @@ class Camera3D {
                 this.targetX = 0;
                 this.targetY = 0;
             });
-
-            // Événements tactiles (mobile)
-            heroSection.addEventListener('touchmove', (e) => {
-                e.preventDefault(); // Empêcher le scroll
-                if (e.touches.length > 0) {
-                    const touch = e.touches[0];
-                    updateTargetPosition(touch.clientX, touch.clientY, heroSection);
-                }
-            }, { passive: false });
-
-            heroSection.addEventListener('touchend', () => {
-                this.targetX = 0;
-                this.targetY = 0;
-            });
-
-            heroSection.addEventListener('touchcancel', () => {
-                this.targetX = 0;
-                this.targetY = 0;
-            });
         }
 
-        // Aussi sur le conteneur lui-même
+        // Aussi sur le conteneur lui-même (desktop seulement)
         this.container.addEventListener('mousemove', (e) => {
             const rect = this.container.getBoundingClientRect();
             this.targetX = (e.clientX - rect.left - rect.width / 2) / rect.width;
             this.targetY = (e.clientY - rect.top - rect.height / 2) / rect.height;
         });
-
-        // Touch sur le conteneur
-        this.container.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            if (e.touches.length > 0) {
-                const touch = e.touches[0];
-                const rect = this.container.getBoundingClientRect();
-                this.targetX = (touch.clientX - rect.left - rect.width / 2) / rect.width;
-                this.targetY = (touch.clientY - rect.top - rect.height / 2) / rect.height;
-            }
-        }, { passive: false });
 
         // Animation
         this.animate();

@@ -527,8 +527,98 @@ class CookieBanner {
     }
 }
 
+/* ===== PROTECTION DES IMAGES ET CLIC DROIT ===== */
+class ImageProtection {
+    init() {
+        // Bloquer le clic droit
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            return false;
+        });
+
+        // Bloquer les raccourcis clavier (F12, Ctrl+Shift+I, Ctrl+U, etc.)
+        // Mais permettre Escape pour fermer les menus
+        document.addEventListener('keydown', (e) => {
+            // Ne bloquer que les combinaisons spécifiques, pas Escape
+            if (e.key === 'Escape') {
+                return; // Laisser Escape fonctionner pour fermer les menus
+            }
+            
+            // F12, Ctrl+Shift+I (DevTools), Ctrl+Shift+J (Console), Ctrl+U (Source), Ctrl+S (Sauvegarder)
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+                (e.ctrlKey && e.key === 'U') ||
+                (e.ctrlKey && e.key === 'S')) {
+                e.preventDefault();
+                return false;
+            }
+        }, { capture: false });
+
+        // Bloquer le glisser-déposer d'images
+        document.addEventListener('dragstart', (e) => {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // Bloquer la sélection de texte sur les images
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('selectstart', (e) => {
+                e.preventDefault();
+                return false;
+            });
+            
+            // Empêcher le glisser-déposer
+            img.addEventListener('dragstart', (e) => {
+                e.preventDefault();
+                return false;
+            });
+            
+            // Ajouter un attribut pour empêcher l'enregistrement
+            img.setAttribute('draggable', 'false');
+        });
+
+        // Observer les nouvelles images ajoutées dynamiquement
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === 1) {
+                        if (node.tagName === 'IMG') {
+                            this.protectImage(node);
+                        }
+                        if (node.querySelectorAll) {
+                            node.querySelectorAll('img').forEach(img => this.protectImage(img));
+                        }
+                    }
+                });
+            });
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    protectImage(img) {
+        img.setAttribute('draggable', 'false');
+        img.addEventListener('dragstart', (e) => {
+            e.preventDefault();
+            return false;
+        });
+        img.addEventListener('selectstart', (e) => {
+            e.preventDefault();
+            return false;
+        });
+    }
+}
+
 /* ===== INITIALISATION ===== */
 document.addEventListener('DOMContentLoaded', () => {
+    // Protection des images en premier
+    new ImageProtection().init();
+    
     // Initialiser tous les modules
     new MobileMenu();
     new ScrollHeader();

@@ -210,10 +210,38 @@ exports.handler = async (event, context) => {
     };
   }
 
+  // S'assurer que le corps est présent
+  if (!event.body) {
+    console.error('Requête sans corps reçu');
+    return {
+      statusCode: 400,
+      headers,
+      body: JSON.stringify({
+        error: 'Corps de requête manquant',
+        message: 'Aucune donnée reçue'
+      })
+    };
+  }
+
+  let data;
+  try {
+    data = JSON.parse(event.body);
+  } catch (parseError) {
+    console.error('Erreur parsing JSON:', parseError.message);
+    return {
+      statusCode: 400,
+      headers,
+      body: JSON.stringify({
+        error: 'Données invalides',
+        message: 'Impossible de parser les données envoyées'
+      })
+    };
+  }
+
   try {
     // Parser les données
-    const data = JSON.parse(event.body);
     const { albumTitle, category, files } = data;
+    console.log(`Requête upload reçue: album="${albumTitle}", catégorie="${category}", fichiers=${files?.length || 0}`);
 
     // Validation des données
     if (!albumTitle || !category || !files || !Array.isArray(files) || files.length === 0) {
@@ -398,7 +426,7 @@ date: ${formattedDate}
     };
 
   } catch (error) {
-    console.error('Erreur générale:', error);
+    console.error('Erreur générale:', error?.stack || error);
     return {
       statusCode: 500,
       headers,

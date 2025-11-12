@@ -1,0 +1,7 @@
+---
+image: /static/img/portrait/shoot/shoot-1.jpg
+title: Shoot 1
+category: Portrait
+album: Shoot
+date: 2025-11-12T19:38:44.307Z
+---

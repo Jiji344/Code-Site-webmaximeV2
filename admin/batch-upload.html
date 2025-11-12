@@ -509,12 +509,23 @@
                     })
                 });
                 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Erreur lors de l\'upload');
+                const rawText = await response.text();
+                let parsed;
+                
+                if (rawText) {
+                    try {
+                        parsed = JSON.parse(rawText);
+                    } catch (parseError) {
+                        console.error('Réponse non JSON reçue:', rawText);
+                    }
                 }
                 
-                const result = await response.json();
+                if (!response.ok) {
+                    const message = parsed?.message || parsed?.error || response.statusText || 'Erreur lors de l\'upload';
+                    throw new Error(message);
+                }
+                
+                const result = parsed ?? {};
                 
                 // Mise à jour finale de la progression
                 progressFill.style.width = '100%';

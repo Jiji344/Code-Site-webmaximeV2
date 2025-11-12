@@ -1,23 +1,16 @@
 [
   {
-    "image": "/static/img/portrait/test/test-1.jpg",
-    "title": "test 1",
+    "image": "/static/img/portrait/shoot/shoot-1.jpg",
+    "title": "Shoot 1",
     "category": "Portrait",
-    "album": "test",
-    "date": "2025-11-12T18:31:09.794Z"
+    "album": "Shoot",
+    "date": "2025-11-12T19:38:44.307Z"
   },
   {
-    "image": "/static/img/portrait/test/test-2.jpg",
-    "title": "test 2",
+    "image": "/static/img/portrait/winona-automne/winona-automne-1.jpg",
+    "title": "Winona Automne 1",
     "category": "Portrait",
-    "album": "test",
-    "date": "2025-11-12T18:31:11.794Z"
-  },
-  {
-    "image": "/static/img/portrait/test/test-3.jpg",
-    "title": "test 3",
-    "category": "Portrait",
-    "album": "test",
-    "date": "2025-11-12T18:31:13.794Z"
+    "album": "Winona Automne",
+    "date": "2025-11-12T19:40:16.134Z"
   }
 ]

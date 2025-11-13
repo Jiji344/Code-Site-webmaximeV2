@@ -1,7 +1,0 @@
----
-image: /static/img/portrait/shoot/shoot-1.webp
-title: Shoot 1
-category: Portrait
-album: Shoot
-date: 2025-11-12T20:10:27.977Z
----

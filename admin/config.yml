@@ -2,6 +2,14 @@ backend:
   name: git-gateway
   branch: main
 
+# Configuration Cloudinary Media Library (sécurisée via variables d'environnement)
+media_library:
+  name: cloudinary
+  config:
+    cloud_name: ${window.CLOUDINARY_CONFIG.cloud_name}
+    api_key: ${window.CLOUDINARY_CONFIG.api_key}
+
+# Fallback pour Decap CMS si Cloudinary n'est pas disponible
 media_folder: "static/img"
 public_folder: "/static/img"
 

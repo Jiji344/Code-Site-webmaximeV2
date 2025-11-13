@@ -309,36 +309,16 @@ exports.handler = async (event, context) => {
         };
         const categoryName = categoryNames[category] || category;
 
-        // 1. Upload de l'image dans static/img/{category}/{album}/
-        const imageExtension = file.name.split('.').pop().toLowerCase();
-        const imageName = `${baseSlug}-${counter}.${imageExtension}`;
-        const imagePath = `static/img/${category}/${baseSlug}/${imageName}`;
-
-        const imageUploadResponse = await fetch(
-          `https://api.github.com/repos/${owner}/${repo}/contents/${imagePath}`,
-          {
-            method: 'PUT',
-            headers: {
-              'Authorization': `token ${githubToken}`,
-              'Content-Type': 'application/json',
-              'Accept': 'application/vnd.github.v3+json'
-            },
-            body: JSON.stringify({
-              message: `Upload image: ${photoTitle}`,
-              content: file.data, // Base64
-              branch: branch
-            })
-          }
-        );
-
-        if (!imageUploadResponse.ok) {
-          const errorData = await imageUploadResponse.json();
-          throw new Error(`Upload image échoué: ${errorData.message}`);
+        // Utiliser l'URL Cloudinary (toujours fournie maintenant)
+        if (!file.url || !file.url.startsWith('http')) {
+          throw new Error(`URL Cloudinary manquante pour ${photoTitle}`);
         }
+        
+        const imagePath = file.url;
 
-        // 2. Créer le fichier markdown dans content/portfolio/{category}/{album}/
+        // Créer le fichier markdown avec l'URL Cloudinary
         const mdContent = `---
-image: /${imagePath}
+image: ${imagePath}
 title: ${photoTitle}
 category: ${categoryName}
 album: ${albumTitle}

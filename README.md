@@ -21,7 +21,8 @@ Site web portfolio pour photographe professionnel avec système de gestion de co
 - HTML5 / CSS3 / JavaScript
 - Decap CMS (gestion de contenu)
 - Netlify (hébergement + fonctions serverless)
-- GitHub (stockage des contenus)
+- Cloudinary (hébergement et optimisation d'images)
+- GitHub (stockage des contenus markdown)
 - Three.js (animations 3D)
 
 ---
@@ -39,7 +40,8 @@ Site web portfolio pour photographe professionnel avec système de gestion de co
 
 **Automatique** :
 - ✅ Auto-numérotation (Titre 1, Titre 2, Titre 3...)
-- ✅ Dossiers créés automatiquement
+- ✅ Upload sur Cloudinary (pas de limite de taille)
+- ✅ Images optimisées automatiquement
 - ✅ Index régénéré automatiquement
 - ✅ Site mis à jour automatiquement
 
@@ -59,9 +61,10 @@ Site web portfolio pour photographe professionnel avec système de gestion de co
 │   ├── paysage/
 │   ├── macro/
 │   └── lifestyle/
-├── static/img/               # Images
 ├── netlify/functions/        # Fonctions serverless
-│   └── batch-upload.js      # Upload multiple
+│   ├── batch-upload.js      # Upload multiple
+│   ├── cloudinary-upload.js # Upload Cloudinary
+│   └── cms-config.js        # Config Cloudinary pour CMS
 ├── _emails/                  # Templates emails
 ├── index.html               # Page principale
 ├── styles.css               # Styles
@@ -78,6 +81,9 @@ Site web portfolio pour photographe professionnel avec système de gestion de co
 
 ### Variables d'environnement Netlify :
 - `GITHUB_TOKEN` : Token GitHub avec scope `repo`
+- `CLOUDINARY_CLOUD_NAME` : Nom de votre compte Cloudinary
+- `CLOUDINARY_API_KEY` : Clé API Cloudinary
+- `CLOUDINARY_API_SECRET` : Secret API Cloudinary (pour fonctions serveur)
 
 ---
 

@@ -464,17 +464,17 @@
         });
         
         async function uploadPhotos(albumTitle, category, files) {
-            // Convertir les fichiers en base64
             const filesData = [];
             
+            // Upload chaque image sur Cloudinary d'abord
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
+                const counter = i + 1;
                 
                 // Lire le fichier en base64
                 const base64 = await new Promise((resolve, reject) => {
                     const reader = new FileReader();
                     reader.onload = () => {
-                        // Extraire seulement la partie base64 (sans le préfixe data:image/...)
                         const base64String = reader.result.split(',')[1];
                         resolve(base64String);
                     };
@@ -482,20 +482,48 @@
                     reader.readAsDataURL(file);
                 });
                 
-                filesData.push({
-                    name: file.name,
-                    data: base64,
-                    type: file.type,
-                    size: file.size
-                });
+                // Upload sur Cloudinary
+                const folder = `portfolio/${category}/${albumTitle.toLowerCase().replace(/\s+/g, '-')}`;
+                const publicId = `${folder}/${albumTitle.toLowerCase().replace(/\s+/g, '-')}-${counter}`;
                 
-                // Mettre à jour la progression de lecture
-                const readProgress = Math.round(((i + 1) / files.length) * 30); // 30% pour la lecture
-                progressFill.style.width = `${readProgress}%`;
-                progressFill.textContent = `Préparation... ${readProgress}%`;
+                try {
+                    const cloudinaryResponse = await fetch('/.netlify/functions/cloudinary-upload', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            imageBase64: base64,
+                            folder: folder,
+                            publicId: publicId
+                        })
+                    });
+                    
+                    const cloudinaryData = await cloudinaryResponse.json();
+                    
+                    if (!cloudinaryResponse.ok) {
+                        throw new Error(cloudinaryData.message || 'Erreur upload Cloudinary');
+                    }
+                    
+                    // Stocker l'URL Cloudinary au lieu de l'image base64
+                    filesData.push({
+                        name: file.name,
+                        url: cloudinaryData.url, // URL Cloudinary
+                        publicId: cloudinaryData.publicId
+                    });
+                    
+                    // Mise à jour progression
+                    const uploadProgress = Math.round(((i + 1) / files.length) * 70) + 30; // 30-100%
+                    progressFill.style.width = `${uploadProgress}%`;
+                    progressFill.textContent = `Upload Cloudinary ${i + 1}/${files.length}... ${uploadProgress}%`;
+                    
+                } catch (error) {
+                    console.error(`Erreur upload image ${i + 1}:`, error);
+                    throw new Error(`Erreur upload image ${i + 1}: ${error.message}`);
+                }
             }
             
-            // Appeler la fonction Netlify
+            // Maintenant créer les markdowns avec les URLs Cloudinary
             try {
                 const response = await fetch('/.netlify/functions/batch-upload', {
                     method: 'POST',
@@ -505,7 +533,7 @@
                     body: JSON.stringify({
                         albumTitle: albumTitle,
                         category: category,
-                        files: filesData
+                        files: filesData // Maintenant contient des URLs au lieu de base64
                     })
                 });
                 

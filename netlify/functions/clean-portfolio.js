@@ -85,25 +85,35 @@ async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
                       const content = await mdResponse.text();
                       const data = parseMarkdownFrontmatter(content);
                       if (data && data.image) {
-                        // Vérifier que l'image existe
-                        const imagePath = data.image.startsWith('/') ? data.image.substring(1) : data.image;
-                        const imageResponse = await fetch(
-                          `https://api.github.com/repos/${owner}/${repo}/contents/${imagePath}`,
-                          {
-                            headers: {
-                              'Authorization': getGitHubAuthHeader(githubToken),
-                              'Accept': 'application/vnd.github.v3+json'
-                            }
-                          }
-                        );
+                        // Vérifier si c'est une URL Cloudinary (commence par http et contient cloudinary)
+                        const isCloudinaryUrl = data.image.startsWith('http') && data.image.includes('cloudinary.com');
                         
-                        if (imageResponse.ok) {
+                        if (isCloudinaryUrl) {
+                          // URL Cloudinary - considérer comme valide sans vérifier dans GitHub
                           validEntries.push(data);
-                          validImagePaths.add(imagePath);
                           validMdPaths.add(albumItem.path);
-                          console.log(`✅ Entrée valide: ${data.title}`);
+                          console.log(`✅ Entrée Cloudinary valide: ${data.title}`);
                         } else {
-                          console.log(`❌ Image manquante: ${data.title}`);
+                          // Image locale - vérifier qu'elle existe dans GitHub
+                          const imagePath = data.image.startsWith('/') ? data.image.substring(1) : data.image;
+                          const imageResponse = await fetch(
+                            `https://api.github.com/repos/${owner}/${repo}/contents/${imagePath}`,
+                            {
+                              headers: {
+                                'Authorization': getGitHubAuthHeader(githubToken),
+                                'Accept': 'application/vnd.github.v3+json'
+                              }
+                            }
+                          );
+                          
+                          if (imageResponse.ok) {
+                            validEntries.push(data);
+                            validImagePaths.add(imagePath);
+                            validMdPaths.add(albumItem.path);
+                            console.log(`✅ Entrée locale valide: ${data.title}`);
+                          } else {
+                            console.log(`❌ Image locale manquante: ${data.title} (${imagePath})`);
+                          }
                         }
                       }
                     }
@@ -331,14 +341,33 @@ async function deleteOrphanMarkdowns(owner, repo, branch, githubToken, validMdPa
               
               for (const albumItem of albumItems) {
                 if (albumItem.type === 'file' && albumItem.name.endsWith('.md')) {
+                  const mdPath = albumItem.path;
                   
-                  // Vérifier si le fichier .md est référencé
-                  if (!validMdPaths.has(albumItem.path)) {
-                    console.log(`🗑️ Suppression fichier .md orphelin: ${albumItem.path}`);
+                  // Vérifier si le fichier .md est référencé dans validMdPaths
+                  if (!validMdPaths.has(mdPath)) {
+                    // Vérifier si le fichier contient une URL Cloudinary avant de le supprimer
+                    try {
+                      const mdResponse = await fetch(albumItem.download_url);
+                      if (mdResponse.ok) {
+                        const content = await mdResponse.text();
+                        const data = parseMarkdownFrontmatter(content);
+                        
+                        // Si le fichier référence une URL Cloudinary, ne pas le supprimer
+                        if (data && data.image && data.image.startsWith('http') && data.image.includes('cloudinary.com')) {
+                          console.log(`✅ Fichier Cloudinary conservé: ${mdPath}`);
+                          continue; // Passer au fichier suivant
+                        }
+                      }
+                    } catch (checkError) {
+                      console.log(`⚠️ Erreur vérification ${mdPath}: ${checkError.message}`);
+                    }
+                    
+                    // Fichier .md orphelin (pas Cloudinary) - le supprimer
+                    console.log(`🗑️ Suppression fichier .md orphelin: ${mdPath}`);
                     
                     try {
                       await fetch(
-                        `https://api.github.com/repos/${owner}/${repo}/contents/${albumItem.path}`,
+                        `https://api.github.com/repos/${owner}/${repo}/contents/${mdPath}`,
                         {
                           method: 'DELETE',
                           headers: {
@@ -354,7 +383,7 @@ async function deleteOrphanMarkdowns(owner, repo, branch, githubToken, validMdPa
                       );
                       deletedCount++;
                     } catch (deleteError) {
-                      console.log(`⚠️ Erreur suppression ${albumItem.path}: ${deleteError.message}`);
+                      console.log(`⚠️ Erreur suppression ${mdPath}: ${deleteError.message}`);
                     }
                   }
                 }

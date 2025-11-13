@@ -84,6 +84,7 @@ Site web portfolio pour photographe professionnel avec système de gestion de co
 - `CLOUDINARY_CLOUD_NAME` : Nom de votre compte Cloudinary
 - `CLOUDINARY_API_KEY` : Clé API Cloudinary
 - `CLOUDINARY_API_SECRET` : Secret API Cloudinary (pour fonctions serveur)
+- `CLOUDINARY_UPLOAD_PRESET` : Nom du preset Cloudinary (optionnel, défaut: `ml_default`)
 
 ---
 

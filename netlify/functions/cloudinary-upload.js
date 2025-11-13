@@ -24,10 +24,15 @@ exports.handler = async (event, context) => {
     const { imageBase64, folder, publicId } = JSON.parse(event.body);
     
     const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-    const uploadPreset = 'decap_cms'; // Votre preset
+    // Utiliser le preset depuis les variables d'environnement, ou 'ml_default' par défaut
+    const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET || 'ml_default';
 
     if (!cloudName) {
-      throw new Error('Configuration Cloudinary manquante');
+      throw new Error('Configuration Cloudinary manquante: CLOUDINARY_CLOUD_NAME non défini');
+    }
+
+    if (!uploadPreset) {
+      throw new Error('Upload preset Cloudinary manquant: CLOUDINARY_UPLOAD_PRESET non défini');
     }
 
     // Upload vers Cloudinary avec le preset unsigned
@@ -51,8 +56,20 @@ exports.handler = async (event, context) => {
     });
 
     if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`Erreur Cloudinary: ${error}`);
+      const errorText = await response.text();
+      let errorMessage = `Erreur Cloudinary: ${errorText}`;
+      
+      // Message d'erreur plus clair pour le preset manquant
+      try {
+        const errorJson = JSON.parse(errorText);
+        if (errorJson.error && errorJson.error.message && errorJson.error.message.includes('preset')) {
+          errorMessage = `Preset Cloudinary "${uploadPreset}" introuvable. Vérifiez que le preset existe dans votre dashboard Cloudinary et que CLOUDINARY_UPLOAD_PRESET est correctement configuré dans Netlify.`;
+        }
+      } catch (e) {
+        // Garder le message d'erreur original si le parsing échoue
+      }
+      
+      throw new Error(errorMessage);
     }
 
     const data = await response.json();

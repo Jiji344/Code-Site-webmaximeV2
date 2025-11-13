@@ -21,7 +21,7 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    const { imageBase64, folder, publicId } = JSON.parse(event.body);
+    const { imageBase64, folder, publicId, tags } = JSON.parse(event.body);
     
     const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
     // Utiliser le preset depuis les variables d'environnement, ou 'ml_default' par défaut
@@ -42,14 +42,12 @@ exports.handler = async (event, context) => {
     formData.append('file', `data:image/jpeg;base64,${imageBase64}`);
     formData.append('upload_preset', uploadPreset);
     
-    // Utiliser seulement folder, laisser Cloudinary générer les noms automatiquement
-    // Cela évite les problèmes avec les slashes dans publicId ou display name
-    if (folder) {
-      formData.append('folder', folder);
+    // Ne pas utiliser folder ni publicId pour éviter l'erreur "Display name cannot contain slashes"
+    // Cloudinary générera automatiquement un nom unique
+    // Utiliser les tags pour organiser les images (optionnel)
+    if (tags) {
+      formData.append('tags', tags);
     }
-    
-    // Ne pas utiliser publicId - Cloudinary générera automatiquement un nom unique
-    // Cela évite l'erreur "Display name cannot contain slashes"
 
     const response = await fetch(uploadUrl, {
       method: 'POST',

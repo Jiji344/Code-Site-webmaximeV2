@@ -483,9 +483,8 @@
                 });
                 
                 // Upload sur Cloudinary
-                // Utiliser seulement folder, laisser Cloudinary générer les noms automatiquement
-                const albumSlug = albumTitle.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-                const folder = `portfolio/${category}/${albumSlug}`;
+                // Ne pas utiliser folder pour éviter l'erreur "Display name cannot contain slashes"
+                // Cloudinary générera automatiquement les noms et on organisera via les tags ou metadata
                 
                 try {
                     const cloudinaryResponse = await fetch('/.netlify/functions/cloudinary-upload', {
@@ -495,8 +494,9 @@
                         },
                         body: JSON.stringify({
                             imageBase64: base64,
-                            folder: folder
-                            // Ne pas utiliser publicId - Cloudinary générera automatiquement un nom unique
+                            // Ne pas utiliser folder ni publicId - Cloudinary générera tout automatiquement
+                            // On utilisera les tags pour organiser les images
+                            tags: `portfolio,${category},${albumTitle.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`
                         })
                     });
                     

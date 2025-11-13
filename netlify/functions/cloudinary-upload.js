@@ -42,14 +42,19 @@ exports.handler = async (event, context) => {
     formData.append('file', `data:image/jpeg;base64,${imageBase64}`);
     formData.append('upload_preset', uploadPreset);
     
-    // Si publicId est fourni avec un chemin complet, l'utiliser directement
-    // Sinon, utiliser folder + nom de fichier
-    if (publicId) {
-      // publicId peut contenir des slashes pour créer une structure de dossiers
-      formData.append('public_id', publicId);
-    } else if (folder) {
-      // Si seulement folder est fourni, Cloudinary générera un nom automatique
+    // Avec preset unsigned, folder et publicId doivent être séparés
+    // folder : chemin avec slashes (ex: portfolio/portrait/album-name)
+    // publicId : nom du fichier SANS slashes (ex: album-name-1)
+    if (folder) {
       formData.append('folder', folder);
+    }
+    
+    if (publicId) {
+      // Vérifier qu'il n'y a pas de slashes dans publicId
+      if (publicId.includes('/')) {
+        throw new Error('publicId ne peut pas contenir de slashes. Utilisez folder pour le chemin.');
+      }
+      formData.append('public_id', publicId);
     }
 
     const response = await fetch(uploadUrl, {

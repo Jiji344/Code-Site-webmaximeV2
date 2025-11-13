@@ -483,9 +483,10 @@
                 });
                 
                 // Upload sur Cloudinary
-                // Construire le publicId avec le chemin complet (Cloudinary gère les slashes pour créer des dossiers)
+                // Séparer le folder (chemin) du publicId (nom du fichier sans slashes)
                 const albumSlug = albumTitle.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-                const publicId = `portfolio/${category}/${albumSlug}/${albumSlug}-${counter}`;
+                const folder = `portfolio/${category}/${albumSlug}`;
+                const publicId = `${albumSlug}-${counter}`; // Nom du fichier seulement, sans slashes
                 
                 try {
                     const cloudinaryResponse = await fetch('/.netlify/functions/cloudinary-upload', {
@@ -495,7 +496,8 @@
                         },
                         body: JSON.stringify({
                             imageBase64: base64,
-                            publicId: publicId // Utiliser seulement publicId, pas folder
+                            folder: folder, // Chemin avec slashes
+                            publicId: publicId // Nom du fichier sans slashes
                         })
                     });
                     

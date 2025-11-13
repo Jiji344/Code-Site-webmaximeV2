@@ -548,20 +548,34 @@
                 const rawText = await response.text();
                 let parsed;
                 
+                console.log('📥 Réponse batch-upload:', {
+                    status: response.status,
+                    ok: response.ok,
+                    rawText: rawText.substring(0, 500) // Limiter la taille pour les logs
+                });
+                
                 if (rawText) {
                     try {
                         parsed = JSON.parse(rawText);
+                        console.log('✅ Réponse parsée:', parsed);
                     } catch (parseError) {
-                        console.error('Réponse non JSON reçue:', rawText);
+                        console.error('❌ Réponse non JSON reçue:', rawText);
+                        throw new Error(`Réponse invalide du serveur: ${rawText.substring(0, 200)}`);
                     }
                 }
                 
                 if (!response.ok) {
                     const message = parsed?.message || parsed?.error || response.statusText || 'Erreur lors de l\'upload';
+                    console.error('❌ Erreur lors de la création des markdowns:', {
+                        status: response.status,
+                        message: message,
+                        fullResponse: parsed
+                    });
                     throw new Error(message);
                 }
                 
                 const result = parsed ?? {};
+                console.log('✅ Résultat final:', result);
                 
                 // Mise à jour finale de la progression
                 progressFill.style.width = '100%';

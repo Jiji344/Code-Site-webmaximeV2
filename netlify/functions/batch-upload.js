@@ -86,10 +86,12 @@ async function scanDirectory(owner, repo, branch, githubToken, path) {
     );
 
     if (!response.ok) {
+      console.log(`⚠️ Dossier ${path} non accessible (${response.status}): ${response.statusText}`);
       return photos; // Dossier vide ou n'existe pas
     }
 
     const items = await response.json();
+    console.log(`📁 Scan ${path}: ${items.length} éléments trouvés`);
 
     for (const item of items) {
       if (item.type === 'file' && item.name.endsWith('.md')) {
@@ -397,10 +399,11 @@ date: ${formattedDate}
     // Régénérer automatiquement l'index portfolio
     console.log('🔄 Régénération de l\'index portfolio...');
     try {
-      await regenerateIndex(owner, repo, branch, githubToken);
-      console.log('✅ Index portfolio régénéré');
+      const photosCount = await regenerateIndex(owner, repo, branch, githubToken);
+      console.log(`✅ Index portfolio régénéré: ${photosCount} photos trouvées`);
     } catch (indexError) {
       console.error('⚠️ Erreur lors de la régénération de l\'index:', indexError.message);
+      console.error('Stack:', indexError.stack);
       // Ne pas bloquer la réponse si l'index échoue
     }
 

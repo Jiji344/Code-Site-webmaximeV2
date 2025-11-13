@@ -354,18 +354,32 @@ date: ${formattedDate}
         );
 
         if (!mdUploadResponse.ok) {
-          const errorData = await mdUploadResponse.json();
-          console.error(`❌ Erreur upload markdown pour ${photoTitle}:`, errorData);
-          throw new Error(`Upload markdown échoué: ${errorData.message}`);
+          const errorText = await mdUploadResponse.text();
+          let errorData;
+          try {
+            errorData = JSON.parse(errorText);
+          } catch (e) {
+            errorData = { message: errorText };
+          }
+          console.error(`❌ Erreur upload markdown pour ${photoTitle}:`, {
+            status: mdUploadResponse.status,
+            statusText: mdUploadResponse.statusText,
+            error: errorData
+          });
+          throw new Error(`Upload markdown échoué (${mdUploadResponse.status}): ${errorData.message || errorText}`);
         }
         
-        console.log(`✅ Markdown créé avec succès: ${mdPath}`);
-
         const mdResult = await mdUploadResponse.json();
+        console.log(`✅ Markdown créé avec succès: ${mdPath}`, {
+          sha: mdResult.commit?.sha,
+          commit: mdResult.commit?.html_url
+        });
+
         results.push({
           title: photoTitle,
           path: mdPath,
-          success: true
+          success: true,
+          commitSha: mdResult.commit?.sha
         });
 
         console.log(`✅ Photo ${counter}/${files.length} uploadée: ${photoTitle}`);

@@ -525,6 +525,13 @@
             }
             
             // Maintenant créer les markdowns avec les URLs Cloudinary
+            console.log('📤 Envoi des données pour création des markdowns:', {
+                albumTitle: albumTitle,
+                category: category,
+                filesCount: filesData.length,
+                files: filesData
+            });
+            
             try {
                 const response = await fetch('/.netlify/functions/batch-upload', {
                     method: 'POST',

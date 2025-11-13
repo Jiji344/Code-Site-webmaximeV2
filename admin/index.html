@@ -11,6 +11,34 @@
     <!-- 2. Script Cloudinary Media Library pour Decap CMS -->
     <script src="https://unpkg.com/decap-cms-media-library-cloudinary@^1.0.0/dist/index.js"></script>
     
+    <!-- 3. Injecter la config Cloudinary dans Decap CMS après chargement -->
+    <script>
+      // Attendre que la config soit chargée et l'injecter dans Decap CMS
+      window.addEventListener('DOMContentLoaded', function() {
+        // Attendre un peu pour que window.CLOUDINARY_CONFIG soit disponible
+        setTimeout(function() {
+          if (window.CLOUDINARY_CONFIG && window.CMS) {
+            // Injecter la config dans Decap CMS
+            if (window.CMS.registerMediaLibrary) {
+              window.CMS.registerMediaLibrary({
+                name: 'cloudinary',
+                init: function({ options }) {
+                  return {
+                    init: function() {
+                      return Promise.resolve();
+                    },
+                    enableStandalone: function() {
+                      return true;
+                    }
+                  };
+                }
+              });
+            }
+          }
+        }, 100);
+      });
+    </script>
+    
     <style>
       /* Boutons Admin */
       .batch-upload-btn, .clean-portfolio-btn {

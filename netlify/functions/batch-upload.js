@@ -294,6 +294,12 @@ exports.handler = async (event, context) => {
       const slug = `${baseSlug}-${counter}`;
 
       try {
+        console.log(`Traitement fichier ${counter}/${files.length}:`, {
+          name: file.name,
+          url: file.url,
+          publicId: file.publicId
+        });
+
         // Date incrémentée pour éviter les conflits
         const photoDate = new Date(now.getTime() + (counter * 2000));
         const formattedDate = photoDate.toISOString();
@@ -311,10 +317,12 @@ exports.handler = async (event, context) => {
 
         // Utiliser l'URL Cloudinary (toujours fournie maintenant)
         if (!file.url || !file.url.startsWith('http')) {
-          throw new Error(`URL Cloudinary manquante pour ${photoTitle}`);
+          console.error(`URL Cloudinary manquante pour ${photoTitle}:`, file);
+          throw new Error(`URL Cloudinary manquante pour ${photoTitle}. Reçu: ${JSON.stringify(file)}`);
         }
         
         const imagePath = file.url;
+        console.log(`✅ URL Cloudinary trouvée pour ${photoTitle}: ${imagePath}`);
 
         // Créer le fichier markdown avec l'URL Cloudinary
         const mdContent = `---
@@ -326,6 +334,7 @@ date: ${formattedDate}
 ---`;
 
         const mdPath = `content/portfolio/${category}/${baseSlug}/${slug}.md`;
+        console.log(`📝 Création markdown: ${mdPath}`);
 
         const mdUploadResponse = await fetch(
           `https://api.github.com/repos/${owner}/${repo}/contents/${mdPath}`,
@@ -346,8 +355,11 @@ date: ${formattedDate}
 
         if (!mdUploadResponse.ok) {
           const errorData = await mdUploadResponse.json();
+          console.error(`❌ Erreur upload markdown pour ${photoTitle}:`, errorData);
           throw new Error(`Upload markdown échoué: ${errorData.message}`);
         }
+        
+        console.log(`✅ Markdown créé avec succès: ${mdPath}`);
 
         const mdResult = await mdUploadResponse.json();
         results.push({

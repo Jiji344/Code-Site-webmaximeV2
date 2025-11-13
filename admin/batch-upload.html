@@ -483,8 +483,9 @@
                 });
                 
                 // Upload sur Cloudinary
-                const folder = `portfolio/${category}/${albumTitle.toLowerCase().replace(/\s+/g, '-')}`;
-                const publicId = `${folder}/${albumTitle.toLowerCase().replace(/\s+/g, '-')}-${counter}`;
+                // Construire le publicId avec le chemin complet (Cloudinary gère les slashes pour créer des dossiers)
+                const albumSlug = albumTitle.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+                const publicId = `portfolio/${category}/${albumSlug}/${albumSlug}-${counter}`;
                 
                 try {
                     const cloudinaryResponse = await fetch('/.netlify/functions/cloudinary-upload', {
@@ -494,8 +495,7 @@
                         },
                         body: JSON.stringify({
                             imageBase64: base64,
-                            folder: folder,
-                            publicId: publicId
+                            publicId: publicId // Utiliser seulement publicId, pas folder
                         })
                     });
                     

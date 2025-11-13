@@ -42,12 +42,14 @@ exports.handler = async (event, context) => {
     formData.append('file', `data:image/jpeg;base64,${imageBase64}`);
     formData.append('upload_preset', uploadPreset);
     
-    if (folder) {
-      formData.append('folder', folder);
-    }
-    
+    // Si publicId est fourni avec un chemin complet, l'utiliser directement
+    // Sinon, utiliser folder + nom de fichier
     if (publicId) {
+      // publicId peut contenir des slashes pour créer une structure de dossiers
       formData.append('public_id', publicId);
+    } else if (folder) {
+      // Si seulement folder est fourni, Cloudinary générera un nom automatique
+      formData.append('folder', folder);
     }
 
     const response = await fetch(uploadUrl, {
@@ -63,7 +65,14 @@ exports.handler = async (event, context) => {
       try {
         const errorJson = JSON.parse(errorText);
         if (errorJson.error && errorJson.error.message && errorJson.error.message.includes('preset')) {
-          errorMessage = `Preset Cloudinary "${uploadPreset}" introuvable. Vérifiez que le preset existe dans votre dashboard Cloudinary et que CLOUDINARY_UPLOAD_PRESET est correctement configuré dans Netlify.`;
+          errorMessage = `❌ Preset Cloudinary "${uploadPreset}" introuvable.\n\n` +
+            `Pour créer le preset :\n` +
+            `1. Allez sur https://cloudinary.com/console → Settings → Upload\n` +
+            `2. Cliquez sur "Add upload preset"\n` +
+            `3. Nom : "${uploadPreset}"\n` +
+            `4. Signing mode : Unsigned (OBLIGATOIRE)\n` +
+            `5. Cliquez sur "Save"\n` +
+            `6. Redéployez votre site Netlify`;
         }
       } catch (e) {
         // Garder le message d'erreur original si le parsing échoue

@@ -402,6 +402,8 @@ date: ${formattedDate}
     }
 
     // Réponse finale
+    console.log(`📊 Résumé final: ${results.length} réussis, ${errors.length} échecs sur ${files.length} fichiers`);
+    
     const response = {
       success: errors.length === 0,
       total: files.length,
@@ -410,6 +412,8 @@ date: ${formattedDate}
       results: results,
       errors: errors.length > 0 ? errors : undefined
     };
+    
+    console.log('📤 Envoi de la réponse:', JSON.stringify(response, null, 2));
 
     return {
       statusCode: errors.length === 0 ? 200 : 207, // 207 = Multi-Status

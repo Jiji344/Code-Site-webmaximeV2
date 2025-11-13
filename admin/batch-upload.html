@@ -576,6 +576,21 @@
                 
                 const result = parsed ?? {};
                 console.log('✅ Résultat final:', result);
+                console.log('📊 Détails:', {
+                    success: result.success,
+                    total: result.total,
+                    uploaded: result.uploaded,
+                    failed: result.failed,
+                    results: result.results,
+                    errors: result.errors
+                });
+                
+                // Afficher un message détaillé
+                if (result.results && result.results.length > 0) {
+                    console.log('✅ Fichiers markdown créés:', result.results.map(r => r.path));
+                } else {
+                    console.warn('⚠️ Aucun fichier markdown créé !');
+                }
                 
                 // Mise à jour finale de la progression
                 progressFill.style.width = '100%';

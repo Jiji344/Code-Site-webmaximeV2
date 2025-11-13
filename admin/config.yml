@@ -3,12 +3,10 @@ backend:
   branch: main
 
 # Configuration Cloudinary Media Library
-# La config est injectée dynamiquement via le script dans index.html
+# La config est injectée dynamiquement via window.CLOUDINARY_CONFIG dans index.html
+# Le script decap-cms-media-library-cloudinary lit automatiquement window.CLOUDINARY_CONFIG
 media_library:
   name: cloudinary
-  config:
-    cloud_name: ""
-    api_key: ""
 
 # Fallback pour Decap CMS si Cloudinary n'est pas disponible
 media_folder: "static/img"

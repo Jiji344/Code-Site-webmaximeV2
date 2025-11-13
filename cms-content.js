@@ -332,12 +332,16 @@ class CMSContentLoader {
             carouselImage.style.cursor = 'pointer';
             isZoomed = false;
             
-            carouselImage.style.animation = 'none';
-            void carouselImage.offsetWidth;
-            carouselImage.style.animation = 'carouselImageZoom 0.4s ease-out';
-            
+            // Changer l'image immédiatement
             carouselImage.src = image.image;
             carouselImage.alt = albumName;
+            
+            // Animation légère et rapide
+            carouselImage.style.animation = 'none';
+            requestAnimationFrame(() => {
+                carouselImage.style.animation = 'carouselImageZoom 0.12s ease-out';
+            });
+            
             albumCounter.textContent = `${index + 1} / ${images.length}`;
             
             const imageContainer = document.querySelector('.carousel-image-container');
@@ -351,6 +355,16 @@ class CMSContentLoader {
             document.querySelectorAll('.carousel-thumbnail').forEach((thumb, i) => {
                 thumb.classList.toggle('active', i === index);
             });
+            
+            // Précharger les images adjacentes pour navigation fluide
+            if (index < images.length - 1) {
+                const nextImg = new Image();
+                nextImg.src = images[index + 1].image;
+            }
+            if (index > 0) {
+                const prevImg = new Image();
+                prevImg.src = images[index - 1].image;
+            }
         };
         
         thumbnailsContainer.innerHTML = '';
@@ -365,6 +379,12 @@ class CMSContentLoader {
         
         albumTitle.textContent = albumName;
         showImage(0);
+        
+        // Précharger toutes les images de l'album en arrière-plan pour navigation instantanée
+        images.forEach((image) => {
+            const img = new Image();
+            img.src = image.image;
+        });
         
         // Gestion du zoom au double tap sur mobile
         carouselImage.addEventListener('touchend', (e) => {

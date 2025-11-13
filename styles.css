@@ -1580,9 +1580,9 @@ ul {
     box-shadow: 
         0 0 60px var(--primary-alpha-30),
         0 20px 80px rgba(0, 0, 0, 0.8);
-    animation: carouselImageZoom 0.4s ease-out;
+    animation: carouselImageZoom 0.12s ease-out;
     cursor: pointer;
-    transition: transform 0.3s ease-out;
+    transition: transform 0.12s ease-out;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -1593,12 +1593,10 @@ ul {
 
 @keyframes carouselImageZoom {
     0% {
-        opacity: 0;
-        transform: scale(0.95);
+        opacity: 0.7;
     }
     100% {
         opacity: 1;
-        transform: scale(1);
     }
 }
 

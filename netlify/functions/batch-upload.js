@@ -1,5 +1,13 @@
 const fetch = require('node-fetch');
 
+// Helper pour déterminer le format d'authentification GitHub
+function getGitHubAuthHeader(githubToken) {
+  // Fine-grained tokens (github_pat_...) utilisent Bearer, classic tokens (ghp_...) utilisent token
+  return githubToken.startsWith('github_pat_') 
+    ? `Bearer ${githubToken}`
+    : `token ${githubToken}`;
+}
+
 // Fonction pour régénérer l'index portfolio
 async function regenerateIndex(owner, repo, branch, githubToken) {
   const categories = ['Portrait', 'Mariage', 'Immobilier', 'Paysage', 'Macro', 'Lifestyle'];
@@ -19,13 +27,15 @@ async function regenerateIndex(owner, repo, branch, githubToken) {
   // Vérifier si le fichier existe déjà (pour obtenir le SHA)
   let sha = null;
   try {
+    const authHeader = getGitHubAuthHeader(githubToken);
     const existingFileResponse = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json`,
       {
         method: 'GET',
         headers: {
-          'Authorization': `token ${githubToken}`,
-          'Accept': 'application/vnd.github.v3+json'
+          'Authorization': authHeader,
+          'Accept': 'application/vnd.github.v3+json',
+          'X-GitHub-Api-Version': '2022-11-28'
         }
       }
     );
@@ -49,14 +59,16 @@ async function regenerateIndex(owner, repo, branch, githubToken) {
     updatePayload.sha = sha; // Nécessaire pour update
   }
 
+  const authHeader = getGitHubAuthHeader(githubToken);
   const updateResponse = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json`,
     {
       method: 'PUT',
       headers: {
-        'Authorization': `token ${githubToken}`,
+        'Authorization': authHeader,
         'Content-Type': 'application/json',
-        'Accept': 'application/vnd.github.v3+json'
+        'Accept': 'application/vnd.github.v3+json',
+        'X-GitHub-Api-Version': '2022-11-28'
       },
       body: JSON.stringify(updatePayload)
     }
@@ -75,12 +87,14 @@ async function scanDirectory(owner, repo, branch, githubToken, path) {
   const photos = [];
 
   try {
+    const authHeader = getGitHubAuthHeader(githubToken);
     const response = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`,
       {
         headers: {
-          'Authorization': `token ${githubToken}`,
-          'Accept': 'application/vnd.github.v3+json'
+          'Authorization': authHeader,
+          'Accept': 'application/vnd.github.v3+json',
+          'X-GitHub-Api-Version': '2022-11-28'
         }
       }
     );
@@ -341,14 +355,18 @@ date: ${formattedDate}
         const mdPath = `content/portfolio/${category}/${baseSlug}/${slug}.md`;
         console.log(`📝 Création markdown: ${mdPath}`);
 
+        const authHeader = getGitHubAuthHeader(githubToken);
+        console.log(`🔐 Format auth: ${authHeader.substring(0, 15)}...`);
+        
         const mdUploadResponse = await fetch(
           `https://api.github.com/repos/${owner}/${repo}/contents/${mdPath}`,
           {
             method: 'PUT',
             headers: {
-              'Authorization': `token ${githubToken}`,
+              'Authorization': authHeader,
               'Content-Type': 'application/json',
-              'Accept': 'application/vnd.github.v3+json'
+              'Accept': 'application/vnd.github.v3+json',
+              'X-GitHub-Api-Version': '2022-11-28'
             },
             body: JSON.stringify({
               message: `Add photo: ${photoTitle}`,

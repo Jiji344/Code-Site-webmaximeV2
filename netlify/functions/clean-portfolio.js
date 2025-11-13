@@ -1,5 +1,13 @@
 const fetch = require('node-fetch');
 
+// Helper pour déterminer le format d'authentification GitHub
+function getGitHubAuthHeader(githubToken) {
+  // Fine-grained tokens (github_pat_...) utilisent Bearer, classic tokens (ghp_...) utilisent token
+  return githubToken.startsWith('github_pat_') 
+    ? `Bearer ${githubToken}`
+    : `token ${githubToken}`;
+}
+
 // Fonction pour nettoyer complètement le portfolio (index + fichiers orphelins)
 async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
   console.log('🧹 Début du nettoyage complet du portfolio...');
@@ -12,7 +20,7 @@ async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
         `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json`,
         {
           headers: {
-            'Authorization': `token ${githubToken}`,
+            'Authorization': getGitHubAuthHeader(githubToken),
             'Accept': 'application/vnd.github.v3+json'
           }
         }
@@ -43,7 +51,7 @@ async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
           `https://api.github.com/repos/${owner}/${repo}/contents/${categoryPath}?ref=${branch}`,
           {
             headers: {
-              'Authorization': `token ${githubToken}`,
+              'Authorization': getGitHubAuthHeader(githubToken),
               'Accept': 'application/vnd.github.v3+json'
             }
           }
@@ -60,7 +68,7 @@ async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
                 `https://api.github.com/repos/${owner}/${repo}/contents/${albumPath}?ref=${branch}`,
                 {
                   headers: {
-                    'Authorization': `token ${githubToken}`,
+                    'Authorization': getGitHubAuthHeader(githubToken),
                     'Accept': 'application/vnd.github.v3+json'
                   }
                 }
@@ -83,7 +91,7 @@ async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
                           `https://api.github.com/repos/${owner}/${repo}/contents/${imagePath}`,
                           {
                             headers: {
-                              'Authorization': `token ${githubToken}`,
+                              'Authorization': getGitHubAuthHeader(githubToken),
                               'Accept': 'application/vnd.github.v3+json'
                             }
                           }
@@ -134,7 +142,7 @@ async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
         {
           method: 'GET',
           headers: {
-            'Authorization': `token ${githubToken}`,
+            'Authorization': getGitHubAuthHeader(githubToken),
             'Accept': 'application/vnd.github.v3+json'
           }
         }
@@ -208,7 +216,7 @@ async function deleteOrphanImages(owner, repo, branch, githubToken, validImagePa
         `https://api.github.com/repos/${owner}/${repo}/contents/${imageDir}?ref=${branch}`,
         {
           headers: {
-            'Authorization': `token ${githubToken}`,
+            'Authorization': getGitHubAuthHeader(githubToken),
             'Accept': 'application/vnd.github.v3+json'
           }
         }
@@ -225,7 +233,7 @@ async function deleteOrphanImages(owner, repo, branch, githubToken, validImagePa
               `https://api.github.com/repos/${owner}/${repo}/contents/${albumPath}?ref=${branch}`,
               {
                 headers: {
-                  'Authorization': `token ${githubToken}`,
+                  'Authorization': getGitHubAuthHeader(githubToken),
                   'Accept': 'application/vnd.github.v3+json'
                 }
               }
@@ -251,7 +259,7 @@ async function deleteOrphanImages(owner, repo, branch, githubToken, validImagePa
                         {
                           method: 'DELETE',
                           headers: {
-                            'Authorization': `token ${githubToken}`,
+                            'Authorization': getGitHubAuthHeader(githubToken),
                             'Accept': 'application/vnd.github.v3+json'
                           },
                           body: JSON.stringify({
@@ -295,7 +303,7 @@ async function deleteOrphanMarkdowns(owner, repo, branch, githubToken, validMdPa
         `https://api.github.com/repos/${owner}/${repo}/contents/${categoryPath}?ref=${branch}`,
         {
           headers: {
-            'Authorization': `token ${githubToken}`,
+            'Authorization': getGitHubAuthHeader(githubToken),
             'Accept': 'application/vnd.github.v3+json'
           }
         }
@@ -312,7 +320,7 @@ async function deleteOrphanMarkdowns(owner, repo, branch, githubToken, validMdPa
               `https://api.github.com/repos/${owner}/${repo}/contents/${albumPath}?ref=${branch}`,
               {
                 headers: {
-                  'Authorization': `token ${githubToken}`,
+                  'Authorization': getGitHubAuthHeader(githubToken),
                   'Accept': 'application/vnd.github.v3+json'
                 }
               }
@@ -334,7 +342,7 @@ async function deleteOrphanMarkdowns(owner, repo, branch, githubToken, validMdPa
                         {
                           method: 'DELETE',
                           headers: {
-                            'Authorization': `token ${githubToken}`,
+                            'Authorization': getGitHubAuthHeader(githubToken),
                             'Accept': 'application/vnd.github.v3+json'
                           },
                           body: JSON.stringify({
@@ -378,7 +386,7 @@ async function deleteEmptyDirectories(owner, repo, branch, githubToken) {
         `https://api.github.com/repos/${owner}/${repo}/contents/${categoryPath}?ref=${branch}`,
         {
           headers: {
-            'Authorization': `token ${githubToken}`,
+            'Authorization': getGitHubAuthHeader(githubToken),
             'Accept': 'application/vnd.github.v3+json'
           }
         }
@@ -395,7 +403,7 @@ async function deleteEmptyDirectories(owner, repo, branch, githubToken) {
               `https://api.github.com/repos/${owner}/${repo}/contents/${albumPath}?ref=${branch}`,
               {
                 headers: {
-                  'Authorization': `token ${githubToken}`,
+                  'Authorization': getGitHubAuthHeader(githubToken),
                   'Accept': 'application/vnd.github.v3+json'
                 }
               }
@@ -414,7 +422,7 @@ async function deleteEmptyDirectories(owner, repo, branch, githubToken) {
                     {
                       method: 'DELETE',
                       headers: {
-                        'Authorization': `token ${githubToken}`,
+                        'Authorization': getGitHubAuthHeader(githubToken),
                         'Accept': 'application/vnd.github.v3+json'
                       },
                       body: JSON.stringify({
@@ -482,7 +490,7 @@ async function resetPortfolioIndex(owner, repo, branch, githubToken) {
         {
           method: 'GET',
           headers: {
-            'Authorization': `token ${githubToken}`,
+            'Authorization': getGitHubAuthHeader(githubToken),
             'Accept': 'application/vnd.github.v3+json'
           }
         }

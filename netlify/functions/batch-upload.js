@@ -270,6 +270,9 @@ exports.handler = async (event, context) => {
         })
       };
     }
+    
+    // Vérifier le format du token (doit commencer par ghp_ pour les tokens personnels)
+    console.log(`🔑 Token GitHub configuré (longueur: ${githubToken.length}, préfixe: ${githubToken.substring(0, 4)}...)`);
 
     // Configuration du repo
     const owner = 'Jiji344';
@@ -372,16 +375,26 @@ date: ${formattedDate}
         }
         
         const mdResult = await mdUploadResponse.json();
+        console.log(`✅ Réponse GitHub API complète pour ${mdPath}:`, JSON.stringify(mdResult, null, 2));
+        
+        // Vérifier que le commit existe vraiment
+        if (!mdResult.commit || !mdResult.commit.sha) {
+          console.error(`⚠️ Réponse GitHub suspecte - pas de commit SHA pour ${mdPath}`);
+          throw new Error(`Réponse GitHub invalide: pas de commit créé`);
+        }
+        
         console.log(`✅ Markdown créé avec succès: ${mdPath}`, {
-          sha: mdResult.commit?.sha,
-          commit: mdResult.commit?.html_url
+          sha: mdResult.commit.sha,
+          commit: mdResult.commit.html_url,
+          contentSha: mdResult.content?.sha
         });
 
         results.push({
           title: photoTitle,
           path: mdPath,
           success: true,
-          commitSha: mdResult.commit?.sha
+          commitSha: mdResult.commit.sha,
+          contentSha: mdResult.content?.sha
         });
 
         console.log(`✅ Photo ${counter}/${files.length} uploadée: ${photoTitle}`);
@@ -397,10 +410,18 @@ date: ${formattedDate}
     }
 
     // Régénérer automatiquement l'index portfolio
+    // Attendre un peu pour que GitHub synchronise les fichiers créés
+    console.log('⏳ Attente de 3 secondes pour synchronisation GitHub...');
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    
     console.log('🔄 Régénération de l\'index portfolio...');
     try {
       const photosCount = await regenerateIndex(owner, repo, branch, githubToken);
       console.log(`✅ Index portfolio régénéré: ${photosCount} photos trouvées`);
+      
+      if (photosCount === 0) {
+        console.warn('⚠️ Aucune photo trouvée dans l\'index. Les fichiers viennent d\'être créés, GitHub peut mettre quelques secondes à les synchroniser.');
+      }
     } catch (indexError) {
       console.error('⚠️ Erreur lors de la régénération de l\'index:', indexError.message);
       console.error('Stack:', indexError.stack);

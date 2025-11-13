@@ -311,7 +311,6 @@ class CMSContentLoader {
     openAlbumCarousel(albumName, images) {
         const modal = document.getElementById('album-modal');
         const albumTitle = document.getElementById('album-title');
-        const albumCurrentTitle = document.getElementById('album-current-title');
         const albumCounter = document.getElementById('album-counter');
         const carouselImage = document.getElementById('carousel-image');
         const thumbnailsContainer = document.getElementById('carousel-thumbnails');
@@ -338,13 +337,12 @@ class CMSContentLoader {
             carouselImage.style.animation = 'carouselImageZoom 0.4s ease-out';
             
             carouselImage.src = image.image;
-            carouselImage.alt = image.title || image.description || '';
-            albumCurrentTitle.textContent = image.title || 'Sans titre';
+            carouselImage.alt = albumName;
             albumCounter.textContent = `${index + 1} / ${images.length}`;
             
             const imageContainer = document.querySelector('.carousel-image-container');
             if (imageContainer) {
-                imageContainer.setAttribute('data-title', image.title || 'Sans titre');
+                imageContainer.setAttribute('data-title', albumName);
             }
             
             prevButton.disabled = index === 0;

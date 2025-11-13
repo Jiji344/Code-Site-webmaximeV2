@@ -42,20 +42,14 @@ exports.handler = async (event, context) => {
     formData.append('file', `data:image/jpeg;base64,${imageBase64}`);
     formData.append('upload_preset', uploadPreset);
     
-    // Avec preset unsigned, folder et publicId doivent être séparés
-    // folder : chemin avec slashes (ex: portfolio/portrait/album-name)
-    // publicId : nom du fichier SANS slashes (ex: album-name-1)
+    // Utiliser seulement folder, laisser Cloudinary générer les noms automatiquement
+    // Cela évite les problèmes avec les slashes dans publicId ou display name
     if (folder) {
       formData.append('folder', folder);
     }
     
-    if (publicId) {
-      // Vérifier qu'il n'y a pas de slashes dans publicId
-      if (publicId.includes('/')) {
-        throw new Error('publicId ne peut pas contenir de slashes. Utilisez folder pour le chemin.');
-      }
-      formData.append('public_id', publicId);
-    }
+    // Ne pas utiliser publicId - Cloudinary générera automatiquement un nom unique
+    // Cela évite l'erreur "Display name cannot contain slashes"
 
     const response = await fetch(uploadUrl, {
       method: 'POST',

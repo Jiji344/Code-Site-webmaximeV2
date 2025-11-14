@@ -41,6 +41,12 @@
         box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
       }
       
+      .regenerate-index-btn {
+        right: 34rem;
+        background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+        box-shadow: 0 10px 30px rgba(78, 205, 196, 0.4);
+      }
+      
       .batch-upload-btn:hover {
         transform: translateY(-3px);
         box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
@@ -49,6 +55,11 @@
       .clean-portfolio-btn:hover {
         transform: translateY(-3px);
         box-shadow: 0 15px 40px rgba(255, 107, 107, 0.5);
+      }
+      
+      .regenerate-index-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(78, 205, 196, 0.5);
       }
       
       /* Toast Notification */
@@ -138,7 +149,7 @@
       }
       
       @media screen and (max-width: 768px) {
-        .batch-upload-btn, .clean-portfolio-btn {
+        .batch-upload-btn, .clean-portfolio-btn, .regenerate-index-btn {
           bottom: 1rem;
           padding: 0.75rem 1.25rem;
           font-size: 0.9rem;
@@ -153,16 +164,22 @@
           right: 1rem;
           bottom: 5rem;
         }
+        
+        .regenerate-index-btn {
+          right: 1rem;
+          bottom: 9rem;
+        }
       }
       
       @media screen and (max-width: 480px) {
-        .batch-upload-btn, .clean-portfolio-btn {
+        .batch-upload-btn, .clean-portfolio-btn, .regenerate-index-btn {
           font-size: 0.8rem;
           padding: 0.6rem 1rem;
         }
         
         .batch-upload-btn span:last-child,
-        .clean-portfolio-btn span:last-child {
+        .clean-portfolio-btn span:last-child,
+        .regenerate-index-btn span:last-child {
           display: none;
         }
       }
@@ -183,6 +200,12 @@
       <span>🧹</span>
       <span>Nettoyer Portfolio</span>
     </a>
+    
+    <!-- Bouton Régénération Index (masqué par défaut pour sécurité) -->
+    <button class="regenerate-index-btn" id="regenerate-index-btn" style="display: none !important;">
+      <span>🔄</span>
+      <span>Régénérer l'index</span>
+    </button>
     
     <!-- Decap CMS (anciennement Netlify CMS) -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
@@ -248,15 +271,79 @@
         function updateButtonVisibility() {
           const batchBtn = document.getElementById('batch-upload-btn');
           const cleanBtn = document.getElementById('clean-portfolio-btn');
+          const regenerateBtn = document.getElementById('regenerate-index-btn');
           
           if (isUserLoggedIn()) {
             if (batchBtn) batchBtn.style.display = 'flex';
             if (cleanBtn) cleanBtn.style.display = 'flex';
+            if (regenerateBtn) regenerateBtn.style.display = 'flex';
           } else {
             if (batchBtn) batchBtn.style.display = 'none';
             if (cleanBtn) cleanBtn.style.display = 'none';
+            if (regenerateBtn) regenerateBtn.style.display = 'none';
           }
         }
+        
+        // Fonction pour régénérer manuellement l'index
+        async function regenerateIndexManual() {
+          const btn = document.getElementById('regenerate-index-btn');
+          if (btn) {
+            btn.disabled = true;
+            btn.style.opacity = '0.6';
+            btn.querySelector('span:last-child').textContent = 'Régénération...';
+          }
+          
+          try {
+            const owner = 'Jiji344';
+            const repo = 'Code-Site-webmaximeV2';
+            const branch = 'main';
+            
+            const response = await fetch('/.netlify/functions/regenerate-index', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                owner: owner,
+                repo: repo,
+                branch: branch
+              })
+            });
+            
+            if (response.ok) {
+              const result = await response.json();
+              if (result.changed !== false) {
+                const coverInfo = result.coverCount !== undefined 
+                  ? ` (${result.coverCount} couverture${result.coverCount > 1 ? 's' : ''})`
+                  : '';
+                showToast(`Index régénéré${coverInfo}`, 'success');
+              } else {
+                showToast('Aucun changement détecté', 'info');
+              }
+            } else {
+              const error = await response.json();
+              showToast('Erreur lors de la régénération', 'error');
+              console.error('Erreur:', error);
+            }
+          } catch (error) {
+            showToast('Erreur lors de la régénération', 'error');
+            console.error('Erreur:', error);
+          } finally {
+            if (btn) {
+              btn.disabled = false;
+              btn.style.opacity = '1';
+              btn.querySelector('span:last-child').textContent = 'Régénérer l\'index';
+            }
+          }
+        }
+        
+        // Attacher l'événement au bouton
+        document.addEventListener('DOMContentLoaded', function() {
+          const regenerateBtn = document.getElementById('regenerate-index-btn');
+          if (regenerateBtn) {
+            regenerateBtn.addEventListener('click', regenerateIndexManual);
+          }
+        });
         
         // Fonction pour afficher une notification toast
         function showToast(message, type = 'success') {
@@ -313,11 +400,19 @@
         let regenerationQueue = [];
         let isRegenerating = false;
         let lastRegenerationTime = 0;
-        const MIN_REGENERATION_INTERVAL = 10000; // 10 secondes minimum entre régénérations
-        const DEBOUNCE_DELAY = 5000; // 5 secondes de debounce pour fusionner les demandes
+        const MIN_REGENERATION_INTERVAL = 30000; // 30 secondes minimum entre régénérations (augmenté pour éviter les déploiements)
+        const DEBOUNCE_DELAY = 10000; // 10 secondes de debounce pour fusionner les demandes
+        const AUTO_REGENERATION_ENABLED = true; // Réactivé avec détection améliorée
         
         // Fonction pour ajouter une régénération à la file (avec fusion intelligente)
         function queueRegeneration(reason = 'Modification détectée') {
+          // Si la régénération automatique est désactivée, juste logger
+          if (!AUTO_REGENERATION_ENABLED) {
+            console.log(`⏸️ Régénération automatique désactivée: ${reason}`);
+            console.log('💡 Utilisez le bouton "Régénérer l\'index" manuellement si nécessaire');
+            return;
+          }
+          
           const now = Date.now();
           
           // Si une régénération vient d'avoir lieu, ignorer les nouvelles demandes trop proches

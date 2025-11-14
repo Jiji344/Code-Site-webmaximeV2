@@ -35,9 +35,9 @@ function parseMarkdownFrontmatter(content) {
         }
         
         // Convertir les valeurs booléennes
-        if (value === 'true' || value === 'True') {
+        if (value === 'true' || value === 'True' || value === 'TRUE') {
           value = true;
-        } else if (value === 'false' || value === 'False') {
+        } else if (value === 'false' || value === 'False' || value === 'FALSE') {
           value = false;
         }
         
@@ -46,9 +46,17 @@ function parseMarkdownFrontmatter(content) {
       }
     });
     
-    // S'assurer que isCover est toujours présent (false par défaut)
+    // Normaliser isCover en booléen strict (important pour la comparaison)
     if (data.isCover === undefined) {
       data.isCover = false;
+    } else {
+      // Forcer en booléen strict
+      data.isCover = data.isCover === true || 
+                     data.isCover === 'true' || 
+                     data.isCover === 'True' ||
+                     data.isCover === 'TRUE' ||
+                     data.isCover === 1 ||
+                     data.isCover === '1';
     }
 
     return data;
@@ -88,6 +96,11 @@ async function scanDirectory(owner, repo, branch, githubToken, path) {
           const content = await fileResponse.text();
           const data = parseMarkdownFrontmatter(content);
           if (data) {
+            // S'assurer que tous les champs nécessaires sont présents
+            if (!data.imageUrl && data.image) {
+              data.imageUrl = data.image;
+            }
+            // isCover est déjà normalisé dans parseMarkdownFrontmatter
             photos.push(data);
           }
         }
@@ -144,27 +157,73 @@ async function regenerateIndex(owner, repo, branch, githubToken) {
       const existingContent = Buffer.from(existingFile.content, 'base64').toString('utf-8');
       const existingPhotos = JSON.parse(existingContent);
       
-      // Comparer les deux tableaux (normalisés pour éviter les différences d'ordre)
-      const normalizePhoto = (photo) => ({
-        title: photo.title,
-        album: photo.album,
-        imageUrl: photo.imageUrl,
-        date: photo.date,
-        isCover: photo.isCover === true || photo.isCover === 'true' || photo.isCover === 'True' || photo.isCover === 1 || photo.isCover === '1'
-      });
+      // Normaliser les photos pour la comparaison (normaliser isCover en booléen strict)
+      const normalizePhoto = (photo) => {
+        const normalized = {
+          title: String(photo.title || ''),
+          album: String(photo.album || ''),
+          imageUrl: String(photo.imageUrl || photo.image || ''),
+          date: String(photo.date || ''),
+          isCover: false // Par défaut
+        };
+        
+        // Normaliser isCover en booléen strict
+        if (photo.isCover === true || 
+            photo.isCover === 'true' || 
+            photo.isCover === 'True' ||
+            photo.isCover === 'TRUE' ||
+            photo.isCover === 1 ||
+            photo.isCover === '1') {
+          normalized.isCover = true;
+        }
+        
+        return normalized;
+      };
+      
+      // Trier par album puis titre pour comparaison stable
+      const sortKey = (photo) => `${photo.album || ''}-${photo.title || ''}`;
       
       const existingNormalized = existingPhotos.map(normalizePhoto).sort((a, b) => 
-        `${a.album}-${a.title}`.localeCompare(`${b.album}-${b.title}`)
+        sortKey(a).localeCompare(sortKey(b))
       );
       const newNormalized = allPhotos.map(normalizePhoto).sort((a, b) => 
-        `${a.album}-${a.title}`.localeCompare(`${b.album}-${b.title}`)
+        sortKey(a).localeCompare(sortKey(b))
       );
       
+      // Comparaison détaillée avec logs
       contentChanged = JSON.stringify(existingNormalized) !== JSON.stringify(newNormalized);
       
       if (!contentChanged) {
         console.log('ℹ️ Aucun changement détecté, pas de commit nécessaire');
+        console.log(`   ${existingNormalized.length} photos existantes, ${newNormalized.length} photos nouvelles`);
         return { count: allPhotos.length, changed: false };
+      }
+      
+      // Log des différences pour déboguer
+      console.log('🔄 Changements détectés:');
+      console.log(`   Photos existantes: ${existingNormalized.length}`);
+      console.log(`   Photos nouvelles: ${newNormalized.length}`);
+      
+      // Comparer les couvertures
+      const existingCovers = existingNormalized.filter(p => p.isCover).length;
+      const newCovers = newNormalized.filter(p => p.isCover).length;
+      if (existingCovers !== newCovers) {
+        console.log(`   Couvertures: ${existingCovers} → ${newCovers}`);
+      }
+      
+      // Comparer photo par photo pour trouver les différences
+      const maxCompare = Math.max(existingNormalized.length, newNormalized.length);
+      for (let i = 0; i < Math.min(10, maxCompare); i++) {
+        const existing = existingNormalized[i];
+        const newPhoto = newNormalized[i];
+        if (!existing || !newPhoto || 
+            existing.title !== newPhoto.title ||
+            existing.album !== newPhoto.album ||
+            existing.isCover !== newPhoto.isCover) {
+          if (existing && newPhoto && existing.isCover !== newPhoto.isCover) {
+            console.log(`   📸 "${existing.title}" (${existing.album}): isCover ${existing.isCover} → ${newPhoto.isCover}`);
+          }
+        }
       }
     }
   } catch (error) {

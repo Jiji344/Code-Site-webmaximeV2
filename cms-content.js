@@ -128,7 +128,16 @@ class CMSContentLoader {
                 const colonIndex = line.indexOf(':');
                 if (colonIndex > 0) {
                     const key = line.substring(0, colonIndex).trim();
-                    const value = line.substring(colonIndex + 1).trim();
+                    let value = line.substring(colonIndex + 1).trim();
+                    
+                    // Convertir les valeurs booléennes
+                    if (value === 'true' || value === 'True') {
+                        value = true;
+                    } else if (value === 'false' || value === 'False') {
+                        value = false;
+                    }
+                    // Garder les autres valeurs comme strings (dates, URLs, etc.)
+                    
                     data[key] = value;
                 }
             });
@@ -234,8 +243,21 @@ class CMSContentLoader {
         const coverImage = document.createElement('img');
         coverImage.className = 'album-card-image';
         
+        // Trouver l'image de couverture ou utiliser la première par défaut
+        // Chercher une image avec isCover === true ou isCover === 'true' (pour gérer les strings)
+        let coverImageData = images.find(img => 
+            img.isCover === true || 
+            img.isCover === 'true' || 
+            img.isCover === 'True'
+        );
+        
+        // Si aucune image n'est marquée comme couverture, utiliser la première
+        if (!coverImageData) {
+            coverImageData = images[0];
+        }
+        
         // Optimiser l'URL Cloudinary pour les cartes
-        let imageUrl = images[0].image;
+        let imageUrl = coverImageData.image;
         if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
             imageUrl = window.ImageOptimizer.optimizeCard(imageUrl, 400);
         }

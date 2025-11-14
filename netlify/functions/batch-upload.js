@@ -144,7 +144,16 @@ function parseMarkdownFrontmatter(content) {
       const colonIndex = line.indexOf(':');
       if (colonIndex > 0) {
         const key = line.substring(0, colonIndex).trim();
-        const value = line.substring(colonIndex + 1).trim();
+        let value = line.substring(colonIndex + 1).trim();
+        
+        // Convertir les valeurs booléennes
+        if (value === 'true' || value === 'True') {
+          value = true;
+        } else if (value === 'false' || value === 'False') {
+          value = false;
+        }
+        // Garder les autres valeurs comme strings (dates, URLs, etc.)
+        
         data[key] = value;
       }
     });

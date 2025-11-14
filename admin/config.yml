@@ -30,6 +30,7 @@ collections:
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Titre", name: "title", widget: "string", hint: "Ex: Portrait Marie 1, Portrait Marie 2..." }
       - { label: "Album", name: "album", widget: "string", hint: "Nom du shooting (ex: Marie, Jean, Famille Dupont). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
+      - { label: "Photo de couverture", name: "isCover", widget: "boolean", default: false, hint: "Cocher pour utiliser cette photo comme couverture de l'album" }
       - { label: "Date", name: "date", widget: "datetime", default: "" }
       - { label: "Catégorie", name: "category", widget: "hidden", default: "Portrait" }
 
@@ -49,6 +50,7 @@ collections:
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Titre", name: "title", widget: "string", hint: "Ex: Sophie & Marc 1, Sophie & Marc 2..." }
       - { label: "Album", name: "album", widget: "string", hint: "Nom du mariage (ex: Sophie & Marc). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
+      - { label: "Photo de couverture", name: "isCover", widget: "boolean", default: false, hint: "Cocher pour utiliser cette photo comme couverture de l'album" }
       - { label: "Date", name: "date", widget: "datetime", default: "" }
       - { label: "Catégorie", name: "category", widget: "hidden", default: "Mariage" }
 
@@ -68,6 +70,7 @@ collections:
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Titre", name: "title", widget: "string", hint: "Ex: Villa Bordeaux 1, Villa Bordeaux 2..." }
       - { label: "Album", name: "album", widget: "string", hint: "Nom du bien (ex: Villa Bordeaux). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
+      - { label: "Photo de couverture", name: "isCover", widget: "boolean", default: false, hint: "Cocher pour utiliser cette photo comme couverture de l'album" }
       - { label: "Date", name: "date", widget: "datetime", default: "" }
       - { label: "Catégorie", name: "category", widget: "hidden", default: "Immobilier" }
 
@@ -87,6 +90,7 @@ collections:
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Titre", name: "title", widget: "string", hint: "Ex: Bretagne 1, Bretagne 2..." }
       - { label: "Album", name: "album", widget: "string", hint: "Nom du lieu (ex: Bretagne). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
+      - { label: "Photo de couverture", name: "isCover", widget: "boolean", default: false, hint: "Cocher pour utiliser cette photo comme couverture de l'album" }
       - { label: "Date", name: "date", widget: "datetime", default: "" }
       - { label: "Catégorie", name: "category", widget: "hidden", default: "Paysage" }
 
@@ -106,6 +110,7 @@ collections:
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Titre", name: "title", widget: "string", hint: "Ex: Insectes 1, Insectes 2..." }
       - { label: "Album", name: "album", widget: "string", hint: "Nom du thème (ex: Insectes). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
+      - { label: "Photo de couverture", name: "isCover", widget: "boolean", default: false, hint: "Cocher pour utiliser cette photo comme couverture de l'album" }
       - { label: "Date", name: "date", widget: "datetime", default: "" }
       - { label: "Catégorie", name: "category", widget: "hidden", default: "Macro" }
 
@@ -125,5 +130,6 @@ collections:
       - { label: "Image", name: "image", widget: "image" }
       - { label: "Titre", name: "title", widget: "string", hint: "Ex: Urban Style 1, Urban Style 2..." }
       - { label: "Album", name: "album", widget: "string", hint: "Nom du shooting (ex: Urban Style). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
+      - { label: "Photo de couverture", name: "isCover", widget: "boolean", default: false, hint: "Cocher pour utiliser cette photo comme couverture de l'album" }
       - { label: "Date", name: "date", widget: "datetime", default: "" }
       - { label: "Catégorie", name: "category", widget: "hidden", default: "Lifestyle" }

@@ -19,21 +19,30 @@ class CMSContentLoader {
 
     async loadPortfolioData() {
         try {
+            console.log('🚀 Début du chargement des données portfolio...');
+            
             // Essayer de charger l'index JSON (généré par la fonction Netlify)
             const indexLoaded = await this.loadFromIndex();
             
             if (!indexLoaded) {
                 // Fallback : charger récursivement (ancien système)
                 console.log('📦 Chargement depuis GitHub (fallback)...');
+                this.portfolioData = []; // Réinitialiser pour le fallback
+                
                 for (const category of this.config.categories) {
                     const categoryPath = `${this.config.basePath}/${category.toLowerCase()}`;
                     await this.loadFilesFromPath(categoryPath);
                 }
             }
             
-            console.log(`✅ ${this.portfolioData.length} photos chargées`);
+            console.log(`✅ ${this.portfolioData.length} photos chargées au total`);
+            
+            if (this.portfolioData.length === 0) {
+                console.error('❌ AUCUNE PHOTO CHARGÉE ! Vérifiez les logs ci-dessus.');
+            }
         } catch (error) {
-            console.error('Erreur lors du chargement des données CMS:', error);
+            console.error('❌ Erreur lors du chargement des données CMS:', error);
+            console.error('❌ Stack:', error.stack);
         }
     }
 
@@ -44,38 +53,45 @@ class CMSContentLoader {
             const cacheBuster = Date.now();
             const indexUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/portfolio-index.json?t=${cacheBuster}`;
             
+            console.log('🔄 Tentative de chargement de l\'index:', indexUrl);
+            
             const response = await fetch(indexUrl, {
                 cache: 'no-store',
-                headers: {
-                    'Cache-Control': 'no-cache, no-store, must-revalidate',
-                    'Pragma': 'no-cache'
-                }
+                mode: 'cors'
             });
+            
+            console.log('📥 Réponse index:', response.status, response.statusText);
+            
             if (response.ok) {
                 const photos = await response.json();
+                console.log('📦 Données brutes reçues:', photos.length, 'photos');
                 
-                // Optimiser les URLs d'images directement sans vérification HEAD (beaucoup plus rapide)
-                // La vérification HEAD était le principal goulot d'étranglement
+                // Filtrer uniquement les photos valides (avec image)
                 const validPhotos = photos.filter(photo => {
-                    if (!photo.image) return false;
-                    
-                    // Optimiser l'URL Cloudinary si c'est le cas
-                    if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(photo.image)) {
-                        // Garder l'URL originale pour le préchargement, on optimisera lors de l'affichage
-                        return true;
+                    if (!photo || !photo.image) {
+                        console.warn('⚠️ Photo invalide (pas d\'image):', photo);
+                        return false;
                     }
-                    
                     return true;
                 });
                 
-                this.portfolioData = validPhotos;
-                console.log(`📦 Index chargé: ${validPhotos.length} photos`);
+                console.log('✅ Photos valides après filtrage:', validPhotos.length);
                 
-                return true;
+                if (validPhotos.length > 0) {
+                    this.portfolioData = validPhotos;
+                    console.log(`📦 Index chargé avec succès: ${validPhotos.length} photos`);
+                    return true;
+                } else {
+                    console.warn('⚠️ Aucune photo valide dans l\'index');
+                    return false;
+                }
+            } else {
+                console.warn('⚠️ Index non disponible (HTTP', response.status, ')');
+                return false;
             }
-            return false;
         } catch (error) {
-            console.debug('Index non disponible, utilisation du fallback');
+            console.error('❌ Erreur lors du chargement de l\'index:', error);
+            console.log('📦 Utilisation du fallback...');
             return false;
         }
     }
@@ -183,10 +199,24 @@ class CMSContentLoader {
     }
 
     displayPortfolioImages() {
+        console.log('🖼️ Affichage des images portfolio...');
+        console.log('📊 Nombre de photos à afficher:', this.portfolioData.length);
+        
+        if (this.portfolioData.length === 0) {
+            console.error('❌ AUCUNE PHOTO À AFFICHER !');
+            return;
+        }
+        
         const dataByCategory = this.groupByCategory(this.portfolioData);
-        Object.keys(dataByCategory).forEach(category => {
+        const categories = Object.keys(dataByCategory);
+        console.log('📁 Catégories trouvées:', categories);
+        
+        categories.forEach(category => {
+            console.log(`📂 Affichage catégorie: ${category}`);
             this.updateCategoryContent(category, dataByCategory[category]);
         });
+        
+        console.log('✅ Affichage terminé');
     }
 
     groupByCategory(data) {
@@ -731,10 +761,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json?ref=main&t=${Date.now()}`,
                 {
                     headers: {
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Cache-Control': 'no-cache'
+                        'Accept': 'application/vnd.github.v3+json'
                     },
-                    cache: 'no-store'
+                    cache: 'no-store',
+                    mode: 'cors'
                 }
             );
             

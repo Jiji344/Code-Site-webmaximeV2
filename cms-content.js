@@ -46,31 +46,22 @@ class CMSContentLoader {
             if (response.ok) {
                 const photos = await response.json();
                 
-                // Vérifier que les images existent encore
-                const validPhotos = [];
-                for (const photo of photos) {
-                    if (photo.image) {
-                        try {
-                            const imageResponse = await fetch(photo.image, { method: 'HEAD' });
-                            if (imageResponse.ok) {
-                                validPhotos.push(photo);
-                            } else {
-                                console.log(`❌ Image manquante: ${photo.title}`);
-                            }
-                        } catch (error) {
-                            console.log(`❌ Erreur vérification image: ${photo.title}`);
-                        }
+                // Optimiser les URLs d'images directement sans vérification HEAD (beaucoup plus rapide)
+                // La vérification HEAD était le principal goulot d'étranglement
+                const validPhotos = photos.filter(photo => {
+                    if (!photo.image) return false;
+                    
+                    // Optimiser l'URL Cloudinary si c'est le cas
+                    if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(photo.image)) {
+                        // Garder l'URL originale pour le préchargement, on optimisera lors de l'affichage
+                        return true;
                     }
-                }
+                    
+                    return true;
+                });
                 
                 this.portfolioData = validPhotos;
-                console.log(`📦 Index chargé: ${photos.length} → ${validPhotos.length} photos valides`);
-                
-                // Si des images sont manquantes, déclencher un nettoyage automatique
-                if (validPhotos.length < photos.length) {
-                    console.log('🧹 Images manquantes détectées, nettoyage automatique...');
-                    this.triggerAutoCleanup();
-                }
+                console.log(`📦 Index chargé: ${validPhotos.length} photos`);
                 
                 return true;
             }
@@ -214,23 +205,26 @@ class CMSContentLoader {
         const imagesContainer = categorySection.querySelector('.category-images');
         if (!imagesContainer) return;
 
-        // Ajouter les albums
-        Object.keys(data.albums).forEach(albumName => {
-            const albumImages = data.albums[albumName];
-            const albumCard = this.createAlbumCard(albumName, albumImages);
-            imagesContainer.appendChild(albumCard);
-        });
+        // Utiliser requestAnimationFrame pour ne pas bloquer le rendu
+        requestAnimationFrame(() => {
+            // Ajouter les albums
+            Object.keys(data.albums).forEach(albumName => {
+                const albumImages = data.albums[albumName];
+                const albumCard = this.createAlbumCard(albumName, albumImages);
+                imagesContainer.appendChild(albumCard);
+            });
 
-        // Ajouter les images individuelles
-        data.singleImages.forEach((item) => {
-            const imageCard = this.createImageCard(item);
-            imagesContainer.appendChild(imageCard);
-        });
+            // Ajouter les images individuelles
+            data.singleImages.forEach((item) => {
+                const imageCard = this.createImageCard(item);
+                imagesContainer.appendChild(imageCard);
+            });
 
-        // Mettre à jour le carrousel
-        if (window.portfolioCarousel) {
-            window.portfolioCarousel.updateCarousel(category);
-        }
+            // Mettre à jour le carrousel
+            if (window.portfolioCarousel) {
+                window.portfolioCarousel.updateCarousel(category);
+            }
+        });
     }
 
     createAlbumCard(albumName, images) {
@@ -239,9 +233,18 @@ class CMSContentLoader {
         
         const coverImage = document.createElement('img');
         coverImage.className = 'album-card-image';
-        coverImage.src = images[0].image;
+        
+        // Optimiser l'URL Cloudinary pour les cartes
+        let imageUrl = images[0].image;
+        if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
+            imageUrl = window.ImageOptimizer.optimizeCard(imageUrl, 400);
+        }
+        
+        coverImage.src = imageUrl;
         coverImage.alt = albumName;
-        coverImage.loading = 'lazy';
+        coverImage.fetchPriority = 'high'; // Priorité haute pour les images visibles
+        coverImage.decoding = 'async'; // Décodage asynchrone pour meilleures performances
+        // Pas de lazy loading car les images sont déjà préchargées
         
         const cardContent = document.createElement('div');
         cardContent.className = 'album-card-content';
@@ -273,9 +276,18 @@ class CMSContentLoader {
         imageCard.style.cursor = 'pointer';
         
         const imgElement = document.createElement('img');
-        imgElement.src = item.image;
+        
+        // Optimiser l'URL Cloudinary pour les cartes
+        let imageUrl = item.image;
+        if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
+            imageUrl = window.ImageOptimizer.optimizeCard(imageUrl, 400);
+        }
+        
+        imgElement.src = imageUrl;
         imgElement.alt = item.title || item.description || '';
-        imgElement.loading = 'lazy';
+        imgElement.fetchPriority = 'high'; // Priorité haute pour les images visibles
+        imgElement.decoding = 'async'; // Décodage asynchrone pour meilleures performances
+        // Pas de lazy loading car les images sont déjà préchargées
         imgElement.width = 400;
         imgElement.height = 600;
         
@@ -287,8 +299,16 @@ class CMSContentLoader {
             const modalClose = document.getElementById('modal-close');
             
             if (modal && modalImg) {
-                modalImg.src = item.image;
+                // Optimiser l'URL Cloudinary pour l'affichage plein écran
+                let imageUrl = item.image;
+                if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
+                    imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
+                }
+                
+                modalImg.src = imageUrl;
                 modalImg.alt = item.title || item.description || '';
+                modalImg.fetchPriority = 'high';
+                modalImg.decoding = 'async';
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 
@@ -308,6 +328,32 @@ class CMSContentLoader {
         return imageCard;
     }
 
+    centerThumbnails(thumbnailsContainer, imageCount) {
+        if (!thumbnailsContainer || imageCount === 0) return;
+        
+        // Déterminer la taille des miniatures selon la taille d'écran
+        const isMobile = window.innerWidth <= 768;
+        const thumbnailWidth = isMobile ? 50 : 100; // 50px sur mobile, 100px sur desktop
+        const gap = isMobile ? 4 : 8; // Gap réduit sur mobile
+        const padding = isMobile ? 16 : 32; // Padding réduit sur mobile
+        
+        // Calculer la largeur totale nécessaire pour toutes les miniatures
+        const totalWidth = (thumbnailWidth * imageCount) + (gap * (imageCount - 1)) + (padding * 2);
+        
+        // Obtenir la largeur disponible du conteneur
+        const containerWidth = thumbnailsContainer.offsetWidth || thumbnailsContainer.clientWidth;
+        
+        // Si toutes les miniatures tiennent dans l'espace disponible, les centrer
+        if (totalWidth <= containerWidth) {
+            thumbnailsContainer.style.justifyContent = 'center';
+            thumbnailsContainer.style.overflowX = 'hidden';
+        } else {
+            // Sinon, permettre le scroll horizontal et aligner à gauche
+            thumbnailsContainer.style.justifyContent = 'flex-start';
+            thumbnailsContainer.style.overflowX = 'auto';
+        }
+    }
+
     openAlbumCarousel(albumName, images) {
         const modal = document.getElementById('album-modal');
         const albumTitle = document.getElementById('album-title');
@@ -322,6 +368,7 @@ class CMSContentLoader {
         let currentIndex = 0;
         let isZoomed = false;
         let lastTap = 0;
+        let resizeHandler = null;
         
         const showImage = (index) => {
             currentIndex = index;
@@ -332,9 +379,17 @@ class CMSContentLoader {
             carouselImage.style.cursor = 'pointer';
             isZoomed = false;
             
+            // Optimiser l'URL Cloudinary pour l'affichage plein écran
+            let imageUrl = image.image;
+            if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
+                imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
+            }
+            
             // Changer l'image immédiatement
-            carouselImage.src = image.image;
+            carouselImage.src = imageUrl;
             carouselImage.alt = albumName;
+            carouselImage.fetchPriority = 'high';
+            carouselImage.decoding = 'async';
             
             // Animation légère et rapide
             carouselImage.style.animation = 'none';
@@ -359,11 +414,21 @@ class CMSContentLoader {
             // Précharger les images adjacentes pour navigation fluide
             if (index < images.length - 1) {
                 const nextImg = new Image();
-                nextImg.src = images[index + 1].image;
+                let nextUrl = images[index + 1].image;
+                if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(nextUrl)) {
+                    nextUrl = window.ImageOptimizer.optimizeFullscreen(nextUrl, 1920);
+                }
+                nextImg.src = nextUrl;
+                nextImg.fetchPriority = 'low';
             }
             if (index > 0) {
                 const prevImg = new Image();
-                prevImg.src = images[index - 1].image;
+                let prevUrl = images[index - 1].image;
+                if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(prevUrl)) {
+                    prevUrl = window.ImageOptimizer.optimizeFullscreen(prevUrl, 1920);
+                }
+                prevImg.src = prevUrl;
+                prevImg.fetchPriority = 'low';
             }
         };
         
@@ -371,11 +436,37 @@ class CMSContentLoader {
         images.forEach((image, index) => {
             const thumbnail = document.createElement('img');
             thumbnail.className = 'carousel-thumbnail';
-            thumbnail.src = image.image;
+            
+            // Optimiser l'URL Cloudinary pour les miniatures
+            let imageUrl = image.image;
+            if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
+                imageUrl = window.ImageOptimizer.optimizeThumbnail(imageUrl, 100);
+            }
+            
+            thumbnail.src = imageUrl;
             thumbnail.alt = image.title || '';
+            thumbnail.fetchPriority = 'low'; // Priorité basse pour les miniatures
+            thumbnail.decoding = 'async';
             thumbnail.addEventListener('click', () => showImage(index));
             thumbnailsContainer.appendChild(thumbnail);
         });
+        
+        // Centrer les miniatures si elles tiennent dans l'espace disponible
+        setTimeout(() => {
+            this.centerThumbnails(thumbnailsContainer, images.length);
+            
+            // Recentrer lors du redimensionnement de la fenêtre
+            let resizeTimeout;
+            resizeHandler = () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    if (modal.classList.contains('active')) {
+                        this.centerThumbnails(thumbnailsContainer, images.length);
+                    }
+                }, 150);
+            };
+            window.addEventListener('resize', resizeHandler);
+        }, 100);
         
         albumTitle.textContent = albumName;
         showImage(0);
@@ -383,7 +474,12 @@ class CMSContentLoader {
         // Précharger toutes les images de l'album en arrière-plan pour navigation instantanée
         images.forEach((image) => {
             const img = new Image();
-            img.src = image.image;
+            let preloadUrl = image.image;
+            if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(preloadUrl)) {
+                preloadUrl = window.ImageOptimizer.optimizeFullscreen(preloadUrl, 1920);
+            }
+            img.src = preloadUrl;
+            img.fetchPriority = 'low';
         });
         
         // Gestion du zoom au double tap sur mobile
@@ -433,6 +529,10 @@ class CMSContentLoader {
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
             document.removeEventListener('keydown', handleKeyboard);
+            // Nettoyer l'event listener de resize
+            if (resizeHandler) {
+                window.removeEventListener('resize', resizeHandler);
+            }
         };
         
         document.getElementById('album-modal-close').onclick = closeCarousel;

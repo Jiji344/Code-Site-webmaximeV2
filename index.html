@@ -12,6 +12,15 @@
     <title>Monsieur Crocodeal - Photographe Professionnel | Portfolio</title>
     
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📷</text></svg>">
+    
+    <!-- Preconnect pour accélérer les connexions -->
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+    <link rel="dns-prefetch" href="https://res.cloudinary.com">
+    <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+    <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+    <link rel="preconnect" href="https://api.github.com" crossorigin>
+    <link rel="dns-prefetch" href="https://api.github.com">
+    
     <link rel="stylesheet" href="styles.css">
     
     <script type="importmap">
@@ -471,13 +480,14 @@
     <script>
         let pageLoaded = false;
         let camera3dLoaded = false;
+        let portfolioImagesPreloaded = false;
         let loaderHidden = false;
 
         function hideLoader() {
             if (loaderHidden) return;
             
             const loader = document.getElementById('page-loader');
-            if (loader && pageLoaded && camera3dLoaded) {
+            if (loader && pageLoaded && camera3dLoaded && portfolioImagesPreloaded) {
                 loaderHidden = true;
                 setTimeout(() => {
                     loader.classList.add('hidden');
@@ -499,14 +509,21 @@
             hideLoader();
         });
 
-        // Timeout de sécurité (10 secondes max)
+        // Attendre que les images du portfolio soient préchargées
+        window.addEventListener('portfolio-images-preloaded', () => {
+            portfolioImagesPreloaded = true;
+            hideLoader();
+        });
+
+        // Timeout de sécurité (15 secondes max pour laisser le temps au préchargement)
         setTimeout(() => {
             if (!loaderHidden) {
                 pageLoaded = true;
                 camera3dLoaded = true;
+                portfolioImagesPreloaded = true;
                 hideLoader();
             }
-        }, 10000);
+        }, 15000);
     </script>
 
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
@@ -523,6 +540,8 @@
         }
     </script>
     
+    <script src="image-optimizer.js"></script>
+    <script src="image-preloader.js"></script>
     <script src="script.js"></script>
     <script src="cms-content.js"></script>
     <script src="portfolio-carousel.js"></script>

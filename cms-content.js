@@ -772,6 +772,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const { owner, repo } = window.cmsLoader.config;
             // Utiliser l'API GitHub pour obtenir le SHA du fichier (plus léger que de charger tout le JSON)
+            // Note: En production, cette requête peut retourner 403 si pas d'auth, c'est normal
             const response = await fetch(
                 `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json?ref=main&t=${Date.now()}`,
                 {
@@ -782,6 +783,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     mode: 'cors'
                 }
             );
+            
+            // Ignorer les erreurs 403 (pas d'authentification en production)
+            if (!response.ok && response.status === 403) {
+                return; // Erreur silencieuse, on réessayera plus tard
+            }
             
             if (response.ok) {
                 const fileInfo = await response.json();

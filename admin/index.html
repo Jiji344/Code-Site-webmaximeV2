@@ -354,21 +354,41 @@
           }, 2000);
         }
         
+        // Flag pour éviter les appels multiples
+        let cmsEventsAttached = false;
+        let attachAttempts = 0;
+        const MAX_ATTEMPTS = 30;
+        
         // Fonction pour attacher les événements CMS (appelée plusieurs fois pour s'assurer que ça fonctionne)
         function attachCMSEvents() {
+          // Éviter les appels multiples
+          if (cmsEventsAttached) {
+            return true;
+          }
+          
+          attachAttempts++;
+          
+          if (attachAttempts > MAX_ATTEMPTS) {
+            console.warn('⚠️ CMS non détecté après', MAX_ATTEMPTS, 'tentatives');
+            return false;
+          }
+          
           if (!window.CMS) {
-            console.log('⏳ CMS pas encore chargé, nouvelle tentative dans 1 seconde...');
-            setTimeout(attachCMSEvents, 1000);
-            return;
+            if (attachAttempts % 5 === 0) { // Log seulement toutes les 5 tentatives
+              console.log('⏳ CMS pas encore chargé (tentative', attachAttempts, '/', MAX_ATTEMPTS, ')...');
+            }
+            return false;
           }
           
           if (!window.CMS.events) {
-            console.log('⏳ Événements CMS pas encore disponibles, nouvelle tentative dans 1 seconde...');
-            setTimeout(attachCMSEvents, 1000);
-            return;
+            if (attachAttempts % 5 === 0) { // Log seulement toutes les 5 tentatives
+              console.log('⏳ Événements CMS pas encore disponibles (tentative', attachAttempts, '/', MAX_ATTEMPTS, ')...');
+            }
+            return false;
           }
           
           console.log('✅ CMS chargé, attachement des événements...');
+          cmsEventsAttached = true;
           
           // Écouter les événements de changement d'état
           window.CMS.events.on('login', function() {
@@ -441,7 +461,7 @@
           // Écouter aussi postSave pour capturer les changements même sans publier
           window.CMS.events.on('postSave', function(entry) {
             console.log('💾 ===== SAUVEGARDE DÉTECTÉE =====');
-            console.log('💾 Entry:', entry);
+            console.log('💾 Entry complète:', JSON.stringify(entry, null, 2));
             
             // Vérifier si c'est une photo du portfolio
             let collection = null;
@@ -453,14 +473,19 @@
                 collection = entry.get('collection');
                 filePath = entry.get('path') || entry.get('filePath') || entry.get('slug');
                 isCover = entry.get('isCover') || entry.getIn(['data', 'isCover']);
+                console.log('📋 Données via .get():', { collection, filePath, isCover });
               } else if (entry && entry.collection) {
                 collection = entry.collection;
                 filePath = entry.path || entry.filePath || entry.slug;
                 isCover = entry.isCover || (entry.data && entry.data.isCover);
+                console.log('📋 Données via propriétés:', { collection, filePath, isCover });
               } else if (entry && entry.getIn) {
                 collection = entry.getIn(['collection']);
                 filePath = entry.getIn(['path']) || entry.getIn(['filePath']) || entry.getIn(['slug']);
                 isCover = entry.getIn(['isCover']) || entry.getIn(['data', 'isCover']);
+                console.log('📋 Données via .getIn():', { collection, filePath, isCover });
+              } else {
+                console.warn('⚠️ Format d\'entry non reconnu:', typeof entry, entry);
               }
             } catch (e) {
               console.warn('⚠️ Erreur lors de la lecture des données:', e);
@@ -485,9 +510,11 @@
             if (isPortfolioPhoto || isPortfolioPath) {
               console.log('🔄 Photo du portfolio sauvegardée, régénération automatique de l\'index...');
               if (isCover !== undefined) {
-                console.log(`📸 isCover dans la sauvegarde: ${isCover}`);
+                console.log(`📸 isCover dans la sauvegarde: ${isCover} (type: ${typeof isCover})`);
               }
               queueRegeneration(`Sauvegarde portfolio (${collection || 'collection inconnue'})`);
+            } else {
+              console.log('ℹ️ Sauvegarde non-portfolio, pas de régénération');
             }
           });
           
@@ -501,25 +528,22 @@
           }
           
           console.log('✅ Événements CMS attachés avec succès');
+          return true;
         }
         
         // Essayer d'attacher les événements immédiatement
         attachCMSEvents();
         
         // Réessayer périodiquement au cas où le CMS se charge plus tard
-        let attachAttempts = 0;
         const attachInterval = setInterval(function() {
-          if (window.CMS && window.CMS.events) {
+          if (cmsEventsAttached) {
             clearInterval(attachInterval);
-            console.log('✅ CMS détecté après', attachAttempts, 'tentatives');
-          } else {
-            attachAttempts++;
-            if (attachAttempts < 30) {
-              attachCMSEvents();
-            } else {
-              console.warn('⚠️ CMS non détecté après 30 tentatives');
-              clearInterval(attachInterval);
-            }
+            console.log('✅ CMS détecté et événements attachés');
+            return;
+          }
+          
+          if (attachCMSEvents()) {
+            clearInterval(attachInterval);
           }
         }, 1000);
         

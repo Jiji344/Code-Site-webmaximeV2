@@ -481,6 +481,94 @@
           window.CMS.events.on('logout', function() {
             batchBtn.style.display = 'none';
           });
+          
+          // Régénérer automatiquement l'index après chaque sauvegarde
+          window.CMS.events.on('preSave', function(entry) {
+            console.log('💾 Sauvegarde en cours...', entry);
+          });
+          
+          window.CMS.events.on('postSave', function(entry) {
+            console.log('✅ Fichier sauvegardé:', entry);
+            
+            // Vérifier si c'est une photo du portfolio
+            let collection = null;
+            if (entry && typeof entry.get === 'function') {
+              collection = entry.get('collection');
+            } else if (entry && entry.collection) {
+              collection = entry.collection;
+            } else if (entry && entry.getIn) {
+              collection = entry.getIn(['collection']);
+            }
+            
+            const categories = ['portrait', 'mariage', 'immobilier', 'paysage', 'macro', 'lifestyle'];
+            const isPortfolioPhoto = collection && categories.includes(collection.toLowerCase());
+            
+            // Vérifier aussi via le chemin du fichier
+            let filePath = null;
+            if (entry && typeof entry.get === 'function') {
+              filePath = entry.get('path') || entry.get('filePath');
+            } else if (entry && entry.path) {
+              filePath = entry.path;
+            }
+            
+            const isPortfolioPath = filePath && filePath.includes('content/portfolio/');
+            
+            if (isPortfolioPhoto || isPortfolioPath) {
+              console.log('🔄 Photo du portfolio modifiée, régénération automatique de l\'index...');
+              
+              // Attendre 3 secondes pour laisser GitHub traiter le commit
+              setTimeout(() => {
+                regenerateIndexAuto();
+              }, 3000);
+            }
+          });
+          
+          // Écouter aussi les événements de publication
+          window.CMS.events.on('publish', function(entry) {
+            console.log('📤 Publication:', entry);
+            setTimeout(() => {
+              regenerateIndexAuto();
+            }, 3000);
+          });
+        }
+        
+        // Fonction pour régénérer automatiquement l'index (sans afficher de toast)
+        async function regenerateIndexAuto() {
+          const regenerateBtn = document.getElementById('regenerate-index-btn');
+          if (!regenerateBtn) return;
+          
+          console.log('🔄 Régénération automatique de l\'index...');
+          
+          try {
+            const owner = 'Jiji344';
+            const repo = 'Code-Site-webmaximeV2';
+            const branch = 'main';
+            
+            const response = await fetch('/.netlify/functions/regenerate-index', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                owner: owner,
+                repo: repo,
+                branch: branch
+              })
+            });
+            
+            if (response.ok) {
+              const result = await response.json();
+              console.log('✅ Index régénéré automatiquement:', result.message);
+              
+              // Afficher un toast discret
+              showToast('Index mis à jour automatiquement', 'success');
+            } else {
+              const error = await response.json();
+              console.error('❌ Erreur lors de la régénération automatique:', error);
+            }
+          } catch (error) {
+            console.error('❌ Erreur lors de la régénération automatique:', error);
+          }
         }
       });
     </script>

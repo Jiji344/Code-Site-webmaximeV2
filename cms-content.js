@@ -40,9 +40,14 @@ class CMSContentLoader {
     async loadFromIndex() {
         try {
             const { owner, repo } = this.config;
-            const indexUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/portfolio-index.json`;
+            // Ajouter un cache-busting avec timestamp pour forcer le rechargement
+            // Utiliser un timestamp arrondi à la minute pour éviter trop de requêtes
+            const cacheBuster = Math.floor(Date.now() / 60000); // Arrondi à la minute
+            const indexUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/portfolio-index.json?t=${cacheBuster}`;
             
-            const response = await fetch(indexUrl);
+            const response = await fetch(indexUrl, {
+                cache: 'no-store' // Forcer le rechargement sans cache
+            });
             if (response.ok) {
                 const photos = await response.json();
                 
@@ -700,4 +705,49 @@ class CMSContentLoader {
 // Initialiser
 document.addEventListener('DOMContentLoaded', () => {
     window.cmsLoader = new CMSContentLoader();
+    
+    // Vérifier périodiquement si l'index a été mis à jour (toutes les 30 secondes)
+    let lastIndexCheck = Date.now();
+    let lastIndexHash = null;
+    
+    async function checkIndexUpdate() {
+        try {
+            const { owner, repo } = window.cmsLoader.config;
+            // Utiliser l'API GitHub pour obtenir le SHA du fichier (plus léger que de charger tout le JSON)
+            const response = await fetch(
+                `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json?ref=main`,
+                {
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json'
+                    },
+                    cache: 'no-store'
+                }
+            );
+            
+            if (response.ok) {
+                const fileInfo = await response.json();
+                const currentHash = fileInfo.sha;
+                
+                // Si le hash a changé, recharger les données
+                if (lastIndexHash && lastIndexHash !== currentHash) {
+                    console.log('🔄 Index mis à jour détecté, rechargement des données...');
+                    await window.cmsLoader.loadPortfolioData();
+                    window.cmsLoader.displayPortfolioImages();
+                    lastIndexHash = currentHash;
+                } else if (!lastIndexHash) {
+                    // Première vérification, stocker le hash
+                    lastIndexHash = currentHash;
+                }
+            }
+        } catch (error) {
+            // Erreur silencieuse, on réessayera au prochain check
+            console.debug('Vérification index:', error);
+        }
+    }
+    
+    // Vérifier immédiatement après le chargement initial
+    setTimeout(checkIndexUpdate, 5000);
+    
+    // Vérifier toutes les 30 secondes
+    setInterval(checkIndexUpdate, 30000);
 });

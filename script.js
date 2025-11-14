@@ -165,41 +165,201 @@ class ImageModal {
             this.toggleZoom();
         });
         
-        // Pour mobile (double-tap)
-        this.image.addEventListener('touchend', (e) => {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTap;
+        // Variables pour le pan (déplacement) sur mobile
+        let isPanning = false;
+        let startX = 0;
+        let startY = 0;
+        let currentX = 0;
+        let currentY = 0;
+
+        // Fonction pour limiter le déplacement aux limites de l'image
+        const constrainPan = (x, y, img) => {
+            const rect = img.getBoundingClientRect();
+            const containerRect = img.closest('.image-modal').getBoundingClientRect();
+            const scale = 2; // Niveau de zoom
             
-            if (tapLength < 300 && tapLength > 0) {
-                e.preventDefault();
-                this.toggleZoom();
+            const scaledWidth = rect.width * scale;
+            const scaledHeight = rect.height * scale;
+            
+            const maxX = Math.max(0, (scaledWidth - containerRect.width) / 2);
+            const maxY = Math.max(0, (scaledHeight - containerRect.height) / 2);
+            
+            return {
+                x: Math.max(-maxX, Math.min(maxX, x)),
+                y: Math.max(-maxY, Math.min(maxY, y))
+            };
+        };
+
+        // Gestion du pan (déplacement) sur l'image zoomée
+        this.image.addEventListener('touchstart', (e) => {
+            if (this.image.dataset.zoomed === 'true') {
+                if (e.touches.length === 1) {
+                    isPanning = true;
+                    currentX = parseFloat(this.image.dataset.currentX || '0');
+                    currentY = parseFloat(this.image.dataset.currentY || '0');
+                    startX = e.touches[0].clientX - currentX;
+                    startY = e.touches[0].clientY - currentY;
+                }
+            }
+        });
+
+        this.image.addEventListener('touchmove', (e) => {
+            if (this.image.dataset.zoomed === 'true' && isPanning) {
+                if (e.touches.length === 1) {
+                    e.preventDefault(); // Empêcher le scroll de la page
+                    
+                    const x = e.touches[0].clientX - startX;
+                    const y = e.touches[0].clientY - startY;
+                    
+                    const constrained = constrainPan(x, y, this.image);
+                    currentX = constrained.x;
+                    currentY = constrained.y;
+                    
+                    this.image.style.transform = `scale(2) translate(${currentX}px, ${currentY}px)`;
+                    this.image.style.transformOrigin = 'center center';
+                    this.image.dataset.currentX = currentX.toString();
+                    this.image.dataset.currentY = currentY.toString();
+                }
+            }
+        });
+
+        // Variables pour détecter le mouvement
+        let touchStartTime = 0;
+        let touchStartX = 0;
+        let touchStartY = 0;
+        
+        // Gestion du pan (déplacement) sur l'image zoomée
+        this.image.addEventListener('touchstart', (e) => {
+            touchStartTime = Date.now();
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            
+            if (this.image.dataset.zoomed === 'true') {
+                if (e.touches.length === 1) {
+                    isPanning = true;
+                    currentX = parseFloat(this.image.dataset.currentX || '0');
+                    currentY = parseFloat(this.image.dataset.currentY || '0');
+                    startX = e.touches[0].clientX - currentX;
+                    startY = e.touches[0].clientY - currentY;
+                }
+            }
+        });
+
+        this.image.addEventListener('touchmove', (e) => {
+            if (this.image.dataset.zoomed === 'true' && isPanning) {
+                if (e.touches.length === 1) {
+                    e.preventDefault(); // Empêcher le scroll de la page
+                    
+                    // Retirer la transition pendant le pan pour un mouvement fluide
+                    this.image.style.transition = '';
+                    
+                    const x = e.touches[0].clientX - startX;
+                    const y = e.touches[0].clientY - startY;
+                    
+                    const constrained = constrainPan(x, y, this.image);
+                    currentX = constrained.x;
+                    currentY = constrained.y;
+                    
+                    this.image.style.transform = `scale(2) translate(${currentX}px, ${currentY}px)`;
+                    this.image.style.transformOrigin = 'center center';
+                    this.image.dataset.currentX = currentX.toString();
+                    this.image.dataset.currentY = currentY.toString();
+                }
+            }
+        });
+
+        // Pour mobile (double-tap) - fusionné avec touchend du pan
+        this.image.addEventListener('touchend', (e) => {
+            const touchEndTime = Date.now();
+            const touchDuration = touchEndTime - touchStartTime;
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            
+            // Calculer la distance du mouvement
+            const moveDistance = Math.sqrt(
+                Math.pow(touchEndX - touchStartX, 2) + 
+                Math.pow(touchEndY - touchStartY, 2)
+            );
+            
+            // Si on était en train de panner, arrêter le pan et recentrer l'image
+            if (this.image.dataset.zoomed === 'true' && isPanning) {
+                isPanning = false;
+                
+                // Recentrer l'image avec une animation fluide
+                this.image.style.transition = 'transform 0.3s ease-out';
+                currentX = 0;
+                currentY = 0;
+                this.image.style.transform = 'scale(2) translate(0px, 0px)';
+                this.image.style.transformOrigin = 'center center';
+                this.image.dataset.currentX = '0';
+                this.image.dataset.currentY = '0';
+                
+                // Retirer la transition après l'animation
+                setTimeout(() => {
+                    this.image.style.transition = '';
+                }, 300);
+                
+                // Ne pas détecter le double tap si on a bougé (c'était un pan)
+                if (moveDistance > 10) {
+                    return;
+                }
             }
             
-            lastTap = currentTime;
+            // Détecter le double tap seulement si :
+            // - Le mouvement était très petit (< 10px) - c'est un tap, pas un pan
+            // - La durée était courte (< 300ms) - c'est un tap rapide
+            if (moveDistance < 10 && touchDuration < 300) {
+                const currentTime = Date.now();
+                const tapLength = currentTime - lastTap;
+                
+                if (tapLength < 300 && tapLength > 0) {
+                    e.preventDefault();
+                    this.toggleZoom();
+                }
+                
+                lastTap = currentTime;
+            }
         });
     }
 
     toggleZoom() {
         const isZoomed = this.image.dataset.zoomed === 'true';
         
+        // Ajouter une transition pour une animation fluide
+        this.image.style.transition = 'transform 0.3s ease-out';
+        
         if (isZoomed) {
             // Dezoom vers x1
             this.image.style.transform = 'scale(1)';
             this.image.style.cursor = 'pointer';
+            this.image.style.transformOrigin = 'center center';
             this.image.dataset.zoomed = 'false';
+            this.image.dataset.currentX = '0';
+            this.image.dataset.currentY = '0';
         } else {
             // Zoom vers x2
             this.image.style.transform = 'scale(2)';
             this.image.style.cursor = 'zoom-out';
+            this.image.style.transformOrigin = 'center center';
             this.image.dataset.zoomed = 'true';
+            this.image.dataset.currentX = '0';
+            this.image.dataset.currentY = '0';
         }
+        
+        // Retirer la transition après l'animation pour permettre le pan fluide
+        setTimeout(() => {
+            this.image.style.transition = '';
+        }, 300);
     }
 
     close() {
         this.modal.classList.remove('active');
         this.image.src = '';
         this.image.style.transform = 'scale(1)';
+        this.image.style.transformOrigin = 'center center';
         this.image.dataset.zoomed = 'false';
+        this.image.dataset.currentX = '0';
+        this.image.dataset.currentY = '0';
         document.body.style.overflow = 'auto';
     }
 }

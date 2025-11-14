@@ -253,12 +253,7 @@ class CMSContentLoader {
         albumTitle.className = 'album-card-title';
         albumTitle.textContent = albumName;
         
-        const albumCount = document.createElement('p');
-        albumCount.className = 'album-card-count';
-        albumCount.textContent = `${images.length} photo${images.length > 1 ? 's' : ''}`;
-        
         cardContent.appendChild(albumTitle);
-        cardContent.appendChild(albumCount);
         
         albumCard.appendChild(coverImage);
         albumCard.appendChild(cardContent);
@@ -370,6 +365,15 @@ class CMSContentLoader {
         let lastTap = 0;
         let resizeHandler = null;
         
+        // Variables pour le pan (déplacement) sur mobile
+        let isPanning = false;
+        let startX = 0;
+        let startY = 0;
+        let currentX = 0;
+        let currentY = 0;
+        let initialX = 0;
+        let initialY = 0;
+        
         const showImage = (index) => {
             currentIndex = index;
             const image = images[index];
@@ -377,7 +381,11 @@ class CMSContentLoader {
             // Réinitialiser le zoom lors du changement d'image
             carouselImage.style.transform = 'scale(1)';
             carouselImage.style.cursor = 'pointer';
+            carouselImage.style.transformOrigin = 'center center';
             isZoomed = false;
+            currentX = 0;
+            currentY = 0;
+            isPanning = false;
             
             // Optimiser l'URL Cloudinary pour l'affichage plein écran
             let imageUrl = image.image;
@@ -482,29 +490,142 @@ class CMSContentLoader {
             img.fetchPriority = 'low';
         });
         
-        // Gestion du zoom au double tap sur mobile
-        carouselImage.addEventListener('touchend', (e) => {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTap;
+        // Fonction pour limiter le déplacement aux limites de l'image
+        const constrainPan = (x, y, img) => {
+            const rect = img.getBoundingClientRect();
+            const containerRect = img.parentElement.getBoundingClientRect();
+            const scale = 2; // Niveau de zoom
             
-            // Détection du double tap (moins de 300ms entre deux taps)
-            if (tapLength < 300 && tapLength > 0) {
-                e.preventDefault();
+            const scaledWidth = rect.width * scale;
+            const scaledHeight = rect.height * scale;
+            
+            const maxX = Math.max(0, (scaledWidth - containerRect.width) / 2);
+            const maxY = Math.max(0, (scaledHeight - containerRect.height) / 2);
+            
+            return {
+                x: Math.max(-maxX, Math.min(maxX, x)),
+                y: Math.max(-maxY, Math.min(maxY, y))
+            };
+        };
+
+        // Gestion du pan (déplacement) sur l'image zoomée
+        let touchStartTime = 0;
+        let touchStartX = 0;
+        let touchStartY = 0;
+        
+        carouselImage.addEventListener('touchstart', (e) => {
+            touchStartTime = Date.now();
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            
+            if (isZoomed) {
+                if (e.touches.length === 1) {
+                    isPanning = true;
+                    startX = e.touches[0].clientX - currentX;
+                    startY = e.touches[0].clientY - currentY;
+                    initialX = currentX;
+                    initialY = currentY;
+                }
+            }
+        });
+
+        carouselImage.addEventListener('touchmove', (e) => {
+            if (isZoomed && isPanning) {
+                if (e.touches.length === 1) {
+                    e.preventDefault(); // Empêcher le scroll de la page
+                    
+                    // Retirer la transition pendant le pan pour un mouvement fluide
+                    carouselImage.style.transition = '';
+                    
+                    const x = e.touches[0].clientX - startX;
+                    const y = e.touches[0].clientY - startY;
+                    
+                    const constrained = constrainPan(x, y, carouselImage);
+                    currentX = constrained.x;
+                    currentY = constrained.y;
+                    
+                    carouselImage.style.transform = `scale(2) translate(${currentX}px, ${currentY}px)`;
+                    carouselImage.style.transformOrigin = 'center center';
+                }
+            }
+        });
+
+        // Gestion du zoom au double tap sur mobile (fusionné avec touchend du pan)
+        carouselImage.addEventListener('touchend', (e) => {
+            const touchEndTime = Date.now();
+            const touchDuration = touchEndTime - touchStartTime;
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            
+            // Calculer la distance du mouvement
+            const moveDistance = Math.sqrt(
+                Math.pow(touchEndX - touchStartX, 2) + 
+                Math.pow(touchEndY - touchStartY, 2)
+            );
+            
+            // Si on était en train de panner, arrêter le pan et recentrer l'image
+            if (isZoomed && isPanning) {
+                isPanning = false;
+                // Recentrer l'image avec une animation fluide
+                carouselImage.style.transition = 'transform 0.3s ease-out';
+                currentX = 0;
+                currentY = 0;
+                carouselImage.style.transform = 'scale(2) translate(0px, 0px)';
+                carouselImage.style.transformOrigin = 'center center';
                 
-                if (!isZoomed) {
-                    // Zoom
-                    carouselImage.style.transform = 'scale(2)';
-                    carouselImage.style.cursor = 'zoom-out';
-                    isZoomed = true;
-                } else {
-                    // Dézoom
-                    carouselImage.style.transform = 'scale(1)';
-                    carouselImage.style.cursor = 'pointer';
-                    isZoomed = false;
+                // Retirer la transition après l'animation
+                setTimeout(() => {
+                    carouselImage.style.transition = '';
+                }, 300);
+                
+                // Ne pas détecter le double tap si on a bougé (c'était un pan)
+                if (moveDistance > 10) {
+                    return;
                 }
             }
             
-            lastTap = currentTime;
+            // Détecter le double tap seulement si :
+            // - Le mouvement était très petit (< 10px) - c'est un tap, pas un pan
+            // - La durée était courte (< 300ms) - c'est un tap rapide
+            if (moveDistance < 10 && touchDuration < 300) {
+                const currentTime = Date.now();
+                const tapLength = currentTime - lastTap;
+                
+                // Détection du double tap (moins de 300ms entre deux taps)
+                if (tapLength < 300 && tapLength > 0) {
+                    e.preventDefault();
+                    
+                    if (!isZoomed) {
+                        // Zoom
+                        carouselImage.style.transition = 'transform 0.3s ease-out';
+                        carouselImage.style.transform = 'scale(2)';
+                        carouselImage.style.cursor = 'zoom-out';
+                        carouselImage.style.transformOrigin = 'center center';
+                        currentX = 0;
+                        currentY = 0;
+                        isZoomed = true;
+                        
+                        setTimeout(() => {
+                            carouselImage.style.transition = '';
+                        }, 300);
+                    } else {
+                        // Dézoom
+                        carouselImage.style.transition = 'transform 0.3s ease-out';
+                        carouselImage.style.transform = 'scale(1)';
+                        carouselImage.style.cursor = 'pointer';
+                        carouselImage.style.transformOrigin = 'center center';
+                        currentX = 0;
+                        currentY = 0;
+                        isZoomed = false;
+                        
+                        setTimeout(() => {
+                            carouselImage.style.transition = '';
+                        }, 300);
+                    }
+                }
+                
+                lastTap = currentTime;
+            }
         });
         
         prevButton.onclick = () => {

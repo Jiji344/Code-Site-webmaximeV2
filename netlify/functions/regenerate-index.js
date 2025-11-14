@@ -239,7 +239,27 @@ exports.handler = async (event, context) => {
     if (indexResponse.ok) {
       const indexFile = await indexResponse.json();
       const indexContent = JSON.parse(Buffer.from(indexFile.content, 'base64').toString());
-      coverCount = indexContent.filter(photo => photo.isCover === true).length;
+      // Compter toutes les photos avec isCover === true (booléen ou string)
+      coverCount = indexContent.filter(photo => 
+        photo.isCover === true || 
+        photo.isCover === 'true' || 
+        photo.isCover === 'True' ||
+        photo.isCover === 1 ||
+        photo.isCover === '1'
+      ).length;
+      
+      // Log pour déboguer
+      const coverPhotos = indexContent.filter(photo => 
+        photo.isCover === true || 
+        photo.isCover === 'true' || 
+        photo.isCover === 'True' ||
+        photo.isCover === 1 ||
+        photo.isCover === '1'
+      );
+      console.log(`📸 Photos de couverture trouvées: ${coverCount}`);
+      coverPhotos.forEach(photo => {
+        console.log(`  - ${photo.title} (album: ${photo.album}, isCover: ${photo.isCover})`);
+      });
     }
 
     return {

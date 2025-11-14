@@ -40,10 +40,33 @@ class CMSContentLoader {
     async loadFromIndex() {
         try {
             const { owner, repo } = this.config;
-            // Ajouter un cache-busting avec timestamp pour forcer le rechargement
-            // Utiliser un timestamp à la seconde pour un rechargement plus rapide
-            const cacheBuster = Date.now(); // Timestamp précis à la milliseconde
-            const indexUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/portfolio-index.json?t=${cacheBuster}`;
+            
+            // Obtenir le SHA du fichier depuis l'API GitHub pour un cache-busting efficace
+            // Cela garantit qu'on récupère toujours la dernière version
+            let cacheBuster = Date.now();
+            try {
+                const shaResponse = await fetch(
+                    `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json?ref=main`,
+                    {
+                        headers: {
+                            'Accept': 'application/vnd.github.v3+json',
+                            'Cache-Control': 'no-cache'
+                        },
+                        cache: 'no-store'
+                    }
+                );
+                
+                if (shaResponse.ok) {
+                    const fileInfo = await shaResponse.json();
+                    // Utiliser le SHA comme cache-buster (plus efficace que timestamp)
+                    cacheBuster = fileInfo.sha.substring(0, 8);
+                }
+            } catch (e) {
+                console.debug('Impossible d\'obtenir le SHA, utilisation du timestamp');
+            }
+            
+            // Utiliser le SHA ou le timestamp comme cache-buster
+            const indexUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/portfolio-index.json?v=${cacheBuster}`;
             
             const response = await fetch(indexUrl, {
                 cache: 'no-store', // Forcer le rechargement sans cache
@@ -730,10 +753,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const { owner, repo } = window.cmsLoader.config;
             // Utiliser l'API GitHub pour obtenir le SHA du fichier (plus léger que de charger tout le JSON)
             const response = await fetch(
-                `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json?ref=main`,
+                `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json?ref=main&t=${Date.now()}`,
                 {
                     headers: {
-                        'Accept': 'application/vnd.github.v3+json'
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Cache-Control': 'no-cache'
                     },
                     cache: 'no-store'
                 }
@@ -767,8 +791,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Vérifier immédiatement après le chargement initial
-    setTimeout(checkIndexUpdate, 3000);
+    setTimeout(checkIndexUpdate, 2000);
     
-    // Vérifier toutes les 10 secondes pour une mise à jour plus rapide
-    setInterval(checkIndexUpdate, 10000);
+    // Vérifier toutes les 5 secondes pour une mise à jour très rapide
+    setInterval(checkIndexUpdate, 5000);
 });

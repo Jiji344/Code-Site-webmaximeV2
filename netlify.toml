@@ -52,13 +52,13 @@
   [headers.values]
     Cache-Control = "public, max-age=3600"
 
-# Cache pour les fichiers CSS et JS
+# Cache pour les fichiers CSS et JS (avec revalidation pour permettre les mises à jour)
 [[headers]]
   for = "/*.css"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=86400, must-revalidate"
 
 [[headers]]
   for = "/*.js"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=86400, must-revalidate"

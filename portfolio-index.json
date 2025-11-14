@@ -1,10 +1,102 @@
 [
   {
+    "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127134/ysdkldtihcanflqea5j0.webp",
+    "title": "Carla Salagou 1",
+    "category": "Portrait",
+    "album": "Carla Salagou",
+    "date": "2025-11-14T13:32:38.723Z"
+  },
+  {
+    "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127150/te9cipk2neg7jkx8brti.webp",
+    "title": "Carla Salagou 10",
+    "category": "Portrait",
+    "album": "Carla Salagou",
+    "date": "2025-11-14T13:32:56.723Z"
+  },
+  {
+    "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127151/mbvgczv6w2y3q3ufuqe8.webp",
+    "title": "Carla Salagou 11",
+    "category": "Portrait",
+    "album": "Carla Salagou",
+    "date": "2025-11-14T13:32:58.723Z"
+  },
+  {
+    "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127153/baiwfjrzpj8echj60xyj.webp",
+    "title": "Carla Salagou 12",
+    "category": "Portrait",
+    "album": "Carla Salagou",
+    "date": "2025-11-14T13:33:00.723Z"
+  },
+  {
+    "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127155/dttb2rowptf0o3nnkshf.webp",
+    "title": "Carla Salagou 13",
+    "category": "Portrait",
+    "album": "Carla Salagou",
+    "date": "2025-11-14T13:33:02.723Z"
+  },
+  {
+    "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127135/fg2ebbvsyarlxgjamxwe.webp",
+    "title": "Carla Salagou 2",
+    "category": "Portrait",
+    "album": "Carla Salagou",
+    "date": "2025-11-14T13:32:40.723Z"
+  },
+  {
+    "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127136/hpqofiudezhv6julx2fa.webp",
+    "title": "Carla Salagou 3",
+    "category": "Portrait",
+    "album": "Carla Salagou",
+    "date": "2025-11-14T13:32:42.723Z"
+  },
+  {
+    "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127138/xnpwm0iwry3xghj11gon.webp",
+    "title": "Carla Salagou 4",
+    "category": "Portrait",
+    "album": "Carla Salagou",
+    "date": "2025-11-14T13:32:44.723Z"
+  },
+  {
+    "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127140/lozrlwfu6jpkngetwvdp.webp",
+    "title": "Carla Salagou 5",
+    "category": "Portrait",
+    "album": "Carla Salagou",
+    "date": "2025-11-14T13:32:46.723Z"
+  },
+  {
+    "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127143/m7eijk2eotr3czofx97z.webp",
+    "title": "Carla Salagou 6",
+    "category": "Portrait",
+    "album": "Carla Salagou",
+    "date": "2025-11-14T13:32:48.723Z"
+  },
+  {
+    "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127145/bazky67ww4gmj2hqnih9.webp",
+    "title": "Carla Salagou 7",
+    "category": "Portrait",
+    "album": "Carla Salagou",
+    "date": "2025-11-14T13:32:50.723Z"
+  },
+  {
+    "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127147/urxhulrwoshwcgouoxh6.webp",
+    "title": "Carla Salagou 8",
+    "category": "Portrait",
+    "album": "Carla Salagou",
+    "date": "2025-11-14T13:32:52.723Z"
+  },
+  {
+    "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127148/tqs63igzdqzgiruxwyzf.webp",
+    "title": "Carla Salagou 9",
+    "category": "Portrait",
+    "album": "Carla Salagou",
+    "date": "2025-11-14T13:32:54.723Z"
+  },
+  {
     "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763061289/rcdhpfliw46m2umhqllk.webp",
     "title": "Paula Salagou 1",
-    "category": "Portrait",
     "album": "Paula Salagou",
-    "date": "2025-11-13T19:15:11.031Z"
+    "isCover": false,
+    "date": "2025-11-13T19:15:11.031Z",
+    "category": "Portrait"
   },
   {
     "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763061303/xgfmn9iktrnip26g7xbx.webp",
@@ -16,16 +108,18 @@
   {
     "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763061305/f7exadtprr7rlhol4ezx.webp",
     "title": "Paula Salagou 11",
-    "category": "Portrait",
     "album": "Paula Salagou",
-    "date": "2025-11-13T19:15:31.031Z"
+    "isCover": false,
+    "date": "2025-11-13T19:15:31.031Z",
+    "category": "Portrait"
   },
   {
     "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763061307/csnxdcp5h5utc5n6ynvc.webp",
     "title": "Paula Salagou 12",
-    "category": "Portrait",
     "album": "Paula Salagou",
-    "date": "2025-11-13T19:15:33.031Z"
+    "isCover": true,
+    "date": "2025-11-13T19:15:33.031Z",
+    "category": "Portrait"
   },
   {
     "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763061290/wslsah8u22jjj0nwtunv.webp",
@@ -107,9 +201,10 @@
   {
     "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763056140/cwfqph6qbnx3jfops9ph.webp",
     "title": "Winona Automne 4",
-    "category": "Portrait",
     "album": "Winona Automne",
-    "date": "2025-11-13T17:49:20.667Z"
+    "isCover": false,
+    "date": "2025-11-13T17:49:20.667Z",
+    "category": "Portrait"
   },
   {
     "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763056142/ka3y50ees3uuayyu4szl.webp",

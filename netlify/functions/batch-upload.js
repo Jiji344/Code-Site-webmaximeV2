@@ -157,6 +157,11 @@ function parseMarkdownFrontmatter(content) {
         data[key] = value;
       }
     });
+    
+    // S'assurer que isCover est toujours présent (false par défaut)
+    if (data.isCover === undefined) {
+      data.isCover = false;
+    }
 
     return data;
   }

@@ -244,25 +244,26 @@ class CMSContentLoader {
         coverImage.className = 'album-card-image';
         
         // Trouver l'image de couverture ou utiliser la première par défaut
-        // Chercher une image avec isCover === true ou isCover === 'true' (pour gérer les strings)
+        // Chercher une image avec isCover === true (maintenant toutes les photos ont isCover défini)
         let coverImageData = images.find(img => {
-            // Log pour déboguer
-            if (img.isCover !== undefined) {
-                console.log(`🔍 Photo "${img.title}" - isCover:`, img.isCover, typeof img.isCover);
+            // Vérifier si isCover est true (booléen) ou 'true' (string pour compatibilité)
+            const isCover = img.isCover === true || 
+                           img.isCover === 'true' || 
+                           img.isCover === 'True' ||
+                           img.isCover === 1 ||
+                           img.isCover === '1';
+            
+            if (isCover) {
+                console.log(`✅ Photo de couverture trouvée: "${img.title}" (isCover: ${img.isCover})`);
             }
-            return img.isCover === true || 
-                   img.isCover === 'true' || 
-                   img.isCover === 'True' ||
-                   img.isCover === 1 ||
-                   img.isCover === '1';
+            
+            return isCover;
         });
         
         // Si aucune image n'est marquée comme couverture, utiliser la première
         if (!coverImageData) {
-            console.log(`📸 Aucune couverture trouvée pour l'album "${albumName}", utilisation de la première photo`);
+            console.log(`📸 Aucune couverture définie pour l'album "${albumName}", utilisation de la première photo`);
             coverImageData = images[0];
-        } else {
-            console.log(`✅ Couverture trouvée pour l'album "${albumName}":`, coverImageData.title);
         }
         
         // Optimiser l'URL Cloudinary pour les cartes

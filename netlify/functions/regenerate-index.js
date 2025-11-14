@@ -17,10 +17,22 @@ function parseMarkdownFrontmatter(content) {
     const data = {};
 
     frontmatter.split('\n').forEach(line => {
-      const colonIndex = line.indexOf(':');
+      // Ignorer les lignes vides ou les commentaires
+      const trimmedLine = line.trim();
+      if (!trimmedLine || trimmedLine.startsWith('#')) {
+        return;
+      }
+      
+      const colonIndex = trimmedLine.indexOf(':');
       if (colonIndex > 0) {
-        const key = line.substring(0, colonIndex).trim();
-        let value = line.substring(colonIndex + 1).trim();
+        const key = trimmedLine.substring(0, colonIndex).trim();
+        let value = trimmedLine.substring(colonIndex + 1).trim();
+        
+        // Retirer les guillemets si présents
+        if ((value.startsWith('"') && value.endsWith('"')) || 
+            (value.startsWith("'") && value.endsWith("'"))) {
+          value = value.slice(1, -1);
+        }
         
         // Convertir les valeurs booléennes
         if (value === 'true' || value === 'True') {
@@ -29,6 +41,7 @@ function parseMarkdownFrontmatter(content) {
           value = false;
         }
         
+        // Toujours inclure le champ, même s'il est false
         data[key] = value;
       }
     });
@@ -204,13 +217,34 @@ exports.handler = async (event, context) => {
     }
 
     const photosCount = await regenerateIndex(owner, repo, branch || 'main', githubToken);
+    
+    // Vérifier combien de photos ont le champ isCover
+    const indexResponse = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json?ref=${branch || 'main'}`,
+      {
+        headers: {
+          'Authorization': getGitHubAuthHeader(githubToken),
+          'Accept': 'application/vnd.github.v3+json',
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      }
+    );
+    
+    let coverCount = 0;
+    if (indexResponse.ok) {
+      const indexFile = await indexResponse.json();
+      const indexContent = JSON.parse(Buffer.from(indexFile.content, 'base64').toString());
+      coverCount = indexContent.filter(photo => photo.isCover === true).length;
+    }
 
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({ 
         success: true, 
-        message: `Index régénéré avec succès (${photosCount} photos)` 
+        message: `Index régénéré avec succès (${photosCount} photos, ${coverCount} couvertures définies)`,
+        photosCount: photosCount,
+        coverCount: coverCount
       })
     };
   } catch (error) {

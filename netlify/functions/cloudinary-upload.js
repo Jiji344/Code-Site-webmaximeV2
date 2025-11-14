@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+// Utilisation du fetch natif de Node.js 18+ (disponible dans Netlify Functions)
 
 exports.handler = async (event, context) => {
   const headers = {

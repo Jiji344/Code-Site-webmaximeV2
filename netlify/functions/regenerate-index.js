@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+// Utilisation du fetch natif de Node.js 18+ (disponible dans Netlify Functions)
 
 // Helper pour déterminer le format d'authentification GitHub
 function getGitHubAuthHeader(githubToken) {

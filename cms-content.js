@@ -41,12 +41,17 @@ class CMSContentLoader {
         try {
             const { owner, repo } = this.config;
             // Ajouter un cache-busting avec timestamp pour forcer le rechargement
-            // Utiliser un timestamp arrondi à la minute pour éviter trop de requêtes
-            const cacheBuster = Math.floor(Date.now() / 60000); // Arrondi à la minute
+            // Utiliser un timestamp à la seconde pour un rechargement plus rapide
+            const cacheBuster = Date.now(); // Timestamp précis à la milliseconde
             const indexUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/portfolio-index.json?t=${cacheBuster}`;
             
             const response = await fetch(indexUrl, {
-                cache: 'no-store' // Forcer le rechargement sans cache
+                cache: 'no-store', // Forcer le rechargement sans cache
+                headers: {
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
+                }
             });
             if (response.ok) {
                 const photos = await response.json();
@@ -221,6 +226,16 @@ class CMSContentLoader {
 
         // Utiliser requestAnimationFrame pour ne pas bloquer le rendu
         requestAnimationFrame(() => {
+            // Nettoyer l'ancien contenu avant d'ajouter le nouveau
+            // Garder uniquement les éléments de navigation (flèches)
+            const navElements = imagesContainer.querySelectorAll('.category-nav-prev, .category-nav-next');
+            imagesContainer.innerHTML = '';
+            
+            // Réinsérer les éléments de navigation
+            navElements.forEach(nav => {
+                imagesContainer.appendChild(nav);
+            });
+            
             // Ajouter les albums
             Object.keys(data.albums).forEach(albumName => {
                 const albumImages = data.albums[albumName];
@@ -731,9 +746,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Si le hash a changé, recharger les données
                 if (lastIndexHash && lastIndexHash !== currentHash) {
                     console.log('🔄 Index mis à jour détecté, rechargement des données...');
+                    
+                    // Forcer le rechargement avec un nouveau cache-buster
                     await window.cmsLoader.loadPortfolioData();
+                    
+                    // Réafficher les images avec les nouvelles données
                     window.cmsLoader.displayPortfolioImages();
+                    
                     lastIndexHash = currentHash;
+                    console.log('✅ Données rechargées avec succès');
                 } else if (!lastIndexHash) {
                     // Première vérification, stocker le hash
                     lastIndexHash = currentHash;
@@ -746,8 +767,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Vérifier immédiatement après le chargement initial
-    setTimeout(checkIndexUpdate, 5000);
+    setTimeout(checkIndexUpdate, 3000);
     
-    // Vérifier toutes les 30 secondes
-    setInterval(checkIndexUpdate, 30000);
+    // Vérifier toutes les 10 secondes pour une mise à jour plus rapide
+    setInterval(checkIndexUpdate, 10000);
 });

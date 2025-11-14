@@ -245,15 +245,24 @@ class CMSContentLoader {
         
         // Trouver l'image de couverture ou utiliser la première par défaut
         // Chercher une image avec isCover === true ou isCover === 'true' (pour gérer les strings)
-        let coverImageData = images.find(img => 
-            img.isCover === true || 
-            img.isCover === 'true' || 
-            img.isCover === 'True'
-        );
+        let coverImageData = images.find(img => {
+            // Log pour déboguer
+            if (img.isCover !== undefined) {
+                console.log(`🔍 Photo "${img.title}" - isCover:`, img.isCover, typeof img.isCover);
+            }
+            return img.isCover === true || 
+                   img.isCover === 'true' || 
+                   img.isCover === 'True' ||
+                   img.isCover === 1 ||
+                   img.isCover === '1';
+        });
         
         // Si aucune image n'est marquée comme couverture, utiliser la première
         if (!coverImageData) {
+            console.log(`📸 Aucune couverture trouvée pour l'album "${albumName}", utilisation de la première photo`);
             coverImageData = images[0];
+        } else {
+            console.log(`✅ Couverture trouvée pour l'album "${albumName}":`, coverImageData.title);
         }
         
         // Optimiser l'URL Cloudinary pour les cartes

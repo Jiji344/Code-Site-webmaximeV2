@@ -89,6 +89,12 @@
       <span>Nettoyer Portfolio</span>
     </a>
     
+    <!-- Bouton Régénérer Index (masqué par défaut pour sécurité) -->
+    <button class="clean-portfolio-btn" id="regenerate-index-btn" style="display: none !important; cursor: pointer; border: none; font-family: inherit;">
+      <span>🔄</span>
+      <span>Régénérer Index</span>
+    </button>
+    
     <!-- Decap CMS (anciennement Netlify CMS) -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     
@@ -153,15 +159,76 @@
         function updateButtonVisibility() {
           const batchBtn = document.getElementById('batch-upload-btn');
           const cleanBtn = document.getElementById('clean-portfolio-btn');
+          const regenerateBtn = document.getElementById('regenerate-index-btn');
           
           if (isUserLoggedIn()) {
             if (batchBtn) batchBtn.style.display = 'flex';
             if (cleanBtn) cleanBtn.style.display = 'flex';
+            if (regenerateBtn) regenerateBtn.style.display = 'flex';
           } else {
             if (batchBtn) batchBtn.style.display = 'none';
             if (cleanBtn) cleanBtn.style.display = 'none';
+            if (regenerateBtn) regenerateBtn.style.display = 'none';
           }
         }
+        
+        // Fonction pour régénérer l'index
+        async function regenerateIndex() {
+          const regenerateBtn = document.getElementById('regenerate-index-btn');
+          if (!regenerateBtn) return;
+          
+          // Désactiver le bouton pendant le traitement
+          regenerateBtn.disabled = true;
+          regenerateBtn.innerHTML = '<span>⏳</span><span>Régénération...</span>';
+          
+          try {
+            // Utiliser les valeurs du repo depuis cms-content.js
+            const owner = 'Jiji344';
+            const repo = 'Code-Site-webmaximeV2';
+            const branch = 'main';
+            
+            const response = await fetch('/.netlify/functions/regenerate-index', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                owner: owner,
+                repo: repo,
+                branch: branch
+              })
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok && result.success) {
+              alert(`✅ ${result.message}\n\nL'index a été régénéré avec succès. Les changements seront visibles dans quelques secondes.`);
+              regenerateBtn.innerHTML = '<span>✅</span><span>Index régénéré</span>';
+              setTimeout(() => {
+                regenerateBtn.innerHTML = '<span>🔄</span><span>Régénérer Index</span>';
+              }, 3000);
+            } else {
+              throw new Error(result.error || result.details || 'Erreur inconnue');
+            }
+          } catch (error) {
+            console.error('Erreur lors de la régénération:', error);
+            alert(`❌ Erreur lors de la régénération de l'index:\n${error.message}`);
+            regenerateBtn.innerHTML = '<span>❌</span><span>Erreur</span>';
+            setTimeout(() => {
+              regenerateBtn.innerHTML = '<span>🔄</span><span>Régénérer Index</span>';
+            }, 3000);
+          } finally {
+            regenerateBtn.disabled = false;
+          }
+        }
+        
+        // Ajouter l'événement au bouton
+        document.addEventListener('DOMContentLoaded', function() {
+          const regenerateBtn = document.getElementById('regenerate-index-btn');
+          if (regenerateBtn) {
+            regenerateBtn.addEventListener('click', regenerateIndex);
+          }
+        });
         
         // Vérifier immédiatement
         updateButtonVisibility();

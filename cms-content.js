@@ -40,40 +40,15 @@ class CMSContentLoader {
     async loadFromIndex() {
         try {
             const { owner, repo } = this.config;
-            
-            // Obtenir le SHA du fichier depuis l'API GitHub pour un cache-busting efficace
-            // Cela garantit qu'on récupère toujours la dernière version
-            let cacheBuster = Date.now();
-            try {
-                const shaResponse = await fetch(
-                    `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json?ref=main`,
-                    {
-                        headers: {
-                            'Accept': 'application/vnd.github.v3+json',
-                            'Cache-Control': 'no-cache'
-                        },
-                        cache: 'no-store'
-                    }
-                );
-                
-                if (shaResponse.ok) {
-                    const fileInfo = await shaResponse.json();
-                    // Utiliser le SHA comme cache-buster (plus efficace que timestamp)
-                    cacheBuster = fileInfo.sha.substring(0, 8);
-                }
-            } catch (e) {
-                console.debug('Impossible d\'obtenir le SHA, utilisation du timestamp');
-            }
-            
-            // Utiliser le SHA ou le timestamp comme cache-buster
-            const indexUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/portfolio-index.json?v=${cacheBuster}`;
+            // Cache-busting simple avec timestamp (non bloquant)
+            const cacheBuster = Date.now();
+            const indexUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/portfolio-index.json?t=${cacheBuster}`;
             
             const response = await fetch(indexUrl, {
-                cache: 'no-store', // Forcer le rechargement sans cache
+                cache: 'no-store',
                 headers: {
                     'Cache-Control': 'no-cache, no-store, must-revalidate',
-                    'Pragma': 'no-cache',
-                    'Expires': '0'
+                    'Pragma': 'no-cache'
                 }
             });
             if (response.ok) {

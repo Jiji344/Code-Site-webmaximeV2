@@ -354,198 +354,77 @@
           }, 2000);
         }
         
-        // Flag pour éviter les appels multiples
-        let cmsEventsAttached = false;
-        let attachAttempts = 0;
-        const MAX_ATTEMPTS = 30;
+        // Détecter les sauvegardes via observation du DOM et des changements d'URL
+        let lastUrl = window.location.href;
+        let lastSaveTime = 0;
         
-        // Fonction pour attacher les événements CMS (appelée plusieurs fois pour s'assurer que ça fonctionne)
-        function attachCMSEvents() {
-          // Éviter les appels multiples
-          if (cmsEventsAttached) {
-            return true;
+        // Observer les changements d'URL (hashchange) pour détecter les navigations après sauvegarde
+        window.addEventListener('hashchange', function() {
+          const currentUrl = window.location.href;
+          console.log('🔗 Changement d\'URL détecté:', currentUrl);
+          
+          // Si on revient à la liste des collections après avoir été sur une entrée, c'est probablement une sauvegarde
+          if (currentUrl.includes('#/collections/') && !currentUrl.includes('/entries/')) {
+            if (lastUrl.includes('/entries/')) {
+              console.log('💾 Sauvegarde probable détectée (retour à la liste)');
+              // Vérifier quelle collection était modifiée
+              const collectionMatch = lastUrl.match(/#\/collections\/([^\/]+)/);
+              if (collectionMatch) {
+                const collection = collectionMatch[1];
+                const categories = ['portrait', 'mariage', 'immobilier', 'paysage', 'macro', 'lifestyle'];
+                if (categories.includes(collection.toLowerCase())) {
+                  console.log('🔄 Photo du portfolio sauvegardée, régénération automatique de l\'index...');
+                  queueRegeneration(`Sauvegarde portfolio (${collection})`);
+                }
+              }
+            }
           }
           
-          attachAttempts++;
-          
-          if (attachAttempts > MAX_ATTEMPTS) {
-            console.warn('⚠️ CMS non détecté après', MAX_ATTEMPTS, 'tentatives');
-            return false;
-          }
-          
-          if (!window.CMS) {
-            if (attachAttempts % 5 === 0) { // Log seulement toutes les 5 tentatives
-              console.log('⏳ CMS pas encore chargé (tentative', attachAttempts, '/', MAX_ATTEMPTS, ')...');
-            }
-            return false;
-          }
-          
-          if (!window.CMS.events) {
-            if (attachAttempts % 5 === 0) { // Log seulement toutes les 5 tentatives
-              console.log('⏳ Événements CMS pas encore disponibles (tentative', attachAttempts, '/', MAX_ATTEMPTS, ')...');
-            }
-            return false;
-          }
-          
-          console.log('✅ CMS chargé, attachement des événements...');
-          cmsEventsAttached = true;
-          
-          // Écouter les événements de changement d'état
-          window.CMS.events.on('login', function() {
-            console.log('🔐 Utilisateur connecté');
-            batchBtn.style.display = 'flex';
-          });
-          
-          window.CMS.events.on('logout', function() {
-            console.log('🔓 Utilisateur déconnecté');
-            batchBtn.style.display = 'none';
-          });
-          
-          // Régénérer automatiquement l'index lors de la publication ET de la sauvegarde
-          // (pour capturer les changements de isCover même sans publier)
-          window.CMS.events.on('publish', function(entry) {
-            console.log('📤 ===== PUBLICATION DÉTECTÉE =====');
-            console.log('📤 Entry:', entry);
-            
-            // Vérifier si c'est une photo du portfolio
-            let collection = null;
-            let filePath = null;
-            let isCover = null;
-            
-            // Essayer différentes méthodes pour obtenir les données
-            try {
-              if (entry && typeof entry.get === 'function') {
-                collection = entry.get('collection');
-                filePath = entry.get('path') || entry.get('filePath') || entry.get('slug');
-                isCover = entry.get('isCover') || entry.getIn(['data', 'isCover']);
-              } else if (entry && entry.collection) {
-                collection = entry.collection;
-                filePath = entry.path || entry.filePath || entry.slug;
-                isCover = entry.isCover || (entry.data && entry.data.isCover);
-              } else if (entry && entry.getIn) {
-                collection = entry.getIn(['collection']);
-                filePath = entry.getIn(['path']) || entry.getIn(['filePath']) || entry.getIn(['slug']);
-                isCover = entry.getIn(['isCover']) || entry.getIn(['data', 'isCover']);
+          lastUrl = currentUrl;
+        });
+        
+        // Observer le DOM pour détecter les messages de succès du CMS
+        const observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+              if (node.nodeType === 1) { // Element node
+                // Chercher des messages de succès ou des notifications du CMS
+                const text = node.textContent || '';
+                if (text.includes('saved') || text.includes('sauvegardé') || 
+                    text.includes('published') || text.includes('publié') ||
+                    text.includes('Success') || text.includes('Succès')) {
+                  
+                  const now = Date.now();
+                  // Éviter les déclenchements multiples (délai de 2 secondes)
+                  if (now - lastSaveTime > 2000) {
+                    lastSaveTime = now;
+                    console.log('💾 Message de succès détecté dans le DOM:', text);
+                    
+                    // Vérifier l'URL actuelle pour déterminer la collection
+                    const currentUrl = window.location.href;
+                    const collectionMatch = currentUrl.match(/#\/collections\/([^\/]+)/);
+                    if (collectionMatch) {
+                      const collection = collectionMatch[1];
+                      const categories = ['portrait', 'mariage', 'immobilier', 'paysage', 'macro', 'lifestyle'];
+                      if (categories.includes(collection.toLowerCase())) {
+                        console.log('🔄 Photo du portfolio sauvegardée, régénération automatique de l\'index...');
+                        queueRegeneration(`Sauvegarde portfolio détectée (${collection})`);
+                      }
+                    }
+                  }
+                }
               }
-            } catch (e) {
-              console.warn('⚠️ Erreur lors de la lecture des données:', e);
-            }
-            
-            const categories = ['portrait', 'mariage', 'immobilier', 'paysage', 'macro', 'lifestyle'];
-            const isPortfolioPhoto = collection && categories.includes(collection.toLowerCase());
-            
-            const isPortfolioPath = filePath && (
-              filePath.includes('content/portfolio/') ||
-              filePath.includes('/portrait/') ||
-              filePath.includes('/mariage/') ||
-              filePath.includes('/immobilier/') ||
-              filePath.includes('/paysage/') ||
-              filePath.includes('/macro/') ||
-              filePath.includes('/lifestyle/')
-            );
-            
-            console.log('🔍 Analyse publication:', { collection, filePath, isCover, isPortfolioPhoto, isPortfolioPath });
-            
-            // Régénérer uniquement si c'est une photo du portfolio
-            if (isPortfolioPhoto || isPortfolioPath) {
-              console.log('🔄 Photo du portfolio publiée, régénération automatique de l\'index...');
-              if (isCover !== undefined) {
-                console.log(`📸 isCover dans la publication: ${isCover}`);
-              }
-              queueRegeneration(`Publication portfolio (${collection || 'collection inconnue'})`);
-            } else {
-              console.log('ℹ️ Publication non-portfolio, pas de régénération');
-            }
-          });
-          
-          // Écouter aussi postSave pour capturer les changements même sans publier
-          window.CMS.events.on('postSave', function(entry) {
-            console.log('💾 ===== SAUVEGARDE DÉTECTÉE =====');
-            console.log('💾 Entry complète:', JSON.stringify(entry, null, 2));
-            
-            // Vérifier si c'est une photo du portfolio
-            let collection = null;
-            let filePath = null;
-            let isCover = null;
-            
-            try {
-              if (entry && typeof entry.get === 'function') {
-                collection = entry.get('collection');
-                filePath = entry.get('path') || entry.get('filePath') || entry.get('slug');
-                isCover = entry.get('isCover') || entry.getIn(['data', 'isCover']);
-                console.log('📋 Données via .get():', { collection, filePath, isCover });
-              } else if (entry && entry.collection) {
-                collection = entry.collection;
-                filePath = entry.path || entry.filePath || entry.slug;
-                isCover = entry.isCover || (entry.data && entry.data.isCover);
-                console.log('📋 Données via propriétés:', { collection, filePath, isCover });
-              } else if (entry && entry.getIn) {
-                collection = entry.getIn(['collection']);
-                filePath = entry.getIn(['path']) || entry.getIn(['filePath']) || entry.getIn(['slug']);
-                isCover = entry.getIn(['isCover']) || entry.getIn(['data', 'isCover']);
-                console.log('📋 Données via .getIn():', { collection, filePath, isCover });
-              } else {
-                console.warn('⚠️ Format d\'entry non reconnu:', typeof entry, entry);
-              }
-            } catch (e) {
-              console.warn('⚠️ Erreur lors de la lecture des données:', e);
-            }
-            
-            const categories = ['portrait', 'mariage', 'immobilier', 'paysage', 'macro', 'lifestyle'];
-            const isPortfolioPhoto = collection && categories.includes(collection.toLowerCase());
-            
-            const isPortfolioPath = filePath && (
-              filePath.includes('content/portfolio/') ||
-              filePath.includes('/portrait/') ||
-              filePath.includes('/mariage/') ||
-              filePath.includes('/immobilier/') ||
-              filePath.includes('/paysage/') ||
-              filePath.includes('/macro/') ||
-              filePath.includes('/lifestyle/')
-            );
-            
-            console.log('🔍 Analyse sauvegarde:', { collection, filePath, isCover, isPortfolioPhoto, isPortfolioPath });
-            
-            // Régénérer si c'est une photo du portfolio (même sans publier, pour capturer les changements de isCover)
-            if (isPortfolioPhoto || isPortfolioPath) {
-              console.log('🔄 Photo du portfolio sauvegardée, régénération automatique de l\'index...');
-              if (isCover !== undefined) {
-                console.log(`📸 isCover dans la sauvegarde: ${isCover} (type: ${typeof isCover})`);
-              }
-              queueRegeneration(`Sauvegarde portfolio (${collection || 'collection inconnue'})`);
-            } else {
-              console.log('ℹ️ Sauvegarde non-portfolio, pas de régénération');
-            }
-          });
-          
-          // Écouter les changements de champs en temps réel (peut ne pas fonctionner selon la version)
-          try {
-            window.CMS.events.on('change', function(entry) {
-              console.log('🔄 Changement détecté:', entry);
             });
-          } catch (e) {
-            console.log('ℹ️ Événement "change" non disponible');
-          }
-          
-          console.log('✅ Événements CMS attachés avec succès');
-          return true;
-        }
+          });
+        });
         
-        // Essayer d'attacher les événements immédiatement
-        attachCMSEvents();
+        // Démarrer l'observation du DOM
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true
+        });
         
-        // Réessayer périodiquement au cas où le CMS se charge plus tard
-        const attachInterval = setInterval(function() {
-          if (cmsEventsAttached) {
-            clearInterval(attachInterval);
-            console.log('✅ CMS détecté et événements attachés');
-            return;
-          }
-          
-          if (attachCMSEvents()) {
-            clearInterval(attachInterval);
-          }
-        }, 1000);
+        console.log('✅ Observateurs DOM et URL configurés pour détecter les sauvegardes');
         
         // Fonction pour régénérer automatiquement l'index
         async function regenerateIndexAuto() {

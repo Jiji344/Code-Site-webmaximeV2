@@ -381,25 +381,31 @@
             batchBtn.style.display = 'none';
           });
           
-          // Régénérer automatiquement l'index uniquement lors de la publication
+          // Régénérer automatiquement l'index lors de la publication ET de la sauvegarde
+          // (pour capturer les changements de isCover même sans publier)
           window.CMS.events.on('publish', function(entry) {
-            console.log('📤 Publication détectée:', entry);
+            console.log('📤 ===== PUBLICATION DÉTECTÉE =====');
+            console.log('📤 Entry:', entry);
             
             // Vérifier si c'est une photo du portfolio
             let collection = null;
             let filePath = null;
+            let isCover = null;
             
             // Essayer différentes méthodes pour obtenir les données
             try {
               if (entry && typeof entry.get === 'function') {
                 collection = entry.get('collection');
                 filePath = entry.get('path') || entry.get('filePath') || entry.get('slug');
+                isCover = entry.get('isCover') || entry.getIn(['data', 'isCover']);
               } else if (entry && entry.collection) {
                 collection = entry.collection;
                 filePath = entry.path || entry.filePath || entry.slug;
+                isCover = entry.isCover || (entry.data && entry.data.isCover);
               } else if (entry && entry.getIn) {
                 collection = entry.getIn(['collection']);
                 filePath = entry.getIn(['path']) || entry.getIn(['filePath']) || entry.getIn(['slug']);
+                isCover = entry.getIn(['isCover']) || entry.getIn(['data', 'isCover']);
               }
             } catch (e) {
               console.warn('⚠️ Erreur lors de la lecture des données:', e);
@@ -418,14 +424,70 @@
               filePath.includes('/lifestyle/')
             );
             
-            console.log('🔍 Analyse publication:', { collection, filePath, isPortfolioPhoto, isPortfolioPath });
+            console.log('🔍 Analyse publication:', { collection, filePath, isCover, isPortfolioPhoto, isPortfolioPath });
             
             // Régénérer uniquement si c'est une photo du portfolio
             if (isPortfolioPhoto || isPortfolioPath) {
               console.log('🔄 Photo du portfolio publiée, régénération automatique de l\'index...');
+              if (isCover !== undefined) {
+                console.log(`📸 isCover dans la publication: ${isCover}`);
+              }
               queueRegeneration(`Publication portfolio (${collection || 'collection inconnue'})`);
             } else {
               console.log('ℹ️ Publication non-portfolio, pas de régénération');
+            }
+          });
+          
+          // Écouter aussi postSave pour capturer les changements même sans publier
+          window.CMS.events.on('postSave', function(entry) {
+            console.log('💾 ===== SAUVEGARDE DÉTECTÉE =====');
+            console.log('💾 Entry:', entry);
+            
+            // Vérifier si c'est une photo du portfolio
+            let collection = null;
+            let filePath = null;
+            let isCover = null;
+            
+            try {
+              if (entry && typeof entry.get === 'function') {
+                collection = entry.get('collection');
+                filePath = entry.get('path') || entry.get('filePath') || entry.get('slug');
+                isCover = entry.get('isCover') || entry.getIn(['data', 'isCover']);
+              } else if (entry && entry.collection) {
+                collection = entry.collection;
+                filePath = entry.path || entry.filePath || entry.slug;
+                isCover = entry.isCover || (entry.data && entry.data.isCover);
+              } else if (entry && entry.getIn) {
+                collection = entry.getIn(['collection']);
+                filePath = entry.getIn(['path']) || entry.getIn(['filePath']) || entry.getIn(['slug']);
+                isCover = entry.getIn(['isCover']) || entry.getIn(['data', 'isCover']);
+              }
+            } catch (e) {
+              console.warn('⚠️ Erreur lors de la lecture des données:', e);
+            }
+            
+            const categories = ['portrait', 'mariage', 'immobilier', 'paysage', 'macro', 'lifestyle'];
+            const isPortfolioPhoto = collection && categories.includes(collection.toLowerCase());
+            
+            const isPortfolioPath = filePath && (
+              filePath.includes('content/portfolio/') ||
+              filePath.includes('/portrait/') ||
+              filePath.includes('/mariage/') ||
+              filePath.includes('/immobilier/') ||
+              filePath.includes('/paysage/') ||
+              filePath.includes('/macro/') ||
+              filePath.includes('/lifestyle/')
+            );
+            
+            console.log('🔍 Analyse sauvegarde:', { collection, filePath, isCover, isPortfolioPhoto, isPortfolioPath });
+            
+            // Régénérer si c'est une photo du portfolio (même sans publier, pour capturer les changements de isCover)
+            if (isPortfolioPhoto || isPortfolioPath) {
+              console.log('🔄 Photo du portfolio sauvegardée, régénération automatique de l\'index...');
+              if (isCover !== undefined) {
+                console.log(`📸 isCover dans la sauvegarde: ${isCover}`);
+              }
+              queueRegeneration(`Sauvegarde portfolio (${collection || 'collection inconnue'})`);
             }
           });
           

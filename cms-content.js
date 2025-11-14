@@ -292,8 +292,15 @@ class CMSContentLoader {
         coverImage.className = 'album-card-image';
         
         // Trouver l'image de couverture ou utiliser la première par défaut
+        console.log(`🔍 Recherche de la couverture pour l'album "${albumName}" (${images.length} photos)`);
+        
+        // Afficher toutes les photos avec leur statut isCover pour déboguer
+        images.forEach((img, index) => {
+            console.log(`  Photo ${index + 1}: "${img.title}" - isCover: ${img.isCover} (type: ${typeof img.isCover})`);
+        });
+        
         // Chercher une image avec isCover === true (maintenant toutes les photos ont isCover défini)
-        let coverImageData = images.find(img => {
+        let coverImageData = images.find((img, index) => {
             // Vérifier si isCover est true (booléen) ou 'true' (string pour compatibilité)
             const isCover = img.isCover === true || 
                            img.isCover === 'true' || 
@@ -302,16 +309,24 @@ class CMSContentLoader {
                            img.isCover === '1';
             
             if (isCover) {
-                console.log(`✅ Photo de couverture trouvée: "${img.title}" (isCover: ${img.isCover})`);
+                console.log(`✅ Photo de couverture trouvée (index ${index}): "${img.title}" (isCover: ${img.isCover})`);
             }
             
             return isCover;
         });
         
-        // Si aucune image n'est marquée comme couverture, utiliser la première
+        // Si aucune image n'est marquée comme couverture, utiliser la première (index 0)
         if (!coverImageData) {
-            console.log(`📸 Aucune couverture définie pour l'album "${albumName}", utilisation de la première photo`);
-            coverImageData = images[0];
+            console.log(`📸 Aucune couverture définie pour l'album "${albumName}", utilisation de la première photo (index 0)`);
+            if (images.length > 0) {
+                coverImageData = images[0];
+                console.log(`📸 Photo sélectionnée: "${coverImageData.title}" (première de l'album)`);
+            } else {
+                console.error(`❌ Album "${albumName}" est vide !`);
+                return null;
+            }
+        } else {
+            console.log(`✅ Couverture sélectionnée: "${coverImageData.title}"`);
         }
         
         // Optimiser l'URL Cloudinary pour les cartes

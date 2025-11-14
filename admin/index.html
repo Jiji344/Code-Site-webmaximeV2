@@ -76,13 +76,15 @@
         padding: 1rem 1.5rem;
         border-radius: 12px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        z-index: 10000;
-        display: flex;
+        z-index: 99999 !important;
+        display: flex !important;
         align-items: center;
         gap: 0.75rem;
         font-weight: 600;
         animation: slideIn 0.3s ease-out;
         max-width: 400px;
+        visibility: visible !important;
+        opacity: 1 !important;
       }
       
       .toast-success {
@@ -290,12 +292,18 @@
         
         // Fonction pour afficher une notification toast
         function showToast(message, type = 'success') {
+          console.log('🔔 showToast appelé:', message, type);
+          
           // Supprimer les toasts existants
           const existingToasts = document.querySelectorAll('.toast');
-          existingToasts.forEach(toast => toast.remove());
+          existingToasts.forEach(toast => {
+            console.log('🗑️ Suppression toast existant');
+            toast.remove();
+          });
           
           const toast = document.createElement('div');
           toast.className = `toast toast-${type}`;
+          toast.style.cssText = 'position: fixed !important; top: 2rem !important; right: 2rem !important; z-index: 99999 !important; display: flex !important; visibility: visible !important; opacity: 1 !important;';
           
           const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
           toast.innerHTML = `
@@ -304,31 +312,50 @@
           `;
           
           document.body.appendChild(toast);
+          console.log('✅ Toast ajouté au DOM:', toast);
           
-          // Retirer après 5 secondes
+          // Forcer le reflow pour s'assurer que l'animation fonctionne
+          toast.offsetHeight;
+          
+          // Retirer après 6 secondes (augmenté pour plus de visibilité)
           setTimeout(() => {
             toast.classList.add('hiding');
-            setTimeout(() => toast.remove(), 300);
-          }, 5000);
+            setTimeout(() => {
+              toast.remove();
+              console.log('🗑️ Toast supprimé');
+            }, 300);
+          }, 6000);
         }
         
         // Fonction pour régénérer l'index
         async function regenerateIndex() {
           const regenerateBtn = document.getElementById('regenerate-index-btn');
-          if (!regenerateBtn) return;
+          if (!regenerateBtn) {
+            console.error('❌ Bouton regenerate-index-btn introuvable');
+            return;
+          }
+          
+          console.log('🔄 Début de la régénération de l\'index...');
           
           // Désactiver le bouton pendant le traitement
           regenerateBtn.disabled = true;
           const originalHTML = regenerateBtn.innerHTML;
+          const originalBackground = regenerateBtn.style.background;
           regenerateBtn.innerHTML = '<span>⏳</span><span>Régénération...</span>';
+          regenerateBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+          regenerateBtn.style.opacity = '0.8';
           
+          // Afficher le toast immédiatement
           showToast('Régénération de l\'index en cours...', 'info');
+          console.log('📢 Toast affiché');
           
           try {
             // Utiliser les valeurs du repo depuis cms-content.js
             const owner = 'Jiji344';
             const repo = 'Code-Site-webmaximeV2';
             const branch = 'main';
+            
+            console.log('📤 Envoi de la requête:', { owner, repo, branch });
             
             const response = await fetch('/.netlify/functions/regenerate-index', {
               method: 'POST',
@@ -342,45 +369,94 @@
               })
             });
             
-            const result = await response.json();
+            console.log('📥 Réponse reçue:', response.status, response.statusText);
             
-            if (response.ok && result.success) {
+            if (!response.ok) {
+              const errorText = await response.text();
+              console.error('❌ Erreur HTTP:', response.status, errorText);
+              throw new Error(`Erreur HTTP ${response.status}: ${errorText}`);
+            }
+            
+            const result = await response.json();
+            console.log('📦 Résultat:', result);
+            
+            if (result.success) {
               const coverInfo = result.coverCount !== undefined 
                 ? ` (${result.coverCount} couverture${result.coverCount > 1 ? 's' : ''} définie${result.coverCount > 1 ? 's' : ''})`
                 : '';
-              showToast(`Index régénéré avec succès ! ${result.message}${coverInfo}`, 'success');
+              const successMessage = `Index régénéré avec succès ! ${result.message}${coverInfo}`;
+              console.log('✅ Succès:', successMessage);
+              showToast(successMessage, 'success');
               regenerateBtn.innerHTML = '<span>✅</span><span>Index régénéré</span>';
               regenerateBtn.style.background = 'linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%)';
+              regenerateBtn.style.opacity = '1';
               
               setTimeout(() => {
                 regenerateBtn.innerHTML = originalHTML;
-                regenerateBtn.style.background = '';
-              }, 4000);
+                regenerateBtn.style.background = originalBackground;
+              }, 5000);
             } else {
               throw new Error(result.error || result.details || 'Erreur inconnue');
             }
           } catch (error) {
-            console.error('Erreur lors de la régénération:', error);
-            showToast(`Erreur: ${error.message}`, 'error');
+            console.error('❌ Erreur lors de la régénération:', error);
+            const errorMessage = `Erreur: ${error.message || 'Erreur inconnue'}`;
+            console.error('📢 Affichage du toast d\'erreur:', errorMessage);
+            showToast(errorMessage, 'error');
             regenerateBtn.innerHTML = '<span>❌</span><span>Erreur</span>';
             regenerateBtn.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%)';
+            regenerateBtn.style.opacity = '1';
             
             setTimeout(() => {
               regenerateBtn.innerHTML = originalHTML;
-              regenerateBtn.style.background = '';
-            }, 4000);
+              regenerateBtn.style.background = originalBackground;
+            }, 5000);
           } finally {
             regenerateBtn.disabled = false;
           }
         }
         
-        // Ajouter l'événement au bouton
-        document.addEventListener('DOMContentLoaded', function() {
+        // Ajouter l'événement au bouton (plusieurs méthodes pour s'assurer que ça fonctionne)
+        function attachRegenerateButton() {
           const regenerateBtn = document.getElementById('regenerate-index-btn');
-          if (regenerateBtn) {
-            regenerateBtn.addEventListener('click', regenerateIndex);
+          if (regenerateBtn && !regenerateBtn.dataset.listenerAttached) {
+            console.log('✅ Bouton regenerate-index-btn trouvé, attachement de l\'événement');
+            regenerateBtn.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log('🖱️ Clic sur le bouton régénérer détecté');
+              regenerateIndex();
+            });
+            regenerateBtn.dataset.listenerAttached = 'true';
+            return true;
           }
-        });
+          return false;
+        }
+        
+        // Essayer plusieurs fois d'attacher l'événement
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function() {
+            attachRegenerateButton();
+            // Réessayer après un délai si le bouton n'est pas encore là
+            setTimeout(attachRegenerateButton, 1000);
+            setTimeout(attachRegenerateButton, 2000);
+          });
+        } else {
+          // DOM déjà chargé
+          attachRegenerateButton();
+          setTimeout(attachRegenerateButton, 1000);
+        }
+        
+        // Réessayer périodiquement au cas où le bouton apparaîtrait plus tard (quand l'utilisateur se connecte)
+        let attachAttempts = 0;
+        const attachInterval = setInterval(function() {
+          if (attachRegenerateButton() || attachAttempts >= 20) {
+            if (attachAttempts >= 20) {
+              clearInterval(attachInterval);
+            }
+          }
+          attachAttempts++;
+        }, 500);
         
         // Vérifier immédiatement
         updateButtonVisibility();

@@ -119,12 +119,13 @@ async function regenerateIndex(owner, repo, branch, githubToken) {
   const indexContent = JSON.stringify(allPhotos, null, 2);
   const base64Content = Buffer.from(indexContent).toString('base64');
 
-  // Vérifier si le fichier existe déjà (pour obtenir le SHA)
+  // Vérifier si le fichier existe déjà (pour obtenir le SHA et comparer le contenu)
   let sha = null;
+  let contentChanged = true;
   try {
     const authHeader = getGitHubAuthHeader(githubToken);
     const existingFileResponse = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json`,
+      `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json?ref=${branch}`,
       {
         method: 'GET',
         headers: {
@@ -138,12 +139,40 @@ async function regenerateIndex(owner, repo, branch, githubToken) {
     if (existingFileResponse.ok) {
       const existingFile = await existingFileResponse.json();
       sha = existingFile.sha;
+      
+      // Comparer le contenu pour éviter les commits inutiles
+      const existingContent = Buffer.from(existingFile.content, 'base64').toString('utf-8');
+      const existingPhotos = JSON.parse(existingContent);
+      
+      // Comparer les deux tableaux (normalisés pour éviter les différences d'ordre)
+      const normalizePhoto = (photo) => ({
+        title: photo.title,
+        album: photo.album,
+        imageUrl: photo.imageUrl,
+        date: photo.date,
+        isCover: photo.isCover === true || photo.isCover === 'true' || photo.isCover === 'True' || photo.isCover === 1 || photo.isCover === '1'
+      });
+      
+      const existingNormalized = existingPhotos.map(normalizePhoto).sort((a, b) => 
+        `${a.album}-${a.title}`.localeCompare(`${b.album}-${b.title}`)
+      );
+      const newNormalized = allPhotos.map(normalizePhoto).sort((a, b) => 
+        `${a.album}-${a.title}`.localeCompare(`${b.album}-${b.title}`)
+      );
+      
+      contentChanged = JSON.stringify(existingNormalized) !== JSON.stringify(newNormalized);
+      
+      if (!contentChanged) {
+        console.log('ℹ️ Aucun changement détecté, pas de commit nécessaire');
+        return { count: allPhotos.length, changed: false };
+      }
     }
   } catch (error) {
-    // Fichier n'existe pas encore, c'est OK
+    // Fichier n'existe pas encore, c'est OK, on va le créer
+    console.log('ℹ️ Fichier index inexistant, création nécessaire');
   }
 
-  // Créer ou mettre à jour le fichier
+  // Créer ou mettre à jour le fichier uniquement si le contenu a changé
   const updatePayload = {
     message: `🔄 Régénération de l'index portfolio (${allPhotos.length} photos)`,
     content: base64Content,
@@ -174,7 +203,7 @@ async function regenerateIndex(owner, repo, branch, githubToken) {
     throw new Error(`Échec update index: ${errorData.message}`);
   }
 
-  return allPhotos.length;
+  return { count: allPhotos.length, changed: true };
 }
 
 exports.handler = async (event, context) => {
@@ -221,7 +250,22 @@ exports.handler = async (event, context) => {
       };
     }
 
-    const photosCount = await regenerateIndex(owner, repo, branch || 'main', githubToken);
+    const result = await regenerateIndex(owner, repo, branch || 'main', githubToken);
+    
+    // Si aucun changement, retourner immédiatement
+    if (!result.changed) {
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({ 
+          success: true, 
+          message: `Aucun changement détecté (${result.count} photos)`,
+          photosCount: result.count,
+          coverCount: 0,
+          changed: false
+        })
+      };
+    }
     
     // Vérifier combien de photos ont le champ isCover
     const indexResponse = await fetch(
@@ -267,9 +311,10 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({ 
         success: true, 
-        message: `Index régénéré avec succès (${photosCount} photos, ${coverCount} couvertures définies)`,
-        photosCount: photosCount,
-        coverCount: coverCount
+        message: `Index régénéré avec succès (${result.count} photos, ${coverCount} couvertures définies)`,
+        photosCount: result.count,
+        coverCount: coverCount,
+        changed: true
       })
     };
   } catch (error) {

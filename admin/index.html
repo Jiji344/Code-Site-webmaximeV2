@@ -309,17 +309,43 @@
           }
         }, 1000);
         
-        // Système de file d'attente pour éviter les régénérations multiples
+        // Système de file d'attente optimisé pour éviter les régénérations multiples
         let regenerationQueue = [];
         let isRegenerating = false;
+        let lastRegenerationTime = 0;
+        const MIN_REGENERATION_INTERVAL = 10000; // 10 secondes minimum entre régénérations
+        const DEBOUNCE_DELAY = 5000; // 5 secondes de debounce pour fusionner les demandes
         
-        // Fonction pour ajouter une régénération à la file
+        // Fonction pour ajouter une régénération à la file (avec fusion intelligente)
         function queueRegeneration(reason = 'Modification détectée') {
+          const now = Date.now();
+          
+          // Si une régénération vient d'avoir lieu, ignorer les nouvelles demandes trop proches
+          if (now - lastRegenerationTime < MIN_REGENERATION_INTERVAL) {
+            console.log(`⏭️ Régénération ignorée (trop récente, ${Math.round((MIN_REGENERATION_INTERVAL - (now - lastRegenerationTime)) / 1000)}s restantes)`);
+            return;
+          }
+          
+          // Fusionner les demandes proches dans le temps (debounce)
+          const existingRequest = regenerationQueue.find(req => 
+            now - req.time < DEBOUNCE_DELAY
+          );
+          
+          if (existingRequest) {
+            console.log(`🔄 Fusion avec demande existante: ${reason}`);
+            existingRequest.reason = `${existingRequest.reason} + ${reason}`;
+            existingRequest.time = now; // Mettre à jour le temps
+            return;
+          }
+          
           console.log(`📋 Ajout à la file d'attente: ${reason}`);
-          regenerationQueue.push({ time: Date.now(), reason });
+          regenerationQueue.push({ time: now, reason });
           
           if (!isRegenerating) {
-            processRegenerationQueue();
+            // Démarrer le traitement après le délai de debounce
+            setTimeout(() => {
+              processRegenerationQueue();
+            }, DEBOUNCE_DELAY);
           }
         }
         
@@ -333,25 +359,35 @@
           isRegenerating = true;
           const queued = regenerationQueue.shift();
           
+          // Vider la file (on fusionne toutes les demandes en une seule)
+          regenerationQueue = [];
+          
           console.log(`🔄 Traitement de la régénération: ${queued.reason}`);
           
-          // Attendre que GitHub traite le commit (3 secondes minimum)
-          const waitTime = Math.max(3000, 3000 - (Date.now() - queued.time));
-          await new Promise(resolve => setTimeout(resolve, waitTime));
+          // Attendre que GitHub traite le commit (5 secondes minimum)
+          const waitTime = Math.max(5000, 5000 - (Date.now() - queued.time));
+          if (waitTime > 0) {
+            await new Promise(resolve => setTimeout(resolve, waitTime));
+          }
           
           console.log('🔄 Régénération de l\'index (file d\'attente)...');
           const success = await regenerateIndexAuto();
           
           if (success) {
+            lastRegenerationTime = Date.now();
             console.log('✅ Régénération terminée avec succès');
           } else {
             console.error('❌ Échec de la régénération');
           }
           
-          // Traiter la prochaine régénération après un court délai
-          setTimeout(() => {
-            processRegenerationQueue();
-          }, 2000);
+          isRegenerating = false;
+          
+          // Traiter les nouvelles demandes qui auraient pu arriver
+          if (regenerationQueue.length > 0) {
+            setTimeout(() => {
+              processRegenerationQueue();
+            }, MIN_REGENERATION_INTERVAL);
+          }
         }
         
         // Détecter les sauvegardes via observation du DOM et des changements d'URL
@@ -400,8 +436,8 @@
                 
                 if (isSuccessMessage) {
                   const now = Date.now();
-                  // Éviter les déclenchements multiples (délai de 3 secondes)
-                  if (now - lastSaveTime > 3000) {
+                  // Éviter les déclenchements multiples (délai de 5 secondes)
+                  if (now - lastSaveTime > 5000) {
                     lastSaveTime = now;
                     console.log('💾 Message de succès détecté dans le DOM:', text.substring(0, 100));
                     
@@ -456,11 +492,16 @@
               const result = await response.json();
               console.log('✅ Index régénéré automatiquement:', result.message);
               
-              // Afficher un toast avec le nombre de couvertures
-              const coverInfo = result.coverCount !== undefined 
-                ? ` (${result.coverCount} couverture${result.coverCount > 1 ? 's' : ''})`
-                : '';
-              showToast(`Index mis à jour automatiquement${coverInfo}`, 'success');
+              // Afficher un toast seulement si le contenu a changé
+              if (result.changed !== false) {
+                const coverInfo = result.coverCount !== undefined 
+                  ? ` (${result.coverCount} couverture${result.coverCount > 1 ? 's' : ''})`
+                  : '';
+                showToast(`Index mis à jour automatiquement${coverInfo}`, 'success');
+              } else {
+                console.log('ℹ️ Aucun changement, pas de déploiement nécessaire');
+                // Pas de toast pour éviter le spam
+              }
               
               return true;
             } else {

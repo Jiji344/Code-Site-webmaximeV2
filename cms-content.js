@@ -40,9 +40,17 @@ class CMSContentLoader {
     async loadFromIndex() {
         try {
             const { owner, repo } = this.config;
-            const indexUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/portfolio-index.json`;
+            // Ajouter un paramètre de cache-busting pour forcer le rechargement
+            const timestamp = Date.now();
+            const indexUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/portfolio-index.json?t=${timestamp}`;
             
-            const response = await fetch(indexUrl);
+            // Forcer le rechargement en bypassant le cache
+            const response = await fetch(indexUrl, {
+                cache: 'no-store', // Ne jamais utiliser le cache
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
+            });
             if (response.ok) {
                 const photos = await response.json();
                 
@@ -55,7 +63,7 @@ class CMSContentLoader {
                     if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(photo.image)) {
                         // Garder l'URL originale pour le préchargement, on optimisera lors de l'affichage
                         return true;
-                    }
+                        }
                     
                     return true;
                 });
@@ -216,23 +224,23 @@ class CMSContentLoader {
 
         // Utiliser requestAnimationFrame pour ne pas bloquer le rendu
         requestAnimationFrame(() => {
-            // Ajouter les albums
-            Object.keys(data.albums).forEach(albumName => {
-                const albumImages = data.albums[albumName];
-                const albumCard = this.createAlbumCard(albumName, albumImages);
-                imagesContainer.appendChild(albumCard);
-            });
+        // Ajouter les albums
+        Object.keys(data.albums).forEach(albumName => {
+            const albumImages = data.albums[albumName];
+            const albumCard = this.createAlbumCard(albumName, albumImages);
+            imagesContainer.appendChild(albumCard);
+        });
 
-            // Ajouter les images individuelles
-            data.singleImages.forEach((item) => {
-                const imageCard = this.createImageCard(item);
-                imagesContainer.appendChild(imageCard);
-            });
+        // Ajouter les images individuelles
+        data.singleImages.forEach((item) => {
+            const imageCard = this.createImageCard(item);
+            imagesContainer.appendChild(imageCard);
+        });
 
-            // Mettre à jour le carrousel
-            if (window.portfolioCarousel) {
-                window.portfolioCarousel.updateCarousel(category);
-            }
+        // Mettre à jour le carrousel
+        if (window.portfolioCarousel) {
+            window.portfolioCarousel.updateCarousel(category);
+        }
         });
     }
 
@@ -580,7 +588,7 @@ class CMSContentLoader {
                 }
             }
         });
-
+        
         // Gestion du zoom au double tap sur mobile (fusionné avec touchend du pan)
         carouselImage.addEventListener('touchend', (e) => {
             const touchEndTime = Date.now();
@@ -621,33 +629,33 @@ class CMSContentLoader {
             if (moveDistance < 10 && touchDuration < 300) {
                 const currentTime = Date.now();
                 const tapLength = currentTime - lastTap;
+            
+            // Détection du double tap (moins de 300ms entre deux taps)
+            if (tapLength < 300 && tapLength > 0) {
+                e.preventDefault();
                 
-                // Détection du double tap (moins de 300ms entre deux taps)
-                if (tapLength < 300 && tapLength > 0) {
-                    e.preventDefault();
-                    
-                    if (!isZoomed) {
-                        // Zoom
+                if (!isZoomed) {
+                    // Zoom
                         carouselImage.style.transition = 'transform 0.3s ease-out';
-                        carouselImage.style.transform = 'scale(2)';
-                        carouselImage.style.cursor = 'zoom-out';
+                    carouselImage.style.transform = 'scale(2)';
+                    carouselImage.style.cursor = 'zoom-out';
                         carouselImage.style.transformOrigin = 'center center';
                         currentX = 0;
                         currentY = 0;
-                        isZoomed = true;
+                    isZoomed = true;
                         
                         setTimeout(() => {
                             carouselImage.style.transition = '';
                         }, 300);
-                    } else {
-                        // Dézoom
+                } else {
+                    // Dézoom
                         carouselImage.style.transition = 'transform 0.3s ease-out';
-                        carouselImage.style.transform = 'scale(1)';
-                        carouselImage.style.cursor = 'pointer';
+                    carouselImage.style.transform = 'scale(1)';
+                    carouselImage.style.cursor = 'pointer';
                         carouselImage.style.transformOrigin = 'center center';
                         currentX = 0;
                         currentY = 0;
-                        isZoomed = false;
+                    isZoomed = false;
                         
                         setTimeout(() => {
                             carouselImage.style.transition = '';

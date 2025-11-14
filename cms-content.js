@@ -42,33 +42,23 @@ class CMSContentLoader {
             const { owner, repo } = this.config;
             const indexUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/portfolio-index.json`;
             
-            console.log(`📥 Chargement de l'index depuis: ${indexUrl}`);
-            
-            // Forcer le rechargement en bypassant le cache du navigateur
-            const response = await fetch(indexUrl, {
-                cache: 'no-cache', // Revalider avec le serveur mais utiliser le cache si valide
-                headers: {
-                    'Cache-Control': 'no-cache, no-store, must-revalidate',
-                    'Pragma': 'no-cache'
-                }
-            });
-            
-            console.log(`📥 Réponse HTTP: ${response.status} ${response.statusText}`);
+            const response = await fetch(indexUrl);
             if (response.ok) {
                 const photos = await response.json();
-                console.log(`📦 Index brut chargé: ${photos.length} photos`);
                 
-                // Filtrer uniquement les photos sans image (pas de filtrage supplémentaire)
+                // Optimiser les URLs d'images directement sans vérification HEAD (beaucoup plus rapide)
+                // La vérification HEAD était le principal goulot d'étranglement
                 const validPhotos = photos.filter(photo => {
-                    if (!photo.image) {
-                        console.warn('⚠️ Photo sans image:', photo.title || photo);
-                        return false;
+                    if (!photo.image) return false;
+                    
+                    // Optimiser l'URL Cloudinary si c'est le cas
+                    if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(photo.image)) {
+                        // Garder l'URL originale pour le préchargement, on optimisera lors de l'affichage
+                        return true;
                     }
+                    
                     return true;
                 });
-                
-                console.log(`✅ Photos valides après filtrage: ${validPhotos.length} photos`);
-                console.log(`📊 Photos filtrées: ${photos.length - validPhotos.length}`);
                 
                 this.portfolioData = validPhotos;
                 console.log(`📦 Index chargé: ${validPhotos.length} photos`);
@@ -185,56 +175,34 @@ class CMSContentLoader {
     }
 
     displayPortfolioImages() {
-        console.log(`🖼️ Affichage de ${this.portfolioData.length} photos`);
         const dataByCategory = this.groupByCategory(this.portfolioData);
-        console.log(`📁 Catégories trouvées:`, Object.keys(dataByCategory));
-        
         Object.keys(dataByCategory).forEach(category => {
-            const categoryData = dataByCategory[category];
-            const albumsCount = Object.keys(categoryData.albums).length;
-            const singleImagesCount = categoryData.singleImages.length;
-            const totalPhotosInCategory = Object.values(categoryData.albums).reduce((sum, album) => sum + album.length, 0) + singleImagesCount;
-            console.log(`📂 ${category}: ${albumsCount} albums, ${singleImagesCount} images individuelles (${totalPhotosInCategory} photos totales)`);
-            this.updateCategoryContent(category, categoryData);
+            this.updateCategoryContent(category, dataByCategory[category]);
         });
     }
 
     groupByCategory(data) {
         const grouped = {};
-        let skippedCount = 0;
         
         data.forEach(item => {
-            if (!item.category) {
-                console.warn('⚠️ Photo sans catégorie:', item.title || item);
-                skippedCount++;
-                return;
-            }
-            if (!item.image) {
-                console.warn('⚠️ Photo sans image:', item.title || item);
-                skippedCount++;
-                return;
-            }
-            
-            if (!grouped[item.category]) {
-                grouped[item.category] = {
-                    albums: {},
-                    singleImages: []
-                };
-            }
-            
-            if (item.album && item.album.trim() !== '') {
-                if (!grouped[item.category].albums[item.album]) {
-                    grouped[item.category].albums[item.album] = [];
+            if (item.category && item.image) {
+                if (!grouped[item.category]) {
+                    grouped[item.category] = {
+                        albums: {},
+                        singleImages: []
+                    };
                 }
-                grouped[item.category].albums[item.album].push(item);
-            } else {
-                grouped[item.category].singleImages.push(item);
+                
+                if (item.album && item.album.trim() !== '') {
+                    if (!grouped[item.category].albums[item.album]) {
+                        grouped[item.category].albums[item.album] = [];
+                    }
+                    grouped[item.category].albums[item.album].push(item);
+                } else {
+                    grouped[item.category].singleImages.push(item);
+                }
             }
         });
-
-        if (skippedCount > 0) {
-            console.warn(`⚠️ ${skippedCount} photos ignorées (sans catégorie ou sans image)`);
-        }
 
         return grouped;
     }
@@ -248,23 +216,23 @@ class CMSContentLoader {
 
         // Utiliser requestAnimationFrame pour ne pas bloquer le rendu
         requestAnimationFrame(() => {
-        // Ajouter les albums
-        Object.keys(data.albums).forEach(albumName => {
-            const albumImages = data.albums[albumName];
-            const albumCard = this.createAlbumCard(albumName, albumImages);
-            imagesContainer.appendChild(albumCard);
-        });
+            // Ajouter les albums
+            Object.keys(data.albums).forEach(albumName => {
+                const albumImages = data.albums[albumName];
+                const albumCard = this.createAlbumCard(albumName, albumImages);
+                imagesContainer.appendChild(albumCard);
+            });
 
-        // Ajouter les images individuelles
-        data.singleImages.forEach((item) => {
-            const imageCard = this.createImageCard(item);
-            imagesContainer.appendChild(imageCard);
-        });
+            // Ajouter les images individuelles
+            data.singleImages.forEach((item) => {
+                const imageCard = this.createImageCard(item);
+                imagesContainer.appendChild(imageCard);
+            });
 
-        // Mettre à jour le carrousel
-        if (window.portfolioCarousel) {
-            window.portfolioCarousel.updateCarousel(category);
-        }
+            // Mettre à jour le carrousel
+            if (window.portfolioCarousel) {
+                window.portfolioCarousel.updateCarousel(category);
+            }
         });
     }
 
@@ -612,7 +580,7 @@ class CMSContentLoader {
                 }
             }
         });
-        
+
         // Gestion du zoom au double tap sur mobile (fusionné avec touchend du pan)
         carouselImage.addEventListener('touchend', (e) => {
             const touchEndTime = Date.now();
@@ -653,33 +621,33 @@ class CMSContentLoader {
             if (moveDistance < 10 && touchDuration < 300) {
                 const currentTime = Date.now();
                 const tapLength = currentTime - lastTap;
-            
-            // Détection du double tap (moins de 300ms entre deux taps)
-            if (tapLength < 300 && tapLength > 0) {
-                e.preventDefault();
                 
-                if (!isZoomed) {
-                    // Zoom
+                // Détection du double tap (moins de 300ms entre deux taps)
+                if (tapLength < 300 && tapLength > 0) {
+                    e.preventDefault();
+                    
+                    if (!isZoomed) {
+                        // Zoom
                         carouselImage.style.transition = 'transform 0.3s ease-out';
-                    carouselImage.style.transform = 'scale(2)';
-                    carouselImage.style.cursor = 'zoom-out';
+                        carouselImage.style.transform = 'scale(2)';
+                        carouselImage.style.cursor = 'zoom-out';
                         carouselImage.style.transformOrigin = 'center center';
                         currentX = 0;
                         currentY = 0;
-                    isZoomed = true;
+                        isZoomed = true;
                         
                         setTimeout(() => {
                             carouselImage.style.transition = '';
                         }, 300);
-                } else {
-                    // Dézoom
+                    } else {
+                        // Dézoom
                         carouselImage.style.transition = 'transform 0.3s ease-out';
-                    carouselImage.style.transform = 'scale(1)';
-                    carouselImage.style.cursor = 'pointer';
+                        carouselImage.style.transform = 'scale(1)';
+                        carouselImage.style.cursor = 'pointer';
                         carouselImage.style.transformOrigin = 'center center';
                         currentX = 0;
                         currentY = 0;
-                    isZoomed = false;
+                        isZoomed = false;
                         
                         setTimeout(() => {
                             carouselImage.style.transition = '';

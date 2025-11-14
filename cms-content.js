@@ -40,33 +40,35 @@ class CMSContentLoader {
     async loadFromIndex() {
         try {
             const { owner, repo } = this.config;
-            // Ajouter un paramètre de cache-busting pour forcer le rechargement
-            const timestamp = Date.now();
-            const indexUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/portfolio-index.json?t=${timestamp}`;
+            const indexUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/portfolio-index.json`;
             
-            // Forcer le rechargement en bypassant le cache
+            console.log(`📥 Chargement de l'index depuis: ${indexUrl}`);
+            
+            // Forcer le rechargement en bypassant le cache du navigateur
             const response = await fetch(indexUrl, {
-                cache: 'no-store', // Ne jamais utiliser le cache
+                cache: 'no-cache', // Revalider avec le serveur mais utiliser le cache si valide
                 headers: {
-                    'Cache-Control': 'no-cache'
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache'
                 }
             });
+            
+            console.log(`📥 Réponse HTTP: ${response.status} ${response.statusText}`);
             if (response.ok) {
                 const photos = await response.json();
+                console.log(`📦 Index brut chargé: ${photos.length} photos`);
                 
-                // Optimiser les URLs d'images directement sans vérification HEAD (beaucoup plus rapide)
-                // La vérification HEAD était le principal goulot d'étranglement
+                // Filtrer uniquement les photos sans image (pas de filtrage supplémentaire)
                 const validPhotos = photos.filter(photo => {
-                    if (!photo.image) return false;
-                    
-                    // Optimiser l'URL Cloudinary si c'est le cas
-                    if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(photo.image)) {
-                        // Garder l'URL originale pour le préchargement, on optimisera lors de l'affichage
-                        return true;
-                        }
-                    
+                    if (!photo.image) {
+                        console.warn('⚠️ Photo sans image:', photo.title || photo);
+                        return false;
+                    }
                     return true;
                 });
+                
+                console.log(`✅ Photos valides après filtrage: ${validPhotos.length} photos`);
+                console.log(`📊 Photos filtrées: ${photos.length - validPhotos.length}`);
                 
                 this.portfolioData = validPhotos;
                 console.log(`📦 Index chargé: ${validPhotos.length} photos`);
@@ -183,34 +185,56 @@ class CMSContentLoader {
     }
 
     displayPortfolioImages() {
+        console.log(`🖼️ Affichage de ${this.portfolioData.length} photos`);
         const dataByCategory = this.groupByCategory(this.portfolioData);
+        console.log(`📁 Catégories trouvées:`, Object.keys(dataByCategory));
+        
         Object.keys(dataByCategory).forEach(category => {
-            this.updateCategoryContent(category, dataByCategory[category]);
+            const categoryData = dataByCategory[category];
+            const albumsCount = Object.keys(categoryData.albums).length;
+            const singleImagesCount = categoryData.singleImages.length;
+            const totalPhotosInCategory = Object.values(categoryData.albums).reduce((sum, album) => sum + album.length, 0) + singleImagesCount;
+            console.log(`📂 ${category}: ${albumsCount} albums, ${singleImagesCount} images individuelles (${totalPhotosInCategory} photos totales)`);
+            this.updateCategoryContent(category, categoryData);
         });
     }
 
     groupByCategory(data) {
         const grouped = {};
+        let skippedCount = 0;
         
         data.forEach(item => {
-            if (item.category && item.image) {
-                if (!grouped[item.category]) {
-                    grouped[item.category] = {
-                        albums: {},
-                        singleImages: []
-                    };
+            if (!item.category) {
+                console.warn('⚠️ Photo sans catégorie:', item.title || item);
+                skippedCount++;
+                return;
+            }
+            if (!item.image) {
+                console.warn('⚠️ Photo sans image:', item.title || item);
+                skippedCount++;
+                return;
+            }
+            
+            if (!grouped[item.category]) {
+                grouped[item.category] = {
+                    albums: {},
+                    singleImages: []
+                };
+            }
+            
+            if (item.album && item.album.trim() !== '') {
+                if (!grouped[item.category].albums[item.album]) {
+                    grouped[item.category].albums[item.album] = [];
                 }
-                
-                if (item.album && item.album.trim() !== '') {
-                    if (!grouped[item.category].albums[item.album]) {
-                        grouped[item.category].albums[item.album] = [];
-                    }
-                    grouped[item.category].albums[item.album].push(item);
-                } else {
-                    grouped[item.category].singleImages.push(item);
-                }
+                grouped[item.category].albums[item.album].push(item);
+            } else {
+                grouped[item.category].singleImages.push(item);
             }
         });
+
+        if (skippedCount > 0) {
+            console.warn(`⚠️ ${skippedCount} photos ignorées (sans catégorie ou sans image)`);
+        }
 
         return grouped;
     }

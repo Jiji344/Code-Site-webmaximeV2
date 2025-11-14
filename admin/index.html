@@ -390,15 +390,20 @@
               if (node.nodeType === 1) { // Element node
                 // Chercher des messages de succès ou des notifications du CMS
                 const text = node.textContent || '';
-                if (text.includes('saved') || text.includes('sauvegardé') || 
-                    text.includes('published') || text.includes('publié') ||
-                    text.includes('Success') || text.includes('Succès')) {
-                  
+                // Filtrer plus précisément : éviter "Unsaved Changes" et autres faux positifs
+                const isSuccessMessage = (
+                  (text.includes('Changes saved') || text.includes('Modifications sauvegardées')) ||
+                  (text.includes('Entry saved') || text.includes('Entrée sauvegardée')) ||
+                  (text.includes('Published') || text.includes('Publié')) ||
+                  (text.includes('Successfully') || text.includes('Avec succès'))
+                ) && !text.includes('Unsaved');
+                
+                if (isSuccessMessage) {
                   const now = Date.now();
-                  // Éviter les déclenchements multiples (délai de 2 secondes)
-                  if (now - lastSaveTime > 2000) {
+                  // Éviter les déclenchements multiples (délai de 3 secondes)
+                  if (now - lastSaveTime > 3000) {
                     lastSaveTime = now;
-                    console.log('💾 Message de succès détecté dans le DOM:', text);
+                    console.log('💾 Message de succès détecté dans le DOM:', text.substring(0, 100));
                     
                     // Vérifier l'URL actuelle pour déterminer la collection
                     const currentUrl = window.location.href;

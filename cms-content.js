@@ -784,9 +784,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             );
             
-            // Ignorer les erreurs 403 (pas d'authentification en production)
+            // Ignorer les erreurs 403 (pas d'authentification en production) - silencieux
             if (!response.ok && response.status === 403) {
                 return; // Erreur silencieuse, on réessayera plus tard
+            }
+            
+            // Ignorer les autres erreurs non critiques
+            if (!response.ok && response.status !== 200) {
+                console.debug('Vérification index: HTTP', response.status);
+                return;
             }
             
             if (response.ok) {

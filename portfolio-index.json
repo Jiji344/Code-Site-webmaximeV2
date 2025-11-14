@@ -99,7 +99,7 @@
     "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127148/tqs63igzdqzgiruxwyzf.webp",
     "title": "Carla Salagou 9",
     "album": "Carla Salagou",
-    "isCover": false,
+    "isCover": true,
     "date": "2025-11-14T13:32:54.723Z",
     "category": "Portrait"
   },
@@ -130,10 +130,10 @@
   {
     "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127802/m6ktqaygdh9ay71hn8rk.webp",
     "title": "Le T Cratère 4",
-    "category": "Portrait",
     "album": "Le T Cratère",
+    "isCover": true,
     "date": "2025-11-14T13:43:34.911Z",
-    "isCover": false
+    "category": "Portrait"
   },
   {
     "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127804/sfbnvy5vzd4uqrj4iaze.webp",
@@ -202,10 +202,10 @@
   {
     "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763061293/pqovzvxydr0jxrjmr6ib.webp",
     "title": "Paula Salagou 4",
-    "category": "Portrait",
     "album": "Paula Salagou",
+    "isCover": false,
     "date": "2025-11-13T19:15:17.031Z",
-    "isCover": false
+    "category": "Portrait"
   },
   {
     "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763061294/neqo4la6z10bbgyxs8ti.webp",

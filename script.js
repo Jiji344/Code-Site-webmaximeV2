@@ -687,6 +687,8 @@ class CookieBanner {
     }
 }
 
+// (Effet parallaxe supprimé)
+
 /* ===== PROTECTION DES IMAGES ET CLIC DROIT ===== */
 class ImageProtection {
     init() {

@@ -26,14 +26,6 @@
     
     <link rel="stylesheet" href="styles.css">
     
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
-            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
-        }
-    }
-    </script>
 </head>
 <body>
     <div class="page-loader" id="page-loader">
@@ -88,6 +80,30 @@
                     <h1 class="hero-title">Monsieur Crocodeal</h1>
                     <p class="hero-subtitle">Photographe Professionnel</p>
                     <p class="hero-description">Capturer l'essence de chaque moment avec passion et créativité</p>
+                    
+                    <div class="hero-frames" aria-label="Aperçu de réalisations">
+                        <figure class="hero-frame-wrapper">
+                            <div class="hero-frame">
+                                <img src="assets/Hero/Hero (1).webp" alt="Aperçu 1" loading="eager" decoding="async">
+                            </div>
+                        </figure>
+                        <figure class="hero-frame-wrapper">
+                            <div class="hero-frame">
+                                <img src="assets/Hero/Hero (2).webp" alt="Aperçu 2" loading="lazy" decoding="async">
+                            </div>
+                        </figure>
+                        <figure class="hero-frame-wrapper">
+                            <div class="hero-frame">
+                                <img src="assets/Hero/Hero (3).webp" alt="Aperçu 3" loading="lazy" decoding="async">
+                            </div>
+                        </figure>
+                        <figure class="hero-frame-wrapper">
+                            <div class="hero-frame">
+                                <img src="assets/Hero/Hero (4).webp" alt="Aperçu 4" loading="lazy" decoding="async">
+                            </div>
+                        </figure>
+                    </div>
+                    
                     <a href="#portfolio" class="cta-button" aria-label="Découvrir mon portfolio">
                         Découvrir mon travail
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -96,10 +112,7 @@
                         </svg>
                     </a>
                 </div>
-                <div class="hero-image">
-                    <img src="assets/Photos/Hero.webp" alt="Monsieur Crocodeal - Photographe Professionnel" loading="eager">
-                    <div id="camera-3d-container" class="camera-3d-container"></div>
-                </div>
+                
             </div>
         </section>
 
@@ -481,7 +494,6 @@
 
     <script>
         let pageLoaded = false;
-        let camera3dLoaded = false;
         let portfolioImagesPreloaded = false;
         let loaderHidden = false;
 
@@ -489,7 +501,7 @@
             if (loaderHidden) return;
             
             const loader = document.getElementById('page-loader');
-            if (loader && pageLoaded && camera3dLoaded && portfolioImagesPreloaded) {
+            if (loader && pageLoaded && portfolioImagesPreloaded) {
                 loaderHidden = true;
                 setTimeout(() => {
                     loader.classList.add('hidden');
@@ -505,12 +517,6 @@
             hideLoader();
         });
 
-        // Attendre que l'objet 3D soit chargé
-        window.addEventListener('camera3d-loaded', () => {
-            camera3dLoaded = true;
-            hideLoader();
-        });
-
         // Attendre que les images du portfolio soient préchargées
         window.addEventListener('portfolio-images-preloaded', () => {
             portfolioImagesPreloaded = true;
@@ -521,7 +527,6 @@
         setTimeout(() => {
             if (!loaderHidden) {
                 pageLoaded = true;
-                camera3dLoaded = true;
                 portfolioImagesPreloaded = true;
                 hideLoader();
             }
@@ -548,7 +553,6 @@
     <script src="cms-content.js"></script>
     <script src="portfolio-carousel.js"></script>
     <script src="testimonials-carousel.js"></script>
-    <script type="module" src="camera3d.js"></script>
 
     <!-- Bannière de cookies -->
     <div id="cookie-banner" class="cookie-banner" role="dialog" aria-label="Information sur les cookies" aria-live="polite">

@@ -1,4 +1,4 @@
- reha/* ===== FONT FACE ===== */
+/* ===== FONT FACE ===== */
 @font-face {
     font-family: 'GoodButter';
     src: url('assets/GoodButter.otf') format('opentype');
@@ -2272,7 +2272,6 @@ ul {
         padding: 0.875rem 2rem;
         font-size: 1rem;
         margin-top: var(--spacing-sm) !important;
-        transform: translateY(-8px);
     }
 
     /* Portfolio Mobile */

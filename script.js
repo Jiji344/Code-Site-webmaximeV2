@@ -403,11 +403,11 @@ class SmoothScroll {
                 } else {
                     // Pour les autres sections, comportement normal
                     let targetPosition = target.offsetTop - headerHeight;
-                    
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
                 }
             });
         }

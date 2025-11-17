@@ -764,15 +764,16 @@ class CMSContentLoader {
 document.addEventListener('DOMContentLoaded', () => {
     window.cmsLoader = new CMSContentLoader();
     
-    // Vérifier périodiquement si l'index a été mis à jour (toutes les 30 secondes)
+    // Vérification automatique de l'index désactivée pour éviter les erreurs 403 en production
+    // La vérification nécessite une authentification GitHub qui n'est pas disponible côté client
+    // Les mises à jour se feront lors du rechargement de la page
+    /*
     let lastIndexCheck = Date.now();
     let lastIndexHash = null;
     
     async function checkIndexUpdate() {
         try {
             const { owner, repo } = window.cmsLoader.config;
-            // Utiliser l'API GitHub pour obtenir le SHA du fichier (plus léger que de charger tout le JSON)
-            // Note: En production, cette requête peut retourner 403 si pas d'auth, c'est normal
             const response = await fetch(
                 `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json?ref=main&t=${Date.now()}`,
                 {
@@ -784,12 +785,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             );
             
-            // Ignorer les erreurs 403 (pas d'authentification en production) - silencieux
             if (!response.ok && response.status === 403) {
-                return; // Erreur silencieuse, on réessayera plus tard
+                return;
             }
             
-            // Ignorer les autres erreurs non critiques
             if (!response.ok && response.status !== 200) {
                 console.debug('Vérification index: HTTP', response.status);
                 return;
@@ -799,32 +798,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 const fileInfo = await response.json();
                 const currentHash = fileInfo.sha;
                 
-                // Si le hash a changé, recharger les données
                 if (lastIndexHash && lastIndexHash !== currentHash) {
                     console.log('🔄 Index mis à jour détecté, rechargement des données...');
-                    
-                    // Forcer le rechargement avec un nouveau cache-buster
                     await window.cmsLoader.loadPortfolioData();
-                    
-                    // Réafficher les images avec les nouvelles données
                     window.cmsLoader.displayPortfolioImages();
-                    
                     lastIndexHash = currentHash;
                     console.log('✅ Données rechargées avec succès');
                 } else if (!lastIndexHash) {
-                    // Première vérification, stocker le hash
                     lastIndexHash = currentHash;
                 }
             }
         } catch (error) {
-            // Erreur silencieuse, on réessayera au prochain check
             console.debug('Vérification index:', error);
         }
     }
     
-    // Vérifier immédiatement après le chargement initial
     setTimeout(checkIndexUpdate, 2000);
-    
-    // Vérifier toutes les 5 secondes pour une mise à jour très rapide
     setInterval(checkIndexUpdate, 5000);
+    */
 });

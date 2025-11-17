@@ -7,7 +7,7 @@ class CMSContentLoader {
             repo: 'Code-Site-webmaximeV2',
             basePath: 'content/portfolio',
             // Liste des catégories à scanner
-            categories: ['Portrait', 'Mariage', 'Immobilier', 'Paysage', 'Macro', 'Lifestyle']
+            categories: ['Portrait', 'Mariage', 'Immobilier', 'Événementiel']
         };
         this.init();
     }

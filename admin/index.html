@@ -502,7 +502,7 @@
               const collectionMatch = lastUrl.match(/#\/collections\/([^\/]+)/);
               if (collectionMatch) {
                 const collection = collectionMatch[1];
-                const categories = ['portrait', 'mariage', 'immobilier', 'paysage', 'macro', 'lifestyle'];
+                const categories = ['portrait', 'mariage', 'immobilier', 'événementiel'];
                 if (categories.includes(collection.toLowerCase())) {
                   console.log('🔄 Photo du portfolio sauvegardée, régénération automatique de l\'index...');
                   queueRegeneration(`Sauvegarde portfolio (${collection})`);
@@ -541,7 +541,7 @@
                     const collectionMatch = currentUrl.match(/#\/collections\/([^\/]+)/);
                     if (collectionMatch) {
                       const collection = collectionMatch[1];
-                      const categories = ['portrait', 'mariage', 'immobilier', 'paysage', 'macro', 'lifestyle'];
+                      const categories = ['portrait', 'mariage', 'immobilier', 'événementiel'];
                       if (categories.includes(collection.toLowerCase())) {
                         console.log('🔄 Photo du portfolio sauvegardée, régénération automatique de l\'index...');
                         queueRegeneration(`Sauvegarde portfolio détectée (${collection})`);

@@ -6,7 +6,7 @@ Site web portfolio pour photographe professionnel avec système de gestion de co
 
 ## 🚀 Fonctionnalités
 
-- ✅ Portfolio organisé par catégories (Portrait, Mariage, Immobilier, Paysage, Macro, Lifestyle)
+- ✅ Portfolio organisé par catégories (Portrait, Mariage, Immobilier, Événementiel)
 - ✅ Système d'albums avec carrousel
 - ✅ Upload multiple : 20 photos en 30 secondes
 - ✅ Auto-numérotation des photos
@@ -58,9 +58,7 @@ Site web portfolio pour photographe professionnel avec système de gestion de co
 │   ├── portrait/
 │   ├── mariage/
 │   ├── immobilier/
-│   ├── paysage/
-│   ├── macro/
-│   └── lifestyle/
+│   └── événementiel/
 ├── netlify/functions/        # Fonctions serverless
 │   ├── batch-upload.js      # Upload multiple
 │   ├── cloudinary-upload.js # Upload Cloudinary

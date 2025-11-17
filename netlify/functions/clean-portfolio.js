@@ -37,7 +37,7 @@ async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
     }
 
     // 2. Scanner les dossiers de contenu pour vérifier les fichiers existants
-    const categories = ['Portrait', 'Mariage', 'Immobilier', 'Paysage', 'Macro', 'Lifestyle'];
+    const categories = ['Portrait', 'Mariage', 'Immobilier', 'Événementiel'];
     const validEntries = [];
     const validImagePaths = new Set();
     const validMdPaths = new Set();
@@ -215,7 +215,7 @@ async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
 async function deleteOrphanImages(owner, repo, branch, githubToken, validImagePaths) {
   console.log('🖼️ Suppression des images orphelines...');
   
-  const categories = ['Portrait', 'Mariage', 'Immobilier', 'Paysage', 'Macro', 'Lifestyle'];
+  const categories = ['Portrait', 'Mariage', 'Immobilier', 'Événementiel'];
   let deletedCount = 0;
   
   for (const category of categories) {
@@ -302,7 +302,7 @@ async function deleteOrphanImages(owner, repo, branch, githubToken, validImagePa
 async function deleteOrphanMarkdowns(owner, repo, branch, githubToken, validMdPaths) {
   console.log('📄 Suppression des fichiers .md orphelins...');
   
-  const categories = ['Portrait', 'Mariage', 'Immobilier', 'Paysage', 'Macro', 'Lifestyle'];
+  const categories = ['Portrait', 'Mariage', 'Immobilier', 'Événementiel'];
   let deletedCount = 0;
   
   for (const category of categories) {
@@ -404,7 +404,7 @@ async function deleteOrphanMarkdowns(owner, repo, branch, githubToken, validMdPa
 async function deleteEmptyDirectories(owner, repo, branch, githubToken) {
   console.log('📁 Suppression des dossiers vides...');
   
-  const categories = ['Portrait', 'Mariage', 'Immobilier', 'Paysage', 'Macro', 'Lifestyle'];
+  const categories = ['Portrait', 'Mariage', 'Immobilier', 'Événementiel'];
   let deletedCount = 0;
   
   for (const category of categories) {

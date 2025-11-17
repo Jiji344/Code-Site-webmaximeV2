@@ -75,61 +75,21 @@ collections:
       - { label: "Catégorie", name: "category", widget: "hidden", default: "Immobilier" }
 
   # ========================================
-  # PAYSAGES
+  # ÉVÉNEMENTIEL
   # ========================================
-  - name: "paysage"
-    label: "🌄 Paysages"
-    label_singular: "Paysage"
-    folder: "content/portfolio/paysage"
+  - name: "événementiel"
+    label: "🎉 Événementiel"
+    label_singular: "Événementiel"
+    folder: "content/portfolio/événementiel"
     create: true
     slug: "{{album}}/{{slug}}"
     path: "{{album}}/{{slug}}"
-    media_folder: "static/img/paysage/{{album}}"
-    public_folder: "/static/img/paysage/{{album}}"
+    media_folder: "static/img/événementiel/{{album}}"
+    public_folder: "/static/img/événementiel/{{album}}"
     fields:
       - { label: "Image", name: "image", widget: "image" }
-      - { label: "Titre", name: "title", widget: "string", hint: "Ex: Bretagne 1, Bretagne 2..." }
-      - { label: "Album", name: "album", widget: "string", hint: "Nom du lieu (ex: Bretagne). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
+      - { label: "Titre", name: "title", widget: "string", hint: "Ex: Événement 1, Événement 2..." }
+      - { label: "Album", name: "album", widget: "string", hint: "Nom de l'événement (ex: Soirée d'entreprise). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
       - { label: "Photo de couverture", name: "isCover", widget: "boolean", default: false, hint: "Cocher pour utiliser cette photo comme couverture de l'album" }
       - { label: "Date", name: "date", widget: "datetime", default: "" }
-      - { label: "Catégorie", name: "category", widget: "hidden", default: "Paysage" }
-
-  # ========================================
-  # MACRO
-  # ========================================
-  - name: "macro"
-    label: "🔬 Macro"
-    label_singular: "Macro"
-    folder: "content/portfolio/macro"
-    create: true
-    slug: "{{album}}/{{slug}}"
-    path: "{{album}}/{{slug}}"
-    media_folder: "static/img/macro/{{album}}"
-    public_folder: "/static/img/macro/{{album}}"
-    fields:
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Titre", name: "title", widget: "string", hint: "Ex: Insectes 1, Insectes 2..." }
-      - { label: "Album", name: "album", widget: "string", hint: "Nom du thème (ex: Insectes). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
-      - { label: "Photo de couverture", name: "isCover", widget: "boolean", default: false, hint: "Cocher pour utiliser cette photo comme couverture de l'album" }
-      - { label: "Date", name: "date", widget: "datetime", default: "" }
-      - { label: "Catégorie", name: "category", widget: "hidden", default: "Macro" }
-
-  # ========================================
-  # LIFESTYLE
-  # ========================================
-  - name: "lifestyle"
-    label: "✨ Lifestyle"
-    label_singular: "Lifestyle"
-    folder: "content/portfolio/lifestyle"
-    create: true
-    slug: "{{album}}/{{slug}}"
-    path: "{{album}}/{{slug}}"
-    media_folder: "static/img/lifestyle/{{album}}"
-    public_folder: "/static/img/lifestyle/{{album}}"
-    fields:
-      - { label: "Image", name: "image", widget: "image" }
-      - { label: "Titre", name: "title", widget: "string", hint: "Ex: Urban Style 1, Urban Style 2..." }
-      - { label: "Album", name: "album", widget: "string", hint: "Nom du shooting (ex: Urban Style). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
-      - { label: "Photo de couverture", name: "isCover", widget: "boolean", default: false, hint: "Cocher pour utiliser cette photo comme couverture de l'album" }
-      - { label: "Date", name: "date", widget: "datetime", default: "" }
-      - { label: "Catégorie", name: "category", widget: "hidden", default: "Lifestyle" }
+      - { label: "Catégorie", name: "category", widget: "hidden", default: "Événementiel" }

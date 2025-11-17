@@ -6,11 +6,11 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="description" content="Portfolio de Monsieur Crocodeal - Photographe professionnel spécialisé en portrait, mariage, paysage et photographie de rue. Découvrez mes créations.">
-    <meta name="keywords" content="photographe, portrait, mariage, paysage, photographie de rue, macro, shooting photo, photographe professionnel">
+    <meta name="description" content="Portfolio de Monsieur Crocodeal - Photographe professionnel spécialisé en portrait, mariage, immobilier et événementiel. Découvrez mes créations.">
+    <meta name="keywords" content="photographe, portrait, mariage, immobilier, événementiel, shooting photo, photographe professionnel">
     <meta name="author" content="Monsieur Crocodeal">
     <meta property="og:title" content="Monsieur Crocodeal - Photographe Professionnel">
-    <meta property="og:description" content="Portfolio de photographe spécialisé en portrait, lifestyle et événements. Des histoires lumineuses capturées avec élégance.">
+    <meta property="og:description" content="Portfolio de photographe spécialisé en portrait, mariage, immobilier et événementiel. Des histoires lumineuses capturées avec élégance.">
     <meta property="og:type" content="website">
     <title>Monsieur Crocodeal - Photographe Professionnel | Portfolio</title>
     
@@ -77,39 +77,49 @@
             <div class="hero-background"></div>
             <div class="hero-container container">
                 <div class="hero-content">
-                    <h1 class="hero-title">Monsieur Crocodeal</h1>
-                    <p class="hero-subtitle">Photographe Professionnel</p>
+                    <h1 class="hero-title">Photographe Professionnel</h1>
                     <p class="hero-description">Capturer l'essence de chaque moment avec passion et créativité</p>
                     
                     <div class="hero-frames" aria-label="Aperçu de réalisations">
-                        <figure class="hero-frame-wrapper">
-                            <div class="hero-frame">
-                                <img src="assets/Hero/Hero (1).webp" alt="Aperçu 1" loading="eager" decoding="async">
-                            </div>
-                        </figure>
-                        <figure class="hero-frame-wrapper">
-                            <div class="hero-frame">
-                                <img src="assets/Hero/Hero (2).webp" alt="Aperçu 2" loading="lazy" decoding="async">
-                            </div>
-                        </figure>
-                        <figure class="hero-frame-wrapper">
-                            <div class="hero-frame">
-                                <img src="assets/Hero/Hero (3).webp" alt="Aperçu 3" loading="lazy" decoding="async">
-                            </div>
-                        </figure>
-                        <figure class="hero-frame-wrapper">
-                            <div class="hero-frame">
-                                <img src="assets/Hero/Hero (4).webp" alt="Aperçu 4" loading="lazy" decoding="async">
-                            </div>
-                        </figure>
+                        <a href="#portfolio-portrait" class="hero-frame-wrapper" aria-label="Voir les portraits">
+                            <figure>
+                                <div class="hero-frame">
+                                    <img src="assets/Hero/Hero (1).webp" alt="Aperçu Portrait" loading="eager" decoding="async">
+                                </div>
+                            </figure>
+                        </a>
+                        <a href="#portfolio-mariage" class="hero-frame-wrapper" aria-label="Voir les mariages">
+                            <figure>
+                                <div class="hero-frame">
+                                    <img src="assets/Hero/Hero (2).webp" alt="Aperçu Mariage" loading="lazy" decoding="async">
+                                </div>
+                            </figure>
+                        </a>
+                        <a href="#portfolio-immobilier" class="hero-frame-wrapper" aria-label="Voir l'immobilier">
+                            <figure>
+                                <div class="hero-frame">
+                                    <img src="assets/Hero/Hero (3).webp" alt="Aperçu Immobilier" loading="lazy" decoding="async">
+                                </div>
+                            </figure>
+                        </a>
+                        <a href="#portfolio-evenementiel" class="hero-frame-wrapper" aria-label="Voir l'événementiel">
+                            <figure>
+                                <div class="hero-frame">
+                                    <img src="assets/Hero/Hero (4).webp" alt="Aperçu Événementiel" loading="lazy" decoding="async">
+                                </div>
+                            </figure>
+                        </a>
                     </div>
                     
-                    <a href="#portfolio" class="cta-button" aria-label="Découvrir mon portfolio">
-                        Découvrir mon travail
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
+                    <a href="#contact" class="cta-button" aria-label="Immortaliser mes souvenirs">
+                        <span class="cta-shine"></span>
+                        <div class="cta-content">
+                            <span>Immortaliser mes souvenirs</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </div>
                     </a>
                 </div>
                 
@@ -124,7 +134,7 @@
                 </p>
                 
                 <div class="portfolio-grid">
-                    <article class="portfolio-category" data-category="Portrait">
+                    <article class="portfolio-category" data-category="Portrait" id="portfolio-portrait">
                         <div class="category-header">
                             <h3 class="category-title">Portrait</h3>
                             <p class="category-description">Séances individuelles et corporate</p>
@@ -144,47 +154,7 @@
                         </div>
                     </article>
 
-                    <article class="portfolio-category" data-category="Macro">
-                        <div class="category-header">
-                            <h3 class="category-title">Macro</h3>
-                            <p class="category-description">Détails et gros plans artistiques</p>
-                        </div>
-                        <div class="category-carousel">
-                            <button class="category-nav category-nav-prev" data-category-nav="Macro" aria-label="Précédent">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                    <polyline points="15 18 9 12 15 6"></polyline>
-                                </svg>
-                            </button>
-                            <div class="category-images"></div>
-                            <button class="category-nav category-nav-next" data-category-nav="Macro" aria-label="Suivant">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </button>
-                        </div>
-                    </article>
-
-                    <article class="portfolio-category" data-category="Paysage">
-                        <div class="category-header">
-                            <h3 class="category-title">Paysage</h3>
-                            <p class="category-description">Nature et vues panoramiques</p>
-                        </div>
-                        <div class="category-carousel">
-                            <button class="category-nav category-nav-prev" data-category-nav="Paysage" aria-label="Précédent">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                    <polyline points="15 18 9 12 15 6"></polyline>
-                                </svg>
-                            </button>
-                            <div class="category-images"></div>
-                            <button class="category-nav category-nav-next" data-category-nav="Paysage" aria-label="Suivant">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </button>
-                        </div>
-                    </article>
-
-                    <article class="portfolio-category" data-category="Immobilier">
+                    <article class="portfolio-category" data-category="Immobilier" id="portfolio-immobilier">
                         <div class="category-header">
                             <h3 class="category-title">Immobilier</h3>
                             <p class="category-description">Mise en valeur de biens et espaces</p>
@@ -204,7 +174,7 @@
                         </div>
                     </article>
 
-                    <article class="portfolio-category" data-category="Mariage">
+                    <article class="portfolio-category" data-category="Mariage" id="portfolio-mariage">
                         <div class="category-header">
                             <h3 class="category-title">Mariage</h3>
                             <p class="category-description">Cérémonies et réceptions</p>
@@ -224,19 +194,19 @@
                         </div>
                     </article>
 
-                    <article class="portfolio-category" data-category="Lifestyle">
+                    <article class="portfolio-category" data-category="Événementiel" id="portfolio-evenementiel">
                         <div class="category-header">
-                            <h3 class="category-title">Lifestyle</h3>
+                            <h3 class="category-title">Événementiel</h3>
                             <p class="category-description">Moments de vie authentiques</p>
                         </div>
                         <div class="category-carousel">
-                            <button class="category-nav category-nav-prev" data-category-nav="Lifestyle" aria-label="Précédent">
+                            <button class="category-nav category-nav-prev" data-category-nav="Événementiel" aria-label="Précédent">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                                     <polyline points="15 18 9 12 15 6"></polyline>
                                 </svg>
                             </button>
                             <div class="category-images"></div>
-                            <button class="category-nav category-nav-next" data-category-nav="Lifestyle" aria-label="Suivant">
+                            <button class="category-nav category-nav-next" data-category-nav="Événementiel" aria-label="Suivant">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                                     <polyline points="9 18 15 12 9 6"></polyline>
                                 </svg>

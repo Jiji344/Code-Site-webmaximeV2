@@ -385,19 +385,30 @@ class SmoothScroll {
             // Attendre le rendu pour avoir les bonnes dimensions
             requestAnimationFrame(() => {
                 const headerHeight = this.header ? this.header.offsetHeight : 0;
-                let targetPosition = target.offsetTop - headerHeight;
                 
-                // Offset supplémentaire pour la section portfolio
-                if (target.id === 'portfolio') {
-                    // Offset adaptatif selon la taille d'écran
-                    const isMobile = window.innerWidth <= 768;
-                    targetPosition += isMobile ? 50 : 100; // 50px sur mobile, 100px sur desktop
+                // Pour les sections du portfolio, centrer l'élément à l'écran
+                if (target.id === 'portfolio' || target.id.startsWith('portfolio-')) {
+                    const targetRect = target.getBoundingClientRect();
+                    const targetTop = targetRect.top + window.scrollY;
+                    const targetHeight = target.offsetHeight;
+                    const viewportHeight = window.innerHeight;
+                    
+                    // Calculer la position pour centrer l'élément verticalement
+                    const targetPosition = targetTop - headerHeight - (viewportHeight / 2) + (targetHeight / 2);
+                    
+                    window.scrollTo({
+                        top: Math.max(0, targetPosition),
+                        behavior: 'smooth'
+                    });
+                } else {
+                    // Pour les autres sections, comportement normal
+                    let targetPosition = target.offsetTop - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
                 }
-                
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
             });
         }
     }
@@ -809,3 +820,4 @@ if (contactLink) {
         setTimeout(() => e.target.blur(), 100);
     });
 }
+

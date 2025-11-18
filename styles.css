@@ -516,7 +516,7 @@ ul {
     justify-content: center;
     gap: var(--spacing-sm);
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: var(--spacing-md) auto;
     padding: 0 var(--spacing-sm);
     overflow: visible;
@@ -529,8 +529,8 @@ ul {
     padding: 3px;
     background: transparent;
     flex: 1 1 0;
-    max-width: 320px;
-    min-width: 220px;
+    max-width: 360px;
+    min-width: 250px;
     cursor: pointer;
     text-decoration: none;
     color: inherit;
@@ -547,13 +547,13 @@ ul {
 @media screen and (min-width: 969px) {
     .hero-frames {
         flex-wrap: nowrap;
-        max-width: 1400px;
+        max-width: 1600px;
     }
     
     .hero-frame-wrapper {
         flex: 1 1 0;
-        max-width: 350px;
-        min-width: 250px;
+        max-width: 400px;
+        min-width: 300px;
     }
 }
 

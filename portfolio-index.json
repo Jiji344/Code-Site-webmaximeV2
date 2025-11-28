@@ -147,7 +147,7 @@
     "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127802/m6ktqaygdh9ay71hn8rk.webp",
     "title": "Le T Cratère 4",
     "album": "Le T Cratère",
-    "isCover": false,
+    "isCover": true,
     "date": "2025-11-14T13:43:34.911Z",
     "category": "Portrait",
     "imageUrl": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763127802/m6ktqaygdh9ay71hn8rk.webp"
@@ -677,10 +677,10 @@
   {
     "image": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763061623/zdxpkidpg25sim9kc9tu.webp",
     "title": "Guillaume & Laura 7",
-    "category": "Mariage",
     "album": "Guillaume & Laura",
+    "isCover": true,
     "date": "2025-11-13T19:20:51.429Z",
-    "isCover": false,
+    "category": "Mariage",
     "imageUrl": "https://res.cloudinary.com/dsk42qgg8/image/upload/v1763061623/zdxpkidpg25sim9kc9tu.webp"
   },
   {

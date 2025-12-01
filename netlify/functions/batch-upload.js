@@ -294,18 +294,81 @@ exports.handler = async (event, context) => {
         headers,
         body: JSON.stringify({ 
           error: 'Configuration serveur manquante',
-          message: 'Le token GitHub n\'est pas configuré'
+          message: 'Le token GitHub n\'est pas configuré. Veuillez configurer la variable d\'environnement GITHUB_TOKEN dans Netlify.'
         })
       };
     }
     
-    // Vérifier le format du token (doit commencer par ghp_ pour les tokens personnels)
-    console.log(`🔑 Token GitHub configuré (longueur: ${githubToken.length}, préfixe: ${githubToken.substring(0, 4)}...)`);
+    // Vérifier le format du token
+    const tokenPrefix = githubToken.substring(0, 4);
+    const isValidFormat = githubToken.startsWith('ghp_') || githubToken.startsWith('github_pat_');
+    
+    if (!isValidFormat) {
+      console.error(`Token GitHub format invalide (préfixe: ${tokenPrefix})`);
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ 
+          error: 'Token GitHub invalide',
+          message: `Le format du token GitHub est invalide. Format attendu: ghp_... ou github_pat_... (reçu: ${tokenPrefix}...). Veuillez vérifier la variable GITHUB_TOKEN dans Netlify.`
+        })
+      };
+    }
+    
+    console.log(`🔑 Token GitHub configuré (longueur: ${githubToken.length}, préfixe: ${tokenPrefix}...)`);
 
     // Configuration du repo
     const owner = 'Jiji344';
     const repo = 'Code-Site-webmaximeV2';
     const branch = 'main';
+    
+    // Tester la validité du token avec une requête simple
+    try {
+      const authHeader = getGitHubAuthHeader(githubToken);
+      const testResponse = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}`,
+        {
+          headers: {
+            'Authorization': authHeader,
+            'Accept': 'application/vnd.github.v3+json',
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        }
+      );
+      
+      if (!testResponse.ok) {
+        const errorData = await testResponse.json().catch(() => ({ message: testResponse.statusText }));
+        console.error(`❌ Token GitHub invalide ou sans permissions:`, {
+          status: testResponse.status,
+          error: errorData
+        });
+        
+        if (testResponse.status === 401) {
+          return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ 
+              error: 'Token GitHub invalide ou expiré',
+              message: 'Le token GitHub n\'est pas valide ou a expiré. Veuillez créer un nouveau token et le mettre à jour dans Netlify (Site settings > Environment variables > GITHUB_TOKEN).'
+            })
+          };
+        } else if (testResponse.status === 403) {
+          return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ 
+              error: 'Permissions insuffisantes',
+              message: 'Le token GitHub n\'a pas les permissions nécessaires. Assurez-vous que le token a les scopes: repo (pour les tokens classiques) ou les permissions Repository access (pour les fine-grained tokens).'
+            })
+          };
+        }
+      } else {
+        console.log('✅ Token GitHub valide et fonctionnel');
+      }
+    } catch (tokenTestError) {
+      console.error('❌ Erreur lors de la vérification du token:', tokenTestError.message);
+      // Ne pas bloquer si c'est juste un problème réseau, mais logger l'erreur
+    }
 
     // Générer un slug de base (URL-friendly)
     const baseSlug = albumTitle
@@ -396,12 +459,25 @@ date: ${formattedDate}
           } catch (e) {
             errorData = { message: errorText };
           }
+          
           console.error(`❌ Erreur upload markdown pour ${photoTitle}:`, {
             status: mdUploadResponse.status,
             statusText: mdUploadResponse.statusText,
             error: errorData
           });
-          throw new Error(`Upload markdown échoué (${mdUploadResponse.status}): ${errorData.message || errorText}`);
+          
+          // Messages d'erreur plus clairs selon le code HTTP
+          let errorMessage = `Upload markdown échoué (${mdUploadResponse.status}): ${errorData.message || errorText}`;
+          
+          if (mdUploadResponse.status === 401) {
+            errorMessage = `Token GitHub invalide ou expiré. Veuillez mettre à jour GITHUB_TOKEN dans Netlify.`;
+          } else if (mdUploadResponse.status === 403) {
+            errorMessage = `Permissions insuffisantes. Le token GitHub n'a pas les droits nécessaires pour écrire dans le dépôt.`;
+          } else if (mdUploadResponse.status === 404) {
+            errorMessage = `Dépôt non trouvé. Vérifiez que le dépôt ${owner}/${repo} existe et que le token y a accès.`;
+          }
+          
+          throw new Error(errorMessage);
         }
         
         const mdResult = await mdUploadResponse.json();

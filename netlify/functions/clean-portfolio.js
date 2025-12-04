@@ -85,14 +85,17 @@ async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
                       const content = await mdResponse.text();
                       const data = parseMarkdownFrontmatter(content);
                       if (data && data.image) {
-                        // Vérifier si c'est une URL Cloudinary (commence par http et contient cloudinary)
-                        const isCloudinaryUrl = data.image.startsWith('http') && data.image.includes('cloudinary.com');
+                        // Vérifier si c'est une URL externe (Cloudflare CDN ou Cloudinary legacy)
+                        const isExternalUrl = data.image.startsWith('http') && 
+                                             (data.image.includes('cloudinary.com') || 
+                                              data.image.includes('cloudflare') || 
+                                              data.image.includes('cdn'));
                         
-                        if (isCloudinaryUrl) {
-                          // URL Cloudinary - considérer comme valide sans vérifier dans GitHub
+                        if (isExternalUrl) {
+                          // URL externe (Cloudflare CDN ou Cloudinary) - considérer comme valide sans vérifier dans GitHub
                           validEntries.push(data);
                           validMdPaths.add(albumItem.path);
-                          console.log(`✅ Entrée Cloudinary valide: ${data.title}`);
+                          console.log(`✅ Entrée externe valide: ${data.title}`);
                         } else {
                           // Image locale - vérifier qu'elle existe dans GitHub
                           const imagePath = data.image.startsWith('/') ? data.image.substring(1) : data.image;
@@ -345,16 +348,17 @@ async function deleteOrphanMarkdowns(owner, repo, branch, githubToken, validMdPa
                   
                   // Vérifier si le fichier .md est référencé dans validMdPaths
                   if (!validMdPaths.has(mdPath)) {
-                    // Vérifier si le fichier contient une URL Cloudinary avant de le supprimer
+                    // Vérifier si le fichier contient une URL externe (Cloudflare CDN ou Cloudinary) avant de le supprimer
                     try {
                       const mdResponse = await fetch(albumItem.download_url);
                       if (mdResponse.ok) {
                         const content = await mdResponse.text();
                         const data = parseMarkdownFrontmatter(content);
                         
-                        // Si le fichier référence une URL Cloudinary, ne pas le supprimer
-                        if (data && data.image && data.image.startsWith('http') && data.image.includes('cloudinary.com')) {
-                          console.log(`✅ Fichier Cloudinary conservé: ${mdPath}`);
+                        // Si le fichier référence une URL externe (Cloudflare CDN ou Cloudinary), ne pas le supprimer
+                        if (data && data.image && data.image.startsWith('http') && 
+                            (data.image.includes('cloudinary.com') || data.image.includes('cloudflare') || data.image.includes('cdn'))) {
+                          console.log(`✅ Fichier externe conservé: ${mdPath}`);
                           continue; // Passer au fichier suivant
                         }
                       }
@@ -362,7 +366,7 @@ async function deleteOrphanMarkdowns(owner, repo, branch, githubToken, validMdPa
                       console.log(`⚠️ Erreur vérification ${mdPath}: ${checkError.message}`);
                     }
                     
-                    // Fichier .md orphelin (pas Cloudinary) - le supprimer
+                    // Fichier .md orphelin (pas d'URL externe) - le supprimer
                     console.log(`🗑️ Suppression fichier .md orphelin: ${mdPath}`);
                     
                     try {

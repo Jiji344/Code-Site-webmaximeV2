@@ -409,22 +409,26 @@ exports.handler = async (event, context) => {
         };
         const categoryName = categoryNames[category] || category;
 
-        // Utiliser l'URL Cloudinary (toujours fournie maintenant)
+        // Utiliser l'URL Cloudflare CDN (toujours fournie maintenant)
         if (!file.url || !file.url.startsWith('http')) {
-          console.error(`URL Cloudinary manquante pour ${photoTitle}:`, file);
-          throw new Error(`URL Cloudinary manquante pour ${photoTitle}. Reçu: ${JSON.stringify(file)}`);
+          console.error(`URL Cloudflare CDN manquante pour ${photoTitle}:`, file);
+          throw new Error(`URL Cloudflare CDN manquante pour ${photoTitle}. Reçu: ${JSON.stringify(file)}`);
         }
         
         const imagePath = file.url;
-        console.log(`✅ URL Cloudinary trouvée pour ${photoTitle}: ${imagePath}`);
+        console.log(`✅ URL Cloudflare CDN trouvée pour ${photoTitle}: ${imagePath}`);
 
-        // Créer le fichier markdown avec l'URL Cloudinary
+        // Déterminer si c'est la photo de couverture (première photo = index 0)
+        const isCover = i === 0; // La première photo est automatiquement la couverture
+        
+        // Créer le fichier markdown avec l'URL Cloudflare CDN
         const mdContent = `---
 image: ${imagePath}
 title: ${photoTitle}
 category: ${categoryName}
 album: ${albumTitle}
 date: ${formattedDate}
+isCover: ${isCover}
 ---`;
 
         const mdPath = `content/portfolio/${category}/${baseSlug}/${slug}.md`;

@@ -329,10 +329,12 @@ class CMSContentLoader {
             console.log(`✅ Couverture sélectionnée: "${coverImageData.title}"`);
         }
         
-        // Optimiser l'URL Cloudinary pour les cartes
+        // Optimiser l'URL pour les cartes (Cloudflare ou Cloudinary)
         let imageUrl = coverImageData.image;
-        if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-            imageUrl = window.ImageOptimizer.optimizeCard(imageUrl, 400);
+        if (window.ImageOptimizer) {
+            if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
+                imageUrl = window.ImageOptimizer.optimizeCard(imageUrl, 400);
+            }
         }
         
         coverImage.src = imageUrl;
@@ -367,10 +369,12 @@ class CMSContentLoader {
         
         const imgElement = document.createElement('img');
         
-        // Optimiser l'URL Cloudinary pour les cartes
+        // Optimiser l'URL pour les cartes (Cloudflare ou Cloudinary)
         let imageUrl = item.image;
-        if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-            imageUrl = window.ImageOptimizer.optimizeCard(imageUrl, 400);
+        if (window.ImageOptimizer) {
+            if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
+                imageUrl = window.ImageOptimizer.optimizeCard(imageUrl, 400);
+            }
         }
         
         imgElement.src = imageUrl;
@@ -389,10 +393,12 @@ class CMSContentLoader {
             const modalClose = document.getElementById('modal-close');
             
             if (modal && modalImg) {
-                // Optimiser l'URL Cloudinary pour l'affichage plein écran
+                // Optimiser l'URL pour l'affichage plein écran (Cloudflare ou Cloudinary)
                 let imageUrl = item.image;
-                if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-                    imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
+                if (window.ImageOptimizer) {
+                    if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
+                        imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
+                    }
                 }
                 
                 modalImg.src = imageUrl;
@@ -482,10 +488,12 @@ class CMSContentLoader {
             currentY = 0;
             isPanning = false;
             
-            // Optimiser l'URL Cloudinary pour l'affichage plein écran
+            // Optimiser l'URL pour l'affichage plein écran (Cloudflare ou Cloudinary)
             let imageUrl = image.image;
-            if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-                imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
+            if (window.ImageOptimizer) {
+                if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
+                    imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
+                }
             }
             
             // Changer l'image immédiatement
@@ -518,8 +526,10 @@ class CMSContentLoader {
             if (index < images.length - 1) {
                 const nextImg = new Image();
                 let nextUrl = images[index + 1].image;
-                if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(nextUrl)) {
-                    nextUrl = window.ImageOptimizer.optimizeFullscreen(nextUrl, 1920);
+                if (window.ImageOptimizer) {
+                    if (window.ImageOptimizer.isCloudflareUrl(nextUrl) || window.ImageOptimizer.isCloudinaryUrl(nextUrl)) {
+                        nextUrl = window.ImageOptimizer.optimizeFullscreen(nextUrl, 1920);
+                    }
                 }
                 nextImg.src = nextUrl;
                 nextImg.fetchPriority = 'low';
@@ -527,8 +537,10 @@ class CMSContentLoader {
             if (index > 0) {
                 const prevImg = new Image();
                 let prevUrl = images[index - 1].image;
-                if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(prevUrl)) {
-                    prevUrl = window.ImageOptimizer.optimizeFullscreen(prevUrl, 1920);
+                if (window.ImageOptimizer) {
+                    if (window.ImageOptimizer.isCloudflareUrl(prevUrl) || window.ImageOptimizer.isCloudinaryUrl(prevUrl)) {
+                        prevUrl = window.ImageOptimizer.optimizeFullscreen(prevUrl, 1920);
+                    }
                 }
                 prevImg.src = prevUrl;
                 prevImg.fetchPriority = 'low';
@@ -540,10 +552,12 @@ class CMSContentLoader {
             const thumbnail = document.createElement('img');
             thumbnail.className = 'carousel-thumbnail';
             
-            // Optimiser l'URL Cloudinary pour les miniatures
+            // Optimiser l'URL pour les miniatures (Cloudflare ou Cloudinary)
             let imageUrl = image.image;
-            if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-                imageUrl = window.ImageOptimizer.optimizeThumbnail(imageUrl, 100);
+            if (window.ImageOptimizer) {
+                if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
+                    imageUrl = window.ImageOptimizer.optimizeThumbnail(imageUrl, 100);
+                }
             }
             
             thumbnail.src = imageUrl;
@@ -578,8 +592,10 @@ class CMSContentLoader {
         images.forEach((image) => {
             const img = new Image();
             let preloadUrl = image.image;
-            if (window.ImageOptimizer && window.ImageOptimizer.isCloudinaryUrl(preloadUrl)) {
-                preloadUrl = window.ImageOptimizer.optimizeFullscreen(preloadUrl, 1920);
+            if (window.ImageOptimizer) {
+                if (window.ImageOptimizer.isCloudflareUrl(preloadUrl) || window.ImageOptimizer.isCloudinaryUrl(preloadUrl)) {
+                    preloadUrl = window.ImageOptimizer.optimizeFullscreen(preloadUrl, 1920);
+                }
             }
             img.src = preloadUrl;
             img.fetchPriority = 'low';

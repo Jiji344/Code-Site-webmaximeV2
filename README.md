@@ -21,7 +21,7 @@ Site web portfolio pour photographe professionnel avec système de gestion de co
 - HTML5 / CSS3 / JavaScript
 - Decap CMS (gestion de contenu)
 - Netlify (hébergement + fonctions serverless)
-- Cloudinary (hébergement et optimisation d'images)
+- **Backblaze B2** (stockage d'images) + **Cloudflare CDN** (bande passante illimitée)
 - GitHub (stockage des contenus markdown)
 - Three.js (animations 3D)
 
@@ -40,7 +40,8 @@ Site web portfolio pour photographe professionnel avec système de gestion de co
 
 **Automatique** :
 - ✅ Auto-numérotation (Titre 1, Titre 2, Titre 3...)
-- ✅ Upload sur Cloudinary (pas de limite de taille)
+- ✅ Upload sur Backblaze B2 (servi via Cloudflare CDN)
+- ✅ Bande passante **ILLIMITÉE** avec Cloudflare
 - ✅ Images optimisées automatiquement
 - ✅ Index régénéré automatiquement
 - ✅ Site mis à jour automatiquement
@@ -61,8 +62,8 @@ Site web portfolio pour photographe professionnel avec système de gestion de co
 │   └── événementiel/
 ├── netlify/functions/        # Fonctions serverless
 │   ├── batch-upload.js      # Upload multiple
-│   ├── cloudinary-upload.js # Upload Cloudinary
-│   └── cms-config.js        # Config Cloudinary pour CMS
+│   ├── b2-upload.js         # Upload Backblaze B2
+│   └── clean-portfolio.js   # Nettoyage portfolio
 ├── _emails/                  # Templates emails
 ├── index.html               # Page principale
 ├── styles.css               # Styles
@@ -79,10 +80,12 @@ Site web portfolio pour photographe professionnel avec système de gestion de co
 
 ### Variables d'environnement Netlify :
 - `GITHUB_TOKEN` : Token GitHub avec scope `repo`
-- `CLOUDINARY_CLOUD_NAME` : Nom de votre compte Cloudinary
-- `CLOUDINARY_API_KEY` : Clé API Cloudinary
-- `CLOUDINARY_API_SECRET` : Secret API Cloudinary (pour fonctions serveur)
-- `CLOUDINARY_UPLOAD_PRESET` : Nom du preset Cloudinary (optionnel, défaut: `ml_default`)
+- `B2_APPLICATION_KEY_ID` : Application Key ID Backblaze B2
+- `B2_APPLICATION_KEY` : Application Key Backblaze B2
+- `B2_BUCKET_NAME` : Nom du bucket B2 (ex: `portfolio-images`)
+- `CLOUDFLARE_CDN_URL` : URL du CDN Cloudflare (ex: `https://cdn.votredomaine.com`)
+
+📖 **Guide complet de migration** : Voir [GUIDE_MIGRATION_B2_CLOUDFLARE.md](./GUIDE_MIGRATION_B2_CLOUDFLARE.md)
 
 ---
 
@@ -118,4 +121,18 @@ Site : https://photographemonsieurcrocodeal.netlify.app
 
 ---
 
-**Portfolio propulsé par Decap CMS & Netlify** 🚀
+**Portfolio propulsé par Decap CMS, Netlify, Backblaze B2 & Cloudflare** 🚀
+
+---
+
+## 🔄 Migration Cloudinary → B2 + Cloudflare
+
+Ce projet a été migré de Cloudinary vers **Backblaze B2 + Cloudflare** pour bénéficier d'une **bande passante illimitée**.
+
+📖 **Guide de migration complet** : [GUIDE_MIGRATION_B2_CLOUDFLARE.md](./GUIDE_MIGRATION_B2_CLOUDFLARE.md)
+
+### Avantages de la migration :
+- ✅ **Bande passante illimitée** avec Cloudflare (plan gratuit)
+- ✅ **Coûts réduits** : ~$5-10/mois pour 100 GB vs limitations Cloudinary
+- ✅ **Performance améliorée** grâce au CDN Cloudflare
+- ✅ **Compatibilité** : Support des anciennes URLs Cloudinary pour migration progressive

@@ -1,7 +1,9 @@
-// Utilitaire pour optimiser les URLs d'images Cloudinary
+// Utilitaire pour optimiser les URLs d'images Cloudflare CDN
+// Supporte aussi les anciennes URLs Cloudinary pour la migration progressive
+
 class ImageOptimizer {
     /**
-     * Optimise une URL d'image Cloudinary avec des transformations
+     * Optimise une URL d'image Cloudflare avec des transformations
      * @param {string} imageUrl - URL de l'image originale
      * @param {Object} options - Options d'optimisation
      * @returns {string} URL optimisée
@@ -11,49 +13,86 @@ class ImageOptimizer {
             return imageUrl;
         }
 
-        // Si ce n'est pas une URL Cloudinary, retourner l'URL telle quelle
-        if (!imageUrl.includes('res.cloudinary.com')) {
-            return imageUrl;
+        // Support des anciennes URLs Cloudinary (pour migration progressive)
+        if (imageUrl.includes('res.cloudinary.com')) {
+            return this.optimizeCloudinaryUrl(imageUrl, options);
         }
 
+        // URLs Cloudflare CDN
+        if (this.isCloudflareUrl(imageUrl)) {
+            return this.optimizeCloudflareUrl(imageUrl, options);
+        }
+
+        // URL standard - retourner telle quelle
+        return imageUrl;
+    }
+
+    /**
+     * Optimise une URL Cloudflare
+     */
+    static optimizeCloudflareUrl(imageUrl, options = {}) {
+        const {
+            width = null,
+            height = null,
+            quality = 85,
+            format = 'webp' // WebP par défaut pour meilleure compression
+        } = options;
+
+        // Cloudflare peut servir les images avec des transformations via Workers
+        // Pour l'instant, on retourne l'URL telle quelle car Cloudflare CDN
+        // optimise déjà automatiquement les images
+        // Vous pouvez ajouter des transformations via Cloudflare Images ou Workers plus tard
+        
+        // Si des dimensions sont spécifiées, on peut les ajouter comme paramètres
+        // (nécessite configuration Cloudflare Images ou Workers)
+        const params = new URLSearchParams();
+        
+        if (width) params.append('w', width);
+        if (height) params.append('h', height);
+        if (quality) params.append('q', quality);
+        if (format && format !== 'auto') params.append('f', format);
+
+        // Pour l'instant, retourner l'URL sans modifications
+        // Cloudflare CDN optimise déjà automatiquement
+        // TODO: Ajouter support Cloudflare Images si nécessaire
+        return imageUrl;
+    }
+
+    /**
+     * Optimise une URL Cloudinary (support legacy)
+     */
+    static optimizeCloudinaryUrl(imageUrl, options = {}) {
         const {
             width = null,
             height = null,
             quality = 'auto',
-            format = 'auto', // 'auto' utilise WebP si supporté, sinon le format original
-            crop = 'limit', // 'limit' maintient les proportions
-            fetchFormat = 'auto' // Force WebP si supporté
+            format = 'auto',
+            crop = 'limit'
         } = options;
 
-        // Extraire les parties de l'URL Cloudinary
-        // Format: https://res.cloudinary.com/{cloud_name}/{type}/upload/{transformations}/{public_id}.{format}
         const urlParts = imageUrl.split('/upload/');
         
         if (urlParts.length !== 2) {
-            // URL déjà transformée ou format non standard
             return imageUrl;
         }
 
         const baseUrl = urlParts[0] + '/upload/';
         const restOfUrl = urlParts[1];
 
-        // Construire les transformations
         const transformations = [];
 
-        // Format et qualité
-        if (format === 'auto' || fetchFormat === 'auto') {
-            transformations.push('f_auto'); // Format automatique (WebP si supporté)
+        if (format === 'auto' || format === 'webp') {
+            transformations.push('f_auto');
         } else if (format) {
             transformations.push(`f_${format}`);
         }
 
         if (quality === 'auto') {
-            transformations.push('q_auto'); // Qualité automatique optimisée
+            transformations.push('q_auto');
         } else if (quality) {
             transformations.push(`q_${quality}`);
         }
 
-        // Dimensions
         if (width && height) {
             transformations.push(`w_${width},h_${height},c_${crop}`);
         } else if (width) {
@@ -62,11 +101,9 @@ class ImageOptimizer {
             transformations.push(`h_${height},c_${crop}`);
         }
 
-        // Ajouter d'autres optimisations
-        transformations.push('fl_progressive'); // Progressive JPEG
-        transformations.push('fl_immutable_cache'); // Cache immutable pour meilleures performances
+        transformations.push('fl_progressive');
+        transformations.push('fl_immutable_cache');
 
-        // Reconstruire l'URL
         if (transformations.length > 0) {
             return baseUrl + transformations.join(',') + '/' + restOfUrl;
         }
@@ -82,7 +119,7 @@ class ImageOptimizer {
             width: size,
             height: size,
             quality: 80,
-            format: 'auto',
+            format: 'webp',
             crop: 'fill'
         });
     }
@@ -93,8 +130,8 @@ class ImageOptimizer {
     static optimizeCard(imageUrl, width = 400) {
         return this.optimizeUrl(imageUrl, {
             width: width,
-            quality: 'auto',
-            format: 'auto',
+            quality: 85,
+            format: 'webp',
             crop: 'limit'
         });
     }
@@ -105,17 +142,38 @@ class ImageOptimizer {
     static optimizeFullscreen(imageUrl, maxWidth = 1920) {
         return this.optimizeUrl(imageUrl, {
             width: maxWidth,
-            quality: 'auto',
-            format: 'auto',
+            quality: 90,
+            format: 'webp',
             crop: 'limit'
         });
     }
 
     /**
-     * Vérifie si une URL est Cloudinary
+     * Vérifie si une URL est Cloudflare
+     */
+    static isCloudflareUrl(url) {
+        if (!url || typeof url !== 'string') return false;
+        // Vérifier si c'est une URL Cloudflare CDN
+        // Peut être un domaine personnalisé ou un sous-domaine Cloudflare
+        return url.includes('cloudflare') || 
+               url.includes('cdn') || 
+               // Ajoutez votre domaine Cloudflare ici
+               url.startsWith('https://cdn.');
+    }
+
+    /**
+     * Vérifie si une URL est Cloudinary (support legacy)
      */
     static isCloudinaryUrl(url) {
         return url && typeof url === 'string' && url.includes('res.cloudinary.com');
+    }
+
+    /**
+     * Vérifie si une URL est une URL d'image valide (Cloudflare ou Cloudinary)
+     */
+    static isValidImageUrl(url) {
+        return this.isCloudflareUrl(url) || this.isCloudinaryUrl(url) || 
+               (url && typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://')));
     }
 }
 
@@ -123,4 +181,3 @@ class ImageOptimizer {
 if (typeof window !== 'undefined') {
     window.ImageOptimizer = ImageOptimizer;
 }
-

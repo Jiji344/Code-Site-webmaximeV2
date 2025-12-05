@@ -198,6 +198,8 @@ exports.handler = async (event, context) => {
   const allowedOrigins = [
     'https://photographemonsieurcrocodeal.netlify.app',
     'https://monsieurcrocodealphotographie.netlify.app',
+    'https://monsieurcrocodealphotographie.fr',
+    'https://www.monsieurcrocodealphotographie.fr',
     'https://code-site-webmaximev2.netlify.app',
     'http://localhost:8888'
   ];
@@ -213,6 +215,7 @@ exports.handler = async (event, context) => {
   // Vérifier que la requête vient bien du domaine autorisé
   if (!referer || (!referer.includes('photographemonsieurcrocodeal.netlify.app') &&
                    !referer.includes('monsieurcrocodealphotographie.netlify.app') &&
+                   !referer.includes('monsieurcrocodealphotographie.fr') &&
                    !referer.includes('code-site-webmaximev2.netlify.app') &&
                    !referer.includes('localhost:8888'))) {
     return {

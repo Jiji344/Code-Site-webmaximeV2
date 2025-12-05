@@ -171,9 +171,9 @@ exports.handler = async (event, context) => {
       contentType
     );
 
-    // Construire l'URL finale via Cloudflare CDN
-    // Format: https://cdn.votredomaine.com/folder/filename.jpg
-    const publicUrl = `${cloudflareCdnUrl.replace(/\/$/, '')}/${filePath}`;
+    // Construire l'URL finale via Cloudflare CDN avec le format Friendly URL B2
+    // Format: https://cdn.votredomaine.com/file/bucket-name/folder/filename.jpg
+    const publicUrl = `${cloudflareCdnUrl.replace(/\/$/, '')}/file/${bucketName}/${filePath}`;
 
     return {
       statusCode: 200,

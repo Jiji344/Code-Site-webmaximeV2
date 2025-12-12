@@ -87,7 +87,35 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    const { imageBase64, folder, fileName, tags } = JSON.parse(event.body);
+    // Parser le body avec gestion d'erreur
+    let requestData;
+    try {
+      requestData = JSON.parse(event.body);
+    } catch (parseError) {
+      console.error('Erreur parsing JSON du body:', parseError);
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ 
+          error: 'Données invalides',
+          message: 'Le corps de la requête n\'est pas un JSON valide'
+        })
+      };
+    }
+    
+    const { imageBase64, folder, fileName, tags } = requestData;
+    
+    // Valider les données requises
+    if (!imageBase64) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ 
+          error: 'Données manquantes',
+          message: 'Le champ imageBase64 est requis'
+        })
+      };
+    }
     
     // Configuration B2
     const applicationKeyId = process.env.B2_APPLICATION_KEY_ID;
@@ -189,14 +217,35 @@ exports.handler = async (event, context) => {
 
   } catch (error) {
     console.error('Erreur upload B2:', error);
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({ 
-        error: 'Erreur upload',
-        message: error.message 
-      })
+    console.error('Stack trace:', error.stack);
+    
+    // S'assurer que le message d'erreur est toujours du JSON valide
+    const errorMessage = error.message || 'Erreur inconnue lors de l\'upload';
+    const errorResponse = {
+      error: 'Erreur upload',
+      message: errorMessage
     };
+    
+    try {
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify(errorResponse)
+      };
+    } catch (jsonError) {
+      // En cas d'erreur lors de la sérialisation JSON (ne devrait jamais arriver)
+      console.error('Erreur critique lors de la création de la réponse JSON:', jsonError);
+      return {
+        statusCode: 500,
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          error: 'Erreur serveur',
+          message: 'Une erreur inattendue s\'est produite'
+        })
+      };
+    }
   }
 };
 

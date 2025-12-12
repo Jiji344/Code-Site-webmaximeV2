@@ -1,0 +1,8 @@
+---
+image: https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-2.webp
+title: Winona Automne 2
+category: Portrait
+album: Winona Automne
+date: 2025-12-12T12:52:24.712Z
+isCover: false
+---

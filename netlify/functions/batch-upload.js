@@ -381,6 +381,75 @@ exports.handler = async (event, context) => {
       .replace(/[^a-z0-9\s-]/g, '')
       .replace(/\s+/g, '-');
 
+    // Obtenir le nom de catégorie complet
+    const categoryNames = {
+      'portrait': 'Portrait',
+      'mariage': 'Mariage',
+      'immobilier': 'Immobilier',
+      'événementiel': 'Événementiel'
+    };
+    const categoryName = categoryNames[category] || category;
+
+    // Créer le fichier _index.md pour l'album (nécessaire pour les collections nested dans Decap CMS)
+    const albumIndexPath = `content/portfolio/${category}/${baseSlug}/_index.md`;
+    const authHeader = getGitHubAuthHeader(githubToken);
+    
+    try {
+      // Vérifier si le fichier _index.md existe déjà
+      const checkIndexResponse = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/contents/${albumIndexPath}?ref=${branch}`,
+        {
+          headers: {
+            'Authorization': authHeader,
+            'Accept': 'application/vnd.github.v3+json',
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        }
+      );
+
+      // Si le fichier n'existe pas, le créer
+      if (checkIndexResponse.status === 404) {
+        const indexContent = `---
+title: ${albumTitle}
+album: ${albumTitle}
+category: ${categoryName}
+date: ${new Date().toISOString()}
+---
+`;
+        
+        const createIndexResponse = await fetch(
+          `https://api.github.com/repos/${owner}/${repo}/contents/${albumIndexPath}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Authorization': authHeader,
+              'Content-Type': 'application/json',
+              'Accept': 'application/vnd.github.v3+json',
+              'X-GitHub-Api-Version': '2022-11-28'
+            },
+            body: JSON.stringify({
+              message: `Create album index: ${albumTitle}`,
+              content: Buffer.from(indexContent).toString('base64'),
+              branch: branch
+            })
+          }
+        );
+
+        if (createIndexResponse.ok) {
+          console.log(`✅ Fichier _index.md créé pour l'album: ${albumTitle}`);
+        } else {
+          const errorData = await createIndexResponse.json();
+          console.warn(`⚠️ Impossible de créer _index.md pour ${albumTitle}:`, errorData.message);
+          // Ne pas bloquer l'upload si la création de l'index échoue
+        }
+      } else {
+        console.log(`ℹ️ Fichier _index.md existe déjà pour l'album: ${albumTitle}`);
+      }
+    } catch (indexError) {
+      console.warn(`⚠️ Erreur lors de la vérification/création de _index.md:`, indexError.message);
+      // Ne pas bloquer l'upload si la création de l'index échoue
+    }
+
     const now = new Date();
     const results = [];
     const errors = [];
@@ -402,15 +471,6 @@ exports.handler = async (event, context) => {
         // Date incrémentée pour éviter les conflits
         const photoDate = new Date(now.getTime() + (counter * 2000));
         const formattedDate = photoDate.toISOString();
-
-        // Obtenir le nom de catégorie complet
-        const categoryNames = {
-          'portrait': 'Portrait',
-          'mariage': 'Mariage',
-          'immobilier': 'Immobilier',
-          'événementiel': 'Événementiel'
-        };
-        const categoryName = categoryNames[category] || category;
 
         // Utiliser l'URL Cloudflare CDN (toujours fournie maintenant)
         if (!file.url || !file.url.startsWith('http')) {
@@ -436,9 +496,6 @@ isCover: ${isCover}
 
         const mdPath = `content/portfolio/${category}/${baseSlug}/${slug}.md`;
         console.log(`📝 Création markdown: ${mdPath}`);
-
-        const authHeader = getGitHubAuthHeader(githubToken);
-        console.log(`🔐 Format auth: ${authHeader.substring(0, 15)}...`);
         
         const mdUploadResponse = await fetch(
           `https://api.github.com/repos/${owner}/${repo}/contents/${mdPath}`,

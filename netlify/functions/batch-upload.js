@@ -423,7 +423,7 @@ exports.handler = async (event, context) => {
 
         // Déterminer si c'est la photo de couverture (première photo = index 0)
         const isCover = i === 0; // La première photo est automatiquement la couverture
-        
+
         // Créer le fichier markdown avec l'URL Cloudflare CDN
         const mdContent = `---
 image: ${imagePath}

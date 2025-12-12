@@ -22,8 +22,12 @@ collections:
     label_singular: "Portrait"
     folder: "content/portfolio/portrait"
     create: true
+    nested: { depth: 2 }
     slug: "{{album}}/{{slug}}"
     path: "{{album}}/{{slug}}"
+    summary: "{{title}} - {{album}}"
+    view_groups:
+      - { label: "Album", field: "album" }
     media_folder: "static/img/portrait/{{album}}"
     public_folder: "/static/img/portrait/{{album}}"
     fields:
@@ -42,8 +46,12 @@ collections:
     label_singular: "Mariage"
     folder: "content/portfolio/mariage"
     create: true
+    nested: { depth: 2 }
     slug: "{{album}}/{{slug}}"
     path: "{{album}}/{{slug}}"
+    summary: "{{title}} - {{album}}"
+    view_groups:
+      - { label: "Album", field: "album" }
     media_folder: "static/img/mariage/{{album}}"
     public_folder: "/static/img/mariage/{{album}}"
     fields:
@@ -62,8 +70,12 @@ collections:
     label_singular: "Immobilier"
     folder: "content/portfolio/immobilier"
     create: true
+    nested: { depth: 2 }
     slug: "{{album}}/{{slug}}"
     path: "{{album}}/{{slug}}"
+    summary: "{{title}} - {{album}}"
+    view_groups:
+      - { label: "Album", field: "album" }
     media_folder: "static/img/immobilier/{{album}}"
     public_folder: "/static/img/immobilier/{{album}}"
     fields:
@@ -82,8 +94,12 @@ collections:
     label_singular: "Événementiel"
     folder: "content/portfolio/événementiel"
     create: true
+    nested: { depth: 2 }
     slug: "{{album}}/{{slug}}"
     path: "{{album}}/{{slug}}"
+    summary: "{{title}} - {{album}}"
+    view_groups:
+      - { label: "Album", field: "album" }
     media_folder: "static/img/événementiel/{{album}}"
     public_folder: "/static/img/événementiel/{{album}}"
     fields:

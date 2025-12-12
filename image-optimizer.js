@@ -56,7 +56,7 @@ class ImageOptimizer {
         // Cloudflare CDN optimise déjà automatiquement
         // TODO: Ajouter support Cloudflare Images si nécessaire
         return imageUrl;
-    }
+        }
 
     /**
      * Optimise une URL Cloudinary (support legacy)

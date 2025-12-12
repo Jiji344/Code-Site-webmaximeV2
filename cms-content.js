@@ -333,7 +333,7 @@ class CMSContentLoader {
         let imageUrl = coverImageData.image;
         if (window.ImageOptimizer) {
             if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-                imageUrl = window.ImageOptimizer.optimizeCard(imageUrl, 400);
+            imageUrl = window.ImageOptimizer.optimizeCard(imageUrl, 400);
             }
         }
         
@@ -373,7 +373,7 @@ class CMSContentLoader {
         let imageUrl = item.image;
         if (window.ImageOptimizer) {
             if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-                imageUrl = window.ImageOptimizer.optimizeCard(imageUrl, 400);
+            imageUrl = window.ImageOptimizer.optimizeCard(imageUrl, 400);
             }
         }
         
@@ -397,7 +397,7 @@ class CMSContentLoader {
                 let imageUrl = item.image;
                 if (window.ImageOptimizer) {
                     if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-                        imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
+                    imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
                     }
                 }
                 
@@ -492,7 +492,7 @@ class CMSContentLoader {
             let imageUrl = image.image;
             if (window.ImageOptimizer) {
                 if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-                    imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
+                imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
                 }
             }
             
@@ -528,7 +528,7 @@ class CMSContentLoader {
                 let nextUrl = images[index + 1].image;
                 if (window.ImageOptimizer) {
                     if (window.ImageOptimizer.isCloudflareUrl(nextUrl) || window.ImageOptimizer.isCloudinaryUrl(nextUrl)) {
-                        nextUrl = window.ImageOptimizer.optimizeFullscreen(nextUrl, 1920);
+                    nextUrl = window.ImageOptimizer.optimizeFullscreen(nextUrl, 1920);
                     }
                 }
                 nextImg.src = nextUrl;
@@ -539,7 +539,7 @@ class CMSContentLoader {
                 let prevUrl = images[index - 1].image;
                 if (window.ImageOptimizer) {
                     if (window.ImageOptimizer.isCloudflareUrl(prevUrl) || window.ImageOptimizer.isCloudinaryUrl(prevUrl)) {
-                        prevUrl = window.ImageOptimizer.optimizeFullscreen(prevUrl, 1920);
+                    prevUrl = window.ImageOptimizer.optimizeFullscreen(prevUrl, 1920);
                     }
                 }
                 prevImg.src = prevUrl;
@@ -556,7 +556,7 @@ class CMSContentLoader {
             let imageUrl = image.image;
             if (window.ImageOptimizer) {
                 if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-                    imageUrl = window.ImageOptimizer.optimizeThumbnail(imageUrl, 100);
+                imageUrl = window.ImageOptimizer.optimizeThumbnail(imageUrl, 100);
                 }
             }
             
@@ -594,7 +594,7 @@ class CMSContentLoader {
             let preloadUrl = image.image;
             if (window.ImageOptimizer) {
                 if (window.ImageOptimizer.isCloudflareUrl(preloadUrl) || window.ImageOptimizer.isCloudinaryUrl(preloadUrl)) {
-                    preloadUrl = window.ImageOptimizer.optimizeFullscreen(preloadUrl, 1920);
+                preloadUrl = window.ImageOptimizer.optimizeFullscreen(preloadUrl, 1920);
                 }
             }
             img.src = preloadUrl;

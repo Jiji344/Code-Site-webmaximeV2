@@ -484,42 +484,70 @@
                 const folder = `portfolio/${category}/${albumTitle.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`;
                 const fileName = `${albumTitle.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}-${counter}.${file.name.split('.').pop()}`;
                 
+                // Fonction de retry avec backoff exponentiel
+                const uploadWithRetry = async (maxRetries = 3) => {
+                    let lastError;
+                    
+                    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                        try {
+                            console.log(`📤 Upload image ${i + 1}/${files.length} vers B2 (tentative ${attempt}/${maxRetries}): ${fileName}`);
+                            
+                            // Ajouter un timeout de 25 secondes (juste sous la limite Netlify)
+                            const controller = new AbortController();
+                            const timeoutId = setTimeout(() => controller.abort(), 25000);
+                            
+                            const b2Response = await fetch('/.netlify/functions/b2-upload', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    imageBase64: base64,
+                                    folder: folder,
+                                    fileName: fileName
+                                }),
+                                signal: controller.signal
+                            });
+                            
+                            clearTimeout(timeoutId);
+                            
+                            // Lire la réponse comme texte d'abord pour gérer les erreurs non-JSON
+                            const responseText = await b2Response.text();
+                            let b2Data;
+                            
+                            try {
+                                b2Data = JSON.parse(responseText);
+                            } catch (parseError) {
+                                console.error(`Erreur parsing JSON pour image ${i + 1}:`, responseText);
+                                throw new Error(`Réponse invalide du serveur (${b2Response.status}): ${responseText.substring(0, 200)}`);
+                            }
+                            
+                            if (!b2Response.ok) {
+                                throw new Error(b2Data.message || b2Data.error || `Erreur upload B2 (${b2Response.status})`);
+                            }
+                            
+                            // Succès !
+                            return b2Data;
+                            
+                        } catch (error) {
+                            lastError = error;
+                            console.warn(`⚠️ Tentative ${attempt}/${maxRetries} échouée pour image ${i + 1}:`, error.message);
+                            
+                            // Si ce n'est pas la dernière tentative, attendre avant de réessayer
+                            if (attempt < maxRetries) {
+                                const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000); // Backoff exponentiel (1s, 2s, 4s max)
+                                console.log(`⏳ Attente de ${delay}ms avant retry...`);
+                                await new Promise(resolve => setTimeout(resolve, delay));
+                            }
+                        }
+                    }
+                    
+                    // Toutes les tentatives ont échoué
+                    throw lastError;
+                };
+                
                 try {
-                    console.log(`📤 Upload image ${i + 1}/${files.length} vers B2: ${fileName}`);
-                    
-                    // Ajouter un timeout de 60 secondes pour l'upload
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 60000);
-                    
-                    const b2Response = await fetch('/.netlify/functions/b2-upload', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            imageBase64: base64,
-                            folder: folder,
-                            fileName: fileName
-                        }),
-                        signal: controller.signal
-                    });
-                    
-                    clearTimeout(timeoutId);
-                    
-                    // Lire la réponse comme texte d'abord pour gérer les erreurs non-JSON
-                    const responseText = await b2Response.text();
-                    let b2Data;
-                    
-                    try {
-                        b2Data = JSON.parse(responseText);
-                    } catch (parseError) {
-                        console.error(`Erreur parsing JSON pour image ${i + 1}:`, responseText);
-                        throw new Error(`Réponse invalide du serveur (${b2Response.status}): ${responseText.substring(0, 200)}`);
-                    }
-                    
-                    if (!b2Response.ok) {
-                        throw new Error(b2Data.message || b2Data.error || 'Erreur upload B2');
-                    }
+                    const b2Data = await uploadWithRetry(3);
                     
                     // Stocker l'URL Cloudflare CDN au lieu de l'image base64
                     filesData.push({
@@ -533,12 +561,17 @@
                     progressFill.style.width = `${uploadProgress}%`;
                     progressFill.textContent = `Upload B2 ${i + 1}/${files.length}... ${uploadProgress}%`;
                     
+                    // Ajouter un petit délai entre les uploads pour éviter le rate limiting
+                    if (i < files.length - 1) {
+                        await new Promise(resolve => setTimeout(resolve, 500)); // 500ms entre chaque upload
+                    }
+                    
                 } catch (error) {
-                    console.error(`❌ Erreur upload image ${i + 1}:`, error);
+                    console.error(`❌ Erreur upload image ${i + 1} après ${3} tentatives:`, error);
                     
                     // Gérer différents types d'erreurs
                     if (error.name === 'AbortError') {
-                        throw new Error(`Erreur upload image ${i + 1}: Timeout - l'upload a pris trop de temps (>60s)`);
+                        throw new Error(`Erreur upload image ${i + 1}: Timeout - l'upload a pris trop de temps (>25s). L'image est peut-être trop grande.`);
                     } else if (error.message) {
                         throw new Error(`Erreur upload image ${i + 1}: ${error.message}`);
                     } else {

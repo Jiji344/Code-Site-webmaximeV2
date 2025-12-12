@@ -5,6 +5,14 @@
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
+  
+# Configuration des timeouts pour les fonctions
+# Note: Le plan gratuit Netlify a un timeout max de 10s, mais on peut essayer d'optimiser
+[functions."b2-upload"]
+  timeout = 26  # Maximum pour le plan gratuit (26 secondes)
+  
+[functions."batch-upload"]
+  timeout = 26  # Maximum pour le plan gratuit (26 secondes)
 
 [[redirects]]
   from = "/api/*"

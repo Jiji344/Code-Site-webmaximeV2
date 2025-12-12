@@ -67,6 +67,17 @@ async function uploadToB2(uploadUrl, uploadAuthorizationToken, fileName, fileBuf
 }
 
 exports.handler = async (event, context) => {
+  // Avertir si on approche du timeout (Netlify gratuit = 10s, mais on peut avoir jusqu'à 26s avec config)
+  const startTime = Date.now();
+  const timeoutWarning = 20000; // Avertir à 20s
+  
+  const checkTimeout = () => {
+    const elapsed = Date.now() - startTime;
+    if (elapsed > timeoutWarning) {
+      console.warn(`⚠️ Fonction en cours depuis ${elapsed}ms - risque de timeout`);
+    }
+  };
+  
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -159,10 +170,15 @@ exports.handler = async (event, context) => {
     const filePath = folder ? `${folder}/${finalFileName}` : finalFileName;
 
     // 1. Obtenir l'autorisation B2
+    console.log('🔐 Début authentification B2...');
+    checkTimeout();
     const authData = await getB2Authorization(applicationKeyId, applicationKey);
     const { apiUrl, authorizationToken, downloadUrl } = authData;
+    console.log('✅ Authentification B2 réussie');
 
     // 2. Obtenir le bucket ID
+    console.log('📦 Récupération du bucket B2...');
+    checkTimeout();
     const bucketResponse = await fetch(`${apiUrl}/b2api/v2/b2_list_buckets`, {
       method: 'POST',
       headers: {
@@ -188,9 +204,14 @@ exports.handler = async (event, context) => {
     }
 
     // 3. Obtenir l'URL d'upload
+    console.log('🔗 Récupération URL d\'upload B2...');
+    checkTimeout();
     const uploadUrlData = await getUploadUrl(apiUrl, authorizationToken, bucket.bucketId);
+    console.log('✅ URL d\'upload obtenue');
 
     // 4. Uploader le fichier
+    console.log(`📤 Upload du fichier vers B2: ${filePath} (${(imageBuffer.length / 1024 / 1024).toFixed(2)} MB)`);
+    checkTimeout();
     const uploadResult = await uploadToB2(
       uploadUrlData.uploadUrl,
       uploadUrlData.authorizationToken,
@@ -198,6 +219,10 @@ exports.handler = async (event, context) => {
       imageBuffer,
       contentType
     );
+    console.log('✅ Upload B2 réussi');
+    
+    const totalTime = Date.now() - startTime;
+    console.log(`⏱️ Temps total: ${totalTime}ms`);
 
     // Construire l'URL finale via Cloudflare CDN avec le format Friendly URL B2
     // Format: https://cdn.votredomaine.com/file/bucket-name/folder/filename.jpg

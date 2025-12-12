@@ -286,5 +286,101 @@
     "album": "Winona Automne",
     "date": "2025-12-12T12:52:38.712Z",
     "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-1.webp",
+    "title": "Gites Gardois 1",
+    "category": "Immobilier",
+    "album": "Gites Gardois",
+    "date": "2025-12-12T16:04:38.821Z",
+    "isCover": true
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-10.webp",
+    "title": "Gites Gardois 10",
+    "category": "Immobilier",
+    "album": "Gites Gardois",
+    "date": "2025-12-12T16:04:56.821Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-11.webp",
+    "title": "Gites Gardois 11",
+    "category": "Immobilier",
+    "album": "Gites Gardois",
+    "date": "2025-12-12T16:04:58.821Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-12.webp",
+    "title": "Gites Gardois 12",
+    "category": "Immobilier",
+    "album": "Gites Gardois",
+    "date": "2025-12-12T16:05:00.821Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-2.webp",
+    "title": "Gites Gardois 2",
+    "category": "Immobilier",
+    "album": "Gites Gardois",
+    "date": "2025-12-12T16:04:40.821Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-3.webp",
+    "title": "Gites Gardois 3",
+    "category": "Immobilier",
+    "album": "Gites Gardois",
+    "date": "2025-12-12T16:04:42.821Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-4.webp",
+    "title": "Gites Gardois 4",
+    "category": "Immobilier",
+    "album": "Gites Gardois",
+    "date": "2025-12-12T16:04:44.821Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-5.webp",
+    "title": "Gites Gardois 5",
+    "category": "Immobilier",
+    "album": "Gites Gardois",
+    "date": "2025-12-12T16:04:46.821Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-6.webp",
+    "title": "Gites Gardois 6",
+    "category": "Immobilier",
+    "album": "Gites Gardois",
+    "date": "2025-12-12T16:04:48.821Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-7.webp",
+    "title": "Gites Gardois 7",
+    "category": "Immobilier",
+    "album": "Gites Gardois",
+    "date": "2025-12-12T16:04:50.821Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-8.webp",
+    "title": "Gites Gardois 8",
+    "category": "Immobilier",
+    "album": "Gites Gardois",
+    "date": "2025-12-12T16:04:52.821Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-9.webp",
+    "title": "Gites Gardois 9",
+    "category": "Immobilier",
+    "album": "Gites Gardois",
+    "date": "2025-12-12T16:04:54.821Z",
+    "isCover": false
   }
 ]

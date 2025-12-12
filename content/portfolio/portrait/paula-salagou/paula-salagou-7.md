@@ -1,8 +1,0 @@
----
-image: https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-7.webp
-title: Paula Salagou 7
-category: Portrait
-album: Paula Salagou
-date: 2025-12-06T12:12:11.171Z
-isCover: false
----

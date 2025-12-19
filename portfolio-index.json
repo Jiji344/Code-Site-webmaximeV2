@@ -194,10 +194,10 @@
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-1.webp",
     "title": "Jade & Yannis 1",
-    "category": "Portrait",
     "album": "Jade & Yannis",
+    "isCover": false,
     "date": "2025-12-12T18:19:47.178Z",
-    "isCover": true
+    "category": "Portrait"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-10.webp",
@@ -210,10 +210,10 @@
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-2.webp",
     "title": "Jade & Yannis 2",
-    "category": "Portrait",
     "album": "Jade & Yannis",
+    "isCover": true,
     "date": "2025-12-12T18:19:49.178Z",
-    "isCover": false
+    "category": "Portrait"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-3.webp",
@@ -269,6 +269,102 @@
     "category": "Portrait",
     "album": "Jade & Yannis",
     "date": "2025-12-12T18:20:03.178Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-1.webp",
+    "title": "Paula Salagou 1",
+    "category": "Portrait",
+    "album": "Paula Salagou",
+    "date": "2025-12-19T12:44:05.393Z",
+    "isCover": true
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-10.webp",
+    "title": "Paula Salagou 10",
+    "category": "Portrait",
+    "album": "Paula Salagou",
+    "date": "2025-12-19T12:44:23.393Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-11.webp",
+    "title": "Paula Salagou 11",
+    "category": "Portrait",
+    "album": "Paula Salagou",
+    "date": "2025-12-19T12:44:25.393Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-12.webp",
+    "title": "Paula Salagou 12",
+    "category": "Portrait",
+    "album": "Paula Salagou",
+    "date": "2025-12-19T12:44:27.393Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-2.webp",
+    "title": "Paula Salagou 2",
+    "category": "Portrait",
+    "album": "Paula Salagou",
+    "date": "2025-12-19T12:44:07.393Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-3.webp",
+    "title": "Paula Salagou 3",
+    "category": "Portrait",
+    "album": "Paula Salagou",
+    "date": "2025-12-19T12:44:09.393Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-4.webp",
+    "title": "Paula Salagou 4",
+    "category": "Portrait",
+    "album": "Paula Salagou",
+    "date": "2025-12-19T12:44:11.393Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-5.webp",
+    "title": "Paula Salagou 5",
+    "category": "Portrait",
+    "album": "Paula Salagou",
+    "date": "2025-12-19T12:44:13.393Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-6.webp",
+    "title": "Paula Salagou 6",
+    "category": "Portrait",
+    "album": "Paula Salagou",
+    "date": "2025-12-19T12:44:15.393Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-7.webp",
+    "title": "Paula Salagou 7",
+    "category": "Portrait",
+    "album": "Paula Salagou",
+    "date": "2025-12-19T12:44:17.393Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-8.webp",
+    "title": "Paula Salagou 8",
+    "category": "Portrait",
+    "album": "Paula Salagou",
+    "date": "2025-12-19T12:44:19.393Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-9.webp",
+    "title": "Paula Salagou 9",
+    "category": "Portrait",
+    "album": "Paula Salagou",
+    "date": "2025-12-19T12:44:21.393Z",
     "isCover": false
   },
   {

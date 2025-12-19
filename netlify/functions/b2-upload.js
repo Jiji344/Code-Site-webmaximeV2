@@ -46,11 +46,15 @@ async function uploadToB2(uploadUrl, uploadAuthorizationToken, fileName, fileBuf
   // Calculer le SHA1 du fichier
   const sha1 = crypto.createHash('sha1').update(fileBuffer).digest('hex');
 
+  // Encoder le nom de fichier en UTF-8 percent-encoded
+  // Les slashes (/) doivent rester non encodés pour représenter les dossiers
+  const encodedFileName = encodeURIComponent(fileName).replace(/%2F/g, '/');
+
   const response = await fetch(uploadUrl, {
     method: 'POST',
     headers: {
       'Authorization': uploadAuthorizationToken,
-      'X-Bz-File-Name': fileName,
+      'X-Bz-File-Name': encodedFileName,
       'Content-Type': contentType,
       'X-Bz-Content-Sha1': sha1,
       'X-Bz-Info-Author': 'portfolio-upload'

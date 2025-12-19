@@ -461,6 +461,16 @@
             }
         });
         
+        // Fonction pour normaliser les noms de fichiers (supprime les accents)
+        function normalizeFileName(str) {
+            return str
+                .normalize('NFD') // Décompose les caractères accentués (é → e + ´)
+                .replace(/[\u0300-\u036f]/g, '') // Supprime les diacritiques
+                .toLowerCase()
+                .replace(/\s+/g, '-')
+                .replace(/[^a-z0-9-]/g, '');
+        }
+        
         async function uploadPhotos(albumTitle, category, files) {
             const filesData = [];
             
@@ -481,8 +491,10 @@
                 });
                 
                 // Upload sur Backblaze B2 (servi via Cloudflare CDN)
-                const folder = `portfolio/${category}/${albumTitle.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`;
-                const fileName = `${albumTitle.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}-${counter}.${file.name.split('.').pop()}`;
+                // Normaliser les noms pour supprimer les accents
+                const normalizedAlbumTitle = normalizeFileName(albumTitle);
+                const folder = `portfolio/${category}/${normalizedAlbumTitle}`;
+                const fileName = `${normalizedAlbumTitle}-${counter}.${file.name.split('.').pop()}`;
                 
                 // Fonction de retry avec backoff exponentiel
                 const uploadWithRetry = async (maxRetries = 3) => {

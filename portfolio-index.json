@@ -1514,10 +1514,10 @@
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-1.webp",
     "title": "Crête 1",
-    "category": "Voyage",
     "album": "Crête",
+    "isCover": false,
     "date": "2025-12-20T13:54:01.351Z",
-    "isCover": true
+    "category": "Voyage"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-10.webp",
@@ -1650,10 +1650,10 @@
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-9.webp",
     "title": "Crête 9",
-    "category": "Voyage",
     "album": "Crête",
+    "isCover": true,
     "date": "2025-12-20T13:54:17.351Z",
-    "isCover": false
+    "category": "Voyage"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-1.webp",
@@ -1893,6 +1893,102 @@
     "category": "Voyage",
     "album": "Paris 2024",
     "date": "2025-12-20T13:34:00.697Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-1.webp",
+    "title": "Ferme Aux Crocodiles 1",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:04:45.307Z",
+    "isCover": true
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-10.webp",
+    "title": "Ferme Aux Crocodiles 10",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:05:03.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-11.webp",
+    "title": "Ferme Aux Crocodiles 11",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:05:05.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-12.webp",
+    "title": "Ferme Aux Crocodiles 12",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:05:07.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-2.webp",
+    "title": "Ferme Aux Crocodiles 2",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:04:47.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-3.webp",
+    "title": "Ferme Aux Crocodiles 3",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:04:49.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-4.webp",
+    "title": "Ferme Aux Crocodiles 4",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:04:51.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-5.webp",
+    "title": "Ferme Aux Crocodiles 5",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:04:53.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-6.webp",
+    "title": "Ferme Aux Crocodiles 6",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:04:55.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-7.webp",
+    "title": "Ferme Aux Crocodiles 7",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:04:57.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-8.webp",
+    "title": "Ferme Aux Crocodiles 8",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:04:59.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-9.webp",
+    "title": "Ferme Aux Crocodiles 9",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:05:01.307Z",
     "isCover": false
   },
   {

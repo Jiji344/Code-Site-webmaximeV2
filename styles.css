@@ -1820,8 +1820,8 @@ ul {
 .album-carousel {
     flex: 1;
     display: flex;
-    align-items: stretch;
-    justify-content: stretch;
+    align-items: center;
+    justify-content: center;
     position: relative;
     min-height: 0;
     overflow: hidden;
@@ -1832,8 +1832,8 @@ ul {
 .carousel-image-container {
     flex: 1;
     display: flex;
-    align-items: stretch;
-    justify-content: stretch;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
     min-height: 0;
     max-height: 100%;
@@ -2715,12 +2715,17 @@ ul {
         height: 100%;
         z-index: 1;
         padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .carousel-image {
-        max-height: calc(90vh - 250px);
+        max-width: 100%;
+        max-height: calc(100vh - 200px);
         width: auto;
         height: auto;
+        object-fit: contain;
     }
 }
 

@@ -1898,10 +1898,10 @@
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-1.webp",
     "title": "Ferme Aux Crocodiles 1",
-    "category": "Animalier",
     "album": "Ferme Aux Crocodiles",
+    "isCover": false,
     "date": "2025-12-20T14:04:45.307Z",
-    "isCover": true
+    "category": "Animalier"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-10.webp",
@@ -1922,10 +1922,10 @@
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-12.webp",
     "title": "Ferme Aux Crocodiles 12",
-    "category": "Animalier",
     "album": "Ferme Aux Crocodiles",
+    "isCover": true,
     "date": "2025-12-20T14:05:07.307Z",
-    "isCover": false
+    "category": "Animalier"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-2.webp",
@@ -2149,6 +2149,46 @@
     "category": "Animalier",
     "album": "Flamants Roses Camargue",
     "date": "2025-12-20T11:12:19.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/les-moineaux/les-moineaux-1.webp",
+    "title": "Les Moineaux 1",
+    "category": "Animalier",
+    "album": "Les Moineaux",
+    "date": "2025-12-20T14:26:50.376Z",
+    "isCover": true
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/les-moineaux/les-moineaux-2.webp",
+    "title": "Les Moineaux 2",
+    "category": "Animalier",
+    "album": "Les Moineaux",
+    "date": "2025-12-20T14:26:52.376Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/les-moineaux/les-moineaux-3.webp",
+    "title": "Les Moineaux 3",
+    "category": "Animalier",
+    "album": "Les Moineaux",
+    "date": "2025-12-20T14:26:54.376Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/les-moineaux/les-moineaux-4.webp",
+    "title": "Les Moineaux 4",
+    "category": "Animalier",
+    "album": "Les Moineaux",
+    "date": "2025-12-20T14:26:56.376Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/les-moineaux/les-moineaux-5.webp",
+    "title": "Les Moineaux 5",
+    "category": "Animalier",
+    "album": "Les Moineaux",
+    "date": "2025-12-20T14:26:58.376Z",
     "isCover": false
   }
 ]

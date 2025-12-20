@@ -772,7 +772,9 @@ ul {
 .portfolio-category:nth-child(1),
 .portfolio-category:nth-child(2),
 .portfolio-category:nth-child(3),
-.portfolio-category:nth-child(4) {
+.portfolio-category:nth-child(4),
+.portfolio-category:nth-child(5),
+.portfolio-category:nth-child(6) {
     grid-column: span 6;
     grid-row: span 2;
 }
@@ -1063,11 +1065,11 @@ ul {
         flex: 0 0 100%;
     }
     
-    /* Hero très petits écrans */
+    /* Hero très petits écrans - Grille 3x3 pour 6 catégories */
     .hero-frames {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--spacing-xs);
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.25rem;
         padding: 0 var(--spacing-xs);
     }
     
@@ -1202,41 +1204,57 @@ ul {
 
 @media screen and (max-width: 768px) {
     .clients-banner {
-        padding: var(--spacing-sm) 0;
+        padding: var(--spacing-md) 0;
     }
     
     .clients-banner-title {
         font-size: 1.75rem;
-        margin-bottom: var(--spacing-sm);
+        margin-bottom: var(--spacing-md);
     }
     
     .clients-logos {
-        gap: var(--spacing-xs);
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .client-logo-item {
+        flex: none;
+        width: 100%;
     }
     
     .client-logo-item img {
-        max-height: 60px;
+        max-height: 80px;
         max-width: 100%;
+        width: 100%;
     }
 }
 
 @media screen and (max-width: 480px) {
     .clients-banner {
-        padding: var(--spacing-xs) 0;
+        padding: var(--spacing-sm) 0;
     }
     
     .clients-banner-title {
         font-size: 0.8rem;
-        margin-bottom: var(--spacing-xs);
+        margin-bottom: var(--spacing-sm);
     }
     
     .clients-logos {
-        gap: 0.5rem;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.25rem;
+    }
+    
+    .client-logo-item {
+        flex: none;
+        width: 100%;
     }
     
     .client-logo-item img {
-        max-height: 50px;
+        max-height: 70px;
         max-width: 100%;
+        width: 100%;
     }
 }
 
@@ -2065,7 +2083,9 @@ ul {
     .portfolio-category:nth-child(1),
     .portfolio-category:nth-child(2),
     .portfolio-category:nth-child(3),
-    .portfolio-category:nth-child(4) {
+    .portfolio-category:nth-child(4),
+    .portfolio-category:nth-child(5),
+    .portfolio-category:nth-child(6) {
         grid-column: span 12;
         grid-row: span 1;
     }
@@ -2185,15 +2205,15 @@ ul {
 
     /* Hero Mobile */
     .hero {
-        padding-bottom: var(--spacing-sm);
-        padding-top: 4.5rem;
+        padding-bottom: var(--spacing-lg);
+        padding-top: 9rem;
         margin-top: 0;
     }
     
     .hero-container {
         grid-template-columns: 1fr;
         gap: 0;
-        margin-top: 0;
+        margin-top: var(--spacing-sm);
         min-height: auto;
     }
     
@@ -2201,7 +2221,7 @@ ul {
         text-align: center;
         order: -1;
         min-height: auto;
-        padding: var(--spacing-sm) 0 var(--spacing-xs) 0;
+        padding: var(--spacing-md) 0 var(--spacing-md) 0;
         gap: 0 !important;
         justify-content: flex-start !important;
     }
@@ -2233,11 +2253,11 @@ ul {
     
     .hero-frames {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--spacing-xs);
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.25rem;
         max-width: 100%;
-        margin: var(--spacing-xs) auto var(--spacing-sm) auto;
-        padding: 0 var(--spacing-sm);
+        margin: var(--spacing-md) auto var(--spacing-md) auto;
+        padding: 0 var(--spacing-xs);
         overflow: visible;
     }
     
@@ -2328,6 +2348,28 @@ ul {
     /* About Mobile */
     .about-skills {
         justify-content: center;
+    }
+
+    /* Clients Banner Mobile - Grille 4x2 */
+    .clients-banner {
+        padding: var(--spacing-md) 0;
+    }
+    
+    .clients-logos {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .client-logo-item {
+        flex: none;
+        width: 100%;
+    }
+    
+    .client-logo-item img {
+        max-height: 80px;
+        width: 100%;
     }
 
     /* Avis Mobile */

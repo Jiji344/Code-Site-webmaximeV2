@@ -109,3 +109,51 @@ collections:
       - { label: "Photo de couverture", name: "isCover", widget: "boolean", default: false, hint: "Cocher pour utiliser cette photo comme couverture de l'album" }
       - { label: "Date", name: "date", widget: "datetime", default: "" }
       - { label: "Catégorie", name: "category", widget: "hidden", default: "Événementiel" }
+
+  # ========================================
+  # VOYAGE
+  # ========================================
+  - name: "voyage"
+    label: "✈️ Voyages"
+    label_singular: "Voyage"
+    folder: "content/portfolio/voyage"
+    create: true
+    nested: { depth: 2 }
+    slug: "{{album}}/{{slug}}"
+    path: "{{album}}/{{slug}}"
+    summary: "{{title}} - {{album}}"
+    view_groups:
+      - { label: "Album", field: "album" }
+    media_folder: "static/img/voyage/{{album}}"
+    public_folder: "/static/img/voyage/{{album}}"
+    fields:
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Titre", name: "title", widget: "string", hint: "Ex: Voyage Japon 1, Voyage Japon 2..." }
+      - { label: "Album", name: "album", widget: "string", hint: "Nom du voyage (ex: Japon 2024). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
+      - { label: "Photo de couverture", name: "isCover", widget: "boolean", default: false, hint: "Cocher pour utiliser cette photo comme couverture de l'album" }
+      - { label: "Date", name: "date", widget: "datetime", default: "" }
+      - { label: "Catégorie", name: "category", widget: "hidden", default: "Voyage" }
+
+  # ========================================
+  # ANIMALIER
+  # ========================================
+  - name: "animalier"
+    label: "🐾 Animalier"
+    label_singular: "Animalier"
+    folder: "content/portfolio/animalier"
+    create: true
+    nested: { depth: 2 }
+    slug: "{{album}}/{{slug}}"
+    path: "{{album}}/{{slug}}"
+    summary: "{{title}} - {{album}}"
+    view_groups:
+      - { label: "Album", field: "album" }
+    media_folder: "static/img/animalier/{{album}}"
+    public_folder: "/static/img/animalier/{{album}}"
+    fields:
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Titre", name: "title", widget: "string", hint: "Ex: Chien Max 1, Chien Max 2..." }
+      - { label: "Album", name: "album", widget: "string", hint: "Nom de l'animal ou du shooting (ex: Max, Chatons). Tape le MÊME nom pour grouper plusieurs photos ensemble !" }
+      - { label: "Photo de couverture", name: "isCover", widget: "boolean", default: false, hint: "Cocher pour utiliser cette photo comme couverture de l'album" }
+      - { label: "Date", name: "date", widget: "datetime", default: "" }
+      - { label: "Catégorie", name: "category", widget: "hidden", default: "Animalier" }

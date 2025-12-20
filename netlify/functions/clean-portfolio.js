@@ -37,7 +37,7 @@ async function cleanPortfolioIndex(owner, repo, branch, githubToken) {
     }
 
     // 2. Scanner les dossiers de contenu pour vérifier les fichiers existants
-    const categories = ['Portrait', 'Mariage', 'Immobilier', 'Événementiel'];
+    const categories = ['Portrait', 'Mariage', 'Immobilier', 'Événementiel', 'Voyage', 'Animalier'];
     const validEntries = [];
     const validImagePaths = new Set();
     const validMdPaths = new Set();

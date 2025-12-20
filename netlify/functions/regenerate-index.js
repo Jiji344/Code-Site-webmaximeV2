@@ -118,7 +118,7 @@ async function scanDirectory(owner, repo, branch, githubToken, path) {
 
 // Fonction pour régénérer l'index portfolio
 async function regenerateIndex(owner, repo, branch, githubToken) {
-  const categories = ['Portrait', 'Mariage', 'Immobilier', 'Événementiel'];
+  const categories = ['Portrait', 'Mariage', 'Immobilier', 'Événementiel', 'Voyage', 'Animalier'];
   const allPhotos = [];
 
   // Scanner tous les dossiers de catégories

@@ -53,7 +53,7 @@ function scanDirectory(dir, results = []) {
 
 // Scanner tous les dossiers de portfolio
 const portfolioPath = path.join(__dirname, 'content', 'portfolio');
-const categories = ['portrait', 'mariage', 'immobilier', 'événementiel'];
+const categories = ['portrait', 'mariage', 'immobilier', 'événementiel', 'voyage', 'animalier'];
 
 let allPhotos = [];
 

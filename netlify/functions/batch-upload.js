@@ -10,7 +10,7 @@ function getGitHubAuthHeader(githubToken) {
 
 // Fonction pour régénérer l'index portfolio
 async function regenerateIndex(owner, repo, branch, githubToken) {
-  const categories = ['Portrait', 'Mariage', 'Immobilier', 'Événementiel'];
+  const categories = ['Portrait', 'Mariage', 'Immobilier', 'Événementiel', 'Voyage', 'Animalier'];
   const allPhotos = [];
 
   // Scanner tous les dossiers de catégories
@@ -408,7 +408,9 @@ exports.handler = async (event, context) => {
           'portrait': 'Portrait',
           'mariage': 'Mariage',
           'immobilier': 'Immobilier',
-          'événementiel': 'Événementiel'
+          'événementiel': 'Événementiel',
+          'voyage': 'Voyage',
+          'animalier': 'Animalier'
         };
         const categoryName = categoryNames[category] || category;
 

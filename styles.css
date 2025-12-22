@@ -2111,6 +2111,11 @@ ul {
 
 /* Mobile */
 @media screen and (max-width: 768px) {
+    .loader-logo {
+        width: 60px;
+        height: 60px;
+    }
+    
     :root {
         --font-size-xl: 2rem;
         --font-size-lg: 1.75rem;

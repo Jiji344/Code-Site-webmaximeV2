@@ -124,6 +124,12 @@
     height: 80px;
     object-fit: contain;
     animation: logoRotate 4s linear infinite;
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
 }
 
 @keyframes logoRotate {
@@ -2111,6 +2117,13 @@ ul {
 
 /* Mobile */
 @media screen and (max-width: 768px) {
+    /* Assurer que l'animation du loader fonctionne sur mobile */
+    .loader-logo {
+        animation: logoRotate 4s linear infinite;
+        will-change: transform;
+        transform: translateZ(0);
+    }
+    
     :root {
         --font-size-xl: 2rem;
         --font-size-lg: 1.75rem;

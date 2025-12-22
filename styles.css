@@ -125,30 +125,35 @@
     object-fit: contain;
     -webkit-animation: logoRotate 4s linear infinite;
     animation: logoRotate 4s linear infinite;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
     will-change: transform;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    backface-visibility: hidden;
+    -webkit-transform: translateZ(0) rotate(0deg);
+    transform: translateZ(0) rotate(0deg);
     -webkit-backface-visibility: hidden;
-    perspective: 1000px;
+    backface-visibility: hidden;
     -webkit-perspective: 1000px;
+    perspective: 1000px;
+    display: block;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
 }
 
 @-webkit-keyframes logoRotate {
     0% {
-        -webkit-transform: rotate(0deg);
+        -webkit-transform: translateZ(0) rotate(0deg);
     }
     100% {
-        -webkit-transform: rotate(360deg);
+        -webkit-transform: translateZ(0) rotate(360deg);
     }
 }
 
 @keyframes logoRotate {
     0% {
-        transform: rotate(0deg);
+        transform: translateZ(0) rotate(0deg);
     }
     100% {
-        transform: rotate(360deg);
+        transform: translateZ(0) rotate(360deg);
     }
 }
 
@@ -2132,9 +2137,13 @@ ul {
     .loader-logo {
         -webkit-animation: logoRotate 4s linear infinite;
         animation: logoRotate 4s linear infinite;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
         will-change: transform;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
+        -webkit-transform: translateZ(0) rotate(0deg);
+        transform: translateZ(0) rotate(0deg);
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
     }
     
     :root {
@@ -2640,6 +2649,14 @@ ul {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+    }
+    
+    /* Exclure le loader de la réduction d'animation */
+    .loader-logo {
+        animation-duration: 4s !important;
+        animation-iteration-count: infinite !important;
+        -webkit-animation-duration: 4s !important;
+        -webkit-animation-iteration-count: infinite !important;
     }
 }
 

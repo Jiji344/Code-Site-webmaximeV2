@@ -5,8 +5,7 @@
     "album": "Carla Salagou",
     "isCover": false,
     "date": "2025-12-12T12:50:35.855Z",
-    "category": "Portrait",
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-1.webp"
+    "category": "Portrait"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-10.webp",
@@ -14,17 +13,15 @@
     "category": "Portrait",
     "album": "Carla Salagou",
     "date": "2025-12-12T12:50:53.855Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-10.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-11.webp",
     "title": "Carla Salagou 11",
-    "category": "Portrait",
     "album": "Carla Salagou",
+    "isCover": true,
     "date": "2025-12-12T12:50:55.855Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-11.webp"
+    "category": "Portrait"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-12.webp",
@@ -32,8 +29,7 @@
     "category": "Portrait",
     "album": "Carla Salagou",
     "date": "2025-12-12T12:50:57.855Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-12.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-13.webp",
@@ -41,8 +37,7 @@
     "category": "Portrait",
     "album": "Carla Salagou",
     "date": "2025-12-12T12:50:59.855Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-13.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-2.webp",
@@ -50,8 +45,7 @@
     "category": "Portrait",
     "album": "Carla Salagou",
     "date": "2025-12-12T12:50:37.855Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-2.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-3.webp",
@@ -59,8 +53,7 @@
     "category": "Portrait",
     "album": "Carla Salagou",
     "date": "2025-12-12T12:50:39.855Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-4.webp",
@@ -68,8 +61,7 @@
     "category": "Portrait",
     "album": "Carla Salagou",
     "date": "2025-12-12T12:50:41.855Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-4.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-5.webp",
@@ -77,8 +69,7 @@
     "category": "Portrait",
     "album": "Carla Salagou",
     "date": "2025-12-12T12:50:43.855Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-6.webp",
@@ -86,8 +77,7 @@
     "category": "Portrait",
     "album": "Carla Salagou",
     "date": "2025-12-12T12:50:45.855Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-7.webp",
@@ -95,8 +85,7 @@
     "category": "Portrait",
     "album": "Carla Salagou",
     "date": "2025-12-12T12:50:47.855Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-7.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-8.webp",
@@ -104,8 +93,7 @@
     "category": "Portrait",
     "album": "Carla Salagou",
     "date": "2025-12-12T12:50:49.855Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-8.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-9.webp",
@@ -113,8 +101,7 @@
     "category": "Portrait",
     "album": "Carla Salagou",
     "date": "2025-12-12T12:50:51.855Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/carla-salagou/carla-salagou-9.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-1.webp",
@@ -122,8 +109,7 @@
     "album": "Glawdys Dentelle",
     "isCover": false,
     "date": "2025-12-12T15:57:02.469Z",
-    "category": "Portrait",
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-1.webp"
+    "category": "Portrait"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-10.webp",
@@ -131,8 +117,7 @@
     "category": "Portrait",
     "album": "Glawdys Dentelle",
     "date": "2025-12-12T15:57:20.469Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-10.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-11.webp",
@@ -140,8 +125,7 @@
     "category": "Portrait",
     "album": "Glawdys Dentelle",
     "date": "2025-12-12T15:57:22.469Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-11.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-2.webp",
@@ -149,8 +133,7 @@
     "category": "Portrait",
     "album": "Glawdys Dentelle",
     "date": "2025-12-12T15:57:04.469Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-2.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-3.webp",
@@ -158,8 +141,7 @@
     "category": "Portrait",
     "album": "Glawdys Dentelle",
     "date": "2025-12-12T15:57:06.469Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-4.webp",
@@ -167,8 +149,7 @@
     "category": "Portrait",
     "album": "Glawdys Dentelle",
     "date": "2025-12-12T15:57:08.469Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-4.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-5.webp",
@@ -176,8 +157,7 @@
     "category": "Portrait",
     "album": "Glawdys Dentelle",
     "date": "2025-12-12T15:57:10.469Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-6.webp",
@@ -185,8 +165,7 @@
     "category": "Portrait",
     "album": "Glawdys Dentelle",
     "date": "2025-12-12T15:57:12.469Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-7.webp",
@@ -194,8 +173,7 @@
     "album": "Glawdys Dentelle",
     "isCover": true,
     "date": "2025-12-12T15:57:14.469Z",
-    "category": "Portrait",
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-7.webp"
+    "category": "Portrait"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-8.webp",
@@ -203,8 +181,7 @@
     "category": "Portrait",
     "album": "Glawdys Dentelle",
     "date": "2025-12-12T15:57:16.469Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-8.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-9.webp",
@@ -212,8 +189,7 @@
     "category": "Portrait",
     "album": "Glawdys Dentelle",
     "date": "2025-12-12T15:57:18.469Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/glawdys-dentelle/glawdys-dentelle-9.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-1.webp",
@@ -221,8 +197,7 @@
     "album": "Jade & Yannis",
     "isCover": false,
     "date": "2025-12-12T18:19:47.178Z",
-    "category": "Portrait",
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-1.webp"
+    "category": "Portrait"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-10.webp",
@@ -230,8 +205,7 @@
     "category": "Portrait",
     "album": "Jade & Yannis",
     "date": "2025-12-12T18:20:05.178Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-10.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-2.webp",
@@ -239,8 +213,7 @@
     "album": "Jade & Yannis",
     "isCover": true,
     "date": "2025-12-12T18:19:49.178Z",
-    "category": "Portrait",
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-2.webp"
+    "category": "Portrait"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-3.webp",
@@ -248,8 +221,7 @@
     "category": "Portrait",
     "album": "Jade & Yannis",
     "date": "2025-12-12T18:19:51.178Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-4.webp",
@@ -257,8 +229,7 @@
     "category": "Portrait",
     "album": "Jade & Yannis",
     "date": "2025-12-12T18:19:53.178Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-4.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-5.webp",
@@ -266,8 +237,7 @@
     "category": "Portrait",
     "album": "Jade & Yannis",
     "date": "2025-12-12T18:19:55.178Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-6.webp",
@@ -275,8 +245,7 @@
     "category": "Portrait",
     "album": "Jade & Yannis",
     "date": "2025-12-12T18:19:57.178Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-7.webp",
@@ -284,8 +253,7 @@
     "category": "Portrait",
     "album": "Jade & Yannis",
     "date": "2025-12-12T18:19:59.178Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-7.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-8.webp",
@@ -293,8 +261,7 @@
     "category": "Portrait",
     "album": "Jade & Yannis",
     "date": "2025-12-12T18:20:01.178Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-8.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-9.webp",
@@ -302,8 +269,7 @@
     "category": "Portrait",
     "album": "Jade & Yannis",
     "date": "2025-12-12T18:20:03.178Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/jade--yannis/jade--yannis-9.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-1.webp",
@@ -311,8 +277,7 @@
     "category": "Portrait",
     "album": "Paula Salagou",
     "date": "2025-12-19T12:44:05.393Z",
-    "isCover": true,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-1.webp"
+    "isCover": true
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-10.webp",
@@ -320,8 +285,7 @@
     "category": "Portrait",
     "album": "Paula Salagou",
     "date": "2025-12-19T12:44:23.393Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-10.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-11.webp",
@@ -329,8 +293,7 @@
     "category": "Portrait",
     "album": "Paula Salagou",
     "date": "2025-12-19T12:44:25.393Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-11.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-12.webp",
@@ -338,8 +301,7 @@
     "category": "Portrait",
     "album": "Paula Salagou",
     "date": "2025-12-19T12:44:27.393Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-12.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-2.webp",
@@ -347,8 +309,7 @@
     "category": "Portrait",
     "album": "Paula Salagou",
     "date": "2025-12-19T12:44:07.393Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-2.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-3.webp",
@@ -356,8 +317,7 @@
     "category": "Portrait",
     "album": "Paula Salagou",
     "date": "2025-12-19T12:44:09.393Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-4.webp",
@@ -365,8 +325,7 @@
     "category": "Portrait",
     "album": "Paula Salagou",
     "date": "2025-12-19T12:44:11.393Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-4.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-5.webp",
@@ -374,8 +333,7 @@
     "category": "Portrait",
     "album": "Paula Salagou",
     "date": "2025-12-19T12:44:13.393Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-6.webp",
@@ -383,8 +341,7 @@
     "category": "Portrait",
     "album": "Paula Salagou",
     "date": "2025-12-19T12:44:15.393Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-7.webp",
@@ -392,8 +349,7 @@
     "category": "Portrait",
     "album": "Paula Salagou",
     "date": "2025-12-19T12:44:17.393Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-7.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-8.webp",
@@ -401,8 +357,7 @@
     "category": "Portrait",
     "album": "Paula Salagou",
     "date": "2025-12-19T12:44:19.393Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-8.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-9.webp",
@@ -410,8 +365,7 @@
     "category": "Portrait",
     "album": "Paula Salagou",
     "date": "2025-12-19T12:44:21.393Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/paula-salagou/paula-salagou-9.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/sara-haloween/sara-haloween-1.webp",
@@ -419,8 +373,7 @@
     "category": "Portrait",
     "album": "Sara Haloween",
     "date": "2025-12-12T17:51:37.061Z",
-    "isCover": true,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/sara-haloween/sara-haloween-1.webp"
+    "isCover": true
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/sara-haloween/sara-haloween-2.webp",
@@ -428,8 +381,7 @@
     "category": "Portrait",
     "album": "Sara Haloween",
     "date": "2025-12-12T17:51:39.061Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/sara-haloween/sara-haloween-2.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/sara-haloween/sara-haloween-3.webp",
@@ -437,8 +389,7 @@
     "category": "Portrait",
     "album": "Sara Haloween",
     "date": "2025-12-12T17:51:41.061Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/sara-haloween/sara-haloween-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/sara-haloween/sara-haloween-4.webp",
@@ -446,8 +397,7 @@
     "category": "Portrait",
     "album": "Sara Haloween",
     "date": "2025-12-12T17:51:43.061Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/sara-haloween/sara-haloween-4.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/sara-haloween/sara-haloween-5.webp",
@@ -455,8 +405,7 @@
     "category": "Portrait",
     "album": "Sara Haloween",
     "date": "2025-12-12T17:51:45.061Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/sara-haloween/sara-haloween-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/sara-haloween/sara-haloween-6.webp",
@@ -464,8 +413,7 @@
     "category": "Portrait",
     "album": "Sara Haloween",
     "date": "2025-12-12T17:51:47.061Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/sara-haloween/sara-haloween-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/sara-haloween/sara-haloween-7.webp",
@@ -473,8 +421,7 @@
     "category": "Portrait",
     "album": "Sara Haloween",
     "date": "2025-12-12T17:51:49.061Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/sara-haloween/sara-haloween-7.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/sara-haloween/sara-haloween-8.webp",
@@ -482,8 +429,7 @@
     "category": "Portrait",
     "album": "Sara Haloween",
     "date": "2025-12-12T17:51:51.061Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/sara-haloween/sara-haloween-8.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/tissus-avec-studio-denvol/tissus-avec-studio-denvol-1.webp",
@@ -491,8 +437,7 @@
     "category": "Portrait",
     "album": "Tissus avec Studio D'envol",
     "date": "2025-12-19T18:10:56.449Z",
-    "isCover": true,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/tissus-avec-studio-denvol/tissus-avec-studio-denvol-1.webp"
+    "isCover": true
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/tissus-avec-studio-denvol/tissus-avec-studio-denvol-2.webp",
@@ -500,8 +445,7 @@
     "category": "Portrait",
     "album": "Tissus avec Studio D'envol",
     "date": "2025-12-19T18:10:58.449Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/tissus-avec-studio-denvol/tissus-avec-studio-denvol-2.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/tissus-avec-studio-denvol/tissus-avec-studio-denvol-3.webp",
@@ -509,8 +453,7 @@
     "category": "Portrait",
     "album": "Tissus avec Studio D'envol",
     "date": "2025-12-19T18:11:00.449Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/tissus-avec-studio-denvol/tissus-avec-studio-denvol-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/tissus-avec-studio-denvol/tissus-avec-studio-denvol-4.webp",
@@ -518,8 +461,7 @@
     "category": "Portrait",
     "album": "Tissus avec Studio D'envol",
     "date": "2025-12-19T18:11:02.449Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/tissus-avec-studio-denvol/tissus-avec-studio-denvol-4.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/tissus-avec-studio-denvol/tissus-avec-studio-denvol-5.webp",
@@ -527,8 +469,7 @@
     "category": "Portrait",
     "album": "Tissus avec Studio D'envol",
     "date": "2025-12-19T18:11:04.449Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/tissus-avec-studio-denvol/tissus-avec-studio-denvol-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/tissus-avec-studio-denvol/tissus-avec-studio-denvol-6.webp",
@@ -536,8 +477,7 @@
     "category": "Portrait",
     "album": "Tissus avec Studio D'envol",
     "date": "2025-12-19T18:11:06.449Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/tissus-avec-studio-denvol/tissus-avec-studio-denvol-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/tissus-avec-studio-denvol/tissus-avec-studio-denvol-7.webp",
@@ -545,8 +485,7 @@
     "category": "Portrait",
     "album": "Tissus avec Studio D'envol",
     "date": "2025-12-19T18:11:08.449Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/tissus-avec-studio-denvol/tissus-avec-studio-denvol-7.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/tissus-avec-studio-denvol/tissus-avec-studio-denvol-8.webp",
@@ -554,8 +493,7 @@
     "category": "Portrait",
     "album": "Tissus avec Studio D'envol",
     "date": "2025-12-19T18:11:10.449Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/tissus-avec-studio-denvol/tissus-avec-studio-denvol-8.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-1.webp",
@@ -563,8 +501,7 @@
     "category": "Portrait",
     "album": "Winona Automne",
     "date": "2025-12-12T12:52:22.712Z",
-    "isCover": true,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-1.webp"
+    "isCover": true
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-10.webp",
@@ -572,8 +509,7 @@
     "category": "Portrait",
     "album": "Winona Automne",
     "date": "2025-12-12T12:52:40.712Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-10.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-11.webp",
@@ -581,8 +517,7 @@
     "category": "Portrait",
     "album": "Winona Automne",
     "date": "2025-12-12T12:52:42.712Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-11.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-12.webp",
@@ -590,8 +525,7 @@
     "category": "Portrait",
     "album": "Winona Automne",
     "date": "2025-12-12T12:52:44.712Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-12.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-2.webp",
@@ -599,8 +533,7 @@
     "category": "Portrait",
     "album": "Winona Automne",
     "date": "2025-12-12T12:52:24.712Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-2.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-3.webp",
@@ -608,8 +541,7 @@
     "category": "Portrait",
     "album": "Winona Automne",
     "date": "2025-12-12T12:52:26.712Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-4.webp",
@@ -617,8 +549,7 @@
     "category": "Portrait",
     "album": "Winona Automne",
     "date": "2025-12-12T12:52:28.712Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-4.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-5.webp",
@@ -626,8 +557,7 @@
     "category": "Portrait",
     "album": "Winona Automne",
     "date": "2025-12-12T12:52:30.712Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-6.webp",
@@ -635,8 +565,7 @@
     "category": "Portrait",
     "album": "Winona Automne",
     "date": "2025-12-12T12:52:32.712Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-7.webp",
@@ -644,8 +573,7 @@
     "category": "Portrait",
     "album": "Winona Automne",
     "date": "2025-12-12T12:52:34.712Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-7.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-8.webp",
@@ -653,8 +581,7 @@
     "category": "Portrait",
     "album": "Winona Automne",
     "date": "2025-12-12T12:52:36.712Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-8.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-9.webp",
@@ -662,8 +589,7 @@
     "category": "Portrait",
     "album": "Winona Automne",
     "date": "2025-12-12T12:52:38.712Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/portrait/winona-automne/winona-automne-9.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-1.webp",
@@ -671,8 +597,7 @@
     "album": "Amélie & Jordan",
     "isCover": false,
     "date": "2025-12-12T17:52:54.032Z",
-    "category": "Mariage",
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-1.webp"
+    "category": "Mariage"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-10.webp",
@@ -680,8 +605,7 @@
     "category": "Mariage",
     "album": "Amélie & Jordan",
     "date": "2025-12-12T17:53:12.032Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-10.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-11.webp",
@@ -689,8 +613,7 @@
     "category": "Mariage",
     "album": "Amélie & Jordan",
     "date": "2025-12-12T17:53:14.032Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-11.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-12.webp",
@@ -698,8 +621,7 @@
     "category": "Mariage",
     "album": "Amélie & Jordan",
     "date": "2025-12-12T17:53:16.032Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-12.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-2.webp",
@@ -707,8 +629,7 @@
     "album": "Amélie & Jordan",
     "isCover": true,
     "date": "2025-12-12T17:52:56.032Z",
-    "category": "Mariage",
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-2.webp"
+    "category": "Mariage"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-3.webp",
@@ -716,8 +637,7 @@
     "category": "Mariage",
     "album": "Amélie & Jordan",
     "date": "2025-12-12T17:52:58.032Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-4.webp",
@@ -725,8 +645,7 @@
     "category": "Mariage",
     "album": "Amélie & Jordan",
     "date": "2025-12-12T17:53:00.032Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-4.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-5.webp",
@@ -734,8 +653,7 @@
     "category": "Mariage",
     "album": "Amélie & Jordan",
     "date": "2025-12-12T17:53:02.032Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-6.webp",
@@ -743,8 +661,7 @@
     "category": "Mariage",
     "album": "Amélie & Jordan",
     "date": "2025-12-12T17:53:04.032Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-7.webp",
@@ -752,8 +669,7 @@
     "category": "Mariage",
     "album": "Amélie & Jordan",
     "date": "2025-12-12T17:53:06.032Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-7.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-8.webp",
@@ -761,8 +677,7 @@
     "category": "Mariage",
     "album": "Amélie & Jordan",
     "date": "2025-12-12T17:53:08.032Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-8.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-9.webp",
@@ -770,8 +685,7 @@
     "category": "Mariage",
     "album": "Amélie & Jordan",
     "date": "2025-12-12T17:53:10.032Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/amlie--jordan/amlie--jordan-9.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-1.webp",
@@ -779,8 +693,7 @@
     "album": "Corentin & Elsa",
     "isCover": false,
     "date": "2025-12-12T17:54:37.807Z",
-    "category": "Mariage",
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-1.webp"
+    "category": "Mariage"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-10.webp",
@@ -788,8 +701,7 @@
     "category": "Mariage",
     "album": "Corentin & Elsa",
     "date": "2025-12-12T17:54:55.807Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-10.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-2.webp",
@@ -797,8 +709,7 @@
     "category": "Mariage",
     "album": "Corentin & Elsa",
     "date": "2025-12-12T17:54:39.807Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-2.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-3.webp",
@@ -806,8 +717,7 @@
     "category": "Mariage",
     "album": "Corentin & Elsa",
     "date": "2025-12-12T17:54:41.807Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-4.webp",
@@ -815,8 +725,7 @@
     "category": "Mariage",
     "album": "Corentin & Elsa",
     "date": "2025-12-12T17:54:43.807Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-4.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-5.webp",
@@ -824,8 +733,7 @@
     "category": "Mariage",
     "album": "Corentin & Elsa",
     "date": "2025-12-12T17:54:45.807Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-6.webp",
@@ -833,8 +741,7 @@
     "category": "Mariage",
     "album": "Corentin & Elsa",
     "date": "2025-12-12T17:54:47.807Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-7.webp",
@@ -842,8 +749,7 @@
     "album": "Corentin & Elsa",
     "isCover": true,
     "date": "2025-12-12T17:54:49.807Z",
-    "category": "Mariage",
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-7.webp"
+    "category": "Mariage"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-8.webp",
@@ -851,8 +757,7 @@
     "category": "Mariage",
     "album": "Corentin & Elsa",
     "date": "2025-12-12T17:54:51.807Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-8.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-9.webp",
@@ -860,8 +765,7 @@
     "category": "Mariage",
     "album": "Corentin & Elsa",
     "date": "2025-12-12T17:54:53.807Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/corentin--elsa/corentin--elsa-9.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-1.webp",
@@ -869,8 +773,7 @@
     "album": "Guillaume & Laura",
     "isCover": false,
     "date": "2025-12-12T17:56:15.439Z",
-    "category": "Mariage",
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-1.webp"
+    "category": "Mariage"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-10.webp",
@@ -878,8 +781,7 @@
     "category": "Mariage",
     "album": "Guillaume & Laura",
     "date": "2025-12-12T17:56:33.439Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-10.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-11.webp",
@@ -887,8 +789,7 @@
     "category": "Mariage",
     "album": "Guillaume & Laura",
     "date": "2025-12-12T17:56:35.439Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-11.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-12.webp",
@@ -896,8 +797,7 @@
     "category": "Mariage",
     "album": "Guillaume & Laura",
     "date": "2025-12-12T17:56:37.439Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-12.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-13.webp",
@@ -905,8 +805,7 @@
     "category": "Mariage",
     "album": "Guillaume & Laura",
     "date": "2025-12-12T17:56:39.439Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-13.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-14.webp",
@@ -914,8 +813,7 @@
     "category": "Mariage",
     "album": "Guillaume & Laura",
     "date": "2025-12-12T17:56:41.439Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-14.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-15.webp",
@@ -923,8 +821,7 @@
     "category": "Mariage",
     "album": "Guillaume & Laura",
     "date": "2025-12-12T17:56:43.439Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-15.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-2.webp",
@@ -932,8 +829,7 @@
     "category": "Mariage",
     "album": "Guillaume & Laura",
     "date": "2025-12-12T17:56:17.439Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-2.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-3.webp",
@@ -941,8 +837,7 @@
     "category": "Mariage",
     "album": "Guillaume & Laura",
     "date": "2025-12-12T17:56:19.439Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-4.webp",
@@ -950,8 +845,7 @@
     "category": "Mariage",
     "album": "Guillaume & Laura",
     "date": "2025-12-12T17:56:21.439Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-4.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-5.webp",
@@ -959,8 +853,7 @@
     "category": "Mariage",
     "album": "Guillaume & Laura",
     "date": "2025-12-12T17:56:23.439Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-6.webp",
@@ -968,8 +861,7 @@
     "category": "Mariage",
     "album": "Guillaume & Laura",
     "date": "2025-12-12T17:56:25.439Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-7.webp",
@@ -977,8 +869,7 @@
     "album": "Guillaume & Laura",
     "isCover": true,
     "date": "2025-12-12T17:56:27.439Z",
-    "category": "Mariage",
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-7.webp"
+    "category": "Mariage"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-8.webp",
@@ -986,8 +877,7 @@
     "category": "Mariage",
     "album": "Guillaume & Laura",
     "date": "2025-12-12T17:56:29.439Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-8.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-9.webp",
@@ -995,8 +885,7 @@
     "category": "Mariage",
     "album": "Guillaume & Laura",
     "date": "2025-12-12T17:56:31.439Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/guillaume--laura/guillaume--laura-9.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-1.webp",
@@ -1004,8 +893,7 @@
     "category": "Mariage",
     "album": "Jennifer & Yoann",
     "date": "2025-12-19T17:06:01.545Z",
-    "isCover": true,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-1.webp"
+    "isCover": true
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-2.webp",
@@ -1013,8 +901,7 @@
     "category": "Mariage",
     "album": "Jennifer & Yoann",
     "date": "2025-12-19T17:06:03.545Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-2.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-3.webp",
@@ -1022,8 +909,7 @@
     "category": "Mariage",
     "album": "Jennifer & Yoann",
     "date": "2025-12-19T17:06:05.545Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-4.webp",
@@ -1031,8 +917,7 @@
     "category": "Mariage",
     "album": "Jennifer & Yoann",
     "date": "2025-12-19T17:06:07.545Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-4.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-5.webp",
@@ -1040,8 +925,7 @@
     "category": "Mariage",
     "album": "Jennifer & Yoann",
     "date": "2025-12-19T17:06:09.545Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-6.webp",
@@ -1049,8 +933,7 @@
     "category": "Mariage",
     "album": "Jennifer & Yoann",
     "date": "2025-12-19T17:06:11.545Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-7.webp",
@@ -1058,8 +941,7 @@
     "category": "Mariage",
     "album": "Jennifer & Yoann",
     "date": "2025-12-19T17:06:13.545Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-7.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-8.webp",
@@ -1067,8 +949,7 @@
     "category": "Mariage",
     "album": "Jennifer & Yoann",
     "date": "2025-12-19T17:06:15.545Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-8.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-9.webp",
@@ -1076,8 +957,7 @@
     "category": "Mariage",
     "album": "Jennifer & Yoann",
     "date": "2025-12-19T17:06:17.545Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/jennifer--yoann/jennifer--yoann-9.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-1.webp",
@@ -1085,8 +965,7 @@
     "category": "Mariage",
     "album": "Karine & Olivier",
     "date": "2025-12-12T17:58:07.003Z",
-    "isCover": true,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-1.webp"
+    "isCover": true
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-10.webp",
@@ -1094,8 +973,7 @@
     "category": "Mariage",
     "album": "Karine & Olivier",
     "date": "2025-12-12T17:58:25.003Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-10.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-2.webp",
@@ -1103,8 +981,7 @@
     "category": "Mariage",
     "album": "Karine & Olivier",
     "date": "2025-12-12T17:58:09.003Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-2.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-3.webp",
@@ -1112,8 +989,7 @@
     "category": "Mariage",
     "album": "Karine & Olivier",
     "date": "2025-12-12T17:58:11.003Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-4.webp",
@@ -1121,8 +997,7 @@
     "category": "Mariage",
     "album": "Karine & Olivier",
     "date": "2025-12-12T17:58:13.003Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-4.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-5.webp",
@@ -1130,8 +1005,7 @@
     "category": "Mariage",
     "album": "Karine & Olivier",
     "date": "2025-12-12T17:58:15.003Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-6.webp",
@@ -1139,8 +1013,7 @@
     "category": "Mariage",
     "album": "Karine & Olivier",
     "date": "2025-12-12T17:58:17.003Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-7.webp",
@@ -1148,8 +1021,7 @@
     "category": "Mariage",
     "album": "Karine & Olivier",
     "date": "2025-12-12T17:58:19.003Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-7.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-8.webp",
@@ -1157,8 +1029,7 @@
     "category": "Mariage",
     "album": "Karine & Olivier",
     "date": "2025-12-12T17:58:21.003Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-8.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-9.webp",
@@ -1166,8 +1037,7 @@
     "category": "Mariage",
     "album": "Karine & Olivier",
     "date": "2025-12-12T17:58:23.003Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/mariage/karine--olivier/karine--olivier-9.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/appartement-nimois/appartement-nimois-1.webp",
@@ -1175,8 +1045,7 @@
     "category": "Immobilier",
     "album": "Appartement Nîmois",
     "date": "2025-12-19T16:56:59.732Z",
-    "isCover": true,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/appartement-nimois/appartement-nimois-1.webp"
+    "isCover": true
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/appartement-nimois/appartement-nimois-2.webp",
@@ -1184,8 +1053,7 @@
     "category": "Immobilier",
     "album": "Appartement Nîmois",
     "date": "2025-12-19T16:57:01.732Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/appartement-nimois/appartement-nimois-2.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/appartement-nimois/appartement-nimois-3.webp",
@@ -1193,8 +1061,7 @@
     "category": "Immobilier",
     "album": "Appartement Nîmois",
     "date": "2025-12-19T16:57:03.732Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/appartement-nimois/appartement-nimois-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/appartement-nimois/appartement-nimois-4.webp",
@@ -1202,8 +1069,7 @@
     "category": "Immobilier",
     "album": "Appartement Nîmois",
     "date": "2025-12-19T16:57:05.732Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/appartement-nimois/appartement-nimois-4.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/appartement-nimois/appartement-nimois-5.webp",
@@ -1211,8 +1077,7 @@
     "category": "Immobilier",
     "album": "Appartement Nîmois",
     "date": "2025-12-19T16:57:07.732Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/appartement-nimois/appartement-nimois-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/appartement-nimois/appartement-nimois-6.webp",
@@ -1220,8 +1085,7 @@
     "category": "Immobilier",
     "album": "Appartement Nîmois",
     "date": "2025-12-19T16:57:09.732Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/appartement-nimois/appartement-nimois-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/appartement-nimois/appartement-nimois-7.webp",
@@ -1229,8 +1093,7 @@
     "category": "Immobilier",
     "album": "Appartement Nîmois",
     "date": "2025-12-19T16:57:11.732Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/appartement-nimois/appartement-nimois-7.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-1.webp",
@@ -1238,8 +1101,7 @@
     "category": "Immobilier",
     "album": "Gites Gardois",
     "date": "2025-12-12T16:04:38.821Z",
-    "isCover": true,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-1.webp"
+    "isCover": true
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-10.webp",
@@ -1247,8 +1109,7 @@
     "category": "Immobilier",
     "album": "Gites Gardois",
     "date": "2025-12-12T16:04:56.821Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-10.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-11.webp",
@@ -1256,8 +1117,7 @@
     "category": "Immobilier",
     "album": "Gites Gardois",
     "date": "2025-12-12T16:04:58.821Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-11.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-12.webp",
@@ -1265,8 +1125,7 @@
     "category": "Immobilier",
     "album": "Gites Gardois",
     "date": "2025-12-12T16:05:00.821Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-12.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-2.webp",
@@ -1274,8 +1133,7 @@
     "category": "Immobilier",
     "album": "Gites Gardois",
     "date": "2025-12-12T16:04:40.821Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-2.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-3.webp",
@@ -1283,8 +1141,7 @@
     "category": "Immobilier",
     "album": "Gites Gardois",
     "date": "2025-12-12T16:04:42.821Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-4.webp",
@@ -1292,8 +1149,7 @@
     "category": "Immobilier",
     "album": "Gites Gardois",
     "date": "2025-12-12T16:04:44.821Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-4.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-5.webp",
@@ -1301,8 +1157,7 @@
     "category": "Immobilier",
     "album": "Gites Gardois",
     "date": "2025-12-12T16:04:46.821Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-6.webp",
@@ -1310,8 +1165,7 @@
     "category": "Immobilier",
     "album": "Gites Gardois",
     "date": "2025-12-12T16:04:48.821Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-7.webp",
@@ -1319,8 +1173,7 @@
     "category": "Immobilier",
     "album": "Gites Gardois",
     "date": "2025-12-12T16:04:50.821Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-7.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-8.webp",
@@ -1328,8 +1181,7 @@
     "category": "Immobilier",
     "album": "Gites Gardois",
     "date": "2025-12-12T16:04:52.821Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-8.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-9.webp",
@@ -1337,8 +1189,7 @@
     "category": "Immobilier",
     "album": "Gites Gardois",
     "date": "2025-12-12T16:04:54.821Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/immobilier/gites-gardois/gites-gardois-9.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/bal-de-promo-ifsi/bal-de-promo-ifsi-1.webp",
@@ -1346,8 +1197,7 @@
     "category": "Événementiel",
     "album": "Bal de Promo IFSI",
     "date": "2025-12-19T16:43:38.874Z",
-    "isCover": true,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/bal-de-promo-ifsi/bal-de-promo-ifsi-1.webp"
+    "isCover": true
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/bal-de-promo-ifsi/bal-de-promo-ifsi-2.webp",
@@ -1355,8 +1205,7 @@
     "category": "Événementiel",
     "album": "Bal de Promo IFSI",
     "date": "2025-12-19T16:43:40.874Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/bal-de-promo-ifsi/bal-de-promo-ifsi-2.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/bal-de-promo-ifsi/bal-de-promo-ifsi-3.webp",
@@ -1364,8 +1213,7 @@
     "category": "Événementiel",
     "album": "Bal de Promo IFSI",
     "date": "2025-12-19T16:43:42.874Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/bal-de-promo-ifsi/bal-de-promo-ifsi-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/bal-de-promo-ifsi/bal-de-promo-ifsi-4.webp",
@@ -1373,8 +1221,7 @@
     "album": "Bal de Promo IFSI",
     "isCover": true,
     "date": "2025-12-19T16:43:44.874Z",
-    "category": "Événementiel",
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/bal-de-promo-ifsi/bal-de-promo-ifsi-4.webp"
+    "category": "Événementiel"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/bal-de-promo-ifsi/bal-de-promo-ifsi-5.webp",
@@ -1382,8 +1229,7 @@
     "category": "Événementiel",
     "album": "Bal de Promo IFSI",
     "date": "2025-12-19T16:43:46.874Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/bal-de-promo-ifsi/bal-de-promo-ifsi-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/bal-de-promo-ifsi/bal-de-promo-ifsi-6.webp",
@@ -1391,8 +1237,7 @@
     "category": "Événementiel",
     "album": "Bal de Promo IFSI",
     "date": "2025-12-19T16:43:48.874Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/bal-de-promo-ifsi/bal-de-promo-ifsi-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/bal-de-promo-ifsi/bal-de-promo-ifsi-7.webp",
@@ -1400,8 +1245,7 @@
     "category": "Événementiel",
     "album": "Bal de Promo IFSI",
     "date": "2025-12-19T16:43:50.874Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/bal-de-promo-ifsi/bal-de-promo-ifsi-7.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/bal-de-promo-ifsi/bal-de-promo-ifsi-8.webp",
@@ -1409,8 +1253,7 @@
     "category": "Événementiel",
     "album": "Bal de Promo IFSI",
     "date": "2025-12-19T16:43:52.874Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/bal-de-promo-ifsi/bal-de-promo-ifsi-8.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-1.webp",
@@ -1418,8 +1261,7 @@
     "album": "Club Le Mexicana",
     "isCover": false,
     "date": "2025-12-19T18:19:25.965Z",
-    "category": "Événementiel",
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-1.webp"
+    "category": "Événementiel"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-2.webp",
@@ -1427,8 +1269,7 @@
     "category": "Événementiel",
     "album": "Club Le Mexicana",
     "date": "2025-12-19T18:19:27.965Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-2.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-3.webp",
@@ -1436,8 +1277,7 @@
     "category": "Événementiel",
     "album": "Club Le Mexicana",
     "date": "2025-12-19T18:19:29.965Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-4.webp",
@@ -1445,8 +1285,7 @@
     "category": "Événementiel",
     "album": "Club Le Mexicana",
     "date": "2025-12-19T18:19:31.965Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-4.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-5.webp",
@@ -1454,8 +1293,7 @@
     "category": "Événementiel",
     "album": "Club Le Mexicana",
     "date": "2025-12-19T18:19:33.965Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-6.webp",
@@ -1463,8 +1301,7 @@
     "category": "Événementiel",
     "album": "Club Le Mexicana",
     "date": "2025-12-19T18:19:35.965Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-7.webp",
@@ -1472,8 +1309,7 @@
     "category": "Événementiel",
     "album": "Club Le Mexicana",
     "date": "2025-12-19T18:19:37.965Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-7.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-8.webp",
@@ -1481,8 +1317,7 @@
     "category": "Événementiel",
     "album": "Club Le Mexicana",
     "date": "2025-12-19T18:19:39.965Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-8.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-9.webp",
@@ -1490,8 +1325,7 @@
     "album": "Club Le Mexicana",
     "isCover": true,
     "date": "2025-12-19T18:19:41.965Z",
-    "category": "Événementiel",
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/club-le-mexicana/club-le-mexicana-9.webp"
+    "category": "Événementiel"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-1.webp",
@@ -1499,8 +1333,7 @@
     "album": "Fête Votive St-Hilaire de Brethmas",
     "isCover": false,
     "date": "2025-12-19T16:25:19.706Z",
-    "category": "Événementiel",
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-1.webp"
+    "category": "Événementiel"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-10.webp",
@@ -1508,8 +1341,7 @@
     "album": "Fête Votive St-Hilaire de Brethmas",
     "isCover": true,
     "date": "2025-12-19T16:25:37.706Z",
-    "category": "Événementiel",
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-10.webp"
+    "category": "Événementiel"
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-11.webp",
@@ -1517,8 +1349,7 @@
     "category": "Événementiel",
     "album": "Fête Votive St-Hilaire de Brethmas",
     "date": "2025-12-19T16:25:39.706Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-11.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-12.webp",
@@ -1526,8 +1357,7 @@
     "category": "Événementiel",
     "album": "Fête Votive St-Hilaire de Brethmas",
     "date": "2025-12-19T16:25:41.706Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-12.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-13.webp",
@@ -1535,8 +1365,7 @@
     "category": "Événementiel",
     "album": "Fête Votive St-Hilaire de Brethmas",
     "date": "2025-12-19T16:25:43.706Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-13.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-2.webp",
@@ -1544,8 +1373,7 @@
     "category": "Événementiel",
     "album": "Fête Votive St-Hilaire de Brethmas",
     "date": "2025-12-19T16:25:21.706Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-2.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-3.webp",
@@ -1553,8 +1381,7 @@
     "category": "Événementiel",
     "album": "Fête Votive St-Hilaire de Brethmas",
     "date": "2025-12-19T16:25:23.706Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-3.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-4.webp",
@@ -1562,8 +1389,7 @@
     "category": "Événementiel",
     "album": "Fête Votive St-Hilaire de Brethmas",
     "date": "2025-12-19T16:25:25.706Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-4.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-5.webp",
@@ -1571,8 +1397,7 @@
     "category": "Événementiel",
     "album": "Fête Votive St-Hilaire de Brethmas",
     "date": "2025-12-19T16:25:27.706Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-5.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-6.webp",
@@ -1580,8 +1405,7 @@
     "category": "Événementiel",
     "album": "Fête Votive St-Hilaire de Brethmas",
     "date": "2025-12-19T16:25:29.706Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-6.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-7.webp",
@@ -1589,8 +1413,7 @@
     "category": "Événementiel",
     "album": "Fête Votive St-Hilaire de Brethmas",
     "date": "2025-12-19T16:25:31.706Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-7.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-8.webp",
@@ -1598,8 +1421,7 @@
     "category": "Événementiel",
     "album": "Fête Votive St-Hilaire de Brethmas",
     "date": "2025-12-19T16:25:33.706Z",
-    "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-8.webp"
+    "isCover": false
   },
   {
     "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-9.webp",
@@ -1607,7 +1429,918 @@
     "category": "Événementiel",
     "album": "Fête Votive St-Hilaire de Brethmas",
     "date": "2025-12-19T16:25:35.706Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/aigues-mortes/aigues-mortes-1.webp",
+    "title": "Aigues-Mortes 1",
+    "category": "Voyage",
+    "album": "Aigues-Mortes",
+    "date": "2025-12-20T17:54:14.386Z",
+    "isCover": true
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/aigues-mortes/aigues-mortes-10.webp",
+    "title": "Aigues-Mortes 10",
+    "category": "Voyage",
+    "album": "Aigues-Mortes",
+    "date": "2025-12-20T17:54:32.386Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/aigues-mortes/aigues-mortes-11.webp",
+    "title": "Aigues-Mortes 11",
+    "category": "Voyage",
+    "album": "Aigues-Mortes",
+    "date": "2025-12-20T17:54:34.386Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/aigues-mortes/aigues-mortes-12.webp",
+    "title": "Aigues-Mortes 12",
+    "category": "Voyage",
+    "album": "Aigues-Mortes",
+    "date": "2025-12-20T17:54:36.386Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/aigues-mortes/aigues-mortes-13.webp",
+    "title": "Aigues-Mortes 13",
+    "category": "Voyage",
+    "album": "Aigues-Mortes",
+    "date": "2025-12-20T17:54:38.386Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/aigues-mortes/aigues-mortes-14.webp",
+    "title": "Aigues-Mortes 14",
+    "category": "Voyage",
+    "album": "Aigues-Mortes",
+    "date": "2025-12-20T17:54:40.386Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/aigues-mortes/aigues-mortes-2.webp",
+    "title": "Aigues-Mortes 2",
+    "category": "Voyage",
+    "album": "Aigues-Mortes",
+    "date": "2025-12-20T17:54:16.386Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/aigues-mortes/aigues-mortes-3.webp",
+    "title": "Aigues-Mortes 3",
+    "category": "Voyage",
+    "album": "Aigues-Mortes",
+    "date": "2025-12-20T17:54:18.386Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/aigues-mortes/aigues-mortes-4.webp",
+    "title": "Aigues-Mortes 4",
+    "category": "Voyage",
+    "album": "Aigues-Mortes",
+    "date": "2025-12-20T17:54:20.386Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/aigues-mortes/aigues-mortes-5.webp",
+    "title": "Aigues-Mortes 5",
+    "category": "Voyage",
+    "album": "Aigues-Mortes",
+    "date": "2025-12-20T17:54:22.386Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/aigues-mortes/aigues-mortes-6.webp",
+    "title": "Aigues-Mortes 6",
+    "category": "Voyage",
+    "album": "Aigues-Mortes",
+    "date": "2025-12-20T17:54:24.386Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/aigues-mortes/aigues-mortes-7.webp",
+    "title": "Aigues-Mortes 7",
+    "category": "Voyage",
+    "album": "Aigues-Mortes",
+    "date": "2025-12-20T17:54:26.386Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/aigues-mortes/aigues-mortes-8.webp",
+    "title": "Aigues-Mortes 8",
+    "category": "Voyage",
+    "album": "Aigues-Mortes",
+    "date": "2025-12-20T17:54:28.386Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/aigues-mortes/aigues-mortes-9.webp",
+    "title": "Aigues-Mortes 9",
+    "category": "Voyage",
+    "album": "Aigues-Mortes",
+    "date": "2025-12-20T17:54:30.386Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/cote-espagnole/cote-espagnole-1.webp",
+    "title": "Côte Espagnole 1",
+    "category": "Voyage",
+    "album": "Côte Espagnole",
+    "date": "2025-12-20T10:58:26.505Z",
+    "isCover": true
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/cote-espagnole/cote-espagnole-10.webp",
+    "title": "Côte Espagnole 10",
+    "category": "Voyage",
+    "album": "Côte Espagnole",
+    "date": "2025-12-20T10:58:44.505Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/cote-espagnole/cote-espagnole-2.webp",
+    "title": "Côte Espagnole 2",
+    "category": "Voyage",
+    "album": "Côte Espagnole",
+    "date": "2025-12-20T10:58:28.505Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/cote-espagnole/cote-espagnole-3.webp",
+    "title": "Côte Espagnole 3",
+    "category": "Voyage",
+    "album": "Côte Espagnole",
+    "date": "2025-12-20T10:58:30.505Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/cote-espagnole/cote-espagnole-4.webp",
+    "title": "Côte Espagnole 4",
+    "category": "Voyage",
+    "album": "Côte Espagnole",
+    "date": "2025-12-20T10:58:32.505Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/cote-espagnole/cote-espagnole-5.webp",
+    "title": "Côte Espagnole 5",
+    "category": "Voyage",
+    "album": "Côte Espagnole",
+    "date": "2025-12-20T10:58:34.505Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/cote-espagnole/cote-espagnole-6.webp",
+    "title": "Côte Espagnole 6",
+    "category": "Voyage",
+    "album": "Côte Espagnole",
+    "date": "2025-12-20T10:58:36.505Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/cote-espagnole/cote-espagnole-7.webp",
+    "title": "Côte Espagnole 7",
+    "category": "Voyage",
+    "album": "Côte Espagnole",
+    "date": "2025-12-20T10:58:38.505Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/cote-espagnole/cote-espagnole-8.webp",
+    "title": "Côte Espagnole 8",
+    "category": "Voyage",
+    "album": "Côte Espagnole",
+    "date": "2025-12-20T10:58:40.505Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/cote-espagnole/cote-espagnole-9.webp",
+    "title": "Côte Espagnole 9",
+    "category": "Voyage",
+    "album": "Côte Espagnole",
+    "date": "2025-12-20T10:58:42.505Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-1.webp",
+    "title": "Crête 1",
+    "album": "Crête",
     "isCover": false,
-    "imageUrl": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/événementiel/fete-votive-st-hilaire-de-brethmas/fete-votive-st-hilaire-de-brethmas-9.webp"
+    "date": "2025-12-20T13:54:01.351Z",
+    "category": "Voyage"
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-10.webp",
+    "title": "Crête 10",
+    "category": "Voyage",
+    "album": "Crête",
+    "date": "2025-12-20T13:54:19.351Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-11.webp",
+    "title": "Crête 11",
+    "category": "Voyage",
+    "album": "Crête",
+    "date": "2025-12-20T13:54:21.351Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-12.webp",
+    "title": "Crête 12",
+    "category": "Voyage",
+    "album": "Crête",
+    "date": "2025-12-20T13:54:23.351Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-13.webp",
+    "title": "Crête 13",
+    "category": "Voyage",
+    "album": "Crête",
+    "date": "2025-12-20T13:54:25.351Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-14.webp",
+    "title": "Crête 14",
+    "category": "Voyage",
+    "album": "Crête",
+    "date": "2025-12-20T13:54:27.351Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-15.webp",
+    "title": "Crête 15",
+    "category": "Voyage",
+    "album": "Crête",
+    "date": "2025-12-20T13:54:29.351Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-16.webp",
+    "title": "Crête 16",
+    "category": "Voyage",
+    "album": "Crête",
+    "date": "2025-12-20T13:54:31.351Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-17.webp",
+    "title": "Crête 17",
+    "category": "Voyage",
+    "album": "Crête",
+    "date": "2025-12-20T13:54:33.351Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-18.webp",
+    "title": "Crête 18",
+    "category": "Voyage",
+    "album": "Crête",
+    "date": "2025-12-20T13:54:35.351Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-2.webp",
+    "title": "Crête 2",
+    "category": "Voyage",
+    "album": "Crête",
+    "date": "2025-12-20T13:54:03.351Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-3.webp",
+    "title": "Crête 3",
+    "category": "Voyage",
+    "album": "Crête",
+    "date": "2025-12-20T13:54:05.351Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-4.webp",
+    "title": "Crête 4",
+    "category": "Voyage",
+    "album": "Crête",
+    "date": "2025-12-20T13:54:07.351Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-5.webp",
+    "title": "Crête 5",
+    "category": "Voyage",
+    "album": "Crête",
+    "date": "2025-12-20T13:54:09.351Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-6.webp",
+    "title": "Crête 6",
+    "category": "Voyage",
+    "album": "Crête",
+    "date": "2025-12-20T13:54:11.351Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-7.webp",
+    "title": "Crête 7",
+    "category": "Voyage",
+    "album": "Crête",
+    "date": "2025-12-20T13:54:13.351Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-8.webp",
+    "title": "Crête 8",
+    "category": "Voyage",
+    "album": "Crête",
+    "date": "2025-12-20T13:54:15.351Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/crete/crete-9.webp",
+    "title": "Crête 9",
+    "album": "Crête",
+    "isCover": true,
+    "date": "2025-12-20T13:54:17.351Z",
+    "category": "Voyage"
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-1.webp",
+    "title": "Majorque 1",
+    "category": "Voyage",
+    "album": "Majorque",
+    "date": "2025-12-20T13:41:33.914Z",
+    "isCover": true
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-10.webp",
+    "title": "Majorque 10",
+    "category": "Voyage",
+    "album": "Majorque",
+    "date": "2025-12-20T13:41:51.914Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-11.webp",
+    "title": "Majorque 11",
+    "category": "Voyage",
+    "album": "Majorque",
+    "date": "2025-12-20T13:41:53.914Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-12.webp",
+    "title": "Majorque 12",
+    "category": "Voyage",
+    "album": "Majorque",
+    "date": "2025-12-20T13:41:55.914Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-13.webp",
+    "title": "Majorque 13",
+    "category": "Voyage",
+    "album": "Majorque",
+    "date": "2025-12-20T13:41:57.914Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-14.webp",
+    "title": "Majorque 14",
+    "category": "Voyage",
+    "album": "Majorque",
+    "date": "2025-12-20T13:41:59.914Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-15.webp",
+    "title": "Majorque 15",
+    "category": "Voyage",
+    "album": "Majorque",
+    "date": "2025-12-20T13:42:01.914Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-16.webp",
+    "title": "Majorque 16",
+    "category": "Voyage",
+    "album": "Majorque",
+    "date": "2025-12-20T13:42:03.914Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-2.webp",
+    "title": "Majorque 2",
+    "category": "Voyage",
+    "album": "Majorque",
+    "date": "2025-12-20T13:41:35.914Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-3.webp",
+    "title": "Majorque 3",
+    "category": "Voyage",
+    "album": "Majorque",
+    "date": "2025-12-20T13:41:37.914Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-4.webp",
+    "title": "Majorque 4",
+    "category": "Voyage",
+    "album": "Majorque",
+    "date": "2025-12-20T13:41:39.914Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-5.webp",
+    "title": "Majorque 5",
+    "category": "Voyage",
+    "album": "Majorque",
+    "date": "2025-12-20T13:41:41.914Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-6.webp",
+    "title": "Majorque 6",
+    "category": "Voyage",
+    "album": "Majorque",
+    "date": "2025-12-20T13:41:43.914Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-7.webp",
+    "title": "Majorque 7",
+    "category": "Voyage",
+    "album": "Majorque",
+    "date": "2025-12-20T13:41:45.914Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-8.webp",
+    "title": "Majorque 8",
+    "category": "Voyage",
+    "album": "Majorque",
+    "date": "2025-12-20T13:41:47.914Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/majorque/majorque-9.webp",
+    "title": "Majorque 9",
+    "category": "Voyage",
+    "album": "Majorque",
+    "date": "2025-12-20T13:41:49.914Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/paris-2024/paris-2024-1.webp",
+    "title": "Paris 2024 1",
+    "category": "Voyage",
+    "album": "Paris 2024",
+    "date": "2025-12-20T13:33:44.697Z",
+    "isCover": true
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/paris-2024/paris-2024-10.webp",
+    "title": "Paris 2024 10",
+    "category": "Voyage",
+    "album": "Paris 2024",
+    "date": "2025-12-20T13:34:02.697Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/paris-2024/paris-2024-11.webp",
+    "title": "Paris 2024 11",
+    "category": "Voyage",
+    "album": "Paris 2024",
+    "date": "2025-12-20T13:34:04.697Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/paris-2024/paris-2024-12.webp",
+    "title": "Paris 2024 12",
+    "category": "Voyage",
+    "album": "Paris 2024",
+    "date": "2025-12-20T13:34:06.697Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/paris-2024/paris-2024-13.webp",
+    "title": "Paris 2024 13",
+    "category": "Voyage",
+    "album": "Paris 2024",
+    "date": "2025-12-20T13:34:08.697Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/paris-2024/paris-2024-14.webp",
+    "title": "Paris 2024 14",
+    "category": "Voyage",
+    "album": "Paris 2024",
+    "date": "2025-12-20T13:34:10.697Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/paris-2024/paris-2024-2.webp",
+    "title": "Paris 2024 2",
+    "category": "Voyage",
+    "album": "Paris 2024",
+    "date": "2025-12-20T13:33:46.697Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/paris-2024/paris-2024-3.webp",
+    "title": "Paris 2024 3",
+    "category": "Voyage",
+    "album": "Paris 2024",
+    "date": "2025-12-20T13:33:48.697Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/paris-2024/paris-2024-4.webp",
+    "title": "Paris 2024 4",
+    "category": "Voyage",
+    "album": "Paris 2024",
+    "date": "2025-12-20T13:33:50.697Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/paris-2024/paris-2024-5.webp",
+    "title": "Paris 2024 5",
+    "category": "Voyage",
+    "album": "Paris 2024",
+    "date": "2025-12-20T13:33:52.697Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/paris-2024/paris-2024-6.webp",
+    "title": "Paris 2024 6",
+    "category": "Voyage",
+    "album": "Paris 2024",
+    "date": "2025-12-20T13:33:54.697Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/paris-2024/paris-2024-7.webp",
+    "title": "Paris 2024 7",
+    "category": "Voyage",
+    "album": "Paris 2024",
+    "date": "2025-12-20T13:33:56.697Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/paris-2024/paris-2024-8.webp",
+    "title": "Paris 2024 8",
+    "category": "Voyage",
+    "album": "Paris 2024",
+    "date": "2025-12-20T13:33:58.697Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/voyage/paris-2024/paris-2024-9.webp",
+    "title": "Paris 2024 9",
+    "category": "Voyage",
+    "album": "Paris 2024",
+    "date": "2025-12-20T13:34:00.697Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-1.webp",
+    "title": "Ferme Aux Crocodiles 1",
+    "album": "Ferme Aux Crocodiles",
+    "isCover": false,
+    "date": "2025-12-20T14:04:45.307Z",
+    "category": "Animalier"
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-10.webp",
+    "title": "Ferme Aux Crocodiles 10",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:05:03.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-11.webp",
+    "title": "Ferme Aux Crocodiles 11",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:05:05.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-12.webp",
+    "title": "Ferme Aux Crocodiles 12",
+    "album": "Ferme Aux Crocodiles",
+    "isCover": true,
+    "date": "2025-12-20T14:05:07.307Z",
+    "category": "Animalier"
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-2.webp",
+    "title": "Ferme Aux Crocodiles 2",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:04:47.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-3.webp",
+    "title": "Ferme Aux Crocodiles 3",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:04:49.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-4.webp",
+    "title": "Ferme Aux Crocodiles 4",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:04:51.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-5.webp",
+    "title": "Ferme Aux Crocodiles 5",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:04:53.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-6.webp",
+    "title": "Ferme Aux Crocodiles 6",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:04:55.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-7.webp",
+    "title": "Ferme Aux Crocodiles 7",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:04:57.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-8.webp",
+    "title": "Ferme Aux Crocodiles 8",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:04:59.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/ferme-aux-crocodiles/ferme-aux-crocodiles-9.webp",
+    "title": "Ferme Aux Crocodiles 9",
+    "category": "Animalier",
+    "album": "Ferme Aux Crocodiles",
+    "date": "2025-12-20T14:05:01.307Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-1.webp",
+    "title": "Flamants Roses Camargue 1",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:03.633Z",
+    "isCover": true
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-10.webp",
+    "title": "Flamants Roses Camargue 10",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:21.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-11.webp",
+    "title": "Flamants Roses Camargue 11",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:23.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-12.webp",
+    "title": "Flamants Roses Camargue 12",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:25.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-13.webp",
+    "title": "Flamants Roses Camargue 13",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:27.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-14.webp",
+    "title": "Flamants Roses Camargue 14",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:29.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-15.webp",
+    "title": "Flamants Roses Camargue 15",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:31.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-16.webp",
+    "title": "Flamants Roses Camargue 16",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:33.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-17.webp",
+    "title": "Flamants Roses Camargue 17",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:35.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-18.webp",
+    "title": "Flamants Roses Camargue 18",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:37.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-19.webp",
+    "title": "Flamants Roses Camargue 19",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:39.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-2.webp",
+    "title": "Flamants Roses Camargue 2",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:05.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-20.webp",
+    "title": "Flamants Roses Camargue 20",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:41.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-3.webp",
+    "title": "Flamants Roses Camargue 3",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:07.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-4.webp",
+    "title": "Flamants Roses Camargue 4",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:09.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-5.webp",
+    "title": "Flamants Roses Camargue 5",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:11.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-6.webp",
+    "title": "Flamants Roses Camargue 6",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:13.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-7.webp",
+    "title": "Flamants Roses Camargue 7",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:15.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-8.webp",
+    "title": "Flamants Roses Camargue 8",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:17.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/flamants-roses-camargue/flamants-roses-camargue-9.webp",
+    "title": "Flamants Roses Camargue 9",
+    "category": "Animalier",
+    "album": "Flamants Roses Camargue",
+    "date": "2025-12-20T11:12:19.633Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/les-chats/les-chats-1.webp",
+    "title": "Les Chats 1",
+    "album": "Les Chats",
+    "isCover": false,
+    "date": "2025-12-20T14:28:53.430Z",
+    "category": "Animalier"
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/les-chats/les-chats-2.webp",
+    "title": "Les Chats 2",
+    "album": "Les Chats",
+    "isCover": true,
+    "date": "2025-12-20T14:28:55.430Z",
+    "category": "Animalier"
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/les-chats/les-chats-3.webp",
+    "title": "Les Chats 3",
+    "category": "Animalier",
+    "album": "Les Chats",
+    "date": "2025-12-20T14:28:57.430Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/les-chats/les-chats-4.webp",
+    "title": "Les Chats 4",
+    "category": "Animalier",
+    "album": "Les Chats",
+    "date": "2025-12-20T14:28:59.430Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/les-chats/les-chats-5.webp",
+    "title": "Les Chats 5",
+    "category": "Animalier",
+    "album": "Les Chats",
+    "date": "2025-12-20T14:29:01.430Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/les-moineaux/les-moineaux-1.webp",
+    "title": "Les Moineaux 1",
+    "category": "Animalier",
+    "album": "Les Moineaux",
+    "date": "2025-12-20T14:26:50.376Z",
+    "isCover": true
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/les-moineaux/les-moineaux-2.webp",
+    "title": "Les Moineaux 2",
+    "category": "Animalier",
+    "album": "Les Moineaux",
+    "date": "2025-12-20T14:26:52.376Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/les-moineaux/les-moineaux-3.webp",
+    "title": "Les Moineaux 3",
+    "category": "Animalier",
+    "album": "Les Moineaux",
+    "date": "2025-12-20T14:26:54.376Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/les-moineaux/les-moineaux-4.webp",
+    "title": "Les Moineaux 4",
+    "category": "Animalier",
+    "album": "Les Moineaux",
+    "date": "2025-12-20T14:26:56.376Z",
+    "isCover": false
+  },
+  {
+    "image": "https://cdn.monsieurcrocodealphotographie.fr/file/portfolio-images-crocodeal/portfolio/animalier/les-moineaux/les-moineaux-5.webp",
+    "title": "Les Moineaux 5",
+    "category": "Animalier",
+    "album": "Les Moineaux",
+    "date": "2025-12-20T14:26:58.376Z",
+    "isCover": false
   }
 ]

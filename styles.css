@@ -123,13 +123,24 @@
     width: 80px;
     height: 80px;
     object-fit: contain;
+    -webkit-animation: logoRotate 4s linear infinite;
     animation: logoRotate 4s linear infinite;
     will-change: transform;
+    -webkit-transform: translateZ(0);
     transform: translateZ(0);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     perspective: 1000px;
     -webkit-perspective: 1000px;
+}
+
+@-webkit-keyframes logoRotate {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
 }
 
 @keyframes logoRotate {
@@ -2119,8 +2130,10 @@ ul {
 @media screen and (max-width: 768px) {
     /* Assurer que l'animation du loader fonctionne sur mobile */
     .loader-logo {
+        -webkit-animation: logoRotate 4s linear infinite;
         animation: logoRotate 4s linear infinite;
         will-change: transform;
+        -webkit-transform: translateZ(0);
         transform: translateZ(0);
     }
     

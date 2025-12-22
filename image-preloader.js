@@ -34,9 +34,49 @@ class ImagePreloader {
 
             // Extraire toutes les URLs d'images uniques et les trier par priorité
             const imageUrlsSet = new Set();
+            const coverImages = []; // Images de couverture des albums (priorité maximale)
             const priorityImages = []; // Premières images de chaque catégorie (visibles immédiatement)
             const otherImages = []; // Autres images
             
+            // Grouper les photos par catégorie et album pour identifier les couvertures
+            const albumsByCategory = {};
+            photos.forEach(photo => {
+                if (photo.category && photo.album) {
+                    if (!albumsByCategory[photo.category]) {
+                        albumsByCategory[photo.category] = {};
+                    }
+                    if (!albumsByCategory[photo.category][photo.album]) {
+                        albumsByCategory[photo.category][photo.album] = [];
+                    }
+                    albumsByCategory[photo.category][photo.album].push(photo);
+                }
+            });
+            
+            // Identifier les images de couverture
+            Object.keys(albumsByCategory).forEach(category => {
+                Object.keys(albumsByCategory[category]).forEach(album => {
+                    const albumPhotos = albumsByCategory[category][album];
+                    // Chercher une image avec isCover === true
+                    let coverPhoto = albumPhotos.find(photo => {
+                        const isCover = photo.isCover === true || 
+                                       photo.isCover === 'true' || 
+                                       photo.isCover === 'True' ||
+                                       photo.isCover === 1 ||
+                                       photo.isCover === '1';
+                        return isCover;
+                    });
+                    // Si pas de couverture définie, utiliser la première
+                    if (!coverPhoto && albumPhotos.length > 0) {
+                        coverPhoto = albumPhotos[0];
+                    }
+                    if (coverPhoto && coverPhoto.image && !imageUrlsSet.has(coverPhoto.image)) {
+                        imageUrlsSet.add(coverPhoto.image);
+                        coverImages.push(coverPhoto.image);
+                    }
+                });
+            });
+            
+            // Ajouter les autres images
             photos.forEach((photo, index) => {
                 if (photo.image && typeof photo.image === 'string') {
                     if (!imageUrlsSet.has(photo.image)) {
@@ -51,7 +91,7 @@ class ImagePreloader {
                 }
             });
 
-            this.imageUrls = [...priorityImages, ...otherImages];
+            this.imageUrls = [...coverImages, ...priorityImages, ...otherImages];
             this.totalImages = this.imageUrls.length;
 
             if (this.totalImages === 0) {
@@ -59,10 +99,15 @@ class ImagePreloader {
                 return;
             }
 
-            console.log(`📸 Préchargement de ${this.totalImages} images (${priorityImages.length} prioritaires)...`);
+            console.log(`📸 Préchargement de ${this.totalImages} images (${coverImages.length} couvertures, ${priorityImages.length} prioritaires)...`);
             this.updateLoaderText(`Préchargement des images... (0/${this.totalImages})`);
 
-            // Précharger d'abord les images prioritaires (visibles immédiatement) avec plus de parallélisme
+            // Précharger d'abord les images de couverture avec la taille optimisée pour les cartes
+            if (coverImages.length > 0) {
+                await this.preloadCoverImages(coverImages);
+            }
+
+            // Précharger ensuite les images prioritaires (visibles immédiatement) avec plus de parallélisme
             if (priorityImages.length > 0) {
                 await this.preloadImagesInBatches(priorityImages, 15, true);
             }
@@ -113,6 +158,20 @@ class ImagePreloader {
                 const progress = Math.min(i + batch.length, this.totalImages);
                 this.updateLoaderText(`Préchargement des images... (${progress}/${this.totalImages})`);
             }
+        }
+    }
+
+    async preloadCoverImages(urls) {
+        console.log(`📸 Préchargement de ${urls.length} images de couverture...`);
+        for (const url of urls) {
+            // Optimiser l'URL pour les cartes (taille 400px comme dans createAlbumCard)
+            let optimizedUrl = url;
+            if (window.ImageOptimizer) {
+                if (window.ImageOptimizer.isCloudflareUrl(url) || window.ImageOptimizer.isCloudinaryUrl(url)) {
+                    optimizedUrl = window.ImageOptimizer.optimizeCard(url, 400);
+                }
+            }
+            await this.preloadSingleImage(optimizedUrl, 'high');
         }
     }
 

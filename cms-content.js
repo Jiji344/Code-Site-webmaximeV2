@@ -9,12 +9,93 @@ class CMSContentLoader {
             // Liste des catégories à scanner
             categories: ['Portrait', 'Mariage', 'Immobilier', 'Événementiel', 'Voyage', 'Animalier']
         };
+        // Cache en mémoire pour les images de couverture préchargées
+        this.coverImageCache = new Map();
         this.init();
     }
 
     async init() {
+        // Précharger le cache des images de couverture en premier
+        await this.loadCoverImagesCache();
         await this.loadPortfolioData();
         this.displayPortfolioImages();
+    }
+
+    async loadCoverImagesCache() {
+        try {
+            const { owner, repo } = this.config;
+            const cacheUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/cover-images-cache.json?t=${Date.now()}`;
+            
+            const response = await fetch(cacheUrl, {
+                cache: 'force-cache' // Utiliser le cache si disponible
+            });
+            
+            if (response.ok) {
+                const cache = await response.json();
+                console.log(`📦 Cache des couvertures chargé: ${cache.covers?.length || 0} images`);
+                
+                // Précharger toutes les images de couverture
+                if (cache.covers && Array.isArray(cache.covers)) {
+                    await this.preloadCoverImagesFromCache(cache.covers);
+                }
+            } else {
+                console.log('⚠️ Cache des couvertures non disponible, préchargement ignoré');
+            }
+        } catch (error) {
+            console.warn('⚠️ Erreur lors du chargement du cache des couvertures:', error);
+        }
+    }
+
+    async preloadCoverImagesFromCache(covers) {
+        const preloadPromises = covers.map(cover => {
+            return new Promise((resolve) => {
+                // Optimiser l'URL pour les cartes
+                let optimizedUrl = cover.imageUrl;
+                if (window.ImageOptimizer) {
+                    if (window.ImageOptimizer.isCloudflareUrl(optimizedUrl) || 
+                        window.ImageOptimizer.isCloudinaryUrl(optimizedUrl)) {
+                        optimizedUrl = window.ImageOptimizer.optimizeCard(optimizedUrl, 400);
+                    }
+                }
+                
+                // Vérifier si déjà en cache
+                if (this.coverImageCache.has(optimizedUrl)) {
+                    resolve();
+                    return;
+                }
+                
+                // Précharger l'image
+                const img = new Image();
+                img.fetchPriority = 'high';
+                img.loading = 'eager';
+                
+                img.onload = () => {
+                    // Mettre en cache
+                    this.coverImageCache.set(optimizedUrl, img);
+                    resolve();
+                };
+                
+                img.onerror = () => {
+                    // Même en cas d'erreur, on continue
+                    resolve();
+                };
+                
+                // Timeout de sécurité
+                setTimeout(() => resolve(), 5000);
+                
+                // Démarrer le chargement
+                img.src = optimizedUrl;
+            });
+        });
+        
+        // Précharger en parallèle par lots de 10 pour ne pas surcharger
+        const batchSize = 10;
+        for (let i = 0; i < preloadPromises.length; i += batchSize) {
+            const batch = preloadPromises.slice(i, i + batchSize);
+            await Promise.all(batch);
+        }
+        
+        console.log(`✅ ${this.coverImageCache.size} images de couverture préchargées en mémoire`);
     }
 
     async loadPortfolioData() {
@@ -245,12 +326,22 @@ class CMSContentLoader {
         return grouped;
     }
 
-    updateCategoryContent(category, data) {
+    async updateCategoryContent(category, data) {
         const categorySection = document.querySelector(`[data-category="${category}"]`);
         if (!categorySection) return;
 
         const imagesContainer = categorySection.querySelector('.category-images');
         if (!imagesContainer) return;
+
+        // Précharger toutes les images de couverture avant de créer les cartes
+        const albumNames = Object.keys(data.albums);
+        const coverImagePromises = albumNames.map(albumName => {
+            const albumImages = data.albums[albumName];
+            return this.preloadCoverImage(albumName, albumImages);
+        });
+
+        // Attendre que toutes les images de couverture soient chargées
+        await Promise.all(coverImagePromises);
 
         // Utiliser requestAnimationFrame pour ne pas bloquer le rendu
         requestAnimationFrame(() => {
@@ -264,11 +355,13 @@ class CMSContentLoader {
                 imagesContainer.appendChild(nav);
             });
             
-            // Ajouter les albums
-            Object.keys(data.albums).forEach(albumName => {
+            // Ajouter les albums (les images sont maintenant préchargées)
+            albumNames.forEach(albumName => {
                 const albumImages = data.albums[albumName];
                 const albumCard = this.createAlbumCard(albumName, albumImages);
-                imagesContainer.appendChild(albumCard);
+                if (albumCard) {
+                    imagesContainer.appendChild(albumCard);
+                }
             });
 
             // Ajouter les images individuelles
@@ -281,6 +374,57 @@ class CMSContentLoader {
             if (window.portfolioCarousel) {
                 window.portfolioCarousel.updateCarousel(category);
             }
+        });
+    }
+
+    async preloadCoverImage(albumName, images) {
+        // Trouver l'image de couverture
+        let coverImageData = images.find((img) => {
+            const isCover = img.isCover === true || 
+                           img.isCover === 'true' || 
+                           img.isCover === 'True' ||
+                           img.isCover === 1 ||
+                           img.isCover === '1';
+            return isCover;
+        });
+
+        if (!coverImageData && images.length > 0) {
+            coverImageData = images[0];
+        }
+
+        if (!coverImageData || !coverImageData.image) {
+            return Promise.resolve();
+        }
+
+        // Optimiser l'URL pour les cartes
+        let imageUrl = coverImageData.image;
+        if (window.ImageOptimizer) {
+            if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
+                imageUrl = window.ImageOptimizer.optimizeCard(imageUrl, 400);
+            }
+        }
+
+        // Forcer le préchargement avec un objet Image
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.fetchPriority = 'high';
+            img.loading = 'eager';
+            
+            img.onload = () => {
+                // Image chargée, on peut continuer
+                resolve();
+            };
+            
+            img.onerror = () => {
+                // Même en cas d'erreur, on continue pour ne pas bloquer
+                resolve();
+            };
+            
+            // Timeout de sécurité
+            setTimeout(() => resolve(), 5000);
+            
+            // Démarrer le chargement
+            img.src = imageUrl;
         });
     }
 
@@ -337,11 +481,49 @@ class CMSContentLoader {
             }
         }
         
-        coverImage.src = imageUrl;
-        coverImage.alt = albumName;
-        coverImage.fetchPriority = 'high'; // Priorité haute pour les images visibles
-        coverImage.decoding = 'async'; // Décodage asynchrone pour meilleures performances
-        // Pas de lazy loading car les images sont déjà préchargées
+        // Vérifier si l'image est déjà dans le cache en mémoire
+        const cachedImg = this.coverImageCache.get(imageUrl);
+        
+        if (cachedImg && (cachedImg.complete || cachedImg.naturalWidth > 0)) {
+            // L'image est déjà préchargée et chargée, l'afficher immédiatement
+            coverImage.src = imageUrl;
+            coverImage.alt = albumName;
+            coverImage.fetchPriority = 'high';
+            coverImage.decoding = 'sync';
+            coverImage.loading = 'eager';
+            coverImage.style.opacity = '1';
+        } else {
+            // L'image n'est pas encore chargée, vérifier le cache du navigateur
+            const testImg = new Image();
+            testImg.src = imageUrl;
+            
+            coverImage.src = imageUrl;
+            coverImage.alt = albumName;
+            coverImage.fetchPriority = 'high';
+            coverImage.decoding = 'sync';
+            coverImage.loading = 'eager';
+            
+            // Si l'image est déjà dans le cache du navigateur, l'afficher immédiatement
+            if (testImg.complete || testImg.naturalWidth > 0) {
+                coverImage.style.opacity = '1';
+            } else {
+                // Sinon, attendre le chargement (normalement très rapide car préchargée)
+                coverImage.style.opacity = '0';
+                coverImage.onload = () => {
+                    // Mettre en cache pour les prochaines fois
+                    this.coverImageCache.set(imageUrl, coverImage);
+                    requestAnimationFrame(() => {
+                        coverImage.style.opacity = '1';
+                    });
+                };
+                // Timeout de sécurité au cas où
+                setTimeout(() => {
+                    if (coverImage.style.opacity === '0') {
+                        coverImage.style.opacity = '1';
+                    }
+                }, 100);
+            }
+        }
         
         const cardContent = document.createElement('div');
         cardContent.className = 'album-card-content';
@@ -475,18 +657,39 @@ class CMSContentLoader {
         let initialX = 0;
         let initialY = 0;
         
+        // Variables pour le slide (changement d'image)
+        let isSliding = false;
+        let slideStartX = 0;
+        let slideStartY = 0;
+        let slideCurrentX = 0;
+        let slideThreshold = 50; // Distance minimale pour déclencher le slide
+        let slideVelocity = 0; // Vitesse du slide pour l'inertie
+        let lastSlideX = 0;
+        let lastSlideTime = 0;
+        let animationFrame = null;
+        
         const showImage = (index) => {
             currentIndex = index;
             const image = images[index];
             
+            // Annuler toute animation en cours
+            if (animationFrame) {
+                cancelAnimationFrame(animationFrame);
+                animationFrame = null;
+            }
+            
             // Réinitialiser le zoom lors du changement d'image
-            carouselImage.style.transform = 'scale(1)';
+            carouselImage.style.transform = 'scale(1) translateX(0)';
             carouselImage.style.cursor = 'pointer';
             carouselImage.style.transformOrigin = 'center center';
+            carouselImage.style.willChange = 'auto';
             isZoomed = false;
             currentX = 0;
             currentY = 0;
             isPanning = false;
+            isSliding = false;
+            slideCurrentX = 0;
+            slideVelocity = 0;
             
             // Optimiser l'URL pour l'affichage plein écran (Cloudflare ou Cloudinary)
             let imageUrl = image.image;
@@ -629,6 +832,12 @@ class CMSContentLoader {
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
             
+            // Annuler toute animation en cours
+            if (animationFrame) {
+                cancelAnimationFrame(animationFrame);
+                animationFrame = null;
+            }
+            
             if (isZoomed) {
                 if (e.touches.length === 1) {
                     isPanning = true;
@@ -637,32 +846,103 @@ class CMSContentLoader {
                     initialX = currentX;
                     initialY = currentY;
                 }
+            } else {
+                // Initialiser les variables de slide mais ne pas activer immédiatement
+                // On activera seulement si le mouvement est significatif
+                isSliding = false;
+                slideStartX = e.touches[0].clientX;
+                slideStartY = e.touches[0].clientY;
+                slideCurrentX = 0;
+                slideVelocity = 0;
+                lastSlideX = slideStartX;
+                lastSlideTime = Date.now();
+                // Optimiser les performances
+                carouselImage.style.willChange = 'transform';
             }
-        });
+        }, { passive: true });
 
         carouselImage.addEventListener('touchmove', (e) => {
             if (isZoomed && isPanning) {
                 if (e.touches.length === 1) {
                     e.preventDefault(); // Empêcher le scroll de la page
                     
-                    // Retirer la transition pendant le pan pour un mouvement fluide
-                    carouselImage.style.transition = '';
+                    // Capturer les valeurs avant requestAnimationFrame
+                    const touchX = e.touches[0].clientX;
+                    const touchY = e.touches[0].clientY;
                     
-                    const x = e.touches[0].clientX - startX;
-                    const y = e.touches[0].clientY - startY;
+                    // Utiliser requestAnimationFrame pour un mouvement ultra-fluide
+                    if (animationFrame) {
+                        cancelAnimationFrame(animationFrame);
+                    }
                     
-                    const constrained = constrainPan(x, y, carouselImage);
-                    currentX = constrained.x;
-                    currentY = constrained.y;
+                    animationFrame = requestAnimationFrame(() => {
+                        // Retirer la transition pendant le pan pour un mouvement fluide
+                        carouselImage.style.transition = 'none';
+                        
+                        const x = touchX - startX;
+                        const y = touchY - startY;
+                        
+                        const constrained = constrainPan(x, y, carouselImage);
+                        currentX = constrained.x;
+                        currentY = constrained.y;
+                        
+                        carouselImage.style.transform = `scale(2) translate(${currentX}px, ${currentY}px)`;
+                        carouselImage.style.transformOrigin = 'center center';
+                        animationFrame = null;
+                    });
+                }
+            } else if (!isZoomed) {
+                // Gérer le slide pour changer d'image (mobile uniquement)
+                const currentTime = Date.now();
+                const touchX = e.touches[0].clientX;
+                const touchY = e.touches[0].clientY;
+                const deltaX = touchX - slideStartX;
+                const deltaY = Math.abs(touchY - slideStartY);
+                
+                // Calculer la vélocité pour l'inertie
+                if (currentTime - lastSlideTime > 0) {
+                    slideVelocity = (touchX - lastSlideX) / (currentTime - lastSlideTime);
+                }
+                lastSlideX = touchX;
+                lastSlideTime = currentTime;
+                
+                // Si le mouvement horizontal est plus important que le vertical, activer le slide
+                if (Math.abs(deltaX) > 10 && Math.abs(deltaX) > deltaY) {
+                    if (!isSliding) {
+                        isSliding = true;
+                        carouselImage.style.transition = 'none';
+                    }
+                    e.preventDefault();
                     
-                    carouselImage.style.transform = `scale(2) translate(${currentX}px, ${currentY}px)`;
-                    carouselImage.style.transformOrigin = 'center center';
+                    // Utiliser requestAnimationFrame pour un mouvement ultra-fluide
+                    if (animationFrame) {
+                        cancelAnimationFrame(animationFrame);
+                    }
+                    
+                    animationFrame = requestAnimationFrame(() => {
+                        // Appliquer une résistance progressive aux bords
+                        let resistance = 1;
+                        const maxSlide = window.innerWidth * 0.5;
+                        if (Math.abs(deltaX) > maxSlide) {
+                            resistance = maxSlide / Math.abs(deltaX);
+                        }
+                        
+                        slideCurrentX = deltaX * resistance;
+                        carouselImage.style.transform = `scale(1) translateX(${slideCurrentX}px)`;
+                        animationFrame = null;
+                    });
                 }
             }
-        });
+        }, { passive: false });
 
         // Gestion du zoom au double tap sur mobile (fusionné avec touchend du pan)
         carouselImage.addEventListener('touchend', (e) => {
+            // Annuler toute animation en cours
+            if (animationFrame) {
+                cancelAnimationFrame(animationFrame);
+                animationFrame = null;
+            }
+            
             const touchEndTime = Date.now();
             const touchDuration = touchEndTime - touchStartTime;
             const touchEndX = e.changedTouches[0].clientX;
@@ -674,18 +954,60 @@ class CMSContentLoader {
                 Math.pow(touchEndY - touchStartY, 2)
             );
             
+            // Gérer le slide pour changer d'image
+            if (isSliding && !isZoomed) {
+                isSliding = false;
+                carouselImage.style.willChange = 'auto';
+                
+                const deltaX = touchEndX - slideStartX;
+                const deltaY = Math.abs(touchEndY - slideStartY);
+                
+                // Prendre en compte la vélocité pour l'inertie
+                const velocityThreshold = 0.3; // px/ms
+                const hasVelocity = Math.abs(slideVelocity) > velocityThreshold;
+                
+                // Si le mouvement horizontal est suffisant OU si la vélocité est importante
+                if ((Math.abs(deltaX) > slideThreshold && Math.abs(deltaX) > deltaY) || 
+                    (hasVelocity && Math.abs(deltaX) > 20)) {
+                    if (deltaX > 0 && currentIndex > 0) {
+                        // Slide vers la droite -> image précédente
+                        carouselImage.style.transition = 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
+                        showImage(currentIndex - 1);
+                    } else if (deltaX < 0 && currentIndex < images.length - 1) {
+                        // Slide vers la gauche -> image suivante
+                        carouselImage.style.transition = 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
+                        showImage(currentIndex + 1);
+                    } else {
+                        // Retour à la position initiale avec animation fluide
+                        carouselImage.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                        carouselImage.style.transform = 'scale(1) translateX(0)';
+                        setTimeout(() => {
+                            carouselImage.style.transition = '';
+                        }, 300);
+                    }
+                } else {
+                    // Retour à la position initiale si le mouvement n'était pas suffisant
+                    carouselImage.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                    carouselImage.style.transform = 'scale(1) translateX(0)';
+                    setTimeout(() => {
+                        carouselImage.style.transition = '';
+                    }, 300);
+                }
+                return;
+            }
+            
             // Si on était en train de panner, arrêter le pan et recentrer l'image
             if (isZoomed && isPanning) {
                 isPanning = false;
                 // Recentrer l'image avec une animation fluide
-                carouselImage.style.transition = 'transform 0.3s ease-out';
+                carouselImage.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
                 currentX = 0;
                 currentY = 0;
                 carouselImage.style.transform = 'scale(2) translate(0px, 0px)';
                 carouselImage.style.transformOrigin = 'center center';
                 
                 // Retirer la transition après l'animation
-                setTimeout(() => {
+                const panTimeout = setTimeout(() => {
                     carouselImage.style.transition = '';
                 }, 300);
                 
@@ -706,32 +1028,43 @@ class CMSContentLoader {
                 if (tapLength < 300 && tapLength > 0) {
                     e.preventDefault();
                     
+                    // Réinitialiser l'état de slide
+                    isSliding = false;
+                    slideCurrentX = 0;
+                    slideVelocity = 0;
+                    
                     if (!isZoomed) {
-                        // Zoom
-                        carouselImage.style.transition = 'transform 0.3s ease-out';
-                        carouselImage.style.transform = 'scale(2)';
+                        // Zoom avec animation fluide
+                        carouselImage.style.willChange = 'transform';
+                        carouselImage.style.transition = 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                        carouselImage.style.transform = 'scale(2) translateX(0)';
                         carouselImage.style.cursor = 'zoom-out';
                         carouselImage.style.transformOrigin = 'center center';
                         currentX = 0;
                         currentY = 0;
                         isZoomed = true;
+                        isPanning = false;
                         
-                        setTimeout(() => {
+                        const zoomTimeout = setTimeout(() => {
                             carouselImage.style.transition = '';
-                        }, 300);
+                            carouselImage.style.willChange = 'auto';
+                        }, 350);
                     } else {
-                        // Dézoom
-                        carouselImage.style.transition = 'transform 0.3s ease-out';
-                        carouselImage.style.transform = 'scale(1)';
+                        // Dézoom avec animation fluide
+                        carouselImage.style.willChange = 'transform';
+                        carouselImage.style.transition = 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                        carouselImage.style.transform = 'scale(1) translateX(0)';
                         carouselImage.style.cursor = 'pointer';
                         carouselImage.style.transformOrigin = 'center center';
                         currentX = 0;
                         currentY = 0;
                         isZoomed = false;
+                        isPanning = false;
                         
-                        setTimeout(() => {
+                        const zoomTimeout = setTimeout(() => {
                             carouselImage.style.transition = '';
-                        }, 300);
+                            carouselImage.style.willChange = 'auto';
+                        }, 350);
                     }
                 }
                 

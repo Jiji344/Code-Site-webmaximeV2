@@ -1264,6 +1264,19 @@ ul {
     background: transparent;
 }
 
+.testimonials-google-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: var(--spacing-md) 0;
+}
+
+.testimonials-google-logo img {
+    max-width: 200px;
+    height: auto;
+    object-fit: contain;
+}
+
 .testimonials-banner {
     position: relative;
     width: 100%;
@@ -1851,12 +1864,12 @@ ul {
     margin: 0;
     padding: 0;
     border-radius: 0;
-    box-shadow: 
-        0 0 60px var(--primary-alpha-30),
-        0 20px 80px rgba(0, 0, 0, 0.8);
+    box-shadow: none;
     animation: carouselImageZoom 0.12s ease-out;
     cursor: pointer;
-    transition: transform 0.12s ease-out;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: pan-x pan-y pinch-zoom;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -1930,23 +1943,7 @@ ul {
 
 /* Boutons de navigation du carousel */
 .carousel-button {
-    position: absolute;
-    bottom: 1rem;
-    transform: translateX(0);
-    width: 2.5rem;
-    height: 2.5rem;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 10;
-    color: white;
+    display: none;
 }
 
 .carousel-button:hover {
@@ -2030,6 +2027,8 @@ ul {
     top: 0;
     left: 0;
     z-index: 0;
+    opacity: 1;
+    transition: opacity 0.2s ease-in;
 }
 
 .album-card-content {
@@ -2580,9 +2579,7 @@ ul {
     }
 
     .carousel-button {
-        width: 2rem;
-        height: 2rem;
-        bottom: 0.5rem;
+        display: none;
     }
 
     .carousel-button svg {
@@ -2647,10 +2644,18 @@ ul {
         left: 0;
         right: 0;
         z-index: 10;
-        background: rgba(0, 0, 0, 0.7);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+        background: transparent;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
         padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .album-title {
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 2px rgba(0, 0, 0, 0.9);
+    }
+
+    .album-counter {
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 2px rgba(0, 0, 0, 0.9);
     }
 
     .album-carousel {

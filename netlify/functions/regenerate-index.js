@@ -116,6 +116,64 @@ async function scanDirectory(owner, repo, branch, githubToken, path) {
   return photos;
 }
 
+// Fonction pour générer le cache des images de couverture
+function generateCoverImagesCache(photos) {
+  const cache = {
+    version: Date.now(), // Timestamp pour invalider le cache
+    covers: []
+  };
+
+  // Grouper par catégorie et album
+  const albumsByCategory = {};
+  photos.forEach(photo => {
+    if (photo.category && photo.album && photo.image) {
+      const category = photo.category;
+      const album = photo.album;
+      
+      if (!albumsByCategory[category]) {
+        albumsByCategory[category] = {};
+      }
+      if (!albumsByCategory[category][album]) {
+        albumsByCategory[category][album] = [];
+      }
+      albumsByCategory[category][album].push(photo);
+    }
+  });
+
+  // Identifier les images de couverture
+  Object.keys(albumsByCategory).forEach(category => {
+    Object.keys(albumsByCategory[category]).forEach(album => {
+      const albumPhotos = albumsByCategory[category][album];
+      
+      // Chercher une image avec isCover === true
+      let coverPhoto = albumPhotos.find(photo => {
+        const isCover = photo.isCover === true || 
+                       photo.isCover === 'true' || 
+                       photo.isCover === 'True' ||
+                       photo.isCover === 1 ||
+                       photo.isCover === '1';
+        return isCover;
+      });
+      
+      // Si pas de couverture définie, utiliser la première
+      if (!coverPhoto && albumPhotos.length > 0) {
+        coverPhoto = albumPhotos[0];
+      }
+      
+      if (coverPhoto && coverPhoto.image) {
+        cache.covers.push({
+          category: category,
+          album: album,
+          imageUrl: coverPhoto.image,
+          optimizedUrl: coverPhoto.image // Sera optimisé côté client
+        });
+      }
+    });
+  });
+
+  return cache;
+}
+
 // Fonction pour régénérer l'index portfolio
 async function regenerateIndex(owner, repo, branch, githubToken) {
   const categories = ['Portrait', 'Mariage', 'Immobilier', 'Événementiel', 'Voyage', 'Animalier'];
@@ -131,6 +189,11 @@ async function regenerateIndex(owner, repo, branch, githubToken) {
   // Créer le contenu JSON
   const indexContent = JSON.stringify(allPhotos, null, 2);
   const base64Content = Buffer.from(indexContent).toString('base64');
+
+  // Générer le cache des images de couverture
+  const coverImagesCache = generateCoverImagesCache(allPhotos);
+  const coverCacheContent = JSON.stringify(coverImagesCache, null, 2);
+  const coverCacheBase64 = Buffer.from(coverCacheContent).toString('base64');
 
   // Vérifier si le fichier existe déjà (pour obtenir le SHA et comparer le contenu)
   let sha = null;
@@ -260,6 +323,62 @@ async function regenerateIndex(owner, repo, branch, githubToken) {
   if (!updateResponse.ok) {
     const errorData = await updateResponse.json();
     throw new Error(`Échec update index: ${errorData.message}`);
+  }
+
+  // Mettre à jour le cache des images de couverture
+  let coverCacheSha = null;
+  try {
+    const authHeader = getGitHubAuthHeader(githubToken);
+    const existingCacheResponse = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/contents/cover-images-cache.json?ref=${branch}`,
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': authHeader,
+          'Accept': 'application/vnd.github.v3+json',
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      }
+    );
+    
+    if (existingCacheResponse.ok) {
+      const existingCache = await existingCacheResponse.json();
+      coverCacheSha = existingCache.sha;
+    }
+  } catch (error) {
+    // Fichier n'existe pas encore, c'est OK
+  }
+
+  const coverCachePayload = {
+    message: `🖼️ Mise à jour du cache des images de couverture (${coverImagesCache.covers.length} couvertures)`,
+    content: coverCacheBase64,
+    branch: branch
+  };
+
+  if (coverCacheSha) {
+    coverCachePayload.sha = coverCacheSha;
+  }
+
+  const authHeader = getGitHubAuthHeader(githubToken);
+  const coverCacheResponse = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/contents/cover-images-cache.json`,
+    {
+      method: 'PUT',
+      headers: {
+        'Authorization': authHeader,
+        'Content-Type': 'application/json',
+        'Accept': 'application/vnd.github.v3+json',
+        'X-GitHub-Api-Version': '2022-11-28'
+      },
+      body: JSON.stringify(coverCachePayload)
+    }
+  );
+
+  if (!coverCacheResponse.ok) {
+    const errorData = await coverCacheResponse.json();
+    console.warn(`⚠️ Échec update cache couvertures: ${errorData.message}`);
+  } else {
+    console.log(`✅ Cache des couvertures mis à jour: ${coverImagesCache.covers.length} images`);
   }
 
   return { count: allPhotos.length, changed: true };

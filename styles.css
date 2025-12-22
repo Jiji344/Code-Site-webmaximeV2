@@ -123,37 +123,15 @@
     width: 80px;
     height: 80px;
     object-fit: contain;
-    -webkit-animation: logoRotate 4s linear infinite;
     animation: logoRotate 4s linear infinite;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-    will-change: transform;
-    -webkit-transform: translateZ(0) rotate(0deg);
-    transform: translateZ(0) rotate(0deg);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-perspective: 1000px;
-    perspective: 1000px;
-    display: block;
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-}
-
-@-webkit-keyframes logoRotate {
-    0% {
-        -webkit-transform: translateZ(0) rotate(0deg);
-    }
-    100% {
-        -webkit-transform: translateZ(0) rotate(360deg);
-    }
 }
 
 @keyframes logoRotate {
     0% {
-        transform: translateZ(0) rotate(0deg);
+        transform: rotate(0deg);
     }
     100% {
-        transform: translateZ(0) rotate(360deg);
+        transform: rotate(360deg);
     }
 }
 
@@ -2133,19 +2111,6 @@ ul {
 
 /* Mobile */
 @media screen and (max-width: 768px) {
-    /* Assurer que l'animation du loader fonctionne sur mobile */
-    .loader-logo {
-        -webkit-animation: logoRotate 4s linear infinite;
-        animation: logoRotate 4s linear infinite;
-        -webkit-animation-fill-mode: both;
-        animation-fill-mode: both;
-        will-change: transform;
-        -webkit-transform: translateZ(0) rotate(0deg);
-        transform: translateZ(0) rotate(0deg);
-        -webkit-transform-style: preserve-3d;
-        transform-style: preserve-3d;
-    }
-    
     :root {
         --font-size-xl: 2rem;
         --font-size-lg: 1.75rem;
@@ -2649,14 +2614,6 @@ ul {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
-    }
-    
-    /* Exclure le loader de la réduction d'animation */
-    .loader-logo {
-        animation-duration: 4s !important;
-        animation-iteration-count: infinite !important;
-        -webkit-animation-duration: 4s !important;
-        -webkit-animation-iteration-count: infinite !important;
     }
 }
 

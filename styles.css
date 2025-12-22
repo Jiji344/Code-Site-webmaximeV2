@@ -2116,6 +2116,15 @@ ul {
         height: 60px;
     }
     
+    /* Force le header à ne pas être en position absolute sur mobile */
+    .album-header {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        transform: translateY(20px) !important;
+    }
+    
     :root {
         --font-size-xl: 2rem;
         --font-size-lg: 1.75rem;
@@ -2413,12 +2422,19 @@ ul {
     .album-modal-content {
         height: 100vh;
         gap: 0.25rem;
+        padding-top: 0;
     }
 
     .album-header {
         flex-wrap: wrap;
-        padding: 0.5rem;
+        padding: 0.7rem;
         flex-shrink: 0;
+        margin-top: 0 !important;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        transform: translateY(20px) !important;
     }
 
     .album-title {
@@ -2447,8 +2463,9 @@ ul {
     .album-carousel {
         flex: 1;
         min-height: 0;
+        margin-top: 0;
     }
-
+    
     .carousel-image-container {
         min-height: 0;
         order: 1;

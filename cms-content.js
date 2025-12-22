@@ -606,30 +606,70 @@ class CMSContentLoader {
         return imageCard;
     }
 
-    centerThumbnails(thumbnailsContainer, imageCount) {
-        if (!thumbnailsContainer || imageCount === 0) return;
+    scrollThumbnailToCenter(thumbnailsContainer, activeIndex) {
+        if (!thumbnailsContainer || activeIndex < 0) return;
         
-        // Déterminer la taille des miniatures selon la taille d'écran
-        const isMobile = window.innerWidth <= 768;
-        const thumbnailWidth = isMobile ? 50 : 100; // 50px sur mobile, 100px sur desktop
-        const gap = isMobile ? 4 : 8; // Gap réduit sur mobile
-        const padding = isMobile ? 16 : 32; // Padding réduit sur mobile
+        const thumbnails = thumbnailsContainer.children;
+        if (!thumbnails || activeIndex >= thumbnails.length) return;
         
-        // Calculer la largeur totale nécessaire pour toutes les miniatures
-        const totalWidth = (thumbnailWidth * imageCount) + (gap * (imageCount - 1)) + (padding * 2);
+        const thumbnail = thumbnails[activeIndex];
+        if (!thumbnail) return;
         
-        // Obtenir la largeur disponible du conteneur
-        const containerWidth = thumbnailsContainer.offsetWidth || thumbnailsContainer.clientWidth;
+        // Marquer qu'on est en train de centrer pour éviter les conflits avec le scroll infini
+        if (thumbnailsContainer.isCentering) return;
+        thumbnailsContainer.isCentering = true;
         
-        // Si toutes les miniatures tiennent dans l'espace disponible, les centrer
-        if (totalWidth <= containerWidth) {
-            thumbnailsContainer.style.justifyContent = 'center';
-            thumbnailsContainer.style.overflowX = 'hidden';
-        } else {
-            // Sinon, permettre le scroll horizontal et aligner à gauche
-            thumbnailsContainer.style.justifyContent = 'flex-start';
-            thumbnailsContainer.style.overflowX = 'auto';
-        }
+        // Attendre que les vignettes soient rendues et mesurables
+        const centerThumbnail = () => {
+            // Vérifier que la vignette est toujours valide
+            if (!thumbnailsContainer.contains(thumbnail)) {
+                thumbnailsContainer.isCentering = false;
+                return;
+            }
+            
+            // Calculer la position de scroll pour centrer la vignette
+            const containerWidth = thumbnailsContainer.clientWidth;
+            const thumbnailLeft = thumbnail.offsetLeft;
+            const thumbnailWidth = thumbnail.offsetWidth;
+            
+            // Si les dimensions ne sont pas encore disponibles, réessayer
+            if (containerWidth === 0 || thumbnailWidth === 0) {
+                setTimeout(centerThumbnail, 50);
+                return;
+            }
+            
+            // Calculer la position de scroll pour centrer
+            let scrollLeft = thumbnailLeft - (containerWidth / 2) + (thumbnailWidth / 2);
+            
+            // S'assurer que le scroll reste dans les limites
+            const maxScroll = Math.max(0, thumbnailsContainer.scrollWidth - containerWidth);
+            scrollLeft = Math.max(0, Math.min(scrollLeft, maxScroll));
+            
+            // Réinitialiser le flag de scroll utilisateur avant de centrer
+            if (thumbnailsContainer.lastScrollLeft !== undefined) {
+                thumbnailsContainer.lastScrollLeft = scrollLeft;
+            }
+            
+            // Appliquer le scroll avec animation fluide
+            thumbnailsContainer.scrollTo({
+                left: scrollLeft,
+                behavior: 'smooth'
+            });
+            
+            // Réactiver le scroll infini après un délai
+            setTimeout(() => {
+                thumbnailsContainer.isCentering = false;
+                // Mettre à jour lastScrollLeft après le centrage
+                if (thumbnailsContainer.lastScrollLeft !== undefined) {
+                    thumbnailsContainer.lastScrollLeft = thumbnailsContainer.scrollLeft;
+                }
+            }, 700);
+        };
+        
+        // Utiliser requestAnimationFrame pour s'assurer que le DOM est prêt
+        requestAnimationFrame(() => {
+            setTimeout(centerThumbnail, 50);
+        });
     }
 
     openAlbumCarousel(albumName, images) {
@@ -669,6 +709,13 @@ class CMSContentLoader {
         let animationFrame = null;
         
         const showImage = (index) => {
+            // Gérer le défilement infini (loop)
+            if (index < 0) {
+                index = images.length - 1;
+            } else if (index >= images.length) {
+                index = 0;
+            }
+            
             currentIndex = index;
             const image = images[index];
             
@@ -711,19 +758,21 @@ class CMSContentLoader {
                 carouselImage.style.animation = 'carouselImageZoom 0.12s ease-out';
             });
             
-            albumCounter.textContent = `${index + 1} / ${images.length}`;
+            albumCounter.textContent = `${currentIndex + 1} / ${images.length}`;
             
             const imageContainer = document.querySelector('.carousel-image-container');
             if (imageContainer) {
                 imageContainer.setAttribute('data-title', albumName);
             }
             
-            prevButton.disabled = index === 0;
-            nextButton.disabled = index === images.length - 1;
-            
             document.querySelectorAll('.carousel-thumbnail').forEach((thumb, i) => {
                 thumb.classList.toggle('active', i === index);
             });
+            
+            // Centrer la vignette active après un court délai pour s'assurer que tout est rendu
+            setTimeout(() => {
+                this.scrollThumbnailToCenter(thumbnailsContainer, currentIndex);
+            }, 100);
             
             // Précharger les images adjacentes pour navigation fluide
             if (index < images.length - 1) {
@@ -754,6 +803,7 @@ class CMSContentLoader {
         images.forEach((image, index) => {
             const thumbnail = document.createElement('img');
             thumbnail.className = 'carousel-thumbnail';
+            thumbnail.setAttribute('data-index', index);
             
             // Optimiser l'URL pour les miniatures (Cloudflare ou Cloudinary)
             let imageUrl = image.image;
@@ -771,9 +821,86 @@ class CMSContentLoader {
             thumbnailsContainer.appendChild(thumbnail);
         });
         
-        // Centrer les miniatures si elles tiennent dans l'espace disponible
+        // S'assurer que le conteneur permet le scroll
+        thumbnailsContainer.style.overflowX = 'auto';
+        thumbnailsContainer.style.justifyContent = 'flex-start';
+        
+        // Gérer le scroll infini en boucle
+        let isScrolling = false;
+        let scrollTimeout = null;
+        let isUserScrolling = false;
+        
+        // Stocker lastScrollLeft sur le conteneur pour synchronisation
+        thumbnailsContainer.lastScrollLeft = thumbnailsContainer.scrollLeft;
+        
+        const handleInfiniteScroll = () => {
+            // Ne pas interférer si on est en train de centrer programmatiquement
+            if (isScrolling || thumbnailsContainer.isCentering) return;
+            
+            const container = thumbnailsContainer;
+            const scrollLeft = container.scrollLeft;
+            const scrollWidth = container.scrollWidth;
+            const clientWidth = container.clientWidth;
+            const maxScroll = scrollWidth - clientWidth;
+            
+            // Ignorer si le conteneur est trop petit pour scroller
+            if (maxScroll <= 0) return;
+            
+            // Détecter si c'est un scroll utilisateur (changement de position)
+            const scrollDelta = Math.abs(scrollLeft - (thumbnailsContainer.lastScrollLeft || 0));
+            if (scrollDelta > 1) {
+                isUserScrolling = true;
+                thumbnailsContainer.lastScrollLeft = scrollLeft;
+            }
+            
+            // Détecter si c'est un scroll utilisateur (pas programmatique)
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
+            }
+            scrollTimeout = setTimeout(() => {
+                // Ne faire le saut que si c'est un scroll utilisateur
+                if (!isUserScrolling) {
+                    isUserScrolling = false;
+                    return;
+                }
+                
+                const currentScroll = container.scrollLeft;
+                
+                // Si on est très proche du début (dans les 30px), sauter vers la fin
+                if (currentScroll <= 30 && maxScroll > 0) {
+                    isScrolling = true;
+                    isUserScrolling = false;
+                    const newScroll = maxScroll - 10; // Laisser un peu de marge
+                    container.scrollTo({
+                        left: newScroll,
+                        behavior: 'auto'
+                    });
+                    thumbnailsContainer.lastScrollLeft = newScroll;
+                    setTimeout(() => { isScrolling = false; }, 150);
+                }
+                // Si on est très proche de la fin (dans les 30px), sauter vers le début
+                else if (currentScroll >= maxScroll - 30 && maxScroll > 0) {
+                    isScrolling = true;
+                    isUserScrolling = false;
+                    const newScroll = 10; // Laisser un peu de marge
+                    container.scrollTo({
+                        left: newScroll,
+                        behavior: 'auto'
+                    });
+                    thumbnailsContainer.lastScrollLeft = newScroll;
+                    setTimeout(() => { isScrolling = false; }, 150);
+                } else {
+                    isUserScrolling = false;
+                    thumbnailsContainer.lastScrollLeft = currentScroll;
+                }
+            }, 150);
+        };
+        
+        thumbnailsContainer.addEventListener('scroll', handleInfiniteScroll);
+        
+        // Centrer la première vignette au démarrage
         setTimeout(() => {
-            this.centerThumbnails(thumbnailsContainer, images.length);
+            this.scrollThumbnailToCenter(thumbnailsContainer, 0);
             
             // Recentrer lors du redimensionnement de la fenêtre
             let resizeTimeout;
@@ -781,7 +908,7 @@ class CMSContentLoader {
                 clearTimeout(resizeTimeout);
                 resizeTimeout = setTimeout(() => {
                     if (modal.classList.contains('active')) {
-                        this.centerThumbnails(thumbnailsContainer, images.length);
+                        this.scrollThumbnailToCenter(thumbnailsContainer, currentIndex);
                     }
                 }, 150);
             };
@@ -969,12 +1096,12 @@ class CMSContentLoader {
                 // Si le mouvement horizontal est suffisant OU si la vélocité est importante
                 if ((Math.abs(deltaX) > slideThreshold && Math.abs(deltaX) > deltaY) || 
                     (hasVelocity && Math.abs(deltaX) > 20)) {
-                    if (deltaX > 0 && currentIndex > 0) {
-                        // Slide vers la droite -> image précédente
+                    if (deltaX > 0) {
+                        // Slide vers la droite -> image précédente (avec loop)
                         carouselImage.style.transition = 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
                         showImage(currentIndex - 1);
-                    } else if (deltaX < 0 && currentIndex < images.length - 1) {
-                        // Slide vers la gauche -> image suivante
+                    } else if (deltaX < 0) {
+                        // Slide vers la gauche -> image suivante (avec loop)
                         carouselImage.style.transition = 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
                         showImage(currentIndex + 1);
                     } else {
@@ -1073,17 +1200,17 @@ class CMSContentLoader {
         });
         
         prevButton.onclick = () => {
-            if (currentIndex > 0) showImage(currentIndex - 1);
+            showImage(currentIndex - 1);
         };
         
         nextButton.onclick = () => {
-            if (currentIndex < images.length - 1) showImage(currentIndex + 1);
+            showImage(currentIndex + 1);
         };
         
         const handleKeyboard = (e) => {
-            if (e.key === 'ArrowLeft' && currentIndex > 0) {
+            if (e.key === 'ArrowLeft') {
                 showImage(currentIndex - 1);
-            } else if (e.key === 'ArrowRight' && currentIndex < images.length - 1) {
+            } else if (e.key === 'ArrowRight') {
                 showImage(currentIndex + 1);
             } else if (e.key === 'Escape') {
                 closeCarousel();

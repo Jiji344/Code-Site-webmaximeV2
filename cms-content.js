@@ -817,37 +817,13 @@ class CMSContentLoader {
             
             let imageUrl = image.image;
             
-            // Charger les miniatures visibles immédiatement, les autres en lazy
-            if (index <= 5) {
-                // Premières miniatures visibles : chargement immédiat
-                thumbnail.src = imageUrl;
-                thumbnail.fetchPriority = 'high';
-            } else {
-                // Miniatures hors écran : lazy loading
-                thumbnail.loading = 'lazy';
-                thumbnail.fetchPriority = 'low';
-                // Utiliser data-src pour le lazy loading
-                thumbnail.setAttribute('data-src', imageUrl);
-                
-                // Observer pour charger quand visible
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            if (img.dataset.src) {
-                                img.src = img.dataset.src;
-                                img.removeAttribute('data-src');
-                            }
-                            observer.unobserve(img);
-                        }
-                    });
-                }, { rootMargin: '50px' });
-                
-                observer.observe(thumbnail);
-            }
+            // Charger TOUTES les miniatures immédiatement avec priorité haute pour un chargement ultra-rapide
+            thumbnail.src = imageUrl;
+            thumbnail.loading = 'eager';
+            thumbnail.fetchPriority = 'high';
+            thumbnail.decoding = 'async';
             
             thumbnail.alt = image.title || '';
-            thumbnail.decoding = 'async';
             thumbnail.addEventListener('click', () => showImage(index));
             
             // Précharger l'image en fullscreen au survol de la miniature

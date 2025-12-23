@@ -27,22 +27,17 @@ class CMSContentLoader {
             const cacheUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/cover-images-cache.json?t=${Date.now()}`;
             
             const response = await fetch(cacheUrl, {
-                cache: 'force-cache' // Utiliser le cache si disponible
+                cache: 'force-cache'
             });
             
             if (response.ok) {
                 const cache = await response.json();
-                console.log(`📦 Cache des couvertures chargé: ${cache.covers?.length || 0} images`);
-                
-                // Précharger toutes les images de couverture
                 if (cache.covers && Array.isArray(cache.covers)) {
                     await this.preloadCoverImagesFromCache(cache.covers);
                 }
-            } else {
-                console.log('⚠️ Cache des couvertures non disponible, préchargement ignoré');
             }
         } catch (error) {
-            console.warn('⚠️ Erreur lors du chargement du cache des couvertures:', error);
+            // Silencieux en cas d'erreur
         }
     }
 
@@ -94,21 +89,16 @@ class CMSContentLoader {
             const batch = preloadPromises.slice(i, i + batchSize);
             await Promise.all(batch);
         }
-        
-        console.log(`✅ ${this.coverImageCache.size} images de couverture préchargées en mémoire`);
     }
 
     async loadPortfolioData() {
         try {
-            console.log('🚀 Début du chargement des données portfolio...');
-            
             // Essayer de charger l'index JSON (généré par la fonction Netlify)
             const indexLoaded = await this.loadFromIndex();
             
             if (!indexLoaded) {
                 // Fallback : charger récursivement (ancien système)
-                console.log('📦 Chargement depuis GitHub (fallback)...');
-                this.portfolioData = []; // Réinitialiser pour le fallback
+                this.portfolioData = [];
                 
                 for (const category of this.config.categories) {
                     const categoryPath = `${this.config.basePath}/${category.toLowerCase()}`;
@@ -116,63 +106,37 @@ class CMSContentLoader {
                 }
             }
             
-            console.log(`✅ ${this.portfolioData.length} photos chargées au total`);
-            
             if (this.portfolioData.length === 0) {
-                console.error('❌ AUCUNE PHOTO CHARGÉE ! Vérifiez les logs ci-dessus.');
+                console.error('❌ AUCUNE PHOTO CHARGÉE !');
             }
         } catch (error) {
             console.error('❌ Erreur lors du chargement des données CMS:', error);
-            console.error('❌ Stack:', error.stack);
         }
     }
 
     async loadFromIndex() {
         try {
             const { owner, repo } = this.config;
-            // Cache-busting simple avec timestamp (non bloquant)
-            const cacheBuster = Date.now();
-            const indexUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/portfolio-index.json?t=${cacheBuster}`;
-            
-            console.log('🔄 Tentative de chargement de l\'index:', indexUrl);
+            const indexUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/portfolio-index.json?t=${Date.now()}`;
             
             const response = await fetch(indexUrl, {
                 cache: 'no-store',
                 mode: 'cors'
             });
             
-            console.log('📥 Réponse index:', response.status, response.statusText);
-            
             if (response.ok) {
                 const photos = await response.json();
-                console.log('📦 Données brutes reçues:', photos.length, 'photos');
                 
                 // Filtrer uniquement les photos valides (avec image)
-                const validPhotos = photos.filter(photo => {
-                    if (!photo || !photo.image) {
-                        console.warn('⚠️ Photo invalide (pas d\'image):', photo);
-                        return false;
-                    }
-                    return true;
-                });
-                
-                console.log('✅ Photos valides après filtrage:', validPhotos.length);
+                const validPhotos = photos.filter(photo => photo && photo.image);
                 
                 if (validPhotos.length > 0) {
                     this.portfolioData = validPhotos;
-                    console.log(`📦 Index chargé avec succès: ${validPhotos.length} photos`);
                     return true;
-                } else {
-                    console.warn('⚠️ Aucune photo valide dans l\'index');
-                    return false;
                 }
-            } else {
-                console.warn('⚠️ Index non disponible (HTTP', response.status, ')');
-                return false;
             }
+            return false;
         } catch (error) {
-            console.error('❌ Erreur lors du chargement de l\'index:', error);
-            console.log('📦 Utilisation du fallback...');
             return false;
         }
     }
@@ -198,8 +162,7 @@ class CMSContentLoader {
                 }
             }
         } catch (error) {
-            // Silencieux si le dossier n'existe pas encore (normal pour une nouvelle installation)
-            console.debug(`Dossier ${path} non trouvé ou vide`);
+            // Silencieux si le dossier n'existe pas
         }
     }
 
@@ -217,7 +180,7 @@ class CMSContentLoader {
                 }
             }
         } catch (err) {
-            console.warn(`Impossible de charger ${filePath}`);
+            // Silencieux en cas d'erreur
         }
     }
 
@@ -255,7 +218,6 @@ class CMSContentLoader {
 
     async triggerAutoCleanup() {
         try {
-            console.log('🧹 Déclenchement du nettoyage automatique...');
             const response = await fetch('/.netlify/functions/clean-portfolio', {
                 method: 'POST',
                 headers: {
@@ -264,25 +226,19 @@ class CMSContentLoader {
             });
             
             if (response.ok) {
-                console.log('✅ Nettoyage automatique terminé');
                 // Recharger les données après nettoyage
                 setTimeout(() => {
                     this.loadPortfolioData().then(() => {
                         this.displayPortfolioImages();
                     });
                 }, 2000);
-            } else {
-                console.log('⚠️ Nettoyage automatique échoué');
             }
         } catch (error) {
-            console.log('⚠️ Erreur lors du nettoyage automatique:', error);
+            // Silencieux en cas d'erreur
         }
     }
 
     displayPortfolioImages() {
-        console.log('🖼️ Affichage des images portfolio...');
-        console.log('📊 Nombre de photos à afficher:', this.portfolioData.length);
-        
         if (this.portfolioData.length === 0) {
             console.error('❌ AUCUNE PHOTO À AFFICHER !');
             return;
@@ -290,14 +246,10 @@ class CMSContentLoader {
         
         const dataByCategory = this.groupByCategory(this.portfolioData);
         const categories = Object.keys(dataByCategory);
-        console.log('📁 Catégories trouvées:', categories);
         
         categories.forEach(category => {
-            console.log(`📂 Affichage catégorie: ${category}`);
             this.updateCategoryContent(category, dataByCategory[category]);
         });
-        
-        console.log('✅ Affichage terminé');
     }
 
     groupByCategory(data) {
@@ -343,31 +295,21 @@ class CMSContentLoader {
         // Attendre que toutes les images de couverture soient chargées
         await Promise.all(coverImagePromises);
 
-        // Utiliser requestAnimationFrame pour ne pas bloquer le rendu
         requestAnimationFrame(() => {
-            // Nettoyer l'ancien contenu avant d'ajouter le nouveau
-            // Garder uniquement les éléments de navigation (flèches)
+            // Garder les éléments de navigation
             const navElements = imagesContainer.querySelectorAll('.category-nav-prev, .category-nav-next');
             imagesContainer.innerHTML = '';
+            navElements.forEach(nav => imagesContainer.appendChild(nav));
             
-            // Réinsérer les éléments de navigation
-            navElements.forEach(nav => {
-                imagesContainer.appendChild(nav);
-            });
-            
-            // Ajouter les albums (les images sont maintenant préchargées)
+            // Ajouter les albums
             albumNames.forEach(albumName => {
-                const albumImages = data.albums[albumName];
-                const albumCard = this.createAlbumCard(albumName, albumImages);
-                if (albumCard) {
-                    imagesContainer.appendChild(albumCard);
-                }
+                const albumCard = this.createAlbumCard(albumName, data.albums[albumName]);
+                if (albumCard) imagesContainer.appendChild(albumCard);
             });
 
             // Ajouter les images individuelles
-            data.singleImages.forEach((item) => {
-                const imageCard = this.createImageCard(item);
-                imagesContainer.appendChild(imageCard);
+            data.singleImages.forEach(item => {
+                imagesContainer.appendChild(this.createImageCard(item));
             });
 
             // Mettre à jour le carrousel
@@ -404,26 +346,15 @@ class CMSContentLoader {
             }
         }
 
-        // Forcer le préchargement avec un objet Image
         return new Promise((resolve) => {
             const img = new Image();
             img.fetchPriority = 'high';
             img.loading = 'eager';
             
-            img.onload = () => {
-                // Image chargée, on peut continuer
-                resolve();
-            };
-            
-            img.onerror = () => {
-                // Même en cas d'erreur, on continue pour ne pas bloquer
-                resolve();
-            };
-            
-            // Timeout de sécurité
+            img.onload = () => resolve();
+            img.onerror = () => resolve();
             setTimeout(() => resolve(), 5000);
             
-            // Démarrer le chargement
             img.src = imageUrl;
         });
     }
@@ -436,41 +367,22 @@ class CMSContentLoader {
         coverImage.className = 'album-card-image';
         
         // Trouver l'image de couverture ou utiliser la première par défaut
-        console.log(`🔍 Recherche de la couverture pour l'album "${albumName}" (${images.length} photos)`);
-        
-        // Afficher toutes les photos avec leur statut isCover pour déboguer
-        images.forEach((img, index) => {
-            console.log(`  Photo ${index + 1}: "${img.title}" - isCover: ${img.isCover} (type: ${typeof img.isCover})`);
-        });
-        
-        // Chercher une image avec isCover === true (maintenant toutes les photos ont isCover défini)
-        let coverImageData = images.find((img, index) => {
-            // Vérifier si isCover est true (booléen) ou 'true' (string pour compatibilité)
+        let coverImageData = images.find((img) => {
             const isCover = img.isCover === true || 
                            img.isCover === 'true' || 
                            img.isCover === 'True' ||
                            img.isCover === 1 ||
                            img.isCover === '1';
-            
-            if (isCover) {
-                console.log(`✅ Photo de couverture trouvée (index ${index}): "${img.title}" (isCover: ${img.isCover})`);
-            }
-            
             return isCover;
         });
         
-        // Si aucune image n'est marquée comme couverture, utiliser la première (index 0)
+        // Si aucune image n'est marquée comme couverture, utiliser la première
         if (!coverImageData) {
-            console.log(`📸 Aucune couverture définie pour l'album "${albumName}", utilisation de la première photo (index 0)`);
             if (images.length > 0) {
                 coverImageData = images[0];
-                console.log(`📸 Photo sélectionnée: "${coverImageData.title}" (première de l'album)`);
             } else {
-                console.error(`❌ Album "${albumName}" est vide !`);
                 return null;
             }
-        } else {
-            console.log(`✅ Couverture sélectionnée: "${coverImageData.title}"`);
         }
         
         // Optimiser l'URL pour les cartes (Cloudflare ou Cloudinary)
@@ -484,45 +396,30 @@ class CMSContentLoader {
         // Vérifier si l'image est déjà dans le cache en mémoire
         const cachedImg = this.coverImageCache.get(imageUrl);
         
+        coverImage.src = imageUrl;
+        coverImage.alt = albumName;
+        coverImage.fetchPriority = 'high';
+        coverImage.decoding = 'async';
+        coverImage.loading = 'eager';
+        
         if (cachedImg && (cachedImg.complete || cachedImg.naturalWidth > 0)) {
-            // L'image est déjà préchargée et chargée, l'afficher immédiatement
-            coverImage.src = imageUrl;
-            coverImage.alt = albumName;
-            coverImage.fetchPriority = 'high';
-            coverImage.decoding = 'sync';
-            coverImage.loading = 'eager';
+            // L'image est déjà préchargée, l'afficher immédiatement
             coverImage.style.opacity = '1';
         } else {
-            // L'image n'est pas encore chargée, vérifier le cache du navigateur
-            const testImg = new Image();
-            testImg.src = imageUrl;
-            
-            coverImage.src = imageUrl;
-            coverImage.alt = albumName;
-            coverImage.fetchPriority = 'high';
-            coverImage.decoding = 'sync';
-            coverImage.loading = 'eager';
-            
-            // Si l'image est déjà dans le cache du navigateur, l'afficher immédiatement
-            if (testImg.complete || testImg.naturalWidth > 0) {
-                coverImage.style.opacity = '1';
-            } else {
-                // Sinon, attendre le chargement (normalement très rapide car préchargée)
-                coverImage.style.opacity = '0';
-                coverImage.onload = () => {
-                    // Mettre en cache pour les prochaines fois
-                    this.coverImageCache.set(imageUrl, coverImage);
-                    requestAnimationFrame(() => {
-                        coverImage.style.opacity = '1';
-                    });
-                };
-                // Timeout de sécurité au cas où
-                setTimeout(() => {
-                    if (coverImage.style.opacity === '0') {
-                        coverImage.style.opacity = '1';
-                    }
-                }, 100);
-            }
+            // Attendre le chargement (normalement très rapide car préchargée)
+            coverImage.style.opacity = '0';
+            coverImage.onload = () => {
+                this.coverImageCache.set(imageUrl, coverImage);
+                requestAnimationFrame(() => {
+                    coverImage.style.opacity = '1';
+                });
+            };
+            // Timeout de sécurité
+            setTimeout(() => {
+                if (coverImage.style.opacity === '0') {
+                    coverImage.style.opacity = '1';
+                }
+            }, 100);
         }
         
         const cardContent = document.createElement('div');
@@ -656,14 +553,14 @@ class CMSContentLoader {
                 behavior: 'smooth'
             });
             
-            // Réactiver le scroll infini après un délai
+            // Réactiver le scroll infini après l'animation
             setTimeout(() => {
                 thumbnailsContainer.isCentering = false;
                 // Mettre à jour lastScrollLeft après le centrage
                 if (thumbnailsContainer.lastScrollLeft !== undefined) {
                     thumbnailsContainer.lastScrollLeft = thumbnailsContainer.scrollLeft;
                 }
-            }, 700);
+            }, 800);
         };
         
         // Utiliser requestAnimationFrame pour s'assurer que le DOM est prêt
@@ -1042,10 +939,10 @@ class CMSContentLoader {
                 thumb.classList.toggle('active', i === index);
             });
             
-            // Centrer la vignette active après un court délai pour s'assurer que tout est rendu
-            setTimeout(() => {
+            // Centrer la vignette active
+            requestAnimationFrame(() => {
                 this.scrollThumbnailToCenter(thumbnailsContainer, currentIndex);
-            }, 100);
+            });
             
             // Déclencher le préchargement progressif des images adjacentes et autres
             this.scheduleProgressivePreload(images, index, imageCache, preloadState);
@@ -1137,7 +1034,14 @@ class CMSContentLoader {
         
         const handleInfiniteScroll = () => {
             // Ne pas interférer si on est en train de centrer programmatiquement
-            if (isScrolling || thumbnailsContainer.isCentering) return;
+            // Attendre un peu plus longtemps pour laisser le centrage se terminer
+            if (isScrolling || thumbnailsContainer.isCentering) {
+                // Réinitialiser isUserScrolling si on est en train de centrer
+                isUserScrolling = false;
+                // Mettre à jour lastScrollLeft pour éviter les conflits
+                thumbnailsContainer.lastScrollLeft = thumbnailsContainer.scrollLeft;
+                return;
+            }
             
             const container = thumbnailsContainer;
             const scrollLeft = container.scrollLeft;
@@ -1199,6 +1103,7 @@ class CMSContentLoader {
         };
         
         thumbnailsContainer.addEventListener('scroll', handleInfiniteScroll);
+        thumbnailsContainer.hasScrollListener = true;
         
         // Centrer la première vignette au démarrage
         setTimeout(() => {
@@ -1220,7 +1125,6 @@ class CMSContentLoader {
         albumTitle.textContent = albumName;
         showImage(0);
         
-        // Le préchargement progressif sera déclenché par showImage
         
         // Fonction pour limiter le déplacement aux limites de l'image
         const constrainPan = (x, y, img) => {
@@ -1427,7 +1331,7 @@ class CMSContentLoader {
                 carouselImage.style.transformOrigin = 'center center';
                 
                 // Retirer la transition après l'animation
-                const panTimeout = setTimeout(() => {
+                setTimeout(() => {
                     carouselImage.style.transition = '';
                 }, 300);
                 
@@ -1465,7 +1369,7 @@ class CMSContentLoader {
                         isZoomed = true;
                         isPanning = false;
                         
-                        const zoomTimeout = setTimeout(() => {
+                        setTimeout(() => {
                             carouselImage.style.transition = '';
                             carouselImage.style.willChange = 'auto';
                         }, 350);
@@ -1481,7 +1385,7 @@ class CMSContentLoader {
                         isZoomed = false;
                         isPanning = false;
                         
-                        const zoomTimeout = setTimeout(() => {
+                        setTimeout(() => {
                             carouselImage.style.transition = '';
                             carouselImage.style.willChange = 'auto';
                         }, 350);
@@ -1521,8 +1425,6 @@ class CMSContentLoader {
                 preloadState.timeout = null;
             }
             preloadState.inProgress = false;
-            // Optionnel: vider le cache pour libérer la mémoire
-            // imageCache.clear(); // Décommenter si vous voulez libérer la mémoire à la fermeture
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
             document.removeEventListener('keydown', handleKeyboard);
@@ -1544,57 +1446,4 @@ class CMSContentLoader {
 // Initialiser
 document.addEventListener('DOMContentLoaded', () => {
     window.cmsLoader = new CMSContentLoader();
-    
-    // Vérification automatique de l'index désactivée pour éviter les erreurs 403 en production
-    // La vérification nécessite une authentification GitHub qui n'est pas disponible côté client
-    // Les mises à jour se feront lors du rechargement de la page
-    /*
-    let lastIndexCheck = Date.now();
-    let lastIndexHash = null;
-    
-    async function checkIndexUpdate() {
-        try {
-            const { owner, repo } = window.cmsLoader.config;
-            const response = await fetch(
-                `https://api.github.com/repos/${owner}/${repo}/contents/portfolio-index.json?ref=main&t=${Date.now()}`,
-                {
-                    headers: {
-                        'Accept': 'application/vnd.github.v3+json'
-                    },
-                    cache: 'no-store',
-                    mode: 'cors'
-                }
-            );
-            
-            if (!response.ok && response.status === 403) {
-                return;
-            }
-            
-            if (!response.ok && response.status !== 200) {
-                console.debug('Vérification index: HTTP', response.status);
-                return;
-            }
-            
-            if (response.ok) {
-                const fileInfo = await response.json();
-                const currentHash = fileInfo.sha;
-                
-                if (lastIndexHash && lastIndexHash !== currentHash) {
-                    console.log('🔄 Index mis à jour détecté, rechargement des données...');
-                    await window.cmsLoader.loadPortfolioData();
-                    window.cmsLoader.displayPortfolioImages();
-                    lastIndexHash = currentHash;
-                    console.log('✅ Données rechargées avec succès');
-                } else if (!lastIndexHash) {
-                    lastIndexHash = currentHash;
-                }
-            }
-        } catch (error) {
-            console.debug('Vérification index:', error);
-        }
-    }
-    
-    setTimeout(checkIndexUpdate, 2000);
-    setInterval(checkIndexUpdate, 5000);
-    */
 });

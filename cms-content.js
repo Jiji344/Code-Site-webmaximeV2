@@ -13,20 +13,11 @@ class CMSContentLoader {
     }
 
     async init() {
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:15',message:'init() started',data:{timestamp:Date.now()},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-        // #endregion
-        
         // Charger les données du portfolio en premier (priorité)
         await this.loadPortfolioData();
-        // Précharger toutes les images de couverture avant de masquer le loader
-        await this.displayPortfolioImages();
+        this.displayPortfolioImages();
         
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:21',message:'About to dispatch portfolio-images-preloaded event',data:{timestamp:Date.now()},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-        // #endregion
-        
-        // Déclencher l'événement pour masquer le loader (après préchargement)
+        // Déclencher l'événement pour masquer le loader
         window.dispatchEvent(new CustomEvent('portfolio-images-preloaded'));
         
     }
@@ -179,41 +170,18 @@ class CMSContentLoader {
         }
     }
 
-    async displayPortfolioImages() {
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:182',message:'displayPortfolioImages() started',data:{portfolioDataLength:this.portfolioData.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
-        // #endregion
-        
+    displayPortfolioImages() {
         if (this.portfolioData.length === 0) {
             console.error('❌ AUCUNE PHOTO À AFFICHER !');
-            // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:189',message:'displayPortfolioImages() returning early - no data',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
-            // #endregion
             return;
         }
         
         const dataByCategory = this.groupByCategory(this.portfolioData);
         const categories = Object.keys(dataByCategory);
         
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:197',message:'displayPortfolioImages() about to preload',data:{categories:categories.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
-        // #endregion
-        
-        // Précharger toutes les images de couverture de toutes les catégories
-        const preloadPromises = categories.map(category => {
-            return this.updateCategoryContent(category, dataByCategory[category]);
+        categories.forEach(category => {
+            this.updateCategoryContent(category, dataByCategory[category]);
         });
-        
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:204',message:'displayPortfolioImages() waiting for preload',data:{promiseCount:preloadPromises.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
-        // #endregion
-        
-        // Attendre que toutes les images de couverture soient préchargées
-        await Promise.all(preloadPromises);
-        
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:210',message:'displayPortfolioImages() completed',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'})}).catch(()=>{});
-        // #endregion
     }
 
     groupByCategory(data) {
@@ -249,84 +217,25 @@ class CMSContentLoader {
         const imagesContainer = categorySection.querySelector('.category-images');
         if (!imagesContainer) return;
 
-        // Précharger toutes les images de couverture avant de les afficher
-        const albumNames = Object.keys(data.albums);
-        const preloadPromises = albumNames.map(albumName => {
-            const images = data.albums[albumName];
-            if (!images || images.length === 0) return Promise.resolve();
-            
-            // Trouver l'image de couverture
-            let coverImageData = images.find((img) => {
-                const isCover = img.isCover === true || 
-                               img.isCover === 'true' || 
-                               img.isCover === 'True' ||
-                               img.isCover === 1 ||
-                               img.isCover === '1';
-                return isCover;
-            });
-            
-            if (!coverImageData && images.length > 0) {
-                coverImageData = images[0];
-            }
-            
-            if (!coverImageData || !coverImageData.image) return Promise.resolve();
-            
-            // #region agent log
-            fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:256',message:'Preloading cover image',data:{category,albumName,imageUrl:coverImageData.image},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-            // #endregion
-            
-            // Précharger l'image
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.src = coverImageData.image;
-                img.fetchPriority = 'high';
-                img.onload = () => {
-                    // #region agent log
-                    fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:265',message:'Cover image preloaded',data:{category,albumName,complete:img.complete},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-                    // #endregion
-                    resolve();
-                };
-                img.onerror = () => {
-                    // #region agent log
-                    fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:272',message:'Cover image preload error',data:{category,albumName},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-                    // #endregion
-                    resolve(); // Continuer même en cas d'erreur
-                };
-                // Timeout de sécurité
-                setTimeout(() => resolve(), 3000);
-            });
-        });
-
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:280',message:'Waiting for cover images preload',data:{category,albumCount:albumNames.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-        // #endregion
-
-        // Attendre que toutes les images de couverture soient préchargées
-        await Promise.all(preloadPromises);
-        
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:285',message:'All cover images preloaded for category',data:{category},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
-        // #endregion
-
-        // Créer les images dans le DOM immédiatement (elles sont déjà préchargées)
-        // Garder les éléments de navigation
-        const navElements = imagesContainer.querySelectorAll('.category-nav-prev, .category-nav-next');
-        imagesContainer.innerHTML = '';
-        navElements.forEach(nav => imagesContainer.appendChild(nav));
-        
-        // Ajouter les albums (les images sont maintenant préchargées)
-        albumNames.forEach(albumName => {
-            const albumCard = this.createAlbumCard(albumName, data.albums[albumName]);
-            if (albumCard) imagesContainer.appendChild(albumCard);
-        });
-
-        // Ajouter les images individuelles
-        data.singleImages.forEach(item => {
-            imagesContainer.appendChild(this.createImageCard(item));
-        });
-
-        // Mettre à jour le carrousel dans le prochain frame
         requestAnimationFrame(() => {
+            // Garder les éléments de navigation
+            const navElements = imagesContainer.querySelectorAll('.category-nav-prev, .category-nav-next');
+            imagesContainer.innerHTML = '';
+            navElements.forEach(nav => imagesContainer.appendChild(nav));
+            
+            // Ajouter les albums
+            const albumNames = Object.keys(data.albums);
+            albumNames.forEach(albumName => {
+                const albumCard = this.createAlbumCard(albumName, data.albums[albumName]);
+                if (albumCard) imagesContainer.appendChild(albumCard);
+            });
+
+            // Ajouter les images individuelles
+            data.singleImages.forEach(item => {
+                imagesContainer.appendChild(this.createImageCard(item));
+            });
+
+            // Mettre à jour le carrousel
             if (window.portfolioCarousel) {
                 window.portfolioCarousel.updateCarousel(category);
             }
@@ -361,19 +270,10 @@ class CMSContentLoader {
         
         let imageUrl = coverImageData.image;
         
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:273',message:'Creating cover image',data:{albumName,imageUrl,hasImageUrl:!!imageUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-        // #endregion
-        
         coverImage.src = imageUrl;
         coverImage.alt = albumName;
-        coverImage.loading = 'eager';
-        coverImage.fetchPriority = 'high';
+        coverImage.loading = 'lazy';
         coverImage.decoding = 'async';
-        
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:276',message:'Cover image attributes set',data:{albumName,loading:coverImage.loading,src:coverImage.src,complete:coverImage.complete},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-        // #endregion
         
         const cardContent = document.createElement('div');
         cardContent.className = 'album-card-content';
@@ -386,19 +286,6 @@ class CMSContentLoader {
         
         albumCard.appendChild(coverImage);
         albumCard.appendChild(cardContent);
-        
-        // #region agent log
-        coverImage.addEventListener('load', () => {
-            fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:289',message:'Cover image loaded',data:{albumName,imageUrl,complete:coverImage.complete,naturalWidth:coverImage.naturalWidth},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-        });
-        coverImage.addEventListener('error', () => {
-            fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:293',message:'Cover image error',data:{albumName,imageUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-        });
-        // Vérifier l'état immédiatement après ajout au DOM
-        setTimeout(() => {
-            fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'cms-content.js:297',message:'Cover image state after DOM append',data:{albumName,complete:coverImage.complete,loading:coverImage.loading,src:coverImage.src,isInViewport:coverImage.getBoundingClientRect().top < window.innerHeight},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-        }, 100);
-        // #endregion
         
         albumCard.addEventListener('click', () => {
             if (!images || images.length === 0) {

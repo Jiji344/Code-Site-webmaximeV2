@@ -537,6 +537,9 @@
             const loader = document.getElementById('page-loader');
             if (loader && pageLoaded && portfolioImagesPreloaded) {
                 loaderHidden = true;
+                // #region agent log
+                fetch('http://127.0.0.1:7242/ingest/f0b3a8f9-0f9c-4555-ae70-facfc4c49bb0',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:534',message:'hideLoader called',data:{pageLoaded,portfolioImagesPreloaded,loaderExists:!!loader},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+                // #endregion
                 setTimeout(() => {
                     loader.classList.add('hidden');
                     document.body.classList.add('loaded');

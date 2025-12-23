@@ -557,14 +557,14 @@
             hideLoader();
         });
 
-        // Timeout de sécurité (15 secondes max pour laisser le temps au préchargement)
+        // Timeout de sécurité (3 secondes max - le chargement devrait être plus rapide)
         setTimeout(() => {
             if (!loaderHidden) {
                 pageLoaded = true;
                 portfolioImagesPreloaded = true;
                 hideLoader();
             }
-        }, 15000);
+        }, 3000);
     </script>
 
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>

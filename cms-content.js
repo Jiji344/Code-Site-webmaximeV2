@@ -9,80 +9,19 @@ class CMSContentLoader {
             // Liste des catégories à scanner
             categories: ['Portrait', 'Mariage', 'Immobilier', 'Événementiel', 'Voyage', 'Animalier']
         };
-        // Cache en mémoire pour les images de couverture préchargées
-        this.coverImageCache = new Map();
         this.init();
     }
 
     async init() {
-        // Précharger le cache des images de couverture en premier
-        await this.loadCoverImagesCache();
+        // Charger les données du portfolio en premier (priorité)
         await this.loadPortfolioData();
         this.displayPortfolioImages();
-    }
-
-    async loadCoverImagesCache() {
-        try {
-            const { owner, repo } = this.config;
-            const cacheUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/cover-images-cache.json?t=${Date.now()}`;
-            
-            const response = await fetch(cacheUrl, {
-                cache: 'force-cache'
-            });
-            
-            if (response.ok) {
-                const cache = await response.json();
-                if (cache.covers && Array.isArray(cache.covers)) {
-                    await this.preloadCoverImagesFromCache(cache.covers);
-                }
-            }
-        } catch (error) {
-            // Silencieux en cas d'erreur
-        }
-    }
-
-    async preloadCoverImagesFromCache(covers) {
-        const preloadPromises = covers.map(cover => {
-            return new Promise((resolve) => {
-                let optimizedUrl = cover.imageUrl;
-                
-                // Vérifier si déjà en cache
-                if (this.coverImageCache.has(optimizedUrl)) {
-                    resolve();
-                    return;
-                }
-                
-                // Précharger l'image
-                const img = new Image();
-                img.fetchPriority = 'high';
-                img.loading = 'eager';
-                
-                img.onload = () => {
-                    // Mettre en cache
-                    this.coverImageCache.set(optimizedUrl, img);
-                    resolve();
-                };
-                
-                img.onerror = () => {
-                    // Même en cas d'erreur, on continue
-                    resolve();
-                };
-                
-                // Timeout de sécurité
-                setTimeout(() => resolve(), 5000);
-                
-                // Démarrer le chargement
-                img.src = optimizedUrl;
-            });
-        });
         
-        // Précharger en parallèle par lots de 10 pour ne pas surcharger
-        const batchSize = 10;
-        for (let i = 0; i < preloadPromises.length; i += batchSize) {
-            const batch = preloadPromises.slice(i, i + batchSize);
-            await Promise.all(batch);
-        }
+        // Déclencher l'événement pour masquer le loader
+        window.dispatchEvent(new CustomEvent('portfolio-images-preloaded'));
+        
     }
+
 
     async loadPortfolioData() {
         try {
@@ -278,16 +217,6 @@ class CMSContentLoader {
         const imagesContainer = categorySection.querySelector('.category-images');
         if (!imagesContainer) return;
 
-        // Précharger toutes les images de couverture avant de créer les cartes
-        const albumNames = Object.keys(data.albums);
-        const coverImagePromises = albumNames.map(albumName => {
-            const albumImages = data.albums[albumName];
-            return this.preloadCoverImage(albumName, albumImages);
-        });
-
-        // Attendre que toutes les images de couverture soient chargées
-        await Promise.all(coverImagePromises);
-
         requestAnimationFrame(() => {
             // Garder les éléments de navigation
             const navElements = imagesContainer.querySelectorAll('.category-nav-prev, .category-nav-next');
@@ -295,6 +224,7 @@ class CMSContentLoader {
             navElements.forEach(nav => imagesContainer.appendChild(nav));
             
             // Ajouter les albums
+            const albumNames = Object.keys(data.albums);
             albumNames.forEach(albumName => {
                 const albumCard = this.createAlbumCard(albumName, data.albums[albumName]);
                 if (albumCard) imagesContainer.appendChild(albumCard);
@@ -309,40 +239,6 @@ class CMSContentLoader {
             if (window.portfolioCarousel) {
                 window.portfolioCarousel.updateCarousel(category);
             }
-        });
-    }
-
-    async preloadCoverImage(albumName, images) {
-        // Trouver l'image de couverture
-        let coverImageData = images.find((img) => {
-            const isCover = img.isCover === true || 
-                           img.isCover === 'true' || 
-                           img.isCover === 'True' ||
-                           img.isCover === 1 ||
-                           img.isCover === '1';
-            return isCover;
-        });
-
-        if (!coverImageData && images.length > 0) {
-            coverImageData = images[0];
-        }
-
-        if (!coverImageData || !coverImageData.image) {
-            return Promise.resolve();
-        }
-
-        let imageUrl = coverImageData.image;
-
-        return new Promise((resolve) => {
-            const img = new Image();
-            img.fetchPriority = 'high';
-            img.loading = 'eager';
-            
-            img.onload = () => resolve();
-            img.onerror = () => resolve();
-            setTimeout(() => resolve(), 5000);
-            
-            img.src = imageUrl;
         });
     }
 
@@ -374,34 +270,10 @@ class CMSContentLoader {
         
         let imageUrl = coverImageData.image;
         
-        // Vérifier si l'image est déjà dans le cache en mémoire
-        const cachedImg = this.coverImageCache.get(imageUrl);
-        
         coverImage.src = imageUrl;
         coverImage.alt = albumName;
-        coverImage.fetchPriority = 'high';
+        coverImage.loading = 'lazy';
         coverImage.decoding = 'async';
-        coverImage.loading = 'eager';
-        
-        if (cachedImg && (cachedImg.complete || cachedImg.naturalWidth > 0)) {
-            // L'image est déjà préchargée, l'afficher immédiatement
-            coverImage.style.opacity = '1';
-        } else {
-            // Attendre le chargement (normalement très rapide car préchargée)
-            coverImage.style.opacity = '0';
-            coverImage.onload = () => {
-                this.coverImageCache.set(imageUrl, coverImage);
-                requestAnimationFrame(() => {
-                    coverImage.style.opacity = '1';
-                });
-            };
-            // Timeout de sécurité
-            setTimeout(() => {
-                if (coverImage.style.opacity === '0') {
-                    coverImage.style.opacity = '1';
-                }
-            }, 100);
-        }
         
         const cardContent = document.createElement('div');
         cardContent.className = 'album-card-content';
@@ -490,7 +362,12 @@ class CMSContentLoader {
         thumbnailsContainer.isCentering = true;
         
         // Attendre que les vignettes soient rendues et mesurables
+        let attempts = 0;
+        const maxAttempts = 15;
+        
         const centerThumbnail = () => {
+            attempts++;
+            
             // Vérifier que la vignette est toujours valide
             if (!thumbnailsContainer.contains(thumbnail)) {
                 thumbnailsContainer.isCentering = false;
@@ -500,11 +377,16 @@ class CMSContentLoader {
             // Calculer la position de scroll pour centrer la vignette
             const containerWidth = thumbnailsContainer.clientWidth;
             const thumbnailLeft = thumbnail.offsetLeft;
-            const thumbnailWidth = thumbnail.offsetWidth;
+            const thumbnailWidth = thumbnail.offsetWidth || thumbnail.getBoundingClientRect().width;
             
             // Si les dimensions ne sont pas encore disponibles, réessayer
-            if (containerWidth === 0 || thumbnailWidth === 0) {
-                setTimeout(centerThumbnail, 50);
+            // Sur mobile, il faut parfois plusieurs tentatives pour que les dimensions soient disponibles
+            if (containerWidth === 0 || thumbnailWidth === 0 || attempts < 3) {
+                if (attempts < maxAttempts) {
+                    requestAnimationFrame(centerThumbnail);
+                } else {
+                    thumbnailsContainer.isCentering = false;
+                }
                 return;
             }
             
@@ -516,9 +398,7 @@ class CMSContentLoader {
             scrollLeft = Math.max(0, Math.min(scrollLeft, maxScroll));
             
             // Réinitialiser le flag de scroll utilisateur avant de centrer
-            if (thumbnailsContainer.lastScrollLeft !== undefined) {
-                thumbnailsContainer.lastScrollLeft = scrollLeft;
-            }
+            thumbnailsContainer.lastScrollLeft = scrollLeft;
             
             // Appliquer le scroll avec animation fluide
             thumbnailsContainer.scrollTo({
@@ -526,19 +406,19 @@ class CMSContentLoader {
                 behavior: 'smooth'
             });
             
-            // Réactiver le scroll infini après l'animation
+            // Réactiver le scroll infini après l'animation (plus long sur mobile)
             setTimeout(() => {
                 thumbnailsContainer.isCentering = false;
-                // Mettre à jour lastScrollLeft après le centrage
-                if (thumbnailsContainer.lastScrollLeft !== undefined) {
-                    thumbnailsContainer.lastScrollLeft = thumbnailsContainer.scrollLeft;
-                }
-            }, 800);
+                thumbnailsContainer.lastScrollLeft = thumbnailsContainer.scrollLeft;
+            }, 700);
         };
         
-        // Utiliser requestAnimationFrame pour s'assurer que le DOM est prêt
+        // Utiliser plusieurs requestAnimationFrame pour s'assurer que le DOM est complètement prêt
+        // Sur mobile, il faut parfois attendre plus longtemps pour que les dimensions soient disponibles
         requestAnimationFrame(() => {
-            setTimeout(centerThumbnail, 50);
+            requestAnimationFrame(() => {
+                requestAnimationFrame(centerThumbnail);
+            });
         });
     }
 

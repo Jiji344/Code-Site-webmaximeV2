@@ -380,8 +380,12 @@ class CMSContentLoader {
             
             // Calculer la position de scroll pour centrer la vignette
             const containerWidth = thumbnailsContainer.clientWidth;
-            const thumbnailLeft = thumbnail.offsetLeft;
-            const thumbnailWidth = thumbnail.offsetWidth || thumbnail.getBoundingClientRect().width;
+            const containerRect = thumbnailsContainer.getBoundingClientRect();
+            const thumbnailRect = thumbnail.getBoundingClientRect();
+            
+            // Utiliser getBoundingClientRect pour obtenir la position réelle (prend en compte le scroll actuel)
+            const thumbnailLeftRelative = thumbnailRect.left - containerRect.left + thumbnailsContainer.scrollLeft;
+            const thumbnailWidth = thumbnail.offsetWidth || thumbnailRect.width;
             
             // Si les dimensions ne sont pas encore disponibles, réessayer
             if (containerWidth === 0 || thumbnailWidth === 0 || attempts < 3) {
@@ -393,6 +397,13 @@ class CMSContentLoader {
                 return;
             }
             
+            // Calculer la position de scroll pour centrer
+            let scrollLeft = thumbnailLeftRelative - (containerWidth / 2) + (thumbnailWidth / 2);
+            
+            // S'assurer que le scroll reste dans les limites
+            const maxScroll = Math.max(0, thumbnailsContainer.scrollWidth - containerWidth);
+            scrollLeft = Math.max(0, Math.min(scrollLeft, maxScroll));
+            
             // Sur mobile réel, utiliser scrollIntoView qui fonctionne mieux
             if (isMobileDevice) {
                 try {
@@ -401,23 +412,20 @@ class CMSContentLoader {
                         block: 'nearest',
                         inline: 'center'
                     });
+                    // Mettre à jour lastScrollLeft après un court délai pour laisser l'animation se faire
+                    setTimeout(() => {
+                        thumbnailsContainer.lastScrollLeft = thumbnailsContainer.scrollLeft;
+                    }, 100);
                 } catch (e) {
                     // Fallback si scrollIntoView échoue
-                    const scrollLeft = thumbnailLeft - (containerWidth / 2) + (thumbnailWidth / 2);
-                    const maxScroll = Math.max(0, thumbnailsContainer.scrollWidth - containerWidth);
-                    const finalScroll = Math.max(0, Math.min(scrollLeft, maxScroll));
-                    thumbnailsContainer.scrollLeft = finalScroll;
-                    thumbnailsContainer.lastScrollLeft = finalScroll;
+                    thumbnailsContainer.scrollLeft = scrollLeft;
+                    thumbnailsContainer.lastScrollLeft = scrollLeft;
                 }
             } else {
                 // Sur desktop/responsive, utiliser scrollTo
-                const scrollLeft = thumbnailLeft - (containerWidth / 2) + (thumbnailWidth / 2);
-                const maxScroll = Math.max(0, thumbnailsContainer.scrollWidth - containerWidth);
-                const finalScroll = Math.max(0, Math.min(scrollLeft, maxScroll));
-                
-                thumbnailsContainer.lastScrollLeft = finalScroll;
+                thumbnailsContainer.lastScrollLeft = scrollLeft;
                 thumbnailsContainer.scrollTo({
-                    left: finalScroll,
+                    left: scrollLeft,
                     behavior: 'smooth'
                 });
             }
@@ -426,6 +434,12 @@ class CMSContentLoader {
             setTimeout(() => {
                 thumbnailsContainer.isCentering = false;
                 thumbnailsContainer.lastScrollLeft = thumbnailsContainer.scrollLeft;
+                // Marquer qu'on vient de centrer pour synchroniser avec le scroll infini
+                thumbnailsContainer.justCentered = true;
+                // Réinitialiser le flag après un court délai
+                setTimeout(() => {
+                    thumbnailsContainer.justCentered = false;
+                }, 200);
             }, 700);
         };
         
@@ -877,6 +891,12 @@ class CMSContentLoader {
                 // Mettre à jour lastScrollLeft pour éviter les conflits
                 thumbnailsContainer.lastScrollLeft = thumbnailsContainer.scrollLeft;
                 return;
+            }
+            
+            // Si on vient de finir un centrage, mettre à jour lastScrollLeft immédiatement
+            if (thumbnailsContainer.justCentered) {
+                thumbnailsContainer.lastScrollLeft = thumbnailsContainer.scrollLeft;
+                thumbnailsContainer.justCentered = false;
             }
             
             const container = thumbnailsContainer;

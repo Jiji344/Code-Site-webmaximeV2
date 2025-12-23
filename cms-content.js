@@ -805,14 +805,101 @@ class CMSContentLoader {
         };
 
         // Exécuter les préchargements avec délais progressifs
-        preloadAdjacent();
-        
-        preloadState.timeout = setTimeout(() => {
-            preloadNearby();
+        // Sur connexion lente, réduire le nombre d'images préchargées
+        if (isSlowConnection) {
+            // Seulement les adjacentes
+            preloadAdjacent();
+        } else {
+            preloadAdjacent();
+            
             preloadState.timeout = setTimeout(() => {
-                preloadDistant();
-            }, 300);
-        }, 100);
+                preloadNearby();
+                // Sur connexion rapide, précharger aussi les lointaines
+                if (isFastConnection) {
+                    preloadState.timeout = setTimeout(() => {
+                        preloadDistant();
+                    }, 300);
+                }
+            }, 100);
+        }
+    }
+    
+    /**
+     * Met à niveau les images adjacentes en fullscreen quand l'image actuelle est chargée
+     */
+    upgradeAdjacentToFullscreen(images, currentIndex, imageCache) {
+        const upgradeImage = (imageIndex) => {
+            if (imageIndex < 0 || imageIndex >= images.length) return;
+            
+            const cacheKey1200 = `${imageIndex}_1200`;
+            const cacheKey1920 = `${imageIndex}_1920`;
+            
+            // Si l'image en 1200px est chargée mais pas en 1920px, la mettre à niveau
+            if (imageCache.has(cacheKey1200)) {
+                const cached1200 = imageCache.get(cacheKey1200);
+                if (cached1200.loaded && !imageCache.has(cacheKey1920)) {
+                    const image = images[imageIndex];
+                    if (!image || !image.image) return;
+                    
+                    let imageUrl = image.image;
+                    if (window.ImageOptimizer) {
+                        if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
+                            imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
+                        }
+                    }
+                    
+                    const img = new Image();
+                    img.fetchPriority = 'low';
+                    img.decoding = 'async';
+                    img.onload = () => {
+                        imageCache.set(cacheKey1920, { loaded: true, img: img });
+                    };
+                    img.src = imageUrl;
+                }
+            }
+        };
+        
+        // Mettre à niveau les adjacentes
+        if (currentIndex > 0) upgradeImage(currentIndex - 1);
+        if (currentIndex < images.length - 1) upgradeImage(currentIndex + 1);
+    }
+    
+    /**
+     * Précharge la prochaine image en fullscreen quand l'image actuelle est à 80% chargée
+     */
+    preloadNextInFullscreen(images, currentIndex, imageCache, preloadState) {
+        // Déterminer la direction probable (basée sur la dernière navigation)
+        const nextIndex = preloadState.lastDirection === 'prev' && currentIndex > 0 
+            ? currentIndex - 1 
+            : currentIndex < images.length - 1 
+                ? currentIndex + 1 
+                : null;
+        
+        if (nextIndex === null) return;
+        
+        const cacheKey = `${nextIndex}_1920`;
+        if (imageCache.has(cacheKey)) {
+            const cached = imageCache.get(cacheKey);
+            if (cached.loaded) return; // Déjà chargée
+        }
+        
+        const image = images[nextIndex];
+        if (!image || !image.image) return;
+        
+        let imageUrl = image.image;
+        if (window.ImageOptimizer) {
+            if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
+                imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
+            }
+        }
+        
+        const img = new Image();
+        img.fetchPriority = 'high'; // Priorité haute car c'est la prochaine probable
+        img.decoding = 'async';
+        img.onload = () => {
+            imageCache.set(cacheKey, { loaded: true, img: img });
+        };
+        img.src = imageUrl;
     }
 
     openAlbumCarousel(albumName, images) {
@@ -855,8 +942,15 @@ class CMSContentLoader {
         const imageCache = new Map();
         const preloadState = {
             timeout: null,
-            inProgress: false
+            inProgress: false,
+            lastDirection: null, // 'next' ou 'prev' pour préchargement directionnel
+            currentImageLoadProgress: 0
         };
+        
+        // Détecter la qualité de connexion
+        const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        const isSlowConnection = connection && (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g');
+        const isFastConnection = connection && (connection.effectiveType === '4g');
         
         const showImage = (index) => {
             // Gérer le défilement infini (loop)
@@ -896,11 +990,40 @@ class CMSContentLoader {
                 }
             }
             
-            // Changer l'image immédiatement
-            carouselImage.src = imageUrl;
+            // Vérifier si l'image est déjà en cache (fullscreen)
+            const cacheKey = `${index}_1920`;
+            if (imageCache.has(cacheKey)) {
+                const cached = imageCache.get(cacheKey);
+                if (cached.loaded && cached.img) {
+                    // Utiliser l'image en cache directement
+                    carouselImage.src = cached.img.src;
+                } else {
+                    carouselImage.src = imageUrl;
+                }
+            } else {
+                carouselImage.src = imageUrl;
+            }
+            
             carouselImage.alt = albumName;
             carouselImage.fetchPriority = 'high';
             carouselImage.decoding = 'async';
+            
+            // Suivre la progression du chargement pour préchargement anticipatif
+            carouselImage.onload = () => {
+                preloadState.currentImageLoadProgress = 100;
+                // Quand l'image actuelle est chargée, mettre à niveau les adjacentes en fullscreen
+                this.upgradeAdjacentToFullscreen(images, index, imageCache);
+            };
+            
+            carouselImage.onprogress = (e) => {
+                if (e.lengthComputable) {
+                    preloadState.currentImageLoadProgress = (e.loaded / e.total) * 100;
+                    // À 80% de chargement, commencer à précharger la suivante en fullscreen
+                    if (preloadState.currentImageLoadProgress >= 80) {
+                        this.preloadNextInFullscreen(images, index, imageCache, preloadState);
+                    }
+                }
+            };
             
             // Animation légère et rapide
             carouselImage.style.animation = 'none';
@@ -974,6 +1097,29 @@ class CMSContentLoader {
             thumbnail.alt = image.title || '';
             thumbnail.decoding = 'async';
             thumbnail.addEventListener('click', () => showImage(index));
+            
+            // Précharger l'image en fullscreen au survol de la miniature
+            thumbnail.addEventListener('mouseenter', () => {
+                if (!isSlowConnection) {
+                    const cacheKey = `${index}_1920`;
+                    if (!imageCache.has(cacheKey)) {
+                        const img = new Image();
+                        let preloadUrl = image.image;
+                        if (window.ImageOptimizer) {
+                            if (window.ImageOptimizer.isCloudflareUrl(preloadUrl) || window.ImageOptimizer.isCloudinaryUrl(preloadUrl)) {
+                                preloadUrl = window.ImageOptimizer.optimizeFullscreen(preloadUrl, 1920);
+                            }
+                        }
+                        img.fetchPriority = 'high';
+                        img.decoding = 'async';
+                        img.onload = () => {
+                            imageCache.set(cacheKey, { loaded: true, img: img });
+                        };
+                        img.src = preloadUrl;
+                    }
+                }
+            });
+            
             thumbnailsContainer.appendChild(thumbnail);
         });
         
@@ -1243,10 +1389,12 @@ class CMSContentLoader {
                     (hasVelocity && Math.abs(deltaX) > 20)) {
                     if (deltaX > 0) {
                         // Slide vers la droite -> image précédente (avec loop)
+                        preloadState.lastDirection = 'prev';
                         carouselImage.style.transition = 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
                         showImage(currentIndex - 1);
                     } else if (deltaX < 0) {
                         // Slide vers la gauche -> image suivante (avec loop)
+                        preloadState.lastDirection = 'next';
                         carouselImage.style.transition = 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
                         showImage(currentIndex + 1);
                     } else {
@@ -1345,17 +1493,21 @@ class CMSContentLoader {
         });
         
         prevButton.onclick = () => {
+            preloadState.lastDirection = 'prev';
             showImage(currentIndex - 1);
         };
         
         nextButton.onclick = () => {
+            preloadState.lastDirection = 'next';
             showImage(currentIndex + 1);
         };
         
         const handleKeyboard = (e) => {
             if (e.key === 'ArrowLeft') {
+                preloadState.lastDirection = 'prev';
                 showImage(currentIndex - 1);
             } else if (e.key === 'ArrowRight') {
+                preloadState.lastDirection = 'next';
                 showImage(currentIndex + 1);
             } else if (e.key === 'Escape') {
                 closeCarousel();

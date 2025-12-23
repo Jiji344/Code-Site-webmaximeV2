@@ -44,14 +44,7 @@ class CMSContentLoader {
     async preloadCoverImagesFromCache(covers) {
         const preloadPromises = covers.map(cover => {
             return new Promise((resolve) => {
-                // Optimiser l'URL pour les cartes
                 let optimizedUrl = cover.imageUrl;
-                if (window.ImageOptimizer) {
-                    if (window.ImageOptimizer.isCloudflareUrl(optimizedUrl) || 
-                        window.ImageOptimizer.isCloudinaryUrl(optimizedUrl)) {
-                        optimizedUrl = window.ImageOptimizer.optimizeCard(optimizedUrl, 400);
-                    }
-                }
                 
                 // Vérifier si déjà en cache
                 if (this.coverImageCache.has(optimizedUrl)) {
@@ -338,13 +331,7 @@ class CMSContentLoader {
             return Promise.resolve();
         }
 
-        // Optimiser l'URL pour les cartes
         let imageUrl = coverImageData.image;
-        if (window.ImageOptimizer) {
-            if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-                imageUrl = window.ImageOptimizer.optimizeCard(imageUrl, 400);
-            }
-        }
 
         return new Promise((resolve) => {
             const img = new Image();
@@ -385,13 +372,7 @@ class CMSContentLoader {
             }
         }
         
-        // Optimiser l'URL pour les cartes (Cloudflare ou Cloudinary)
         let imageUrl = coverImageData.image;
-        if (window.ImageOptimizer) {
-            if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-            imageUrl = window.ImageOptimizer.optimizeCard(imageUrl, 400);
-            }
-        }
         
         // Vérifier si l'image est déjà dans le cache en mémoire
         const cachedImg = this.coverImageCache.get(imageUrl);
@@ -435,6 +416,10 @@ class CMSContentLoader {
         albumCard.appendChild(cardContent);
         
         albumCard.addEventListener('click', () => {
+            if (!images || images.length === 0) {
+                console.error('❌ Album vide:', albumName);
+                return;
+            }
             this.openAlbumCarousel(albumName, images);
         });
         
@@ -448,13 +433,7 @@ class CMSContentLoader {
         
         const imgElement = document.createElement('img');
         
-        // Optimiser l'URL pour les cartes (Cloudflare ou Cloudinary)
         let imageUrl = item.image;
-        if (window.ImageOptimizer) {
-            if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-            imageUrl = window.ImageOptimizer.optimizeCard(imageUrl, 400);
-            }
-        }
         
         imgElement.src = imageUrl;
         imgElement.alt = item.title || item.description || '';
@@ -472,13 +451,7 @@ class CMSContentLoader {
             const modalClose = document.getElementById('modal-close');
             
             if (modal && modalImg) {
-                // Optimiser l'URL pour l'affichage plein écran (Cloudflare ou Cloudinary)
                 let imageUrl = item.image;
-                if (window.ImageOptimizer) {
-                    if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-                    imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
-                    }
-                }
                 
                 modalImg.src = imageUrl;
                 modalImg.alt = item.title || item.description || '';
@@ -576,7 +549,7 @@ class CMSContentLoader {
      * Priorité 3: Images proches (±2 à ±5) en 800px
      * Priorité 4: Images lointaines progressivement par lots
      */
-    scheduleProgressivePreload(images, currentIndex, imageCache, preloadState) {
+    scheduleProgressivePreload(images, currentIndex, imageCache, preloadState, isSlowConnection, isFastConnection) {
         // Annuler les préchargements précédents en attente
         if (preloadState.timeout) {
             clearTimeout(preloadState.timeout);
@@ -601,19 +574,6 @@ class CMSContentLoader {
             
             const img = new Image();
             let imageUrl = image.image;
-            
-            // Optimiser selon la taille demandée
-            if (window.ImageOptimizer) {
-                if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-                    if (size === 1920) {
-                        imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
-                    } else if (size === 1200) {
-                        imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1200);
-                    } else if (size === 800) {
-                        imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 800);
-                    }
-                }
-            }
             
             img.fetchPriority = 'low';
             img.decoding = 'async';
@@ -739,11 +699,6 @@ class CMSContentLoader {
                     if (!image || !image.image) return;
                     
                     let imageUrl = image.image;
-                    if (window.ImageOptimizer) {
-                        if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-                            imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
-                        }
-                    }
                     
                     const img = new Image();
                     img.fetchPriority = 'low';
@@ -784,11 +739,6 @@ class CMSContentLoader {
         if (!image || !image.image) return;
         
         let imageUrl = image.image;
-        if (window.ImageOptimizer) {
-            if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-                imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
-            }
-        }
         
         const img = new Image();
         img.fetchPriority = 'high'; // Priorité haute car c'est la prochaine probable
@@ -800,6 +750,11 @@ class CMSContentLoader {
     }
 
     openAlbumCarousel(albumName, images) {
+        if (!images || images.length === 0) {
+            console.error('❌ Aucune image dans l\'album:', albumName);
+            return;
+        }
+        
         const modal = document.getElementById('album-modal');
         const albumTitle = document.getElementById('album-title');
         const albumCounter = document.getElementById('album-counter');
@@ -808,7 +763,10 @@ class CMSContentLoader {
         const prevButton = document.getElementById('carousel-prev');
         const nextButton = document.getElementById('carousel-next');
         
-        if (!modal) return;
+        if (!modal || !albumTitle || !albumCounter || !carouselImage || !thumbnailsContainer) {
+            console.error('❌ Éléments DOM manquants pour le carousel');
+            return;
+        }
         
         let currentIndex = 0;
         let isZoomed = false;
@@ -879,13 +837,7 @@ class CMSContentLoader {
             slideCurrentX = 0;
             slideVelocity = 0;
             
-            // Optimiser l'URL pour l'affichage plein écran (Cloudflare ou Cloudinary)
             let imageUrl = image.image;
-            if (window.ImageOptimizer) {
-                if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-                imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
-                }
-            }
             
             // Vérifier si l'image est déjà en cache (fullscreen)
             const cacheKey = `${index}_1920`;
@@ -945,7 +897,7 @@ class CMSContentLoader {
             });
             
             // Déclencher le préchargement progressif des images adjacentes et autres
-            this.scheduleProgressivePreload(images, index, imageCache, preloadState);
+            this.scheduleProgressivePreload(images, index, imageCache, preloadState, isSlowConnection, isFastConnection);
         };
         
         thumbnailsContainer.innerHTML = '';
@@ -954,13 +906,7 @@ class CMSContentLoader {
             thumbnail.className = 'carousel-thumbnail';
             thumbnail.setAttribute('data-index', index);
             
-            // Optimiser l'URL pour les miniatures (Cloudflare ou Cloudinary)
             let imageUrl = image.image;
-            if (window.ImageOptimizer) {
-                if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
-                imageUrl = window.ImageOptimizer.optimizeThumbnail(imageUrl, 100);
-                }
-            }
             
             // Charger les miniatures visibles immédiatement, les autres en lazy
             if (index <= 5) {
@@ -997,16 +943,11 @@ class CMSContentLoader {
             
             // Précharger l'image en fullscreen au survol de la miniature
             thumbnail.addEventListener('mouseenter', () => {
-                if (!isSlowConnection) {
+                    if (!isSlowConnection) {
                     const cacheKey = `${index}_1920`;
                     if (!imageCache.has(cacheKey)) {
                         const img = new Image();
                         let preloadUrl = image.image;
-                        if (window.ImageOptimizer) {
-                            if (window.ImageOptimizer.isCloudflareUrl(preloadUrl) || window.ImageOptimizer.isCloudinaryUrl(preloadUrl)) {
-                                preloadUrl = window.ImageOptimizer.optimizeFullscreen(preloadUrl, 1920);
-                            }
-                        }
                         img.fetchPriority = 'high';
                         img.decoding = 'async';
                         img.onload = () => {
@@ -1396,15 +1337,19 @@ class CMSContentLoader {
             }
         });
         
-        prevButton.onclick = () => {
-            preloadState.lastDirection = 'prev';
-            showImage(currentIndex - 1);
-        };
+        if (prevButton) {
+            prevButton.onclick = () => {
+                preloadState.lastDirection = 'prev';
+                showImage(currentIndex - 1);
+            };
+        }
         
-        nextButton.onclick = () => {
-            preloadState.lastDirection = 'next';
-            showImage(currentIndex + 1);
-        };
+        if (nextButton) {
+            nextButton.onclick = () => {
+                preloadState.lastDirection = 'next';
+                showImage(currentIndex + 1);
+            };
+        }
         
         const handleKeyboard = (e) => {
             if (e.key === 'ArrowLeft') {
@@ -1434,7 +1379,10 @@ class CMSContentLoader {
             }
         };
         
-        document.getElementById('album-modal-close').onclick = closeCarousel;
+        const closeButton = document.getElementById('album-modal-close');
+        if (closeButton) {
+            closeButton.onclick = closeCarousel;
+        }
         modal.onclick = (e) => e.target === modal && closeCarousel();
         document.addEventListener('keydown', handleKeyboard);
         

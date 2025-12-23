@@ -672,6 +672,149 @@ class CMSContentLoader {
         });
     }
 
+    /**
+     * Précharge progressivement les images d'un album
+     * Priorité 1: Image actuelle (fullscreen) - déjà chargée dans showImage
+     * Priorité 2: Images adjacentes (±1) en 1200px
+     * Priorité 3: Images proches (±2 à ±5) en 800px
+     * Priorité 4: Images lointaines progressivement par lots
+     */
+    scheduleProgressivePreload(images, currentIndex, imageCache, preloadState) {
+        // Annuler les préchargements précédents en attente
+        if (preloadState.timeout) {
+            clearTimeout(preloadState.timeout);
+            preloadState.timeout = null;
+        }
+
+        const preloadImage = (imageIndex, size) => {
+            if (imageIndex < 0 || imageIndex >= images.length) return;
+            
+            const image = images[imageIndex];
+            if (!image || !image.image) return;
+            
+            // Vérifier si déjà en cache
+            const cacheKey = `${imageIndex}_${size}`;
+            if (imageCache.has(cacheKey)) {
+                const cached = imageCache.get(cacheKey);
+                if (cached.loaded) return; // Déjà chargée
+            }
+            
+            // Marquer comme en cours de chargement
+            imageCache.set(cacheKey, { loading: true });
+            
+            const img = new Image();
+            let imageUrl = image.image;
+            
+            // Optimiser selon la taille demandée
+            if (window.ImageOptimizer) {
+                if (window.ImageOptimizer.isCloudflareUrl(imageUrl) || window.ImageOptimizer.isCloudinaryUrl(imageUrl)) {
+                    if (size === 1920) {
+                        imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1920);
+                    } else if (size === 1200) {
+                        imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 1200);
+                    } else if (size === 800) {
+                        imageUrl = window.ImageOptimizer.optimizeFullscreen(imageUrl, 800);
+                    }
+                }
+            }
+            
+            img.fetchPriority = 'low';
+            img.decoding = 'async';
+            
+            img.onload = () => {
+                imageCache.set(cacheKey, { loaded: true, img: img });
+            };
+            
+            img.onerror = () => {
+                imageCache.delete(cacheKey);
+            };
+            
+            img.src = imageUrl;
+        };
+
+        // Priorité 2: Images adjacentes (±1) en 1200px
+        const preloadAdjacent = () => {
+            if (currentIndex > 0) {
+                preloadImage(currentIndex - 1, 1200);
+            }
+            if (currentIndex < images.length - 1) {
+                preloadImage(currentIndex + 1, 1200);
+            }
+        };
+
+        // Priorité 3: Images proches (±2 à ±5) en 800px
+        const preloadNearby = () => {
+            const nearbyRange = [2, 3, 4, 5];
+            nearbyRange.forEach(offset => {
+                if (currentIndex - offset >= 0) {
+                    preloadImage(currentIndex - offset, 800);
+                }
+                if (currentIndex + offset < images.length) {
+                    preloadImage(currentIndex + offset, 800);
+                }
+            });
+        };
+
+        // Priorité 4: Images lointaines progressivement
+        const preloadDistant = () => {
+            if (preloadState.inProgress) return;
+            preloadState.inProgress = true;
+            
+            const distantIndices = [];
+            for (let i = 0; i < images.length; i++) {
+                const distance = Math.abs(i - currentIndex);
+                if (distance > 5) {
+                    distantIndices.push({ index: i, distance });
+                }
+            }
+            
+            // Trier par distance (plus proche d'abord)
+            distantIndices.sort((a, b) => a.distance - b.distance);
+            
+            // Précharger par lots de 3-5 images
+            const batchSize = 3;
+            let batchIndex = 0;
+            
+            const processBatch = () => {
+                const batch = distantIndices.slice(batchIndex, batchIndex + batchSize);
+                if (batch.length === 0) {
+                    preloadState.inProgress = false;
+                    return;
+                }
+                
+                batch.forEach(({ index }) => {
+                    preloadImage(index, 800);
+                });
+                
+                batchIndex += batchSize;
+                
+                // Utiliser requestIdleCallback si disponible, sinon setTimeout
+                if (window.requestIdleCallback) {
+                    window.requestIdleCallback(processBatch, { timeout: 1000 });
+                } else {
+                    setTimeout(processBatch, 200);
+                }
+            };
+            
+            // Démarrer le traitement des lots
+            if (window.requestIdleCallback) {
+                window.requestIdleCallback(processBatch, { timeout: 1000 });
+            } else {
+                setTimeout(processBatch, 200);
+            }
+        };
+
+        // Exécuter les préchargements avec délais progressifs
+        preloadAdjacent();
+        
+        preloadState.timeout = setTimeout(() => {
+            preloadNearby();
+            preloadState.timeout = setTimeout(() => {
+                preloadDistant();
+            }, 300);
+        }, 100);
+    }
+
     openAlbumCarousel(albumName, images) {
         const modal = document.getElementById('album-modal');
         const albumTitle = document.getElementById('album-title');
@@ -707,6 +850,13 @@ class CMSContentLoader {
         let lastSlideX = 0;
         let lastSlideTime = 0;
         let animationFrame = null;
+        
+        // Cache des images préchargées et état du préchargement
+        const imageCache = new Map();
+        const preloadState = {
+            timeout: null,
+            inProgress: false
+        };
         
         const showImage = (index) => {
             // Gérer le défilement infini (loop)
@@ -774,29 +924,8 @@ class CMSContentLoader {
                 this.scrollThumbnailToCenter(thumbnailsContainer, currentIndex);
             }, 100);
             
-            // Précharger les images adjacentes pour navigation fluide
-            if (index < images.length - 1) {
-                const nextImg = new Image();
-                let nextUrl = images[index + 1].image;
-                if (window.ImageOptimizer) {
-                    if (window.ImageOptimizer.isCloudflareUrl(nextUrl) || window.ImageOptimizer.isCloudinaryUrl(nextUrl)) {
-                    nextUrl = window.ImageOptimizer.optimizeFullscreen(nextUrl, 1920);
-                    }
-                }
-                nextImg.src = nextUrl;
-                nextImg.fetchPriority = 'low';
-            }
-            if (index > 0) {
-                const prevImg = new Image();
-                let prevUrl = images[index - 1].image;
-                if (window.ImageOptimizer) {
-                    if (window.ImageOptimizer.isCloudflareUrl(prevUrl) || window.ImageOptimizer.isCloudinaryUrl(prevUrl)) {
-                    prevUrl = window.ImageOptimizer.optimizeFullscreen(prevUrl, 1920);
-                    }
-                }
-                prevImg.src = prevUrl;
-                prevImg.fetchPriority = 'low';
-            }
+            // Déclencher le préchargement progressif des images adjacentes et autres
+            this.scheduleProgressivePreload(images, index, imageCache, preloadState);
         };
         
         thumbnailsContainer.innerHTML = '';
@@ -813,9 +942,36 @@ class CMSContentLoader {
                 }
             }
             
-            thumbnail.src = imageUrl;
+            // Charger les miniatures visibles immédiatement, les autres en lazy
+            if (index <= 5) {
+                // Premières miniatures visibles : chargement immédiat
+                thumbnail.src = imageUrl;
+                thumbnail.fetchPriority = 'high';
+            } else {
+                // Miniatures hors écran : lazy loading
+                thumbnail.loading = 'lazy';
+                thumbnail.fetchPriority = 'low';
+                // Utiliser data-src pour le lazy loading
+                thumbnail.setAttribute('data-src', imageUrl);
+                
+                // Observer pour charger quand visible
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            if (img.dataset.src) {
+                                img.src = img.dataset.src;
+                                img.removeAttribute('data-src');
+                            }
+                            observer.unobserve(img);
+                        }
+                    });
+                }, { rootMargin: '50px' });
+                
+                observer.observe(thumbnail);
+            }
+            
             thumbnail.alt = image.title || '';
-            thumbnail.fetchPriority = 'low'; // Priorité basse pour les miniatures
             thumbnail.decoding = 'async';
             thumbnail.addEventListener('click', () => showImage(index));
             thumbnailsContainer.appendChild(thumbnail);
@@ -918,18 +1074,7 @@ class CMSContentLoader {
         albumTitle.textContent = albumName;
         showImage(0);
         
-        // Précharger toutes les images de l'album en arrière-plan pour navigation instantanée
-        images.forEach((image) => {
-            const img = new Image();
-            let preloadUrl = image.image;
-            if (window.ImageOptimizer) {
-                if (window.ImageOptimizer.isCloudflareUrl(preloadUrl) || window.ImageOptimizer.isCloudinaryUrl(preloadUrl)) {
-                preloadUrl = window.ImageOptimizer.optimizeFullscreen(preloadUrl, 1920);
-                }
-            }
-            img.src = preloadUrl;
-            img.fetchPriority = 'low';
-        });
+        // Le préchargement progressif sera déclenché par showImage
         
         // Fonction pour limiter le déplacement aux limites de l'image
         const constrainPan = (x, y, img) => {
@@ -1218,6 +1363,14 @@ class CMSContentLoader {
         };
         
         const closeCarousel = () => {
+            // Nettoyer le cache et annuler les préchargements en cours
+            if (preloadState.timeout) {
+                clearTimeout(preloadState.timeout);
+                preloadState.timeout = null;
+            }
+            preloadState.inProgress = false;
+            // Optionnel: vider le cache pour libérer la mémoire
+            // imageCache.clear(); // Décommenter si vous voulez libérer la mémoire à la fermeture
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
             document.removeEventListener('keydown', handleKeyboard);

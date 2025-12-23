@@ -361,6 +361,10 @@ class CMSContentLoader {
         if (thumbnailsContainer.isCentering) return;
         thumbnailsContainer.isCentering = true;
         
+        // Détecter si on est sur un vrai appareil mobile
+        const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                               (window.innerWidth <= 768 && 'ontouchstart' in window);
+        
         // Attendre que les vignettes soient rendues et mesurables
         let attempts = 0;
         const maxAttempts = 15;
@@ -380,7 +384,6 @@ class CMSContentLoader {
             const thumbnailWidth = thumbnail.offsetWidth || thumbnail.getBoundingClientRect().width;
             
             // Si les dimensions ne sont pas encore disponibles, réessayer
-            // Sur mobile, il faut parfois plusieurs tentatives pour que les dimensions soient disponibles
             if (containerWidth === 0 || thumbnailWidth === 0 || attempts < 3) {
                 if (attempts < maxAttempts) {
                     requestAnimationFrame(centerThumbnail);
@@ -390,23 +393,36 @@ class CMSContentLoader {
                 return;
             }
             
-            // Calculer la position de scroll pour centrer
-            let scrollLeft = thumbnailLeft - (containerWidth / 2) + (thumbnailWidth / 2);
+            // Sur mobile réel, utiliser scrollIntoView qui fonctionne mieux
+            if (isMobileDevice) {
+                try {
+                    thumbnail.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'nearest',
+                        inline: 'center'
+                    });
+                } catch (e) {
+                    // Fallback si scrollIntoView échoue
+                    const scrollLeft = thumbnailLeft - (containerWidth / 2) + (thumbnailWidth / 2);
+                    const maxScroll = Math.max(0, thumbnailsContainer.scrollWidth - containerWidth);
+                    const finalScroll = Math.max(0, Math.min(scrollLeft, maxScroll));
+                    thumbnailsContainer.scrollLeft = finalScroll;
+                    thumbnailsContainer.lastScrollLeft = finalScroll;
+                }
+            } else {
+                // Sur desktop/responsive, utiliser scrollTo
+                const scrollLeft = thumbnailLeft - (containerWidth / 2) + (thumbnailWidth / 2);
+                const maxScroll = Math.max(0, thumbnailsContainer.scrollWidth - containerWidth);
+                const finalScroll = Math.max(0, Math.min(scrollLeft, maxScroll));
+                
+                thumbnailsContainer.lastScrollLeft = finalScroll;
+                thumbnailsContainer.scrollTo({
+                    left: finalScroll,
+                    behavior: 'smooth'
+                });
+            }
             
-            // S'assurer que le scroll reste dans les limites
-            const maxScroll = Math.max(0, thumbnailsContainer.scrollWidth - containerWidth);
-            scrollLeft = Math.max(0, Math.min(scrollLeft, maxScroll));
-            
-            // Réinitialiser le flag de scroll utilisateur avant de centrer
-            thumbnailsContainer.lastScrollLeft = scrollLeft;
-            
-            // Appliquer le scroll avec animation fluide
-            thumbnailsContainer.scrollTo({
-                left: scrollLeft,
-                behavior: 'smooth'
-            });
-            
-            // Réactiver le scroll infini après l'animation (plus long sur mobile)
+            // Réactiver le scroll infini après l'animation
             setTimeout(() => {
                 thumbnailsContainer.isCentering = false;
                 thumbnailsContainer.lastScrollLeft = thumbnailsContainer.scrollLeft;
@@ -414,7 +430,6 @@ class CMSContentLoader {
         };
         
         // Utiliser plusieurs requestAnimationFrame pour s'assurer que le DOM est complètement prêt
-        // Sur mobile, il faut parfois attendre plus longtemps pour que les dimensions soient disponibles
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 requestAnimationFrame(centerThumbnail);
